@@ -1,0 +1,185 @@
+<style>
+    .left .p {
+        padding: 12px;
+    }
+    .left .cont {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        background-color: aliceblue;
+        width: 98%;
+        flex-direction: column;
+        margin: 12px auto 4px auto;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    .cont .header {
+        background-color: black;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        padding: 12px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .cont .sect {
+        border-bottom: 2px white solid;
+        padding: 16px;
+        width: 98%;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .cont .sect .time,
+    .cont .sect .odds {
+        width: 15%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cont .sect .time {
+        flex-direction: column;
+    }
+
+    .cont .sect .time span {
+        display: flex;
+    }
+
+    .cont .sect .odds span {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        border: 1px solid black;
+        font-weight: bold;
+    }
+
+    .cont .sect .game .tip {
+        font-weight: bold;
+    }
+    .cont .sect .game .match {
+        color: gray;
+    }
+
+    .cont .sect .game {
+        width: 60%;
+        padding: 4px 4px 4px 12px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        border-left: 2px solid white;
+        border-right: 2px solid white;
+    }
+
+    .total {
+        width: 98%;
+        margin: 0 auto 12px auto;
+        background-color: aliceblue;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        border-bottom: black solid 2px;
+    }
+
+    .subtotal {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .total .w25 {
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .total .w40 {
+        width: 40%;
+    }
+
+    .total .btm span {
+        display: flex;
+    }
+
+    .total .btm .hdr {
+        font-weight: bold;
+    }
+
+    .total .btm .ct {
+        background-color: white;
+        border: 1px black solid;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border-radius: 3px;
+    }
+
+    .total .sasa {
+        text-align: center;
+        margin: 16px auto 2px auto;
+        width: 100%;
+    }
+
+    .total .sasa button {
+        background-color: green;
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 12px;
+        font-weight: bold;
+        border-radius: 4px;
+        width: 50%;
+    }
+
+    .total .sasa button:active,
+    .total .sasa button:hover {
+        background-color: white;
+        color: brown;
+    }
+
+    .left .maana {
+        margin-top: 100px;
+    }
+
+    .left .maana li {
+        margin-bottom: 24px;
+        padding-right: 8px;
+    }
+
+    .left .maana li .brown {
+        color: brown;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 800px) {
+        main .left .cont {
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 480px) {
+        main .left .cont .sect {
+            font-size: 12px;
+        }
+
+        main .left .cont .sect .game {
+            padding: 4px;
+        }
+
+        main .left .total .btm {
+            font-size: 12px;
+        }
+    }
+</style>

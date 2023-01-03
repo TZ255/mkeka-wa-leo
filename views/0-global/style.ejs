@@ -1,0 +1,217 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: white;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+    }
+
+    header {
+        box-shadow: 0 12px 12px gray;
+        padding-bottom: 8px;
+        margin-bottom: 48px;
+    }
+
+    .navbar .brand {
+        font-size: 32px;
+        font-family: 'Silkscreen', sans-serif;
+        font-weight: bold;
+        border-top: 5px brown solid;
+        border-bottom: 5px brown solid;
+        border-left: 1px solid brown;
+        border-right: 1px solid brown;
+        border-radius: 12px;
+        padding: 8px 16px;
+        background-color: whitesmoke;
+    }
+
+    .navbar .nav-item .nav-link {
+        font-size: large;
+        font-weight: bold;
+        border: 1px brown solid;
+        border-radius: 2px;
+        padding: 8px;
+        display: block;
+        margin: 6px;
+    }
+
+    .navbar .nav-item .nav-link:hover,
+    .navbar .nav-item .nav-link:active {
+        border: none;
+    }
+
+    .navbar .active {
+        border: none !important;
+    }
+
+    header .h-title {
+        text-align: center;
+        margin: 48px auto;
+        color: gray;
+    }
+
+    main {
+        display: flex !important;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1.5%;
+    }
+
+    main .left {
+        width: 70%;
+    }
+
+    main .left .mwisho {
+        margin: 24px auto;
+    }
+
+    main .left .mwisho h2 {
+        background-color: brown;
+        color: white;
+        padding: 12px;
+        font-weight: bold;
+        margin-top: 16px;
+    }
+
+    main .left .mwisho p {
+        display: block;
+        background-color: whitesmoke;
+        border-radius: 8px;
+        width: 98%;
+        margin: 12px auto;
+        color: gray;
+        padding: 16px;
+    }
+
+    main .right {
+        width: 27%;
+    }
+
+    main .left .h2,
+    main .right .h2 {
+        background-color: brown;
+        padding: 12px;
+        font-weight: bold;
+        color: white;
+    }
+
+    main .right .cont {
+        padding: 12px;
+    }
+
+    main .right .cont .kitu {
+        background-color: aliceblue;
+        padding: 16px;
+        border-radius: 8px;
+        color: gray;
+        margin: 12px;
+    }
+
+    main .right .kitu h3 {
+        border-bottom: 2px brown solid;
+        color: black;
+        font-size: 16px;
+    }
+
+    main .right .kitu a {
+        text-decoration: none;
+        color: brown;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    footer {
+        display: flex;
+        background-color: white;
+        color: gray;
+        justify-content: space-between;
+        box-shadow: 0 0 0 white, 0 -12px 12px gray;
+        padding: 24px;
+        margin-top: 64px;
+    }
+
+    footer .left,
+    footer.right {
+        width: 47%;
+    }
+
+    footer a {
+        text-decoration: none;
+        color: brown;
+        font-weight: bold;
+    }
+
+    footer h4 {
+        font-size: 16px;
+    }
+
+    footer h3 {
+        font-size: 20px;
+    }
+
+    #toAds {
+        height: 8px;
+    }
+
+    .ads {
+        width: 100%;
+        text-align: center;
+        border-radius: 2px;
+        border-left: 1px lightgray solid;
+        border-right: 1px lightgray solid;
+        border-radius: 8px;
+        margin: 16px auto;
+        height: fit-content;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    @media (max-width: 420px) {
+        header {
+        box-shadow: 0 12px 12px gray;
+        padding-bottom: 8px;
+        margin-bottom: 32px;
+    }
+
+    .navbar .brand {
+        font-size: 30px;
+        font-family: 'Silkscreen', sans-serif;
+        font-weight: bold;
+        border-top: 5px brown solid;
+        border-bottom: 5px brown solid;
+        border-left: 1px solid brown;
+        border-right: 1px solid brown;
+        border-radius: 12px;
+        padding: 8px 16px;
+        background-color: whitesmoke;
+    }
+
+    .navbar .nav-item .nav-link {
+        font-size: medium;
+        font-weight: bold;
+        border: 1px brown solid;
+        border-radius: 2px;
+        padding: 8px;
+        display: block;
+        margin: 6px;
+    }
+    }
+
+    @media (max-width: 800px) {
+        main {
+            flex-direction: column;
+        }
+
+        main .left,
+        main .right {
+            width: 100%;
+        }
+    }
+</style>

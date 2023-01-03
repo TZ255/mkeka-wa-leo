@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tanzania Betting Tips | Pata Mikeka ya Uhakika Kila Siku Bure">
+    <title>Mkeka wa Leo | Pata Tips za Mikeka ya Leo</title>
+    <%- include('./partials/style.ejs'); %>
+        <%- include('../0-global/style.ejs'); %>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+                crossorigin="anonymous">
+            <%- include('../0-global/favicon.ejs') %>
+</head>
+
+<body>
+    <%- include('../0-global/header.ejs'); %>
+        <main>
+            <section class="left">
+                <h1 class="h2" style="font-size: 16px;">Mikeka ya Leo</h1>
+                <p class="p">Pata mikeka yenye asilimia kubwa ya ushindi hapa kila siku. Mikeka yetu imeandaliwa kwa
+                    umakini na
+                    uchambuzi mkubwa kukuhakikishia unasimama katika nafasi kubwa ya ushindi.</p>
+                <div class="cont" itemscope>
+                    <h2 class="header">
+                        1st Half Multigoals Tips
+                    </h2>
+                    <% mikeka1st.forEach(el=> { %>
+                        <div class="sect">
+                            <div class="time">
+                                <span>
+                                    <%= el.time %>
+                                </span>
+                                <span>
+                                    <%= el.date %>
+                                </span>
+                            </div>
+                            <div class="game">
+                                <div class="tip">
+                                    <%= el.bet %>
+                                </div>
+                                <div class="match">
+                                    <%= el.match %>
+                                </div>
+                            </div>
+                            <div class="odds">
+                                <span>
+                                    <%= el.odds %>
+                                </span>
+
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                <div class="total">
+                    <div class="subtotal">
+                        <div class="btm w40">
+                            <span class="hdr">Bookie</span>
+                            <span class="ct">⚽️ Gal Sport Betting</span>
+                        </div>
+                        <div class="btm w25">
+                            <span class="hdr">Total Odds</span>
+                            <span class="ct">
+                                <%= odds1st %>
+                            </span>
+                        </div>
+                        <div class="btm w25">
+                            <span class="hdr">Bonus</span>
+                            <span class="ct">100%</span>
+                        </div>
+                    </div>
+                    <div class="sasa">
+                        <button onclick="window.open('/gsb/register')">BET SASA</button>
+                    </div>
+                </div>
+
+                <!-- second opt -->
+
+                <br><br><br>
+                <div class="cont" itemscope>
+                    <h2 class="header">
+                        Home / Away Multigoals Tips
+                    </h2>
+                    <% mikekaHome.forEach(el=> { %>
+                        <div class="sect">
+                            <div class="time">
+                                <span>
+                                    <%= el.time %>
+                                </span>
+                                <span>
+                                    <%= el.date %>
+                                </span>
+                            </div>
+                            <div class="game">
+                                <div class="tip">
+                                    <%= el.bet %>
+                                </div>
+                                <div class="match">
+                                    <%= el.match %>
+                                </div>
+                            </div>
+                            <div class="odds">
+                                <span>
+                                    <%= el.odds %>
+                                </span>
+
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                <div class="total">
+                    <div class="subtotal">
+                        <div class="btm w40">
+                            <span class="hdr">Bookie</span>
+                            <span class="ct">⚽️ Gal Sport Betting</span>
+                        </div>
+                        <div class="btm w25">
+                            <span class="hdr">Total Odds</span>
+                            <span class="ct">
+                                <%= oddsHome %>
+                            </span>
+                        </div>
+                        <div class="btm w25">
+                            <span class="hdr">Bonus</span>
+                            <span class="ct">100%</span>
+                        </div>
+                    </div>
+                    <div class="sasa">
+                        <button onclick="window.open('/gsb/register')">BET SASA</button>
+                    </div>
+                </div>
+
+                <div class="maana">
+                    <div class="maana1st">
+                        <h1 class="h2" id="maana" style="font-size: 16px;">Maana ya 1st Half Multigoals</h1>
+                        <p class="p">
+                            Hapa tunatabiri idadi ya magoli yatakayofungwa kipindi cha kwanza.
+                        </p>
+                        <ul>
+                            <li><b class="brown">1st Half Multigoals: 1 - 2:</b> Hapa tunatabiri lifungwe goli moja au
+                                mawili kipindi cha kwanza. Yakizidi mawili tumepoteza. Mkeka wetu utakuwa umetiki
+                                yakitokea
+                                matokeo yafuatayo kipindi cha kwanza, <b>1:0, 1:1, 2:0, 0:1 na 0: 2</b></li>
+
+                            <li><b class="brown">1st Half Multigoals: 1 - 3:</b> Hapa tunatabiri lifungwe goli mpaka
+                                matatu
+                                kipindi cha kwanza. Yakizidi matatu tumepoteza. Mkeka wetu utakuwa umetiki yakitokea
+                                matokeo
+                                yafuatayo kipindi cha kwanza, <b>1:0, 1:1, 2:0, 2:1 0:1, 0: 2 na 1:2</b></li>
+                        </ul>
+                    </div>
+
+                    <div class="maanaHome">
+                        <h1 class="h2" id="maana" style="font-size: 16px;">Maana ya Home / Away Multigoals</h1>
+                        <p class="p">
+                            Hapa tunatabiri idadi ya magoli yatakayofungwa na team ya Home au Away ndani ya dakika 90+
+                            za mchezo. Hii haijalishi atashinda, atadroo au atapoteza ila tunachoangalia ni apate goli
+                            au magoli ndani ya range tulioiweka.
+                        </p>
+                        <ul>
+                            <li>
+                                <b class="brown">Hometeam Multigoals: 1 - 2:</b>
+                                Hapa tunatabiri team ya nyumbani kupata goli moja au mawili. Team ya nyumbani ikizidisha
+                                zaidi ya magoli mawili tumepoteza.
+                            </li>
+                            <li>
+                                <b class="brown">Awayteam Multigoals: 1 - 2:</b>
+                                Hapa tunatabiri team ya ugenini kupata goli moja au mawili. Team ya ugenini ikizidisha
+                                zaidi ya magoli mawili tumepoteza.
+                            </li>
+                            <li>
+                                <b class="brown">Hometeam Multigoals: 1 - 3:</b>
+                                Hapa tunatabiri team ya nyumbani kupata goli moja, mawili ama matatu. Team ya nyumbani ikizidisha
+                                zaidi ya magoli matatu tumepoteza.
+                            </li>
+                            <li>
+                                <b class="brown">Awayteam Multigoals: 1 - 3:</b>
+                                Hapa tunatabiri team ya ugenini kupata goli moja, mawili ama matatu. Team ya ugenini ikizidisha
+                                zaidi ya magoli matatu tumepoteza.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <%- include('../0-global/right.ejs'); %>
+        </main>
+
+        <%- include('../0-global/footer.ejs'); %>
+
+            <%- include('./partials/script.ejs'); %>
+                <%- include('../0-global/script.ejs'); %>
+
+                    <!-- bootstrap -->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+                        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+                        crossorigin="anonymous"></script>
+</body>
+
+</html>
