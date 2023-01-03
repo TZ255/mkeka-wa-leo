@@ -1,6 +1,5 @@
 const router = require('express').Router()
-const mkekadb = require('../model/mult-1st')
-const mkhomedb = require('../model/multi-home')
+const mkekadb = require('../model/mkeka-mega')
 
 //times
 const TimeAgo = require('javascript-time-ago')
@@ -14,17 +13,33 @@ router.get('/favicon.ico', (req, res) => res.status(204).end());
 router.get('/', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
-        let mikeka1st = await mkekadb.find({date: d})
-        let mikekaHome = await mkhomedb.find({date: d})
+        let mikeka = await mkekadb.find({date: d})
         let odds1st = 1
         let oddsHome = 1
+        let megaOdds = 1
+
+        let mikeka1st = []
+        let mikekaHome = []
+
+        for(let mk of mikeka) {
+            if(mk.bet.toLowerCase().includes('1st half mult')) {
+                mikeka1st.push(mk)
+            }
+            else if(mk.bet.toLowerCase().includes('team: 1 -')) {
+                mikekaHome.push(mk)
+            }
+        }
+
+        for (let m of mikeka) {
+            megaOdds = (megaOdds * m.odds).toFixed(2)
+        }
         for (let m of mikeka1st) {
             odds1st = (odds1st * m.odds).toFixed(2)
         }
         for (let m of mikekaHome) {
             oddsHome = (oddsHome * m.odds).toFixed(2)
         }
-        res.render('1-home/home', { mikeka1st, mikekaHome, odds1st, oddsHome })
+        res.render('1-home/home', { mikeka1st, mikekaHome, odds1st, oddsHome, megaOdds, mikeka })
     } catch (err) {
         console.log(err)
         console.log(err.message)

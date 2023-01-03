@@ -56,9 +56,9 @@
 </head>
 
 <body>
-    <form action="/multi-1st" method="post" target="_blank">
+    <form action="/post" method="post" target="_blank">
         <div class="cont" style="margin-bottom: 24px;">
-            <h2 style="text-align: center;">1st Half Multigoals</h2>
+            <h2 style="text-align: center;">Accumulator</h2>
             <div class="gr1 gr">
                 <input type="date" name="date" required>
                 <input type="time" name="time" required>
@@ -68,28 +68,14 @@
                     <option value="0">*select bet option</option>
                     <option value="1st Half Multigoals: 1 - 2">1st Half Multigoals: 1 - 2</option>
                     <option value="1st Half Multigoals: 1 - 3">1st Half Multigoals: 1 - 3</option>
-                </select>
-                <input type="text" placeholder="Secret word" name="secret" required>
-            </div>
-            <div class="submit">
-                <button type="submit">SUBMIT BET</button>
-                <button id="reset" type="reset">RESET</button>
-            </div>
-        </div>
-    </form>
-
-    <form action="/multi-home" method="post" target="_blank">
-        <div class="cont">
-            <h2 style="text-align: center;">Multigoals Hometeam</h2>
-            <div class="gr1 gr">
-                <input type="date" name="date" required>
-                <input type="time" name="time" required>
-                <input type="text" placeholder="Match" name="match" required>
-                <input type="number" placeholder="Odds" name="odds" required step="any">
-                <select name="bet" id="bet" required>
-                    <option value="0">*select bet option</option>
+                    <option value="Both Halves Under 1.5: No">Both Halves Under 1.5: NO</option>
+                    <option value="First 10 minutes: Draw 'X'">First 10 Minutes: Draw</option>
+                    <option value="FT DC 12 & Over 1.5">FT DC 12 & Over 1.5</option>
                     <option value="Multigoals Hometeam: 1 - 2">Multigoals Hometeam: 1 - 2</option>
                     <option value="Multigoals Hometeam: 1 - 3">Multigoals Hometeam: 1 - 3</option>
+                    <option value="Multigoals Awayteam: 1 - 2">Multigoals Awayteam: 1 - 2</option>
+                    <option value="Multigoals Awayteam: 1 - 3">Multigoals Awayteam: 1 - 3</option>
+                    <option value="Total Goal Rangess: 2 - 4">Total Goal Ranges: 2 - 4</option>
                 </select>
                 <input type="text" placeholder="Secret word" name="secret" required>
             </div>

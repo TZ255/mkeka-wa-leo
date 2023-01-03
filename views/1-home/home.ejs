@@ -24,6 +24,62 @@
                 <p class="p">Pata mikeka yenye asilimia kubwa ya ushindi hapa kila siku. Mikeka yetu imeandaliwa kwa
                     umakini na
                     uchambuzi mkubwa kukuhakikishia unasimama katika nafasi kubwa ya ushindi.</p>
+
+                    <div class="cont" itemscope>
+                        <h2 class="header">
+                            Accumulator of the Day 🔥
+                        </h2>
+                        <% mikeka.forEach(el=> { %>
+                            <div class="sect">
+                                <div class="time">
+                                    <span>
+                                        <%= el.time %>
+                                    </span>
+                                    <span>
+                                        <%= el.date %>
+                                    </span>
+                                </div>
+                                <div class="game">
+                                    <div class="tip">
+                                        <%= el.bet %>
+                                    </div>
+                                    <div class="match">
+                                        <%= el.match %>
+                                    </div>
+                                </div>
+                                <div class="odds">
+                                    <span>
+                                        <%= el.odds %>
+                                    </span>
+    
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                    <div class="total">
+                        <div class="subtotal">
+                            <div class="btm w40">
+                                <span class="hdr">Bookie</span>
+                                <span class="ct">Gal Sport Betting</span>
+                            </div>
+                            <div class="btm w25">
+                                <span class="hdr">Total Odds</span>
+                                <span class="ct">
+                                    <%= megaOdds %>
+                                </span>
+                            </div>
+                            <div class="btm w25">
+                                <span class="hdr">Bonus</span>
+                                <span class="ct">100%</span>
+                            </div>
+                        </div>
+                        <div class="sasa">
+                            <button onclick="window.open('/gsb/register')">BET SASA</button>
+                        </div>
+                    </div>
+
+                <!-- 1sthalf tips -->
+                <br><br><br>
                 <div class="cont" itemscope>
                     <h2 class="header">
                         1st Half Multigoals Tips

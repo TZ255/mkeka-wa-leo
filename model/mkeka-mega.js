@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const mult1stSchema = new Schema({
+const megaSchema = new Schema({
     match: {type: String},
     odds: {type: Number},
     time: {type: String},
@@ -10,5 +10,5 @@ const mult1stSchema = new Schema({
     status: {type: String, default: 'Pending'},
 }, {strict: false, timestamps: true})
 
-const model = mongoose.model('1st Half Multigoals', mult1stSchema)
+const model = mongoose.model('Accumulator', megaSchema)
 module.exports = model
