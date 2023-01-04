@@ -27,6 +27,25 @@ router.get('/', async (req, res) => {
 
 })
 
+router.get('/kesho', async (req, res) => {
+    try {
+        let d = new Date()
+        d.setDate(d.getDate() + 1)
+        let ksh = d.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        let mikeka = await mkekadb.find({date: ksh})
+        let megaOdds = 1
+
+        for (let m of mikeka) {
+            megaOdds = (megaOdds * m.odds).toFixed(2)
+        }
+        res.render('1-home/home', { megaOdds, mikeka })
+    } catch (err) {
+        console.log(err)
+        console.log(err.message)
+    }
+
+})
+
 router.get('/gsb/register', (req, res)=> {
     res.redirect('https://track.africabetpartners.com/visit/?bta=35468&nci=5377')
 })
