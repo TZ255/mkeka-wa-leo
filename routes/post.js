@@ -20,4 +20,16 @@ router.post('/post', async (req, res) => {
 
 })
 
+router.post('/delete/:id', async (req, res)=> {
+    let _id = req.params.id
+    let sec = req.body.secret
+
+    if(sec == '5654') {
+        await mikekaDb.findByIdAndDelete(_id)
+        res.redirect('/admin/posting')
+    } else {
+        res.send('Not found')
+    }
+})
+
 module.exports = router

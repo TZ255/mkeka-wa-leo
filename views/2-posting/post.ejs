@@ -52,6 +52,44 @@
         .submit #reset {
             background-color: gray;
         }
+
+        .mikeka {
+            padding: 24px;
+            background-color: aliceblue;
+        }
+
+        .mikeka .match {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px black solid;
+            border-right: 2px black solid;
+            border-left: 2px black solid;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 12px auto;
+        }
+
+        .mikeka .match div {
+            width: 20%;
+        }
+
+        .mikeka .match .mtc {
+            width: 40%;
+        }
+
+        .mikeka .match .mtc span {
+            display: block;
+        }
+
+        .mikeka .match .mtc .bt {
+            color: gray;
+        }
+
+        .mikeka .delete button {
+            background-color: red;
+            padding: 6px;
+            border: none;
+        }
     </style>
 </head>
 
@@ -85,6 +123,31 @@
             </div>
         </div>
     </form>
+    <br><br><br>
+
+    <div class="mikeka">
+        <% for( let mk of mikeka ) { %>
+            <div class="match">
+                <div class="dt">
+                    <%= mk.date %>
+                </div>
+                <div class="mtc">
+                    <span class="gm">
+                        <%= mk.match %>
+                    </span>
+                    <span class="bt">
+                        <%= mk.bet %>
+                    </span>
+                </div>
+                <div class="delete" style=" width: 30;">
+                    <form action="/delete/<%= mk._id %>" method="post" style="display: flex; justify-content: space-between;">
+                        <input type="text" name="secret" placeholder="secret" required style="display: block;">
+                        <button type="submit" style="display: flex;">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+    </div>
 
 </body>
 
