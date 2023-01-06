@@ -55,7 +55,7 @@ router.get('/10bet/register', (req, res)=> {
 })
 
 router.get('/contact/telegram', (req, res)=> {
-    res.redirect('https://cute_helen255.t.me')
+    res.redirect('https://t.me/cute_helen255')
 })
 
 router.get('/admin/posting', async (req, res)=> {

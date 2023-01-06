@@ -152,6 +152,28 @@
 
     footer h3 {
         font-size: 20px;
+        margin-top: 10px;
+    }
+
+    footer .h4 {
+        color: gray;
+        margin-top: 12px;
+        margin-bottom: 0;
+        font-size: 18px;
+        margin-left: -24px;
+    }
+
+    footer #tg {
+        border: none;
+        color: brown;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: white;
+    }
+
+    footer #tg:active,
+    footer #tg:hover {
+        color: dodgerblue;
     }
 
     #toAds {
@@ -173,33 +195,44 @@
 
     @media (max-width: 420px) {
         header {
-        box-shadow: 0 12px 12px gray;
-        padding-bottom: 8px;
-        margin-bottom: 32px;
-    }
+            box-shadow: 0 12px 12px gray;
+            padding-bottom: 8px;
+            margin-bottom: 32px;
+        }
 
-    .navbar .brand {
-        font-size: 30px;
-        font-family: 'Silkscreen', sans-serif;
-        font-weight: bold;
-        border-bottom: 5px brown solid;
-        border-top-left-radius: 12px;
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 1px;
-        border-top-right-radius: 12px;
-        padding: 8px 16px;
-        background-color: whitesmoke;
-    }
+        .navbar .brand {
+            font-size: 30px;
+            font-family: 'Silkscreen', sans-serif;
+            font-weight: bold;
+            border-bottom: 5px brown solid;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 1px;
+            border-top-right-radius: 12px;
+            padding: 8px 16px;
+            background-color: whitesmoke;
+        }
 
-    .navbar .nav-item .nav-link {
-        font-size: medium;
-        font-weight: bold;
-        border: 1px brown solid;
-        border-radius: 2px;
-        padding: 8px;
-        display: block;
-        margin: 6px;
-    }
+        .navbar .nav-item .nav-link {
+            font-size: medium;
+            font-weight: bold;
+            border: 1px brown solid;
+            border-radius: 2px;
+            padding: 8px;
+            display: block;
+            margin: 6px;
+        }
+
+        footer h3 {
+            font-size: 18px;
+            margin-top: 12px;
+            border-right: 2px solid gray;
+        }
+
+        footer h4.rights {
+            font-size: 12px;
+            border-right: 2px solid gray;
+        }
     }
 
     @media (max-width: 800px) {
