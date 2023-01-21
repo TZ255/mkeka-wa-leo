@@ -47,7 +47,7 @@ router.get('/kesho', async (req, res) => {
 })
 
 router.get('/gsb/register', (req, res)=> {
-    res.redirect('https://track.africabetpartners.com/visit/?bta=35468&nci=5377')
+    res.redirect('https://track.africabetpartners.com/visit/?bta=35468&nci=5439')
 })
 
 router.get('/10bet/register', (req, res)=> {
