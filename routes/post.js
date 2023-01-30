@@ -2,12 +2,15 @@ const router = require('express').Router()
 const mikekaDb = require('../model/mkeka-mega')
 
 router.post('/post', async (req, res) => {
-    let match = req.body.match
+    let lmatch = req.body.match
     let odds = req.body.odds
-    let time = req.body.time
+    let time = lmatch.substring(0, 5).trim()
+    let match = lmatch.split(time).trim()
     let date = req.body.date
     let bet = req.body.bet
     let secret = req.body.secret
+
+    
 
     let d = new Date(date).toLocaleDateString('en-GB')
 
