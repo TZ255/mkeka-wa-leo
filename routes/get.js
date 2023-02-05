@@ -59,7 +59,7 @@ router.get('/contact/telegram', (req, res)=> {
 })
 
 router.get('/admin/posting', async (req, res)=> {
-    let mikeka = await mkekadb.find().sort('-date').limit(50)
+    let mikeka = await mkekadb.find().sort('-createdAt').limit(50)
     res.render('2-posting/post', {mikeka})
 })
 
