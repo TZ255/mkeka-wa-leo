@@ -4,10 +4,20 @@ const mikekaDb = require('../model/mkeka-mega')
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
     let odds = req.body.odds
+
+    //Flashscore.mobi timezone is +1
     let time = lmatch.substring(0, 5).trim()
+    let time_data = time.split(':')
+    let left_side = Number(time_data[0]) + 2
+    let right_side = time_data[1]
+
+    //original time is used here
     let match = lmatch.split(time)[1].trim()
     let date = req.body.date
     let bet = req.body.bet
+
+    //modify time here
+    time = `${left_side}:${right_side}`
     let secret = req.body.secret
 
     
