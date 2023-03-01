@@ -50,6 +50,10 @@ router.get('/gsb/register', (req, res)=> {
     res.redirect('https://track.africabetpartners.com/visit/?bta=35468&nci=5439')
 })
 
+router.get('/pmatch/register', (req, res)=> {
+    res.redirect('https://pmaff.com/?serial=61288670&creative_id=324')
+})
+
 router.get('/10bet/register', (req, res)=> {
     res.redirect('https://go.aff.10betafrica.com/ys6tiwg4')
 })
