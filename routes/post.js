@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const mikekaDb = require('../model/mkeka-mega')
+const fb_mikeka = require('../model/pm-mikeka')
 
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
@@ -26,6 +27,24 @@ router.post('/post', async (req, res) => {
 
     if (secret == '5654') {
         let mk = await mikekaDb.create({match, odds, time, bet, date: d})
+        res.send(mk)
+    } else {
+        res.send(`You're not Authorized`)
+    }
+
+})
+
+router.post('/post-fb', async (req, res) => {
+    let date = req.body.siku
+    let maelezo = req.body.maelezo
+    let image = req.body.image
+    let secret = req.body.secret
+
+
+    let siku = new Date(date).toLocaleDateString('en-GB')
+
+    if (secret == '5654') {
+        let mk = await fb_mikeka.create({siku, image, maelezo})
         res.send(mk)
     } else {
         res.send(`You're not Authorized`)
