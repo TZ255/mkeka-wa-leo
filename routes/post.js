@@ -6,10 +6,10 @@ router.post('/post', async (req, res) => {
     let lmatch = req.body.match
     let odds = req.body.odds
 
-    //Flashscore.mobi timezone is +1
+    //Flashscore.mobi timezone is +2
     let time = lmatch.substring(0, 5).trim()
     let time_data = time.split(':')
-    let left_side = Number(time_data[0]) + 2
+    let left_side = Number(time_data[0]) + 1
     let right_side = time_data[1]
 
     //original time is used here
