@@ -100,7 +100,6 @@
             <div class="gr1 gr">
                 <input type="date" name="date" required>
                 <input type="text" placeholder="Match" name="match" required>
-                <input type="number" placeholder="Odds" name="odds" required step="any">
                 <select name="bet" id="bet" required>
                     <option value="0">*select bet option</option>
                     <option value="Total. 1st half: Over 0.5">Total. 1st half: Over 0.5</option>
@@ -111,9 +110,11 @@
                     <option value="Over 1.5">Over 1.5</option>
                     <option value="Over 2.5">Over 2.5</option>
                     <option value="Under 3.5">Under 3.5</option>
+                    <option value="Home total: Over 1.5">Home total: Over 1.5</option>
                     <option value="Both teams to score - YES">GG - Yes</option>
                     <option value="1st half. both to score - NO">1st half GG - NO</option>
                 </select>
+                <input type="number" placeholder="Odds" name="odds" required step="any">
                 <input type="text" placeholder="Secret word" name="secret" required>
             </div>
             <div class="submit">
