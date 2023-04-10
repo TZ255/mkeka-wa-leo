@@ -36,15 +36,15 @@
                             <tr>
                                 <th scope="col">Time</th>
                                 <th scope="col">Matches</th>
-                                <th scope="col">Tip</th>
+                                <th scope="col">Tips</th>
                                 <th scope="col">Results</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% stips.forEach(el=> { %>
                                 <tr>
-                                    <th><%- el.time %></th>
-                                    <td><%- el.match %></td>
+                                    <td><%- el.time %></td>
+                                    <td><%- el.match.replace(/ - /g, '<br>') %></td>
                                     <td><%- el.tip %></td>
                                     <td><%- el.matokeo %></td>
                                 </tr>
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-
+                <br>
                 <div class="cont" itemscope>
                     <h2 class="header">
                         🔥 Mega Odds za Leo 🔥
