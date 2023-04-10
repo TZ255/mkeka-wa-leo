@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const mkekadb = require('../model/mkeka-mega')
+const supatips = require('../model/supatips')
 
 //times
 const TimeAgo = require('javascript-time-ago')
@@ -12,14 +13,19 @@ router.get('/favicon.ico', (req, res) => res.status(204).end());
 
 router.get('/', async (req, res) => {
     try {
-        let d = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        //every 02 oclock
+        let nd = new Date()
+        nd.setHours(nd.getHours() - 2)
+        let d = nd.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let mikeka = await mkekadb.find({date: d})
         let megaOdds = 1
 
         for (let m of mikeka) {
             megaOdds = (megaOdds * m.odds).toFixed(2)
         }
-        res.render('1-home/home', { megaOdds, mikeka })
+
+        let stips = await supatips.find({siku: d})
+        res.render('1-home/home', { megaOdds, mikeka, stips })
     } catch (err) {
         console.log(err)
         console.log(err.message)

@@ -21,65 +21,103 @@
         <main>
             <section class="left">
                 <h1 class="h2" style="font-size: 16px;">Mikeka ya Leo</h1>
-                <p class="p">Pata mikeka yenye asilimia kubwa ya ushindi hapa kila siku. Mikeka yetu imeandaliwa kwa
+                <p class="p">
+                    Pata mikeka yenye asilimia kubwa ya ushindi hapa kila siku. Mikeka yetu imeandaliwa kwa
                     umakini na
-                    uchambuzi mkubwa kukuhakikishia unasimama katika nafasi kubwa ya ushindi.</p>
+                    uchambuzi mkubwa kukuhakikishia unasimama katika nafasi kubwa ya ushindi.
+                </p>
 
-                    <div class="cont" itemscope>
-                        <h2 class="header">
-                            🔥 Hizi Hapa Odds za Leo 💯
-                        </h2>
-                        <% mikeka.forEach(el=> { %>
-                            <div class="sect">
-                                <div class="time">
-                                    <span>
-                                        <%= el.time %>
-                                    </span>
-                                    <span>
-                                        <%= el.date %>
-                                    </span>
-                                </div>
-                                <div class="game">
-                                    <div class="match">
-                                        <%= el.match %>
-                                    </div>
-                                    <div class="tip">
-                                        <%= el.bet %>
-                                    </div>
-                                </div>
-                                <div class="odds">
-                                    <span>
-                                        <%= el.odds %>
-                                    </span>
-    
-                                </div>
-                            </div>
-                            <% }) %>
+                <div class="tble-cont">
+                    <div class="table-head">
+                        ⭐⭐⭐ Supa Tips za Leo ⭐⭐⭐
                     </div>
-                    <div class="total">
-                        <div class="subtotal">
-                            <div class="btm w40">
-                                <span class="hdr">Bookie</span>
-                                <span class="ct">Parimatch</span>
-                            </div>
-                            <div class="btm w25">
-                                <span class="hdr">Total Odds</span>
-                                <span class="ct">
-                                    <%= megaOdds %>
+                    <table class="table table-dark table-striped-columns">
+                        <thead>
+                            <tr>
+                                <th scope="col">Time</th>
+                                <th scope="col">League</th>
+                                <th scope="col">Matches</th>
+                                <th scope="col">Tip</th>
+                                <th scope="col">Results</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% stips.forEach(el=> { %>
+                                <tr>
+                                    <th><%- el.time %></th>
+                                    <td><%- el.league %></td>
+                                    <td><%- el.match %></td>
+                                    <td><%- el.tip %></td>
+                                    <td><%- el.matokeo %></td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                    <div class="aff">
+                        <h4>* bonus ya ukaribisho (150%) ✔</h4>
+                        <h4>* cash-out available ✔</h4>
+                        <div class="sasa">
+                            <button onclick="window.open('/pmatch/register')">🏐 JISAJILI PARIMATCH SASA!</button>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cont" itemscope>
+                    <h2 class="header">
+                        🔥 Mega Odds za Leo 🔥
+                    </h2>
+                    <% mikeka.forEach(el=> { %>
+                        <div class="sect">
+                            <div class="time">
+                                <span>
+                                    <%= el.time %>
+                                </span>
+                                <span>
+                                    <%= el.date %>
                                 </span>
                             </div>
-                            <div class="btm w25">
-                                <span class="hdr">Bonus</span>
-                                <span class="ct">150%</span>
+                            <div class="game">
+                                <div class="match">
+                                    <%= el.match %>
+                                </div>
+                                <div class="tip">
+                                    <%= el.bet %>
+                                </div>
+                            </div>
+                            <div class="odds">
+                                <span>
+                                    <%= el.odds %>
+                                </span>
+
                             </div>
                         </div>
-                        <div class="tangazo">
-                            * bonus ya ukaribisho (150%) hadi Tsh. 3,500,000/=
+                        <% }) %>
+                </div>
+                <div class="total">
+                    <div class="subtotal">
+                        <div class="btm w40">
+                            <span class="hdr">Bookie</span>
+                            <span class="ct">Parimatch</span>
                         </div>
-                        <div class="sasa">
-                            <button onclick="window.open('/pmatch/register')">🎁 PATA BONUS HII SASA!</button>
+                        <div class="btm w25">
+                            <span class="hdr">Total Odds</span>
+                            <span class="ct">
+                                <%= megaOdds %>
+                            </span>
+                        </div>
+                        <div class="btm w25">
+                            <span class="hdr">Bonus</span>
+                            <span class="ct">150%</span>
                         </div>
                     </div>
+                    <div class="tangazo">
+                        * bonus ya ukaribisho (150%) hadi Tsh. 3,500,000/=
+                    </div>
+                    <div class="sasa">
+                        <button onclick="window.open('/pmatch/register')">🎁 PATA BONUS HII SASA!</button>
+                    </div>
+                </div>
 
                 <div class="maana">
                     <div class="maana1st">
@@ -121,12 +159,14 @@
                             </li>
                             <li>
                                 <b class="brown">Hometeam Multigoals: 1 - 3:</b>
-                                Hapa tunatabiri team ya nyumbani kupata goli moja, mawili ama matatu. Team ya nyumbani ikizidisha
+                                Hapa tunatabiri team ya nyumbani kupata goli moja, mawili ama matatu. Team ya nyumbani
+                                ikizidisha
                                 zaidi ya magoli matatu tumepoteza.
                             </li>
                             <li>
                                 <b class="brown">Awayteam Multigoals: 1 - 3:</b>
-                                Hapa tunatabiri team ya ugenini kupata goli moja, mawili ama matatu. Team ya ugenini ikizidisha
+                                Hapa tunatabiri team ya ugenini kupata goli moja, mawili ama matatu. Team ya ugenini
+                                ikizidisha
                                 zaidi ya magoli matatu tumepoteza.
                             </li>
                         </ul>
@@ -141,11 +181,14 @@
                         <ul>
                             <li>
                                 <b class="brown">Total Goal Rangess: 2 - 4:</b>
-                                Hapa tunatabiri jumla ya magoli yote kwenye match yachezee kwenye range ya mawili hadi manne, mfano: <b>1:1, 2:0, 2:1, 2:2, 3:0, 3:1, 0:2, 1:2, 0:3, 1:3, 0:4</b>. Jumla ya magoli yakizidi manne tumepoteza.
+                                Hapa tunatabiri jumla ya magoli yote kwenye match yachezee kwenye range ya mawili hadi
+                                manne, mfano: <b>1:1, 2:0, 2:1, 2:2, 3:0, 3:1, 0:2, 1:2, 0:3, 1:3, 0:4</b>. Jumla ya
+                                magoli yakizidi manne tumepoteza.
                             </li>
                             <li>
                                 <b class="brown">Total Goal Rangess: 2 - 5:</b>
-                                Hapa tunatabiri jumla ya magoli yote kwenye match yachezee kwenye range ya mawili hadi matano. Jumla ya magoli yakizidi matano tumepoteza.
+                                Hapa tunatabiri jumla ya magoli yote kwenye match yachezee kwenye range ya mawili hadi
+                                matano. Jumla ya magoli yakizidi matano tumepoteza.
                             </li>
                         </ul>
                     </div>
@@ -153,16 +196,19 @@
                     <div class="maanaSentOff">
                         <h1 class="h2" id="maana" style="font-size: 16px;">Maana ya Player Sent off?</h1>
                         <p class="p">
-                            <b>Player sent off?</b> Hii ni bet ya kuchagua iwapo kwenye mchezo mzima itatokea mchezaji kutolewa nje kwa red card ama la!.
+                            <b>Player sent off?</b> Hii ni bet ya kuchagua iwapo kwenye mchezo mzima itatokea mchezaji
+                            kutolewa nje kwa red card ama la!.
                         </p>
                         <ul>
                             <li>
                                 <b class="brown">Player sent-off? - No:</b>
-                                Hapa tunatabiri kuwa hakutakuwa na mchezaji atakae tolewa nje kwa red card. "No" ni rahisi kushinda na odds zake ziko chini kidogo. 
+                                Hapa tunatabiri kuwa hakutakuwa na mchezaji atakae tolewa nje kwa red card. "No" ni
+                                rahisi kushinda na odds zake ziko chini kidogo.
                             </li>
                             <li>
                                 <b class="brown">Player sent-off - Yes:</b>
-                                Hapa unakubali kuwa kwenye mchezo mzima kutakuwa na red card. "Yes" ni ngumu na ina odds kubwa sana.
+                                Hapa unakubali kuwa kwenye mchezo mzima kutakuwa na red card. "Yes" ni ngumu na ina odds
+                                kubwa sana.
                             </li>
                         </ul>
                     </div>

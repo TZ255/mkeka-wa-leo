@@ -2,35 +2,85 @@
     .left .p {
         padding: 12px;
     }
+
+    .left .tble-cont {
+        padding: 12px 6px;
+    }
+
+    .left .tble-cont .table-head {
+        padding:12px 8px;
+        font-weight: bold;
+        font-size: 17px;
+        color: white;
+        background-color: black;
+        text-align: center;
+        margin-bottom: 2px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    .left .tble-cont .aff {
+        background-color: #212529;
+        color: white;
+        margin-top: -14px;
+        padding: 12px;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .left .tble-cont .aff h4 {
+        font-size: small;
+        margin-bottom: 1px;
+    }
+
+    .left .tble-cont .aff .sasa {
+        text-align: center;
+        margin: 8px auto;
+    }
+
+    .left .tble-cont .aff .sasa button {
+        border: none;
+        background-color: green;
+        color: white;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    .left .tble-cont .aff .sasa button:active,
+    .left .tble-cont .aff .sasa button:hover {
+        background-color: white;
+        color: black;
+    }
+
     .left .cont {
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        background-color: aliceblue;
+        background-color: white;
         width: 98%;
         flex-direction: column;
         margin: 12px auto 4px auto;
-        border-left: brown solid 2px;
-        border-right: brown solid 2px;
+        border-left: black solid 2px;
+        border-right: black solid 2px;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
     }
 
     .cont .header {
-        background-color: brown;
+        background-color: black;
         color: white;
         font-weight: bold;
-        font-size: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: start;
+        font-size: 17px;
         padding: 12px;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
+        text-align: center;
     }
 
     .cont .sect {
-        border-bottom: 2px brown solid;
+        border-bottom: 2px black solid;
         padding: 16px;
         width: 98%;
         margin: auto;
@@ -81,21 +131,21 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
-        border-left: 2px solid brown;
-        border-right: 2px solid brown;
+        border-left: 2px solid black;
+        border-right: 2px solid black;
     }
 
     .total {
         width: 98%;
         margin: 0 auto 12px auto;
-        background-color: aliceblue;
+        background-color: white;
         display: flex;
         flex-direction: column;
         padding: 16px;
-        border-left: brown solid 2px;
-        border-right: brown solid 2px;
+        border-left: black solid 2px;
+        border-right: black solid 2px;
         border-radius: 10px;
-        border-bottom: brown solid 2px;
+        border-bottom: black solid 2px;
     }
 
     .subtotal {
@@ -158,8 +208,8 @@
 
     .total .sasa button:active,
     .total .sasa button:hover {
-        background-color: white;
-        color: brown;
+        background-color: brown;
+        color: white;
     }
 
     .left .maana {
