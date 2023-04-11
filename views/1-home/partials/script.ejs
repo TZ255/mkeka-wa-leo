@@ -51,6 +51,47 @@
         }
 
         lday_cont.classList.add('ficha')
-        yday_cont.classList.add('ficha') 
+        yday_cont.classList.add('ficha')
     })
+
+    function sikuKesho() {
+        let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
+        let siku_kesho = document.getElementById('siku_kesho')
+
+        //add one day to show tomorrow
+        switch (d) {
+            case 'Monday':
+                siku_kesho.innerText = 'Jumanne'
+                break;
+
+            case 'Tuesday':
+                siku_kesho.innerText = 'Jumatano'
+                break;
+
+            case 'Wednesday':
+                siku_kesho.innerText = 'Alhamis'
+                break;
+
+            case 'Thursday':
+                siku_kesho.innerText = 'Ijumaa'
+                break;
+
+            case 'Friday':
+                siku_kesho.innerText = 'Jumamosi'
+                break;
+
+            case 'Saturday':
+                siku_kesho.innerText = 'Jumapili'
+                break;
+
+            case 'Sunday':
+                siku_kesho.innerText = 'Jumatatu'
+                break;
+
+            default:
+                siku_kesho.innerText = '😩'
+                break;
+        }
+    }
+    sikuKesho()
 </script>
