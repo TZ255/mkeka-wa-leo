@@ -1,0 +1,56 @@
+<script>
+    let yday_cont = document.getElementById('yday')
+    let lday_cont = document.getElementById('lday')
+    let kday_cont = document.getElementById('kday')
+
+    let ytoggle = document.getElementById('ytoggle')
+    let ltoggle = document.getElementById('ltoggle')
+    let ktoggle = document.getElementById('ktoggle')
+
+    const zakesho_txt = document.getElementById('zakesho')
+
+    ytoggle.addEventListener('click', () => {
+        ytoggle.classList.add('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+
+        yday_cont.classList.remove('ficha')
+        lday_cont.classList.add('ficha')
+        kday_cont.classList.add('ficha')
+
+        zakesho_txt.style.display = 'none'
+    })
+
+    ltoggle.addEventListener('click', () => {
+        ltoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+
+        lday_cont.classList.remove('ficha')
+        yday_cont.classList.add('ficha')
+        kday_cont.classList.add('ficha')
+
+        zakesho_txt.style.display = 'none'
+    })
+
+    ktoggle.addEventListener('click', () => {
+        ktoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+
+        //stringfy ejs obj then parse back to obj
+        const ktips = JSON.parse('<%- JSON.stringify(ktips) %>')
+
+        //kesho kama hamna onyesha hamna na ficha kesho cont
+        if (ktips.length == 0) {
+            zakesho_txt.style.display = 'block'
+            kday_cont.classList.add('ficha')
+        } else {
+            kday_cont.classList.remove('ficha')
+            zakesho_txt.style.display = 'none'
+        }
+
+        lday_cont.classList.add('ficha')
+        yday_cont.classList.add('ficha')
+    })
+</script>

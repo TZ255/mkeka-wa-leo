@@ -24,8 +24,24 @@ router.get('/', async (req, res) => {
             megaOdds = (megaOdds * m.odds).toFixed(2)
         }
 
+        //supatip ya leo
         let stips = await supatips.find({siku: d})
-        res.render('1-home/home', { megaOdds, mikeka, stips })
+
+        //supatip ya jana
+        let _nd = new Date()
+        _nd.setHours(_nd.getHours() - 2)
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        let ytips = await supatips.find({siku: _d})
+
+        //supatip ya kesho
+        let new_d = new Date()
+        new_d.setHours(new_d.getHours() - 2)
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        let ktips = await supatips.find({siku: kesho})
+
+        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips })
     } catch (err) {
         console.log(err)
         console.log(err.message)

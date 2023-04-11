@@ -1,0 +1,122 @@
+<div class="toggle-cont">
+    <div class="toggles">
+        <div class="ytoggle" id="ytoggle">«« Jana</div>
+        <div class="ltoggle active_toggle" id="ltoggle">⁕⁕ Leo ⁕⁕</div>
+        <div class="ktoggle" id="ktoggle">Kesho »»</div>
+    </div>
+</div>
+
+<div class="zakesho" id="zakesho" style="display: none; text-align: center; color:brown ;">
+    <br>
+    * Supa Tips za Kesho bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
+</div>
+
+<!-- yesterday -->
+<div class="tble-cont ficha" id="yday">
+    <div class="table-head">
+        ⭐⭐⭐ Supa Tips za Jana ⭐⭐⭐
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Matches</th>
+                <th scope="col">Tips</th>
+                <th scope="col">Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% ytips.forEach(el=> { %>
+                <tr>
+                    <td><%- el.time %></td>
+                    <td><%- el.match.replace(/ - /g, '<br>') %></td>
+                    <th style="color: gold;"><%- el.tip %></th>
+                    <td><%- el.matokeo %></td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+    <div class="aff">
+        <h4><u>Parimatch</u></h4>
+        <h4>* bonus ya ukaribisho (150%) ✔</h4>
+        <h4>* cash-out available ✔</h4>
+        <div class="sasa">
+            <button onclick="window.open('/pmatch/register')">🏐 BONYEZA HAPA KUJISAJILI</button>
+            <br>
+        </div>
+    </div>
+</div>
+
+
+<!-- today -->
+<div class="tble-cont" id="lday">
+    <div class="table-head">
+        ⭐⭐⭐ Supa Tips za Leo ⭐⭐⭐
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Matches</th>
+                <th scope="col">Tips</th>
+                <th scope="col">Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% stips.forEach(el=> { %>
+                <tr>
+                    <td><%- el.time %></td>
+                    <td><%- el.match.replace(/ - /g, '<br>') %></td>
+                    <th style="color: gold;"><%- el.tip %></th>
+                    <td><%- el.matokeo %></td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+    <div class="aff">
+        <h4><u>Parimatch</u></h4>
+        <h4>* bonus ya ukaribisho (150%) ✔</h4>
+        <h4>* cash-out available ✔</h4>
+        <div class="sasa">
+            <button onclick="window.open('/pmatch/register')">🏐 BONYEZA HAPA KUJISAJILI</button>
+            <br>
+        </div>
+    </div>
+</div>
+
+
+<!-- tomorrow -->
+<div class="tble-cont ficha" id="kday">
+    <div class="table-head">
+        ⭐⭐⭐ Supa Tips za Kesho ⭐⭐⭐
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Matches</th>
+                <th scope="col">Tips</th>
+                <th scope="col">Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% ktips.forEach(el=> { %>
+                <tr>
+                    <td><%- el.time %></td>
+                    <td><%- el.match.replace(/ - /g, '<br>') %></td>
+                    <th style="color: gold;"><%- el.tip %></th>
+                    <td><%- el.matokeo %></td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+    <div class="aff">
+        <h4><u>Parimatch</u></h4>
+        <h4>* bonus ya ukaribisho (150%) ✔</h4>
+        <h4>* cash-out available ✔</h4>
+        <div class="sasa">
+            <button onclick="window.open('/pmatch/register')">🏐 BONYEZA HAPA KUJISAJILI</button>
+            <br>
+        </div>
+    </div>
+</div>
