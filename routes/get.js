@@ -13,9 +13,7 @@ router.get('/favicon.ico', (req, res) => res.status(204).end());
 
 router.get('/', async (req, res) => {
     try {
-        //every 02 oclock
         let nd = new Date()
-        nd.setHours(nd.getHours() - 2)
         let d = nd.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let mikeka = await mkekadb.find({date: d})
         let megaOdds = 1
@@ -29,14 +27,12 @@ router.get('/', async (req, res) => {
 
         //supatip ya jana
         let _nd = new Date()
-        _nd.setHours(_nd.getHours() - 2)
         _nd.setDate(_nd.getDate() - 1)
         let _d = _nd.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let ytips = await supatips.find({siku: _d})
 
         //supatip ya kesho
         let new_d = new Date()
-        new_d.setHours(new_d.getHours() - 2)
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let ktips = await supatips.find({siku: kesho})
