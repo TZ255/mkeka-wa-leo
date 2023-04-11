@@ -1,7 +1,38 @@
 <header>
-    <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand brand" href="/">MKEKA wa LEO</a>
-        </div>
-      </nav>
+  <nav class="navbar navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+          MKEKA wa LEO
+          <span>Tanzania football predictions & tips</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <b class="navbold"><a href="/#supa-za-leo">🏐 SupaTips za Leo</a></b> <br>
+            <b class="navbold"><a href="/#mega-za-leo">🏐 Mega Odds za Leo</a></b> <br>
+            <b class="navbold" onclick="opening('pmatch')">🏐 Ofa (150%) Parimatch</b> <br>
+            <b class="navbold" onclick="opening('gsb')">🏐 Ofa (100%) Gal Sport Betting</b> <br>
+            <b class="navbold" onclick="(opening('10bet'))">🏐 Ofa (100% x 3) 10Bet</b>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    function opening(e) {
+      if(e == 'pmatch') {
+        window.open('/pmatch/register')
+      }
+      else if(e == 'gsb') {
+        window.open('/gsb/register')
+      }
+      else if (e == '10bet') {
+        window.open('/10bet/register')
+      }
+    }
+  </script>
 </header>

@@ -1,5 +1,6 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Acme&family=Caveat&family=Hurricane&family=Palette+Mosaic&family=Smokum&display=swap');
 
     *,
     *::before,
@@ -15,44 +16,60 @@
 
     header {
         box-shadow: 0 12px 12px gray;
-        padding-bottom: 8px;
         margin-bottom: 48px;
     }
 
-    .navbar .brand {
-        font-size: 32px;
-        font-family: 'Silkscreen', sans-serif;
-        font-weight: bold;
-        border-bottom: 5px brown solid;
-        border-left: 5px brown solid;
-        border-radius: 12px;
-        padding: 8px 16px;
-        background-color: whitesmoke;
+    .navbar {
+        background-color: black;
+        color: white;
+        padding-bottom: 24px !important;
     }
 
-    .navbar .nav-item .nav-link {
+    .navbar a {
+        text-decoration: none;
+        color: white;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
         font-size: large;
-        font-weight: bold;
-        border: 1px brown solid;
-        border-radius: 2px;
-        padding: 8px;
+        font-family: 'Palette Mosaic', cursive;
+        border-radius: 4px;
+        padding: 12px;
+        border-radius: 14px;
+        border: solid lightgray 1px;
+    }
+
+    .navbar-brand span {
+        font-size: small;
         display: block;
-        margin: 6px;
+        font-family: 'Caveat', cursive;
     }
 
-    .navbar .nav-item .nav-link:hover,
-    .navbar .nav-item .nav-link:active {
-        border: none;
+    .navbar ul {
+        margin-top: 16px;
     }
 
-    .navbar .active {
-        border: none !important;
+    .navbar .nav-item {
+        font-weight: bold;
+        padding-left: 12px;
+        color: white;
+        display: block;
+        margin-top: 8px;
+        cursor: pointer;
     }
 
-    header .h-title {
-        text-align: center;
-        margin: 48px auto;
-        color: gray;
+    .navbar .nav-item b {
+        display: block;
+        margin-bottom: -4px;
+    }
+
+    .navbar .nav-item b a:hover {
+        color: white;
+    }
+
+    .navbar .navbar-toggler {
+        border: 1px lightgray solid;
     }
 
     main {
