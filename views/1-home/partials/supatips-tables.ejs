@@ -28,10 +28,15 @@
         <tbody>
             <% ytips.forEach(el=> { %>
                 <tr>
-                    <td class="time-td"><%- el.time %></td>
-                    <td class="match-td"><%- el.match.replace(/ - /g, '<br>') %></td>
-                    <th style="color: gold;"><%- el.tip %></th>
-                    <td><%- el.matokeo %></td>
+                    <td class="time-td">
+                        <%= el.time %> <br> <span><%= el.siku %></span> 
+                    </td>
+                    <td class="match-td">
+                        <span><u><%= el.league %></u></span> <br>
+                        <%- el.match.replace(/ - /g, '<br>' ) %>
+                    </td>
+                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                    <td class="matokeo-td"><%= el.matokeo %></td>
                 </tr>
                 <% }) %>
         </tbody>
@@ -65,10 +70,15 @@
         <tbody>
             <% stips.forEach(el=> { %>
                 <tr>
-                    <td class="time-td"><%- el.time %></td>
-                    <td class="match-td"><%- el.match.replace(/ - /g, '<br>') %></td>
-                    <th style="color: gold;"><%- el.tip %></th>
-                    <td><%- el.matokeo %></td>
+                    <td class="time-td">
+                        <%= el.time %> <br> <span><%= el.siku %></span> 
+                    </td>
+                    <td class="match-td">
+                        <span><u><%= el.league %></u></span> <br>
+                        <%- el.match.replace(/ - /g, '<br>' ) %>
+                    </td>
+                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                    <td class="matokeo-td"><%= el.matokeo %></td>
                 </tr>
                 <% }) %>
         </tbody>
@@ -102,10 +112,15 @@
         <tbody>
             <% ktips.forEach(el=> { %>
                 <tr>
-                    <td class="time-td"><%- el.time %></td>
-                    <td class="match-td"><%- el.match.replace(/ - /g, '<br>') %></td>
-                    <th style="color: gold;"><%- el.tip %></th>
-                    <td><%- el.matokeo %></td>
+                    <td class="time-td">
+                        <%= el.time %> <br> <span><%= el.siku %></span> 
+                    </td>
+                    <td class="match-td">
+                        <span><u><%= el.league %></u></span> <br>
+                        <%- el.match.replace(/ - /g, '<br>' ) %>
+                    </td>
+                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                    <td class="matokeo-td"><%= el.matokeo %></td>
                 </tr>
                 <% }) %>
         </tbody>
