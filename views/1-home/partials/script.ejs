@@ -9,7 +9,6 @@
     let ktoggle = document.getElementById('ktoggle')
     let jtoggle = document.getElementById('jtoggle')
 
-    const zakesho_txt = document.getElementById('zakesho')
 
     ytoggle.addEventListener('click', () => {
         ytoggle.classList.add('active_toggle')
@@ -21,8 +20,6 @@
         lday_cont.classList.add('ficha')
         kday_cont.classList.add('ficha')
         jday_cont.classList.add('ficha')
-
-        zakesho_txt.style.display = 'none'
     })
 
     ltoggle.addEventListener('click', () => {
@@ -35,8 +32,6 @@
         yday_cont.classList.add('ficha')
         kday_cont.classList.add('ficha')
         jday_cont.classList.add('ficha')
-
-        zakesho_txt.style.display = 'none'
     })
 
     jtoggle.addEventListener('click', () => {
@@ -49,11 +44,11 @@
         yday_cont.classList.add('ficha')
         kday_cont.classList.add('ficha')
         lday_cont.classList.add('ficha')
-
-        zakesho_txt.style.display = 'none'
     })
 
     ktoggle.addEventListener('click', () => {
+        const zakesho_txt = document.getElementById('zakesho')
+
         ktoggle.classList.add('active_toggle')
         ytoggle.classList.remove('active_toggle')
         ltoggle.classList.remove('active_toggle')
@@ -65,12 +60,9 @@
         //kesho kama hamna onyesha hamna na ficha kesho cont
         if (ktips.length == 0) {
             zakesho_txt.style.display = 'block'
-            kday_cont.classList.add('ficha')
-        } else {
-            kday_cont.classList.remove('ficha')
-            zakesho_txt.style.display = 'none'
         }
 
+        kday_cont.classList.remove('ficha')
         lday_cont.classList.add('ficha')
         yday_cont.classList.add('ficha')
         jday_cont.classList.add('ficha')
