@@ -2,10 +2,12 @@
     let yday_cont = document.getElementById('yday')
     let lday_cont = document.getElementById('lday')
     let kday_cont = document.getElementById('kday')
+    let jday_cont = document.getElementById('jday')
 
     let ytoggle = document.getElementById('ytoggle')
     let ltoggle = document.getElementById('ltoggle')
     let ktoggle = document.getElementById('ktoggle')
+    let jtoggle = document.getElementById('jtoggle')
 
     const zakesho_txt = document.getElementById('zakesho')
 
@@ -13,10 +15,12 @@
         ytoggle.classList.add('active_toggle')
         ltoggle.classList.remove('active_toggle')
         ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
 
         yday_cont.classList.remove('ficha')
         lday_cont.classList.add('ficha')
         kday_cont.classList.add('ficha')
+        jday_cont.classList.add('ficha')
 
         zakesho_txt.style.display = 'none'
     })
@@ -25,10 +29,26 @@
         ltoggle.classList.add('active_toggle')
         ytoggle.classList.remove('active_toggle')
         ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
 
         lday_cont.classList.remove('ficha')
         yday_cont.classList.add('ficha')
         kday_cont.classList.add('ficha')
+        jday_cont.classList.add('ficha')
+
+        zakesho_txt.style.display = 'none'
+    })
+
+    jtoggle.addEventListener('click', () => {
+        jtoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+
+        jday_cont.classList.remove('ficha')
+        yday_cont.classList.add('ficha')
+        kday_cont.classList.add('ficha')
+        lday_cont.classList.add('ficha')
 
         zakesho_txt.style.display = 'none'
     })
@@ -37,6 +57,7 @@
         ktoggle.classList.add('active_toggle')
         ytoggle.classList.remove('active_toggle')
         ltoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
 
         //stringfy ejs obj then parse back to obj
         const ktips = JSON.parse('<%- JSON.stringify(ktips) %>')
@@ -52,6 +73,7 @@
 
         lday_cont.classList.add('ficha')
         yday_cont.classList.add('ficha')
+        jday_cont.classList.add('ficha')
     })
 
     function sikuKesho() {

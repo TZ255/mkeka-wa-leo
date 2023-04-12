@@ -1,14 +1,56 @@
 <div class="toggle-cont" id="supa-za-leo">
     <div class="toggles">
-        <div class="ytoggle" id="ytoggle">«« Jana</div>
-        <div class="ltoggle active_toggle" id="ltoggle">⁕⁕ Leo ⁕⁕</div>
-        <div class="ktoggle" id="ktoggle">Kesho »»</div>
+        <div class="jtoggle" id="jtoggle">« Juzi</div>
+        <div class="ytoggle" id="ytoggle">Jana</div>
+        <div class="ltoggle active_toggle" id="ltoggle">⁕ Leo ⁕</div>
+        <div class="ktoggle" id="ktoggle">Kesho »</div>
     </div>
 </div>
 
 <div class="zakesho" id="zakesho" style="display: none; text-align: center; color:brown ;">
     <br>
     * Supa Tips za Kesho <b id="siku_kesho"></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
+</div>
+
+<!-- juzi -->
+<div class="tble-cont ficha" id="jday">
+    <div class="table-head">
+        ⭐⭐⭐ Supa Tips za Juzi ⭐⭐⭐
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Matches</th>
+                <th class="tips-th" scope="col">Tips</th>
+                <th class="results-th" scope="col">Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% jtips.forEach(el=> { %>
+                <tr>
+                    <td class="time-td">
+                        <%= el.time %> <br> <span><%= el.siku %></span> 
+                    </td>
+                    <td class="match-td">
+                        <span><%= el.league %></span> <br>
+                        <%- el.match.replace(/ - /g, '<br>' ) %>
+                    </td>
+                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                    <td class="matokeo-td"><%= el.matokeo %></td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+    <div class="aff">
+        <h4><u>Parimatch</u></h4>
+        <h4>* bonus ya ukaribisho (150%) ✔</h4>
+        <h4>* cash-out available ✔</h4>
+        <div class="sasa">
+            <button onclick="window.open('/pmatch/register')">🏐 BONYEZA HAPA KUJISAJILI</button>
+            <br>
+        </div>
+    </div>
 </div>
 
 <!-- yesterday -->

@@ -31,13 +31,19 @@ router.get('/', async (req, res) => {
         let _d = _nd.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let ytips = await supatips.find({siku: _d})
 
+        //supatip ya juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        let jtips = await supatips.find({siku: _s})
+
         //supatip ya kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let ktips = await supatips.find({siku: kesho})
 
-        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips })
+        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips })
     } catch (err) {
         console.log(err)
         console.log(err.message)
