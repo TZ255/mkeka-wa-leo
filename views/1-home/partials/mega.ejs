@@ -1,0 +1,55 @@
+<div class="cont" itemscope>
+    <h2 class="header" id="mega-za-leo">
+        ⭐⭐⭐ Mega Odds za Leo ⭐⭐⭐
+    </h2>
+    <% mikeka.forEach(el=> { %>
+        <div class="sect">
+            <div class="time">
+                <span>
+                    <%= el.time %>
+                </span>
+                <span>
+                    <%= el.date %>
+                </span>
+            </div>
+            <div class="game">
+                <div class="match">
+                    <%= el.match %>
+                </div>
+                <div class="tip">
+                    <%= el.bet %>
+                </div>
+            </div>
+            <div class="odds">
+                <span>
+                    <%= el.odds %>
+                </span>
+
+            </div>
+        </div>
+        <% }) %>
+</div>
+<div class="total">
+    <div class="subtotal">
+        <div class="btm w40">
+            <span class="hdr">Bookie</span>
+            <span class="ct">Parimatch</span>
+        </div>
+        <div class="btm w25">
+            <span class="hdr">Total Odds</span>
+            <span class="ct">
+                <%= megaOdds %>
+            </span>
+        </div>
+        <div class="btm w25">
+            <span class="hdr">Bonus</span>
+            <span class="ct">150%</span>
+        </div>
+    </div>
+    <div class="tangazo">
+        * bonus ya ukaribisho (150%) hadi Tsh. 3,500,000/=
+    </div>
+    <div class="sasa">
+        <button onclick="window.open('/pmatch/register')">🎁 PATA BONUS HII SASA!</button>
+    </div>
+</div>

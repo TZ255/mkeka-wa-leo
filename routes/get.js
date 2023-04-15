@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
+const betslip = require('../model/betslip')
 
 //times
 const TimeAgo = require('javascript-time-ago')
@@ -16,10 +17,15 @@ router.get('/', async (req, res) => {
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let mikeka = await mkekadb.find({date: d})
+        let slip = await betslip.find({date: d})
         let megaOdds = 1
+        let slipOdds = 1
 
         for (let m of mikeka) {
             megaOdds = (megaOdds * m.odds).toFixed(2)
+        }
+        for (let od of slip) {
+            slipOdds = (slipOdds * od.odd).toFixed(2)
         }
 
         //supatip ya leo
@@ -43,7 +49,7 @@ router.get('/', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let ktips = await supatips.find({siku: kesho})
 
-        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips })
+        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds })
     } catch (err) {
         console.log(err)
         console.log(err.message)
