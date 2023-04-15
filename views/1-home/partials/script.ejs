@@ -71,35 +71,43 @@
     function sikuKesho() {
         let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
         let siku_kesho = document.getElementById('siku_kesho')
+        let trh_slip = document.getElementById('trh_slip')
 
         //add one day to show tomorrow
         switch (d) {
             case 'Monday':
                 siku_kesho.innerText = 'Jumanne'
+                trh_slip.innerText = 'Jumatatu'
                 break;
 
             case 'Tuesday':
                 siku_kesho.innerText = 'Jumatano'
+                trh_slip.innerText = 'Jumanne'
                 break;
 
             case 'Wednesday':
                 siku_kesho.innerText = 'Alhamis'
+                trh_slip.innerText = 'Jumatano'
                 break;
 
             case 'Thursday':
                 siku_kesho.innerText = 'Ijumaa'
+                trh_slip.innerText = 'Alhamis'
                 break;
 
             case 'Friday':
                 siku_kesho.innerText = 'Jumamosi'
+                trh_slip.innerText = 'Ijumaa'
                 break;
 
             case 'Saturday':
                 siku_kesho.innerText = 'Jumapili'
+                trh_slip.innerText = 'Jumamosi'
                 break;
 
             case 'Sunday':
                 siku_kesho.innerText = 'Jumatatu'
+                trh_slip.innerText = 'Jumapili'
                 break;
 
             default:
