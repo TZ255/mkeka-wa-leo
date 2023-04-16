@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     try {
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let mikeka = await mkekadb.find({ date: d })
+        let mikeka = await mkekadb.find({ date: d }).sort('time')
 
         //check if there is no any slip
         let check_slip = await betslip.find({ date: d })
