@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
         if (check_slip.length < 1) {
             //find random 3 from mkekadb
             let copies = await mkekadb.aggregate(([
-                { $match: { date: d } },
+                { $match: { date: d } }, //not neccessary if you dont need match
                 { $sample: { size: 3 } }
             ]))
 
