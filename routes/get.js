@@ -2,6 +2,8 @@ const router = require('express').Router()
 const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
+const betslip = require('../model/betslip')
+const graphModel = require('../model/graph-tips')
 
 //times
 const TimeAgo = require('javascript-time-ago')
@@ -114,6 +116,17 @@ router.get('/contact/telegram', (req, res) => {
 router.get('/admin/posting', async (req, res) => {
     let mikeka = await mkekadb.find().sort('-createdAt').limit(50)
     res.render('2-posting/post', { mikeka })
+})
+
+router.get('/tiktok/tanzania', async (req, res)=> {
+    try {
+        let d = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        let mk = await graphModel.findOneAndUpdate({siku: d}, {$inc: {tiktok: 1}}, {new: true})
+        if(mk) {res.redirect(mk.link)}
+        else{res.redirect('/')}
+    } catch (err) {
+        console.log(err.message)
+    }
 })
 
 router.all('*', (req, res) => {
