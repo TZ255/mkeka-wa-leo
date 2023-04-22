@@ -2,7 +2,6 @@ const router = require('express').Router()
 const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
-const betslip = require('../model/betslip')
 const graphModel = require('../model/graph-tips')
 
 //times
