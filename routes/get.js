@@ -117,12 +117,15 @@ router.get('/admin/posting', async (req, res) => {
     res.render('2-posting/post', { mikeka })
 })
 
-router.get('/tiktok/tanzania', async (req, res)=> {
+router.get('/betslip/leo', async (req, res)=> {
     try {
         let d = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
-        let mk = await graphModel.findOneAndUpdate({siku: d}, {$inc: {tiktok: 1}}, {new: true})
-        if(mk) {res.redirect(mk.link)}
-        else{res.redirect('/')}
+        let slip = await betslip.find({date: d})
+        let slipOdds = 1
+        for (let od of slip) {
+            slipOdds = (slipOdds * od.odd).toFixed(2)
+        }
+        res.render('3-landing/landing', {slip, slipOdds})
     } catch (err) {
         console.log(err.message)
     }

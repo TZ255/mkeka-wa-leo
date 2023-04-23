@@ -1,0 +1,68 @@
+<div class="betslipCont" id="betslipCont">
+    <div class="cap">
+        <h2 id="betslip-ya-leo">
+            ⭐⭐⭐ Betslip ya Leo ⭐⭐⭐ <br>
+            <span class="slip-siku">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span id="trh_slip"></span>
+            </span>
+        </h2>
+    </div>
+    <table class="table">
+        <thead>
+            <tr class="table-secondary">
+                <th scope="col">Betslip</th>
+                <th scope="col" class="cell-left">Odds</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for( let mch of slip ) { %>
+                <tr class="table-light">
+                    <td>
+                        <b class="tip">
+                            <%= mch.tip %>
+                        </b> <br>
+                        <span class="match">
+                            <i class="fa-regular fa-futbol"></i>
+                            <%= mch.match %>
+                        </span>
+                    </td>
+                    <td class="cell-left" style="vertical-align: middle;">
+                        <%= mch.odd %>
+                    </td>
+                </tr>
+                <% } %>
+
+                    <tr class="table-secondary">
+                        <th scope="col" style="font-size: 14px;">
+                            Stake: <span class="brown">56,000 TZS</span><br>
+                            Possible Win: <span class="brown" id="slipOdd"></span>
+                        </th>
+                        <th scope="col" class="cell-left" style="font-size: 14px;">
+                            Odds: <span class="brown">
+                                <%= slipOdds %>
+                            </span> <br>
+                            Bonus: <span style="color:green;">+10%</span>
+                        </th>
+                    </tr>
+        </tbody>
+    </table>
+    <div class="bottomSlip">
+        <div>Gal Sport Betting</div>
+        <div onclick="jiunge()">
+            <span>WEKA BET</span>
+            <i class="fa-solid fa-up-right-from-square"></i>
+        </div>
+    </div>
+</div>
+
+<script>
+    let slipOdd = document.getElementById('slipOdd')
+    let totalSlipOdd = '<%= slipOdds %>'
+    slipOdd.innerText = (Number(totalSlipOdd) * 56000).toLocaleString('en-US') + ' TZS'
+
+    function jiunge() {
+        let url = `https://track.africabetpartners.com/visit/?bta=35468&nci=5847&utm_campaign=gsb-fb`
+        window.open(url)
+    }
+</script>
