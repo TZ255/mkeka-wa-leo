@@ -121,6 +121,7 @@ router.get('/admin/posting', async (req, res) => {
 router.get('/betslip/leo', async (req, res)=> {
     try {
         let d = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        await graphModel.findOneAndUpdate({siku: '23/04/2023'}, {$inc: {loaded: 1}})
         let slip = await betslip.find({date: d})
         let slipOdds = 1
         for (let od of slip) {
