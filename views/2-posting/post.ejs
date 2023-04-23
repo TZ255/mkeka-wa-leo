@@ -56,6 +56,9 @@
         .mikeka {
             padding: 24px;
             background-color: aliceblue;
+            height: 400px;
+            width: 90%;
+            overflow-y: scroll;
         }
 
         .mikeka .match {
@@ -140,6 +143,7 @@
     </form>
     <br><br><br>
 
+    <h2>Megas</h2>
     <div class="mikeka">
         <% for( let mk of mikeka ) { %>
             <div class="match">
@@ -156,6 +160,32 @@
                 </div>
                 <div class="delete" style=" width: 30;">
                     <form action="/delete/<%= mk._id %>" method="post" style="display: flex; justify-content: space-between;">
+                        <input type="text" name="secret" placeholder="secret" required style="display: block;">
+                        <button type="submit" style="display: flex;">Delete</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+    </div>
+<br><hr><br>
+    <!-- betslips -->
+    <h2>Betslips</h2>
+    <div class="mikeka">
+        <% for( let mk of slips ) { %>
+            <div class="match">
+                <div class="dt">
+                    <%= mk.date %>
+                </div>
+                <div class="mtc">
+                    <span class="gm">
+                        <%= mk.match %>
+                    </span>
+                    <span class="bt">
+                        <%= mk.tip %> @ <%= mk.odd %>
+                    </span>
+                </div>
+                <div class="delete" style=" width: 30;">
+                    <form action="/delete-slip/<%= mk._id %>" method="post" style="display: flex; justify-content: space-between;">
                         <input type="text" name="secret" placeholder="secret" required style="display: block;">
                         <button type="submit" style="display: flex;">Delete</button>
                     </form>

@@ -114,7 +114,8 @@ router.get('/contact/telegram', (req, res) => {
 
 router.get('/admin/posting', async (req, res) => {
     let mikeka = await mkekadb.find().sort('-createdAt').limit(50)
-    res.render('2-posting/post', { mikeka })
+    let slips = await betslip.find().sort('-createdAt').limit(50)
+    res.render('2-posting/post', { mikeka, slips })
 })
 
 router.get('/betslip/leo', async (req, res)=> {

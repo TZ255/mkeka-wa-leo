@@ -70,4 +70,16 @@ router.post('/delete/:id', async (req, res)=> {
     }
 })
 
+router.post('/delete-slip/:id', async (req, res)=> {
+    let _id = req.params.id
+    let sec = req.body.secret
+
+    if(sec == '55') {
+        await betslip.findByIdAndDelete(_id)
+        res.redirect('/admin/posting')
+    } else {
+        res.send('Not found')
+    }
+})
+
 module.exports = router
