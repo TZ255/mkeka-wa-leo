@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const mikekaDb = require('../model/mkeka-mega')
 const fb_mikeka = require('../model/pm-mikeka')
+const betslip = require('../model/betslip')
 
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
@@ -28,7 +29,12 @@ router.post('/post', async (req, res) => {
     if (secret == '5654') {
         let mk = await mikekaDb.create({match, odds, time, bet, date: d})
         res.send(mk)
-    } else {
+    } else if (secret == '55') {
+        let mk = await betslip.create({match, odd: odds, tip:bet, date: d})
+        res.send(mk)
+    }
+    
+    else {
         res.send(`You're not Authorized`)
     }
 
