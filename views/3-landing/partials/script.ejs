@@ -1,48 +1,39 @@
 <script>
     function tarehe() {
-        let trSlip = document.getElementById('trSlip')
         let trh_slip = document.getElementById('trh_slip')
         let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
         let s = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
 
         switch (d) {
             case 'Monday':
-                trSlip.innerText = 'Jumatatu: ' + s
                 trh_slip.innerText = 'Jumatatu: ' + s
                 break;
 
             case 'Tuesday':
-                trSlip.innerText = 'Jumanne: ' + s
                 trh_slip.innerText = 'Jumanne: ' + s
                 break;
 
             case 'Wednesday':
-                trSlip.innerText = 'Jumatano: ' + s
                 trh_slip.innerText = 'Jumatano: ' + s
                 break;
 
             case 'Thursday':
-                trSlip.innerText = 'Alhamis: ' + s
                 trh_slip.innerText = 'Alhamis: ' + s
                 break;
 
             case 'Friday':
-                trSlip.innerText = 'Ijumaa: ' + s
                 trh_slip.innerText = 'Ijumaa: ' + s
                 break;
 
             case 'Saturday':
-                trSlip.innerText = 'Jumamosi: ' + s
                 trh_slip.innerText = 'Jumamosi: ' + s
                 break;
 
             case 'Sunday':
-                trSlip.innerText = 'Jumapili: ' + s
                 trh_slip.innerText = 'Jumapili: ' + s
                 break;
 
             default:
-                trSlip.innerText = '😩'
                 trh_slip.innerText = '😩'
                 break;
         }
