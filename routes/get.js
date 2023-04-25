@@ -133,6 +133,24 @@ router.get('/betslip/leo', async (req, res)=> {
     }
 })
 
+//articles
+router.get('/article/:path', async (req, res)=> {
+    try {
+        let path = req.params.path
+
+        switch(path) {
+            case 'mbinu-za-kushinda-betting':
+                res.render('4-articles/mbinu');
+                break;
+
+            default:
+                res.sendStatus(404);
+        }
+    } catch (err) {
+        console.log(err.message)
+    }
+})
+
 router.all('*', (req, res) => {
     res.sendStatus(404)
 })
