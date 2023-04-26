@@ -108,6 +108,11 @@ router.get('/10bet/register', (req, res) => {
     res.redirect('https://go.aff.10betafrica.com/ys6tiwg4')
 })
 
+router.get('/betway/register', (req, res) => {
+    let url = `https://www.betway.co.tz/?btag=P94949-PR24696-CM77068-TS1971458&`
+    res.redirect(url)
+})
+
 router.get('/contact/telegram', (req, res) => {
     res.redirect('https://t.me/cute_helen255')
 })
