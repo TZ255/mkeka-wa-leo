@@ -82,4 +82,18 @@ router.post('/delete-slip/:id', async (req, res)=> {
     }
 })
 
+router.post('/edit-slip/:id', async (req, res)=> {
+    let _id = req.params.id
+    let sec = req.body.secret
+    let tip = req.body.bet
+    let odd = req.body.odds
+
+    if(sec == '55') {
+        let upd = await betslip.findByIdAndUpdate(_id, {$set: {tip, odd}}, {new: true})
+        res.redirect(`/admin/posting#${upd._id}`)
+    } else {
+        res.send('Not found')
+    }
+})
+
 module.exports = router
