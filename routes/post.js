@@ -22,6 +22,27 @@ router.post('/post', async (req, res) => {
     time = `${left_side}:${right_side}`
     let secret = req.body.secret
 
+    let homeTeam = match.split(' - ')[0]
+    let awayTeam = match.split(' - ')[1]
+
+    switch(bet) {
+        case 'Away total: (Over 1.5)':
+            bet = `${awayTeam} total: (Over 1.5)`
+            break;
+
+        case 'Home total: (Over 1.5)':
+            bet = `${homeTeam} total: (Over 1.5)`
+            break;
+
+        case 'Away Win':
+            bet = `${awayTeam} Win`
+            break;
+
+        case 'Home Win':
+            bet = `${homeTeam} Win`
+            break;
+    }
+
     
 
     let d = new Date(date).toLocaleDateString('en-GB')
@@ -87,6 +108,28 @@ router.post('/edit-slip/:id', async (req, res)=> {
     let sec = req.body.secret
     let tip = req.body.bet
     let odd = req.body.odds
+
+    let prev = await betslip.findById(_id)
+    let homeTeam = prev.match.split(' - ')[0]
+    let awayTeam = prev.match.split(' - ')[1]
+
+    switch(tip) {
+        case 'Away total: (Over 1.5)':
+            tip = `${awayTeam} total: (Over 1.5)`
+            break;
+
+        case 'Home total: (Over 1.5)':
+            tip = `${homeTeam} total: (Over 1.5)`
+            break;
+
+        case 'Away Win':
+            tip = `${awayTeam} Win`
+            break;
+
+        case 'Home Win':
+            tip = `${homeTeam} Win`
+            break;
+    }
 
     if(sec == '55') {
         let upd = await betslip.findByIdAndUpdate(_id, {$set: {tip, odd}}, {new: true})
