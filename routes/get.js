@@ -101,7 +101,7 @@ router.get('/gsb/register', (req, res) => {
 })
 
 router.get('/pmatch/register', (req, res) => {
-    res.redirect('https://pmaff.com/?serial=61288670&creative_id=324')
+    res.redirect('https://pmaff.com/?serial=61288670&creative_id=1788&anid=mkekawaleo&pid=mkekawaleo')
 })
 
 router.get('/10bet/register', (req, res) => {
