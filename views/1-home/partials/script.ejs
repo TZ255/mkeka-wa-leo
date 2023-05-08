@@ -55,7 +55,7 @@
         jtoggle.classList.remove('active_toggle')
 
         //stringfy ejs obj then parse back to obj
-        const ktips = JSON.parse('<%- JSON.stringify(ktips) %>')
+        const ktips = JSON.parse(`<%- JSON.stringify(ktips) %>`)
 
         //kesho kama hamna onyesha hamna na ficha kesho cont
         if (ktips.length == 0) {
