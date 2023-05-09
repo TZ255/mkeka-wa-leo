@@ -139,4 +139,12 @@ router.post('/edit-slip/:id', async (req, res)=> {
     }
 })
 
+router.post('/test-posting', async (req, res)=> {
+    let tag = req.body.tag
+    let article = req.body.article
+
+    console.log(article, tag)
+    res.send('received')
+})
+
 module.exports = router
