@@ -2,6 +2,8 @@ const router = require('express').Router()
 const mikekaDb = require('../model/mkeka-mega')
 const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
+const supatipsModel = require('../model/supatips')
+const nanoid = require('nanoid')
 
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
@@ -59,6 +61,29 @@ router.post('/post', async (req, res) => {
         res.send(`You're not Authorized`)
     }
 
+})
+
+router.post('/post/supatips', async (req, res)=> {
+    try {
+        let match = req.body.match
+        let tip = req.body.tip
+        let siku = req.body.siku
+        let time = req.body.time
+        let league = req.body.league
+        let secret = req.body.secret
+        let nano = nanoid.nanoid(6)
+
+        siku = new Date(siku).toLocaleDateString('en-GB')
+
+        if (secret == '5654') {
+            let mk = await supatipsModel.create({
+                siku, league, match, tip, time, nano
+            })
+            res.send(mk)
+        } else {res.send('Unauthorized')}
+    } catch (err) {
+        res.send(err.message)
+    }
 })
 
 router.post('/post-fb', async (req, res) => {

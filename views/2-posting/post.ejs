@@ -113,6 +113,33 @@
             </div>
         </div>
     </form>
+    <br><br>
+
+    <form action="/post/supatips" method="post" target="_blank">
+        <div class="cont" style="margin-bottom: 24px;">
+            <h2 style="text-align: center;">SupaTips</h2>
+            <div class="gr1 gr">
+                <input type="date" name="siku" required>
+                <input type="time" name="time" required>
+                <input type="text" name="league" placeholder="league">
+                <input type="text" placeholder="Match" name="match" required>
+                <select name="tip" id="opt">
+                    <option value="1X">1X</option>
+                    <option value="X2">X2</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="Over 1.5">Over 1.5</option>
+                    <option value="Over 2.5">Over 2.5</option>
+                    <option value="Under 3.5">Under 3.5</option>
+                </select>
+                    <input type="text" placeholder="Secret word" name="secret" required>
+            </div>
+            <div class="submit">
+                <button type="submit">SUBMIT BET</button>
+                <button id="reset" type="reset">RESET</button>
+            </div>
+        </div>
+    </form>
     <br><br><br>
 
     <!-- HTML editor. write articles like in word -->

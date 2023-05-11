@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
         }
 
         //supatip ya leo
-        let stips = await supatips.find({ siku: d })
+        let stips = await supatips.find({ siku: d }).sort('time')
 
         //supatip ya jana
         let _nd = new Date()
