@@ -55,19 +55,19 @@ router.get('/', async (req, res) => {
         let _nd = new Date()
         _nd.setDate(_nd.getDate() - 1)
         let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ytips = await supatips.find({ siku: _d })
+        let ytips = await supatips.find({ siku: _d }).sort('time')
 
         //supatip ya juzi
         let _jd = new Date()
         _jd.setDate(_jd.getDate() - 2)
         let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let jtips = await supatips.find({ siku: _s })
+        let jtips = await supatips.find({ siku: _s }).sort('time')
 
         //supatip ya kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ktips = await supatips.find({ siku: kesho })
+        let ktips = await supatips.find({ siku: kesho }).sort('time')
 
         res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds })
     } catch (err) {
