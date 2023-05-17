@@ -14,9 +14,6 @@ const supatipSchema = new Schema({
     match: {
         type: String
     },
-    league: {
-        type: String
-    },
     tip: {
         type: String,
     },

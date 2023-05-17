@@ -49,7 +49,8 @@ router.get('/', async (req, res) => {
         }
 
         //supatip ya leo
-        let stips = await supatips.find({ siku: d }).sort('time')
+        let stips1 = await supatips.find({ siku: d }).sort('time')
+        let stips = []
 
         //supatip ya jana
         let _nd = new Date()
@@ -67,7 +68,28 @@ router.get('/', async (req, res) => {
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ktips = await supatips.find({ siku: kesho }).sort('time')
+        let ktips1 = await supatips.find({ siku: kesho }).sort('time')
+        let ktips = []
+
+        //loop leo&kesho to create for schemaorg yyy-mmm-dddThh:mm
+        for(let s of stips1) {
+            let sikuData = s.siku.split('/')
+            let timedata = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
+            let matchdata = s.match.split(' - ')
+            stips.push({
+                siku: s.siku, time: s.time, tip: s.tip, match: `<span itemprop="homeTeam">${matchdata[0]}</span><br><span itemprop="awayTeam">${matchdata[1]}</span>`, matokeo: s.matokeo, league: s.league, timedata
+            })
+        }
+
+        for(let s of ktips1) {
+            let sikuData = s.siku.split('/')
+            let timedata = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
+            let matchdata = s.match.split(' - ')
+            ktips.push({
+                siku: s.siku, time: s.time, tip: s.tip, match: `<span itemprop="homeTeam">${matchdata[0]}</span><br><span itemprop="awayTeam">${matchdata[1]}</span>`, matokeo: s.matokeo, league: s.league, timedata
+            })
+        }
+
 
         res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds })
     } catch (err) {

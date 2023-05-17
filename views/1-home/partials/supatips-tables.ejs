@@ -23,18 +23,18 @@
         </thead>
         <tbody>
             <% jtips.forEach(el=> { %>
-                <tr>
-                    <td class="time-td">
-                        <%= el.time %> <br> <span><%= el.siku %></span> 
-                    </td>
-                    <td class="match-td">
-                        <span><%= el.league %></span> <br>
-                        <%- el.match.replace(/ - /g, '<br>' ) %>
-                    </td>
-                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-                    <td class="matokeo-td"><%= el.matokeo %></td>
-                </tr>
-                <% }) %>
+            <tr>
+                <td class="time-td">
+                    <%= el.time %> <br> <span><%= el.siku %></span>
+                </td>
+                <td class="match-td">
+                    <span class="league"><%= el.league %></span> <br>
+                    <%- el.match.replace(/ - /g, '<br>' ) %>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                <td class="matokeo-td"><%= el.matokeo %></td>
+            </tr>
+            <% }) %>
         </tbody>
     </table>
     <div class="aff">
@@ -65,18 +65,18 @@
         </thead>
         <tbody>
             <% ytips.forEach(el=> { %>
-                <tr>
-                    <td class="time-td">
-                        <%= el.time %> <br> <span><%= el.siku %></span> 
-                    </td>
-                    <td class="match-td">
-                        <span><%= el.league %></span> <br>
-                        <%- el.match.replace(/ - /g, '<br>' ) %>
-                    </td>
-                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-                    <td class="matokeo-td"><%= el.matokeo %></td>
-                </tr>
-                <% }) %>
+            <tr>
+                <td class="time-td">
+                    <%= el.time %> <br> <span><%= el.siku %></span>
+                </td>
+                <td class="match-td">
+                    <span class="league"><%= el.league %></span> <br>
+                    <%- el.match.replace(/ - /g, '<br>' ) %>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                <td class="matokeo-td"><%= el.matokeo %></td>
+            </tr>
+            <% }) %>
         </tbody>
     </table>
     <div class="aff">
@@ -108,18 +108,21 @@
         </thead>
         <tbody>
             <% stips.forEach(el=> { %>
-                <tr>
-                    <td class="time-td">
-                        <%= el.time %> <br> <span><%= el.siku %></span> 
-                    </td>
-                    <td class="match-td">
-                        <span><%= el.league %></span> <br>
-                        <%- el.match.replace(/ - /g, '<br>' ) %>
-                    </td>
-                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-                    <td class="matokeo-td"><%= el.matokeo %></td>
-                </tr>
-                <% }) %>
+            <tr itemscope itemtype="https://schema.org/SportsEvent">
+                <td class="time-td">
+                    <time itemprop="startDate" datetime="<%= el.timedata %>">
+                        <%= el.time %> <br> <span><%= el.siku %></span>
+                    </time>
+                </td>
+                <td class="match-td">
+                    <span class="league"><%= el.league %></span> 
+                    <br>
+                    <%- el.match %>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                <td class="matokeo-td"><%= el.matokeo %></td>
+            </tr>
+            <% }) %>
         </tbody>
     </table>
     <div class="aff">
@@ -151,18 +154,21 @@
         </thead>
         <tbody>
             <% ktips.forEach(el=> { %>
-                <tr>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
                     <td class="time-td">
-                        <%= el.time %> <br> <span><%= el.siku %></span> 
+                        <time itemprop="startDate" datetime="<%= el.timedata %>">
+                            <%= el.time %> <br> <span><%= el.siku %></span>
+                        </time>
                     </td>
                     <td class="match-td">
-                        <span><%= el.league %></span> <br>
-                        <%- el.match.replace(/ - /g, '<br>' ) %>
+                        <span class="league"><%= el.league %></span> 
+                        <br>
+                        <%- el.match %>
                     </td>
                     <th class="tip-td" style="color: gold;"><%= el.tip %></th>
                     <td class="matokeo-td"><%= el.matokeo %></td>
                 </tr>
-                <% }) %>
+            <% }) %>
         </tbody>
     </table>
     <div class="zakesho" id="zakesho">
