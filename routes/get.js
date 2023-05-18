@@ -77,7 +77,7 @@ router.get('/', async (req, res) => {
             let sikuData = s.siku.split('/')
             let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
             let calcDate = new Date(startDate)
-            calcDate.setHours(calcDate.getHours() + 3 + 2) //+3tz + 2end
+            calcDate.setHours(calcDate.getHours() + 2)
             let endDate = calcDate.toISOString().replace(':00.000Z', '')
             let matchdata = s.match.split(' - ')
             stips.push({
@@ -90,7 +90,7 @@ router.get('/', async (req, res) => {
             let sikuData = s.siku.split('/')
             let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
             let calcDate = new Date(startDate)
-            calcDate.setHours(calcDate.getHours() + 3 + 2) //+3tz + 2end
+            calcDate.setHours(calcDate.getHours() + 2)
             let endDate = calcDate.toISOString().replace(':00.000Z', '')
             let matchdata = s.match.split(' - ')
             ktips.push({
