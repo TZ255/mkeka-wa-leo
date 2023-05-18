@@ -109,13 +109,19 @@
         <tbody>
             <% stips.forEach(el=> { %>
             <tr itemscope itemtype="https://schema.org/SportsEvent">
-                <td class="time-td">
-                    <time itemprop="startDate" datetime="<%= el.timedata %>">
+                <td class=" time-td">
+                    <time itemprop="startDate" datetime="<%= el.startDate %>">
                         <%= el.time %> <br> <span><%= el.siku %></span>
                     </time>
                 </td>
                 <td class="match-td">
-                    <span class="league"><%= el.league %></span> 
+                    <!-- include schemas -->
+                    <meta itemprop="name" content="<%= el.match.hm %> vs <%= el.match.aw %> Tips">
+                    <meta itemprop="description"
+                        content="Utabiri wa leo kati ya <%= el.match.hm %> vs <%= el.match.aw %>">
+                    <meta itemprop="performer" content="<%= el.match.hm %> vs <%= el.match.aw %>">
+                    <meta itemprop="endDate" content="<%= el.endDate %>">
+                    <span class="league" itemprop="name location"><%= el.league %></span>
                     <br>
                     <span class="home" itemprop="homeTeam">
                         <%= el.match.hm %>
@@ -160,26 +166,32 @@
         </thead>
         <tbody>
             <% ktips.forEach(el=> { %>
-                <tr itemscope itemtype="https://schema.org/SportsEvent">
-                    <td class="time-td">
-                        <time itemprop="startDate" datetime="<%= el.timedata %>">
-                            <%= el.time %> <br> <span><%= el.siku %></span>
-                        </time>
-                    </td>
-                    <td class="match-td">
-                        <span class="league"><%= el.league %></span> 
-                        <br>
-                        <span class="home" itemprop="homeTeam">
-                            <%= el.match.hm %>
-                        </span>
-                        <br>
-                        <span class="away" itemprop="awayTeam">
-                            <%= el.match.aw %>
-                        </span>
-                    </td>
-                    <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-                    <td class="matokeo-td"><%= el.matokeo %></td>
-                </tr>
+            <tr itemscope itemtype="https://schema.org/SportsEvent">
+                <td class="time-td">
+                    <time itemprop="startDate" datetime="<%= el.startDate %>">
+                        <%= el.time %> <br> <span><%= el.siku %></span>
+                    </time>
+                </td>
+                <td class="match-td">
+                    <!-- include schemas -->
+                    <meta itemprop="name" content="<%= el.match.hm %> vs <%= el.match.aw %> Tips">
+                    <meta itemprop="description"
+                        content="Utabiri wa leo kati ya <%= el.match.hm %> vs <%= el.match.aw %>">
+                    <meta itemprop="performer" content="<%= el.match.hm %> vs <%= el.match.aw %>">
+                    <meta itemprop="endDate" content="<%= el.endDate %>">
+                    <span class="league" itemprop="name location"><%= el.league %></span>
+                    <br>
+                    <span class="home" itemprop="homeTeam">
+                        <%= el.match.hm %>
+                    </span>
+                    <br>
+                    <span class="away" itemprop="awayTeam">
+                        <%= el.match.aw %>
+                    </span>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                <td class="matokeo-td"><%= el.matokeo %></td>
+            </tr>
             <% }) %>
         </tbody>
     </table>

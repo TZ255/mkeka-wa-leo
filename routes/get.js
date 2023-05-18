@@ -75,22 +75,27 @@ router.get('/', async (req, res) => {
         //loop leo&kesho to create for schemaorg yyy-mmm-dddThh:mm
         for(let s of stips1) {
             let sikuData = s.siku.split('/')
-            let timedata = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
+            let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
+            let calcDate = new Date(startDate)
+            calcDate.setHours(calcDate.getHours() + 3 + 2) //+3tz + 2end
+            let endDate = calcDate.toISOString().replace(':00.000Z', '')
             let matchdata = s.match.split(' - ')
             stips.push({
                 siku: s.siku, time: s.time, tip: s.tip, 
-                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, timedata
+                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, startDate, endDate
             })
         }
 
         for(let s of ktips1) {
             let sikuData = s.siku.split('/')
-            let timedata = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
+            let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
+            let calcDate = new Date(startDate)
+            calcDate.setHours(calcDate.getHours() + 3 + 2) //+3tz + 2end
+            let endDate = calcDate.toISOString().replace(':00.000Z', '')
             let matchdata = s.match.split(' - ')
             ktips.push({
-                //single quote arround home and awayteam is to not trigger error while JDON.parse at frontend as it will parse with double quotes
                 siku: s.siku, time: s.time, tip: s.tip, 
-                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, timedata
+                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, startDate, endDate
             })
         }
 
