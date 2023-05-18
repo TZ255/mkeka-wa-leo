@@ -117,7 +117,13 @@
                 <td class="match-td">
                     <span class="league"><%= el.league %></span> 
                     <br>
-                    <%- el.match %>
+                    <span class="home" itemprop="homeTeam">
+                        <%= el.match.hm %>
+                    </span>
+                    <br>
+                    <span class="away" itemprop="awayTeam">
+                        <%= el.match.aw %>
+                    </span>
                 </td>
                 <th class="tip-td" style="color: gold;"><%= el.tip %></th>
                 <td class="matokeo-td"><%= el.matokeo %></td>
@@ -163,7 +169,13 @@
                     <td class="match-td">
                         <span class="league"><%= el.league %></span> 
                         <br>
-                        <%- el.match %>
+                        <span class="home" itemprop="homeTeam">
+                            <%= el.match.hm %>
+                        </span>
+                        <br>
+                        <span class="away" itemprop="awayTeam">
+                            <%= el.match.aw %>
+                        </span>
                     </td>
                     <th class="tip-td" style="color: gold;"><%= el.tip %></th>
                     <td class="matokeo-td"><%= el.matokeo %></td>

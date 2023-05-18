@@ -67,6 +67,7 @@ router.get('/', async (req, res) => {
         //supatip ya kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
+        //hapa  hapa
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let ktips1 = await supatips.find({ siku: kesho }).sort('time')
         let ktips = []
@@ -77,7 +78,8 @@ router.get('/', async (req, res) => {
             let timedata = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
             let matchdata = s.match.split(' - ')
             stips.push({
-                siku: s.siku, time: s.time, tip: s.tip, match: `<span itemprop="homeTeam">${matchdata[0]}</span><br><span itemprop="awayTeam">${matchdata[1]}</span>`, matokeo: s.matokeo, league: s.league, timedata
+                siku: s.siku, time: s.time, tip: s.tip, 
+                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, timedata
             })
         }
 
@@ -86,7 +88,9 @@ router.get('/', async (req, res) => {
             let timedata = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
             let matchdata = s.match.split(' - ')
             ktips.push({
-                siku: s.siku, time: s.time, tip: s.tip, match: `<span itemprop="homeTeam">${matchdata[0]}</span><br><span itemprop="awayTeam">${matchdata[1]}</span>`, matokeo: s.matokeo, league: s.league, timedata
+                //single quote arround home and awayteam is to not trigger error while JDON.parse at frontend as it will parse with double quotes
+                siku: s.siku, time: s.time, tip: s.tip, 
+                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, timedata
             })
         }
 
