@@ -22,6 +22,11 @@ router.post('/post', async (req, res) => {
 
     //modify time here
     time = `${left_side}:${right_side}`
+    switch(left_side) {
+        case 24: case 1: case 2: case 3: case 4:
+            time = `23:59`
+    }
+
     let secret = req.body.secret
 
     let homeTeam = match.split(' - ')[0]
