@@ -140,7 +140,7 @@ router.get('/10bet/register', (req, res) => {
 })
 
 router.get('/betway/register', (req, res) => {
-    let url = `https://www.betway.co.tz/?btag=P94949-PR24696-CM77068-TS1971458&`
+    let url = `https://www.betway.co.tz/?btag=P94949-PR26600-CM88900-TS1988404&`
     res.redirect(url)
 })
 
