@@ -4,6 +4,8 @@ const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
 const supatipsModel = require('../model/supatips')
 const nanoid = require('nanoid')
+const axios = require('axios').default
+const cheerio = require('cheerio')
 
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
@@ -67,6 +69,64 @@ router.post('/post', async (req, res) => {
     }
 
 })
+
+// router.post('/forepost', async (req, res) => {
+//     let link = req.body.link
+//     let odds = req.body.odds
+//     let date = req.body.date
+//     let bet = req.body.bet
+//     let secret = req.body.secret
+
+//     console.log(link)
+
+//     let html = await axios.get(link)
+//     .catch(e => console.log(e.message))
+//     let $ = cheerio.load(html.data)
+
+//     let league = $('html body div.container-wrapper div.container div.container-content div.event-name p a').text()
+//     let match = $('html body div.container-wrapper div.container div.container-content div.event-name p.text-uppercase.text-bold').text()
+//     let time = $('html body div.container-wrapper div.container div.container-content div.info table.info-table tbody tr td').text()
+
+//     res.send(league, match, time)
+
+//     // let homeTeam = match.split(' - ')[0]
+//     // let awayTeam = match.split(' - ')[1]
+
+//     // switch(bet) {
+//     //     case 'Away total: (Over 1.5)':
+//     //         bet = `${awayTeam} total: (Over 1.5)`
+//     //         break;
+
+//     //     case 'Home total: (Over 1.5)':
+//     //         bet = `${homeTeam} total: (Over 1.5)`
+//     //         break;
+
+//     //     case 'Away Win':
+//     //         bet = `${awayTeam} Win`
+//     //         break;
+
+//     //     case 'Home Win':
+//     //         bet = `${homeTeam} Win`
+//     //         break;
+//     // }
+
+    
+
+//     let d = new Date(date).toLocaleDateString('en-GB')
+
+//     // if (secret == '5654') {
+//     //     let mk = await mikekaDb.create({match, odds, time, bet, date: d})
+//     //     res.send(mk)
+//     // } else if (secret == '55') {
+//     //     let mk = await betslip.create({match, odd: odds, tip:bet, date: d})
+//     //     res.send(mk)
+//     // }
+    
+//     // else {
+//     //     res.send(`You're not Authorized`)
+//     // }
+
+// })
 
 router.post('/post/supatips', async (req, res)=> {
     try {
