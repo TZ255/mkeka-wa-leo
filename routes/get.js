@@ -10,9 +10,6 @@ const en = require('javascript-time-ago/locale/en')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
-//send success (no content) response to browser
-router.get('/favicon.ico', (req, res) => res.status(204).end());
-
 router.get('/', async (req, res) => {
     try {
         let nd = new Date()
