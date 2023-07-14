@@ -23,7 +23,8 @@ const lauraMainFn = async () => {
         rtgrp: -1001899312985,
         rtprem: -1001946174983,
         rt4i4n: -1001880391908,
-        rtmalipo: 5849160770
+        rtmalipo: 5849160770,
+        matangazoDB: -1001570087172,
     }
 
     const checkerFn = async (chatid, country, first_name) => {
@@ -56,6 +57,35 @@ const lauraMainFn = async () => {
             }
         } catch (err) {
             console.log(err.message, err)
+        }
+    })
+
+    botLaura.command('admin', async ctx=> {
+        try {
+            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel`
+
+            await ctx.reply(commands, {parse_mode: 'HTML'})
+        } catch (err) {
+            console.log(err, err.message)
+            await ctx.reply(err.message)
+        }
+    })
+
+    botLaura.on('channel_post', async ctx=> {
+        try {
+            if(ctx.channelPost.text) {
+                let txt = ctx.channelPost.text
+                let msgid = ctx.channelPost.message_id
+                if(txt.toLowerCase() == 'add telenovela') {
+                    await botLaura.telegram.copyMessage(ctx.chat.id, imp.matangazoDB, 38)
+                    setTimeout(()=> {
+                        ctx.deleteMessage(msgid).catch(e=> console.log(e.message))
+                    }, 2000)
+                }
+            }
+        } catch (err) {
+            console.log(err.message, err)
+            await ctx.reply(err.message)
         }
     })
 
