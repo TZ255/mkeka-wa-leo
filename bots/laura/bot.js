@@ -62,7 +62,7 @@ const lauraMainFn = async () => {
 
     botLaura.command('admin', async ctx => {
         try {
-            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel`
+            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from matangazodb (39) to the new channel.`
 
             await ctx.reply(commands, { parse_mode: 'HTML' })
         } catch (err) {
@@ -78,6 +78,11 @@ const lauraMainFn = async () => {
                 let msgid = ctx.channelPost.message_id
                 if (txt.toLowerCase() == 'add telenovela') {
                     await botLaura.telegram.copyMessage(ctx.chat.id, imp.matangazoDB, 38)
+                    setTimeout(() => {
+                        ctx.deleteMessage(msgid).catch(e => console.log(e.message))
+                    }, 2000)
+                } else if (txt.toLowerCase() == 'add brazil song') {
+                    await botLaura.telegram.copyMessage(ctx.chat.id, imp.matangazoDB, 39)
                     setTimeout(() => {
                         ctx.deleteMessage(msgid).catch(e => console.log(e.message))
                     }, 2000)
