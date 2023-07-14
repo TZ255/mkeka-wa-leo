@@ -4,6 +4,7 @@ require('dotenv').config()
 const getRouter = require('./routes/get')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
+const lauraSourceCodes = require('./bots/laura/bot')
 
 const app = express()
 
@@ -31,6 +32,9 @@ app.set('trust proxy', true) //our app is hosted on server using proxy to pass u
 app.use(limiter)
 app.use(postRouter)
 app.use(getRouter)
+
+//Attached Bots Goes Here
+lauraSourceCodes.bot()
 
 
 app.listen(process.env.PORT || 3000, ()=> console.log('Running on port 3000'))
