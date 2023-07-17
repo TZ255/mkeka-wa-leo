@@ -42,23 +42,6 @@ const charlotteFn = async () => {
     //delaying
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
-    function errMessage(err, id) {
-        if (!err.description) {
-            console.log(err)
-            if (!err.message.includes('bot was blocked')) {
-                bot.telegram.sendMessage(741815228, err.message + ' from ' + id)
-                    .catch((err) => console.log(err.message))
-            }
-
-        } else {
-            console.log(err)
-            if (!err.description.includes('bot was blocked')) {
-                bot.telegram.sendMessage(741815228, err.description + ' - from ' + id)
-                    .catch((err) => console.log(err.message))
-            }
-        }
-    }
-
     async function sendVideo(bot, ctx, id, nano) {
         let vid = await db.findOne({ nano })
         await bot.telegram.copyMessage(id, -1001586042518, vid.msgId, {
@@ -132,7 +115,7 @@ const charlotteFn = async () => {
                 await ctx.reply('Hello, Return/Enter to our channel for full videos')
             }
         } catch (err) {
-            errMessage(err, id)
+            console.log(err.message)
         }
     })
 
@@ -181,8 +164,8 @@ const charlotteFn = async () => {
         let bdsmGame = `https://t.aagm.link/153258/7592/0?bo=3511,3512,3521,3522`
         let rp_mkup = {
             inline_keyboard: [
-                [{ text: "♦ PLAY NOW", bdsmGame }],
-                [{ text: "🔞 More 18+ Games", bdsmGame }]
+                [{ text: "♦ PLAY NOW", url: bdsmGame }],
+                [{ text: "🔞 More 18+ Games", url: bdsmGame }]
             ]
         }
         let myId = ctx.chat.id
@@ -190,6 +173,7 @@ const charlotteFn = async () => {
         let msg_id = Number(txt.split('/broadcast-')[1].trim())
         if (myId == imp.shemdoe || myId == imp.halot) {
             try {
+                await ctx.reply('Starting')
                 let all_users = await users.find()
 
                 all_users.forEach((u, index) => {
@@ -204,15 +188,15 @@ const charlotteFn = async () => {
                                 if (err.message.includes('blocked')) {
                                     users.findOneAndDelete({ chatid: u.chatid })
                                         .then(() => { console.log(u.chatid + ' is deleted') })
-                                }
+                                } else { console.log(err.message) }
                             })
                     }, index * 40)
                 })
-            } catch (err) {
+            } 
+            catch (err) {
                 console.log(err.message)
             }
         }
-
     })
 
     bot.command('stats', async ctx => {
@@ -239,7 +223,8 @@ const charlotteFn = async () => {
             let updt = await users.findOneAndUpdate({ chatid: id }, { $inc: { points: pts } }, { new: true })
             await bot.telegram.sendMessage(id, `Congratulations 🎉 \nYour payment is confirmed! You received ${pts} points. Your new balance is ${updt.points} points`)
         } catch (err) {
-            errMessage(err, ctx.chat.id)
+            console.log(err.message)
+            await ctx.reply(err.message)
         }
     })
 
@@ -384,7 +369,8 @@ const charlotteFn = async () => {
             }
 
         } catch (err) {
-            errMessage(err, chatid)
+            console.log(err.message)
+            await bot.telegram.sendMessage(imp.shemdoe, err.message)
         }
     })
 
