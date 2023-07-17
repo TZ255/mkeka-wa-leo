@@ -176,12 +176,13 @@ const charlotteFn = async () => {
     //reactions buttons
     call_reactions_function(bot, imp)
 
-    bot.command('/broadcast', async ctx => {
+    bot.command('broadcast', async ctx => {
         let url = 'https://redirecting5.eu/p/tveg/GFOt/46RX'
+        let bdsmGame = `https://t.aagm.link/153258/7592/0?bo=3511,3512,3521,3522`
         let rp_mkup = {
             inline_keyboard: [
-                [{ text: "♦ PLAY NOW", url }],
-                [{ text: "🔞 More 18+ Games", url }]
+                [{ text: "♦ PLAY NOW", bdsmGame }],
+                [{ text: "🔞 More 18+ Games", bdsmGame }]
             ]
         }
         let myId = ctx.chat.id
@@ -198,8 +199,7 @@ const charlotteFn = async () => {
                         }
                         bot.telegram.copyMessage(u.chatid, imp.replyDb, msg_id, {
                             reply_markup: rp_mkup
-                        })
-                            .then(() => console.log('Offer sent to ' + u.chatid))
+                        }).then(() => console.log('Offer sent to ' + u.chatid))
                             .catch((err) => {
                                 if (err.message.includes('blocked')) {
                                     users.findOneAndDelete({ chatid: u.chatid })
@@ -389,14 +389,14 @@ const charlotteFn = async () => {
     })
 
 
-    bot.launch().then(()=> {
+    bot.launch().then(() => {
         console.log('Bot Restarted')
         bot.telegram.sendMessage(imp.shemdoe, 'Bot Restarted')
-        .catch(e=> console.log(e.message))
-    }).catch((err)=> {
+            .catch(e => console.log(e.message))
+    }).catch((err) => {
         console.log('Bot is not Running')
         bot.telegram.sendMessage(imp.shemdoe, `Bot not running ${err.message}`)
-        .catch(e=> console.log(e.message))
+            .catch(e => console.log(e.message))
     })
 
 
