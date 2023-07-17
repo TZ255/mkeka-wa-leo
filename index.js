@@ -5,6 +5,7 @@ const getRouter = require('./routes/get')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
 const lauraSourceCodes = require('./bots/laura/bot')
+const CharlloteSourceCodes = require('./bots/charlotte/bot')
 
 const app = express()
 
@@ -35,6 +36,8 @@ app.use(getRouter)
 
 //Attached Bots Goes Here
 lauraSourceCodes.bot()
+CharlloteSourceCodes.bot()
+
 
 
 app.listen(process.env.PORT || 3000, ()=> console.log('Running on port 3000'))
