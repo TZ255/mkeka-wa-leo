@@ -160,6 +160,7 @@ const charlotteFn = async () => {
     call_reactions_function(bot, imp)
 
     bot.command('broadcast', async ctx => {
+        let deleteErrs = ['user is deactivated', 'chat not found', 'bot was blocked by the user']
         let url = 'https://redirecting5.eu/p/tveg/GFOt/46RX'
         let bdsmGame = `https://t.aagm.link/153258/7592/0?bo=3511,3512,3521,3522`
         let rp_mkup = {
@@ -183,12 +184,14 @@ const charlotteFn = async () => {
                         }
                         bot.telegram.copyMessage(u.chatid, imp.replyDb, msg_id, {
                             reply_markup: rp_mkup
-                        }).then(() => console.log('Offer sent to ' + u.chatid))
+                        }).then(() => console.log('✅ Offer sent to ' + u.chatid))
                             .catch((err) => {
-                                if (err.message.includes('blocked')) {
-                                    users.findOneAndDelete({ chatid: u.chatid })
-                                        .then(() => { console.log(u.chatid + ' is deleted') })
-                                } else { console.log(err.message) }
+                                for (let d of deleteErrs) {
+                                    if(err.message.toLowerCase().includes(d)) {
+                                        users.findOneAndDelete({ chatid: u.chatid })
+                                        .then(() => { console.log(`❌ ${u.chatid} deleted`) })
+                                    }
+                                }
                             })
                     }, index * 40)
                 })
