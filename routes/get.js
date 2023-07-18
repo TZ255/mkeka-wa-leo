@@ -142,7 +142,7 @@ router.get('/betway/register', (req, res) => {
 })
 
 router.get('/contact/telegram', (req, res) => {
-    res.redirect('https://t.me/cute_helen255')
+    res.redirect('https://t.me/+n7Tlh61oNjYyODU0')
 })
 
 router.get('/admin/posting', async (req, res) => {
