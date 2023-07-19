@@ -83,19 +83,17 @@ router.get('/', async (req, res) => {
             })
         }
 
-        if(ktips1) {
-            for(let s of ktips1) {
-                let sikuData = s.siku.split('/')
-                let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
-                let calcDate = new Date(startDate)
-                calcDate.setHours(calcDate.getHours() + 2)
-                let endDate = calcDate.toISOString().replace(':00.000Z', '')
-                let matchdata = s.match.split(' - ')
-                ktips.push({
-                    siku: s.siku, time: s.time, tip: s.tip, 
-                    match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, startDate, endDate
-                })
-            }
+        for(let s of ktips1) {
+            let sikuData = s.siku.split('/')
+            let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
+            let calcDate = new Date(startDate)
+            calcDate.setHours(calcDate.getHours() + 2)
+            let endDate = calcDate.toISOString().replace(':00.000Z', '')
+            let matchdata = s.match.split(' - ')
+            ktips.push({
+                siku: s.siku, time: s.time, tip: s.tip, 
+                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, startDate, endDate
+            })
         }
 
 
