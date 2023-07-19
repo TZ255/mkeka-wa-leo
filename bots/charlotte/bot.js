@@ -248,6 +248,7 @@ const charlotteFn = async () => {
                     let rpId = ctx.channelPost.reply_to_message.message_id
                     let cdata = ctx.channelPost.text
                     let orgCap = ctx.channelPost.reply_to_message.caption
+                    let size = cdata.split('&size=')[1]
 
                     let posts = [
                         '62c84d54da06342665e31fb7',
@@ -270,14 +271,14 @@ const charlotteFn = async () => {
 
                     //post to XBONGO
                     let rtbot = `https://t.me/rahatupu_tzbot?start=RTBOT-${cdata}`
-                    let rpm = { inline_keyboard: [[{ text: '⬇ DOWNLOAD FULL VIDEO', url: rtbot }]] }
+                    let rpm = { inline_keyboard: [[{ text: `⬇ DOWNLOAD FULL VIDEO ${size} MB`, url: rtbot }]] }
 
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
 
                     await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/full-video-yenye-sauti/${cdata}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video-yenye-sauti/${cdata}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video-yenye-sauti/${cdata.split('&size=')[0]}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpm
                     })
                 }
@@ -289,6 +290,8 @@ const charlotteFn = async () => {
                 let cap_ent = ctx.channelPost.caption_entities
                 let caption = cap.split(' - With')[0].trim()
                 let msgId = ctx.channelPost.message_id
+                let fileBytes = ctx.channelPost.video.file_size
+                let fileMBs = Math.trunc(fileBytes/1024/1024)
                 let tday = new Date().toDateString()
 
                 await db.create({
@@ -298,9 +301,10 @@ const charlotteFn = async () => {
                     caption,
                     nano: fid + msgId,
                     fileType: 'video',
-                    msgId
+                    msgId,
+                    file_size: fileMBs
                 })
-                await ctx.reply(`<code>${fid + msgId}</code>`, { parse_mode: 'HTML' })
+                await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}</code>`, { parse_mode: 'HTML' })
             }
 
             if (ctx.channelPost.chat.id == imp.pzone && ctx.channelPost.forward_date) {
