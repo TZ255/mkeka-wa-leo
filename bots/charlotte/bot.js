@@ -54,7 +54,9 @@ const charlotteFn = async () => {
         })
     }
 
-
+    bot.catch((err, ctx)=> {
+        console.log(err.message)
+    })
 
     bot.start(async ctx => {
         let id = ctx.chat.id

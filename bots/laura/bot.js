@@ -38,6 +38,10 @@ const lauraMainFn = async () => {
         }
     }
 
+    botLaura.catch((err, ctx)=> {
+        console.log(err.message)
+    })
+
     botLaura.start(async ctx => {
         let chatid = ctx.chat.id
         let first_name = ctx.chat.first_name
