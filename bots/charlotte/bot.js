@@ -271,14 +271,14 @@ const charlotteFn = async () => {
 
                     //post to XBONGO
                     let rtbot = `https://t.me/rahatupu_tzbot?start=RTBOT-${cdata}`
-                    let rpm = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO ${size} MB`, url: rtbot }]] }
+                    let rpm = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: rtbot }]] }
 
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
 
-                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/full-video-yenye-sauti/${cdata}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
+                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video-yenye-sauti/${cdata}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video-yenye-sauti/${cdata.split('&size=')[0]}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video-yenye-sauti/${cdata}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpm
                     })
                 }
