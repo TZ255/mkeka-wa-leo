@@ -3,6 +3,7 @@ const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
 const graphModel = require('../model/graph-tips')
+const axios = require('axios').default
 
 //times
 const TimeAgo = require('javascript-time-ago')
@@ -99,8 +100,13 @@ router.get('/', async (req, res) => {
 
         res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds })
     } catch (err) {
-        console.log(err)
-        console.log(err.message)
+        console.log(err.message, err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 43
+        }).catch(e=> console.log(e.message, e))
     }
 
 })
