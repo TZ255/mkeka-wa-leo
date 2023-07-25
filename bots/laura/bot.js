@@ -10,6 +10,7 @@ const lauraMainFn = async () => {
     const chatsModel = require('./databases/chat')
     const dramastoreUsers = require('./databases/dstore-chats')
     const nyumbuModel = require('./databases/bongo-nyumbus')
+    const ugModel = require('./databases/uganda-nyumbus')
 
     const imp = {
         replyDb: -1001608248942,
@@ -108,6 +109,41 @@ const lauraMainFn = async () => {
                            if(bads.some((bad)=> description.includes(bad))) {
                             dramastoreUsers.findOneAndDelete({userId: u.userId})
                             .then(()=> console.log(`🚮 ${u.userId} deleted`))
+                            .catch(e=> console.log(`❌ ${e.message}`))
+                           } else{console.log(`🤷‍♂️ ${description}`)}
+                        }
+                    })
+                }, i * 40)
+            })
+        } catch (err) {
+            await ctx.reply(err.message)
+        }
+    })
+
+    bot.command('editha', async ctx => {
+        try {
+            await ctx.reply('Starting')
+            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
+            let txt = ctx.message.text
+            let mid = Number(txt.split('=')[1])
+            let all = await ugModel.find()
+            let bads = ['blocked', 'initiate', 'deactivated']
+
+            all.forEach((u, i) => {
+                setTimeout(() => {
+                    axios.post(tgAPI, {
+                        chat_id: u.chatid,
+                        from_chat_id: -1001696592315, //mikekaDB
+                        message_id: mid
+                    }).then(()=> console.log('✅ Message sent to '+u.chatid))
+                    .catch(err=> {
+                        console.log(err.message)
+                        if(err.response && err.response.data && err.response.data.description) {
+                           let description = err.response.data.description
+                           description = description.toLowerCase()
+                           if(bads.some((bad)=> description.includes(bad))) {
+                            ugModel.findOneAndDelete({chatid: u.chatid})
+                            .then(()=> console.log(`🚮 ${u.chatid} deleted`))
                             .catch(e=> console.log(`❌ ${e.message}`))
                            } else{console.log(`🤷‍♂️ ${description}`)}
                         }
