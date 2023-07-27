@@ -3,6 +3,7 @@ const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
 const graphModel = require('../model/graph-tips')
+const affModel = require('../model/affiliates-analytics')
 const axios = require('axios').default
 
 //times
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
             }
         }
 
-        let slip = await betslip.find({date: d})
+        let slip = await betslip.find({ date: d })
 
         let megaOdds = 1
         let slipOdds = 1
@@ -71,7 +72,7 @@ router.get('/', async (req, res) => {
         let ktips = []
 
         //loop leo&kesho to create for schemaorg yyy-mmm-dddThh:mm
-        for(let s of stips1) {
+        for (let s of stips1) {
             let sikuData = s.siku.split('/')
             let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
             let calcDate = new Date(startDate)
@@ -79,12 +80,12 @@ router.get('/', async (req, res) => {
             let endDate = calcDate.toISOString().replace(':00.000Z', '')
             let matchdata = s.match.split(' - ')
             stips.push({
-                siku: s.siku, time: s.time, tip: s.tip, 
-                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, startDate, endDate
+                siku: s.siku, time: s.time, tip: s.tip,
+                match: { hm: matchdata[0], aw: matchdata[1] }, matokeo: s.matokeo, league: s.league, startDate, endDate
             })
         }
 
-        for(let s of ktips1) {
+        for (let s of ktips1) {
             let sikuData = s.siku.split('/')
             let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
             let calcDate = new Date(startDate)
@@ -92,8 +93,8 @@ router.get('/', async (req, res) => {
             let endDate = calcDate.toISOString().replace(':00.000Z', '')
             let matchdata = s.match.split(' - ')
             ktips.push({
-                siku: s.siku, time: s.time, tip: s.tip, 
-                match: {hm: matchdata[0], aw: matchdata[1]}, matokeo: s.matokeo, league: s.league, startDate, endDate
+                siku: s.siku, time: s.time, tip: s.tip,
+                match: { hm: matchdata[0], aw: matchdata[1] }, matokeo: s.matokeo, league: s.league, startDate, endDate
             })
         }
 
@@ -106,7 +107,7 @@ router.get('/', async (req, res) => {
             chat_id: 741815228,
             from_chat_id: -1001570087172, //matangazoDB
             message_id: 43
-        }).catch(e=> console.log(e.message, e))
+        }).catch(e => console.log(e.message, e))
     }
 
 })
@@ -130,21 +131,37 @@ router.get('/kesho', async (req, res) => {
 
 })
 
-router.get('/gsb/register', (req, res) => {
-    res.redirect('https://track.africabetpartners.com/visit/?bta=35468&nci=5439')
-})
-
-router.get('/pmatch/register', (req, res) => {
-    res.redirect('https://pmaff.com/?serial=61288670&creative_id=1788&anid=mkekawaleo&pid=mkekawaleo')
-})
-
-router.get('/10bet/register', (req, res) => {
-    res.redirect('https://go.aff.10betafrica.com/ys6tiwg4')
-})
-
-router.get('/betway/register', (req, res) => {
-    let url = `https://www.betway.co.tz/?btag=P94949-PR26600-CM88900-TS1988404&`
-    res.redirect(url)
+router.get('/:comp/register', async (req, res) => {
+    const comp = req.params.comp
+    let links = {
+        gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=5439`,
+        pmatch: `https://pmaff.com/?serial=61288670&creative_id=1788&anid=mkekawaleo&pid=mkekawaleo`,
+        meridian: `https://a.meridianbet.co.tz/c/kGdxSu`,
+        betway: `https://www.betway.co.tz/?btag=P94949-PR26600-CM88900-TS1988404&`,
+        premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`
+    }
+    try {
+        if (comp == 'gsb') {
+            res.redirect(links.gsb)
+            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { gsb: 1 } })
+        } else if (comp == 'pmatch') {
+            res.redirect(links.pmatch)
+            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { pmatch: 1 } })
+        } else if (comp == 'betway') {
+            res.redirect(links.betway)
+            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } })
+        } else if (comp == 'meridian') {
+            res.redirect(links.meridian)
+            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { meridian: 1 } })
+        } else if (comp == 'premier') {
+            res.redirect(links.premier)
+            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } })
+        }
+        
+        else {res.redirect('/')}
+    } catch (err) {
+        console.log(err.message)
+    }
 })
 
 router.get('/contact/telegram', (req, res) => {
@@ -157,33 +174,40 @@ router.get('/admin/posting', async (req, res) => {
     res.render('2-posting/post', { mikeka, slips })
 })
 
-router.get('/betslip/leo', async (req, res)=> {
+router.get('/betslip/leo', async (req, res) => {
     try {
-        let d = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
-        await graphModel.findOneAndUpdate({siku: '23/04/2023'}, {$inc: {loaded: 1}})
-        let slip = await betslip.find({date: d})
+        let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        await graphModel.findOneAndUpdate({ siku: '23/04/2023' }, { $inc: { loaded: 1 } })
+        let slip = await betslip.find({ date: d })
         let slipOdds = 1
         for (let od of slip) {
             slipOdds = (slipOdds * od.odd).toFixed(2)
         }
-        res.render('3-landing/landing', {slip, slipOdds})
+        res.render('3-landing/landing', { slip, slipOdds })
     } catch (err) {
         console.log(err.message)
     }
 })
 
 //articles
-router.get('/article/:path', async (req, res)=> {
+router.get('/article/:path', async (req, res) => {
     try {
         let path = req.params.path
+        let dt = {
+            mwaka: new Date().getFullYear()
+        }
 
-        switch(path) {
+        switch (path) {
             case 'mbinu-za-kushinda-betting':
-                res.render('4-articles/mbinu');
+                res.render('4-articles/mbinu/mbinu');
+                break;
+
+            case 'kampuni-bora-za-kubet-tanzania':
+                res.render('4-articles/kampuni/kampuni', { dt })
                 break;
 
             default:
-                res.sendStatus(404);
+                res.redirect('/');
         }
     } catch (err) {
         console.log(err.message)
@@ -191,7 +215,7 @@ router.get('/article/:path', async (req, res)=> {
 })
 
 router.all('*', (req, res) => {
-    res.sendStatus(404)
+    res.redirect('/')
 })
 
 module.exports = router

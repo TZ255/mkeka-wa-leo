@@ -11,16 +11,16 @@ const app = express()
 
 // database connection
 mongoose.connect(`mongodb://${process.env.USER}:${process.env.PASS}@nodetuts-shard-00-00.ngo9k.mongodb.net:27017,nodetuts-shard-00-01.ngo9k.mongodb.net:27017,nodetuts-shard-00-02.ngo9k.mongodb.net:27017/mkeka-wa-leo?authSource=admin&replicaSet=atlas-pyxyme-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`)
-.then(()=> console.log('Connected to Mkeka Database'))
-.catch((err)=> {
-    console.log(err)
-})
+    .then(() => console.log('Connected to Mkeka Database'))
+    .catch((err) => {
+        console.log(err)
+    })
 
 const limiter = elimit({
-	windowMs: 60 * 1000, // 1 minute
-	max: 7, // Limit each IP to 7 requests per `window` (here, per 1 minute)
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    windowMs: 60 * 1000, // 1 minute
+    max: 20, // Limit each IP to 20 requests per `window` (here, per 1 minute)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
     message: "To many request, please try again after 3 minutes"
 })
 
@@ -35,12 +35,14 @@ app.use(postRouter)
 app.use(getRouter)
 
 //Attached Bots Goes Here
-lauraSourceCodes.bot()
-CharlloteSourceCodes.bot()
+if (process.env.local != 'true') {
+    lauraSourceCodes.bot()
+    CharlloteSourceCodes.bot()
+}
 
 
 
-app.listen(process.env.PORT || 3000, ()=> console.log('Running on port 3000'))
+app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))
 
 process.on('unhandledRejection', (reason, promise) => {
     console.log(reason)

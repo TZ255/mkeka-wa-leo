@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Hizi hapa ndio kampuni  bora za betting Tanzania kwa mwaka <%= dt.mwaka %>. Ni kampuni zenye bonus kubwa na usalama kwa pesa zako. Best Betting Sites in Tanzania for <%= dt.mwaka %>">
+    <title>Kampuni 5 Bora za Betting Tanzania Kwa Mwaka <%= dt.mwaka %></title>
+    <%- include('./partials/style.ejs'); %>
+    <%- include('../../0-global/style.ejs'); %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <%- include('../../0-global/favicon.ejs') %>
+</head>
+
+<body>
+    <%- include('../../0-global/header.ejs'); %>
+    <main>
+        <section class="left">
+            <div class="utangulizi">
+                <h1 class="h2" style="font-size: 18px;"><%= dt.mwaka %> - Kampuni Bora za Betting Tanzania</h1>
+                <p class="p">
+                    Hapa tumechambua na kulinganisha kampuni mbalimbali za michezo ya kubashiri mtandaoni na kuja na
+                    kampuni bora tano kwa mwaka huu <%= dt.mwaka %> nchini Tanzania.
+                </p>
+                <p class="p">
+                    Zifuatazo ni kampuni ambazo zinaongoza kwa huduma nzuri kwa wateja, bonus kubwa, uharaka wa kuweka
+                    na kutoa pesa na machaguo mengi ya bashiri.
+                </p>
+            </div>
+
+            <div class="makampuni">
+                <ul class="mama">
+                    <%- include('./partials/list') %>
+                </ul>
+            </div>
+
+            <div class="malizia">
+                <p class="p">
+                    Na hizo hapo juu ndio kampuni 5 bora za michezo ya kubashiri nchini Tanzania kwa mwaka huu
+                    <%= dt.mwaka %>. Kampuni zote ziko chini ya usimamizi wa <b>Bodi ya Michezo ya Kubahatisha
+                        Tanzania</b>
+                </p>
+                <div>
+                    <h3>Bodi ya Michezo ya Kubahatisha ni Kitu Gani?</h3>
+                    <p class="p pi">
+                        Bodi ya Michezo ya Kubahatisha Tanzania ni chombo cha udhibiti wa michezo ya kubahatisha ambacho
+                        kilianzishwa chini ya Sheria ya Michezo ya Kubahatisha Cap. 41 na kuanza kutumika tarehe 1 Julai
+                        2003. Ina jukumu la kusimamia, kufuatilia na kudhibiti uendeshaji wa shughuli za michezo ya
+                        kubahatisha nchini Tanzania.
+                    </p>
+                    <p class="p pi">
+                        Sekta ya michezo ya kubahatisha nchini Tanzania hapo awali ilidhibitiwa chini ya Sheria ya
+                        Madimbwi na Bahati Nasibu, 1967 na Sheria ya Bahati Nasibu ya Taifa, 1974. Hadi kuanza kwa
+                        mageuzi ya kiuchumi mwaka 1985, ni bahati nasibu ya kitaifa pekee ndiyo iliyoendeshwa kama
+                        shughuli muhimu ya michezo ya kubahatisha nchini Tanzania na Bahati Nasibu ya Taifa iliyokufa. .
+                        Sera ya ukombozi wa kiuchumi na mipango ya mageuzi, na haswa kupitishwa kwa Sheria ya Kitaifa ya
+                        Matangazo na Ulinzi ya Uwekezaji ya 1992, ilichochea miradi ya uwekezaji katika tasnia ya hoteli
+                        na burudani. Marekebisho yanayoendelea ya kiuchumi yalilazimu kuundwa kwa Sera ya Kitaifa ya
+                        Shughuli za Michezo ya Kubahatisha na baadaye kupitishwa kwa Sheria ya Michezo ya Kubahatisha
+                        Sura. 41, hivyo basi Bodi ya Michezo ya Kubahatisha Tanzania.
+                    </p>
+                </div>
+
+            </div>
+            <br><br><br>
+        </section>
+
+        <%- include('../../0-global/right.ejs'); %>
+    </main>
+
+    <%- include('../../0-global/footer.ejs'); %>
+
+    <%- include('./partials/script.ejs'); %>
+    <%- include('../../0-global/script.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
