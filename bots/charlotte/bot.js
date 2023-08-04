@@ -250,9 +250,9 @@ const charlotteFn = async () => {
                     let rpId = ctx.channelPost.reply_to_message.message_id
                     let cdata = ctx.channelPost.text
                     let orgCap = ctx.channelPost.reply_to_message.caption
-                    let seconds = ctx.channelPost.reply_to_message.video.duration
-                    let dakika = Math.trunc(seconds/60)
-                    let size = cdata.split('&size=')[1]
+                    let size = cdata.split('&size=')[1].split('&dur')[0]
+                    let seconds = cdata.split('&dur=')[1]
+                    let dakika = Math.trunc(Number(seconds)/60)
 
                     let posts = [
                         '62c84d54da06342665e31fb7',
@@ -298,6 +298,7 @@ const charlotteFn = async () => {
                 let msgId = ctx.channelPost.message_id
                 let fileBytes = ctx.channelPost.video.file_size
                 let fileMBs = Math.trunc(fileBytes/1024/1024)
+                let duration = ctx.channelPost.video.duration
                 let tday = new Date().toDateString()
 
                 await db.create({
@@ -310,7 +311,7 @@ const charlotteFn = async () => {
                     msgId,
                     file_size: fileMBs
                 })
-                await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}</code>`, { parse_mode: 'HTML' })
+                await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}&dur=${duration}</code>`, { parse_mode: 'HTML' })
             }
 
             if (ctx.channelPost.chat.id == imp.pzone && ctx.channelPost.forward_date) {
