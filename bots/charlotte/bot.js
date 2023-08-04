@@ -250,6 +250,8 @@ const charlotteFn = async () => {
                     let rpId = ctx.channelPost.reply_to_message.message_id
                     let cdata = ctx.channelPost.text
                     let orgCap = ctx.channelPost.reply_to_message.caption
+                    let seconds = ctx.channelPost.reply_to_message.video.duration
+                    let dakika = Math.trunc(seconds/60)
                     let size = cdata.split('&size=')[1]
 
                     let posts = [
@@ -277,10 +279,12 @@ const charlotteFn = async () => {
 
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
+                    let dots = '•••••••••••••••••••••••••••••••••••••••••••'
+                    let trimSize = cdata.split('&size')[0]
 
-                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video-/${cdata}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
+                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video-/${cdata}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpm
                     })
                 }
