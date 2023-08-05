@@ -68,7 +68,7 @@ const helenCodes = async () => {
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 
-    bot.command(['start', 'help', '/stop'], async ctx => {
+    bot.command(['start', 'help', 'stop'], async ctx => {
         try {
             let typ = 'start command'
             await bot.telegram.copyMessage(ctx.chat.id, imp.pzone, 7653, {
@@ -98,7 +98,7 @@ const helenCodes = async () => {
         }
     })
 
-    bot.command('/broadcast', async ctx => {
+    bot.command('broadcast', async ctx => {
         let myId = ctx.chat.id
         let txt = ctx.message.text
         let msg_id = Number(txt.split('/broadcast-')[1].trim())
@@ -136,7 +136,7 @@ const helenCodes = async () => {
 
     })
 
-    bot.command('/convo', async ctx => {
+    bot.command('convo', async ctx => {
         let myId = ctx.chat.id
         let txt = ctx.message.text
         let msg_id = Number(txt.split('/convo-')[1].trim())
@@ -151,12 +151,12 @@ const helenCodes = async () => {
                                 ctx.reply('Nimemaliza conversation')
                             }
                             bot.telegram.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
-                                .then(() => console.log('convo sent to ' + u.chatid))
+                                .then(() => console.log('✅ convo sent to ' + u.chatid))
                                 .catch((err) => {
                                     if (err.message.includes('blocked') || err.message.includes('initiate')) {
                                         nyumbuModel.findOneAndDelete({ chatid: u.chatid })
-                                            .then(() => { console.log(u.chatid + ' is deleted') })
-                                    }
+                                            .then(() => { console.log(u.chatid + ' is deleted 🚮') })
+                                    } else {console.log('🤷‍♂️ '+err.message)}
                                 })
                         }, index * 40)
                     }
@@ -188,7 +188,7 @@ const helenCodes = async () => {
         }
     })
 
-    bot.command('/mkeka3', async ctx => {
+    bot.command('mkeka3', async ctx => {
         try {
             await call_sendMikeka_functions.sendMkeka3(ctx, delay, bot, imp)
         } catch (err) {
@@ -199,7 +199,7 @@ const helenCodes = async () => {
 
     })
 
-    bot.command('/kesho', async ctx => {
+    bot.command('kesho', async ctx => {
         try {
             let d = new Date()
             d.setDate(d.getDate() + 1)
@@ -227,7 +227,7 @@ const helenCodes = async () => {
 
     })
 
-    bot.command('/jana', async ctx => {
+    bot.command('jana', async ctx => {
         try {
             let d = new Date()
             d.setDate(d.getDate() - 1)
@@ -271,7 +271,7 @@ const helenCodes = async () => {
             .catch((err) => console.log(err.message))
     })
 
-    bot.command('/sll', async ctx => {
+    bot.command('sll', async ctx => {
         await nyumbuModel.updateMany({}, { $set: { refferer: "Helen" } })
         ctx.reply('Updated')
     })
@@ -294,7 +294,7 @@ const helenCodes = async () => {
         }
     })
 
-    bot.command('/post_to_channels', async ctx => {
+    bot.command('post_to_channels', async ctx => {
         let txt = ctx.message.text
         let ch_link = 'https://t.me/+804l_wD7yYgzM2Q0'
         let pload_link = `https://t.me/PipyTidaBot?start=ngono_bongo`
@@ -321,7 +321,7 @@ const helenCodes = async () => {
         }
     })
 
-    bot.command('/kujisajili', async ctx => {
+    bot.command('kujisajili', async ctx => {
         try {
             await bot.telegram.copyMessage(ctx.chat.id, imp.pzone, 7595)
         } catch (err) {
@@ -329,7 +329,7 @@ const helenCodes = async () => {
         }
     })
 
-    bot.command('/kudeposit', async ctx => {
+    bot.command('kudeposit', async ctx => {
         try {
             await bot.telegram.copyMessage(ctx.chat.id, imp.pzone, 7596)
         } catch (err) {
