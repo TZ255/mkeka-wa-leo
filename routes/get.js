@@ -138,7 +138,9 @@ router.get('/:comp/register', async (req, res) => {
         pmatch: `https://pmaff.com/?serial=61288670&creative_id=1788&anid=mkekawaleo&pid=mkekawaleo`,
         meridian: `https://a.meridianbet.co.tz/c/kGdxSu`,
         betway: `https://www.betway.co.tz/?btag=P94949-PR26600-CM88900-TS1988404&`,
-        premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`
+        premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
+        betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
+        gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`
     }
     try {
         if (comp == 'gsb') {
@@ -156,6 +158,14 @@ router.get('/:comp/register', async (req, res) => {
         } else if (comp == 'premier') {
             res.redirect(links.premier)
             await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } })
+        } else if (comp == 'betika-ke') {
+            res.redirect(links.betika)
+        } else if (comp == 'gsb-tz') {
+            res.redirect(links.gsb)
+        } else if (comp == 'gsb-ug') {
+            res.redirect(links.gsb_ug)
+        } else if (comp == 'betway-tz') {
+            res.redirect(links.betway)
         }
         
         else {res.redirect('/')}

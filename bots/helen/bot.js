@@ -140,6 +140,7 @@ const helenCodes = async () => {
         let myId = ctx.chat.id
         let txt = ctx.message.text
         let msg_id = Number(txt.split('/convo-')[1].trim())
+        let bads = ['bot was blocked', 'deactivated', 'initiate']
         if (myId == imp.shemdoe || myId == imp.halot) {
             try {
                 let all_users = await nyumbuModel.find({ refferer: "Helen" })
@@ -152,10 +153,10 @@ const helenCodes = async () => {
                             }
                             bot.telegram.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
                                 .then(() => console.log('✅ convo sent to ' + u.chatid))
-                                .catch((err) => {
-                                    if (err.message.includes('blocked') || err.message.includes('initiate')) {
-                                        nyumbuModel.findOneAndDelete({ chatid: u.chatid })
-                                            .then(() => { console.log(u.chatid + ' is deleted 🚮') })
+                                .catch(async(err) => {
+                                    if (bads.some((bad) => err.message.includes(bad))) {
+                                        await nyumbuModel.findOneAndDelete({ chatid: u.chatid }).catch(e=> console.log('❌ Failed to delete user'))
+                                        console.log(u.chatid + ' is deleted 🚮')
                                     } else {console.log('🤷‍♂️ '+err.message)}
                                 })
                         }, index * 40)
