@@ -56,10 +56,10 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             let bwTZ = `https://mkekawaleo.com/betway-tz/register`
             let gsb = 'https://mkekawaleo.com/gsb-tz/register'
             let pm = `https://pmaff.com/?serial=61291818&creative_id=1788`
-            let ke = `https://mkekawaleo.com/betika-ke/register`
+            let ke = `https://mkekawaleo.com/22bet-ke/register`
             let ug = `https://mkekawaleo.com/gsb-ug/register`
 
-            let finaText = txt + `<b>🔥 Total Odds: ${odds}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nMkeka huu umeandaliwa BetWay\n\n<i>» Ofa ya 50% deposit ya kwanza.\n» Betslip yenye bonus hadi 700%.\n» Cash-out inapatikana muda wote.</i> \n\nKama bado huna account,\n\n<b>✓ Jisajili Hapa \n\n👤 (Tanzania 🇹🇿)</b>\n<a href="${bwTZ}">https://betway.co.tz/register\nhttps://betway.co.tz/register</a>\n▬\n<b>👤 (Kenya 🇰🇪)</b>\n<a href="${ke}">https://betika.co.ke/register</a>\n▬\n<b>👤 (Uganda 🇺🇬)</b>\n<a href="${ug}">https://m.gsb.ug/register</a>\n\n©MkekaWaLeo`
+            let finaText = txt + `<b>🔥 Total Odds: ${odds}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nMkeka huu umeandaliwa BetWay\n\n<i>» Ofa ya 50% deposit ya kwanza.\n» Betslip yenye bonus hadi 700%.\n» Cash-out inapatikana muda wote.</i> \n\nKama bado huna account,\n\n<b>✓ Jisajili Hapa \n\n👤 (Tanzania 🇹🇿)</b>\n<a href="${bwTZ}">https://betway.co.tz/register\nhttps://betway.co.tz/register</a>\n▬\n<b>👤 (Kenya 🇰🇪)</b>\n<a href="${ke}">https://22bet.co.ke/register</a>\n▬\n<b>👤 (Uganda 🇺🇬)</b>\n<a href="${ug}">https://m.gsb.ug/register</a>\n\n©MkekaWaLeo`
 
             await ctx.reply(finaText, { parse_mode: 'HTML', disable_web_page_preview: true })
         } else {

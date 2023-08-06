@@ -140,7 +140,8 @@ router.get('/:comp/register', async (req, res) => {
         betway: `https://www.betway.co.tz/?btag=P94949-PR26600-CM88900-TS1988404&`,
         premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
         betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
-        gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`
+        gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`,
+        ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=73513&bid=1570`
     }
     try {
         if (comp == 'gsb') {
@@ -166,6 +167,8 @@ router.get('/:comp/register', async (req, res) => {
             res.redirect(links.gsb_ug)
         } else if (comp == 'betway-tz') {
             res.redirect(links.betway)
+        } else if (comp == '22bet-ke') {
+            res.redirect(links.ke_22bet)
         }
         
         else {res.redirect('/')}
