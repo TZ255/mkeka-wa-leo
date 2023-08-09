@@ -144,34 +144,48 @@ router.get('/:comp/register', async (req, res) => {
         ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=73513&bid=1570`
     }
     try {
-        if (comp == 'gsb') {
-            res.redirect(links.gsb)
-            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { gsb: 1 } })
-        } else if (comp == 'pmatch') {
-            res.redirect(links.pmatch)
-            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { pmatch: 1 } })
-        } else if (comp == 'betway') {
-            res.redirect(links.betway)
-            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } })
-        } else if (comp == 'meridian') {
-            res.redirect(links.meridian)
-            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { meridian: 1 } })
-        } else if (comp == 'premier') {
-            res.redirect(links.premier)
-            await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } })
-        } else if (comp == 'betika-ke') {
-            res.redirect(links.betika)
-        } else if (comp == 'gsb-tz') {
-            res.redirect(links.gsb)
-        } else if (comp == 'gsb-ug') {
-            res.redirect(links.gsb_ug)
-        } else if (comp == 'betway-tz') {
-            res.redirect(links.betway)
-        } else if (comp == '22bet-ke') {
-            res.redirect(links.ke_22bet)
+        switch (comp) {
+            case 'gsb':
+                res.redirect(links.gsb);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { gsb: 1 } });
+                break;
+            case 'pmatch':
+                res.redirect(links.pmatch);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { pmatch: 1 } });
+                break;
+            case 'betway':
+                res.redirect(links.betway);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
+                break;
+            case 'meridian':
+                res.redirect(links.meridian);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { meridian: 1 } });
+                break;
+            case 'premier':
+                res.redirect(links.premier);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
+                break;
+
+            //bots redirects
+            case 'betika-ke': case '22bet-ke':
+                res.redirect(links.ke_22bet);
+                break;
+            case 'gsb-tz':
+                res.redirect(links.gsb);
+                break;
+            case 'gsb-ug':
+                res.redirect(links.gsb_ug);
+                break;
+            case 'betway-tz':
+                res.redirect(links.betway);
+                break;
+            case 'premierbet':
+                res.redirect(links.premier);
+                break;
+            default:
+                res.redirect('/');
+                break;
         }
-        
-        else {res.redirect('/')}
     } catch (err) {
         console.log(err.message)
     }
