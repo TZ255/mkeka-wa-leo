@@ -193,6 +193,42 @@ router.post('/delete-slip/:id', async (req, res)=> {
     }
 })
 
+router.post('/edit-mkeka/:id', async (req, res)=> {
+    let _id = req.params.id
+    let sec = req.body.secret
+    let tip = req.body.bet
+    let odds = req.body.odds
+
+    let prev = await mikekaDb.findById(_id)
+    let homeTeam = prev.match.split(' - ')[0]
+    let awayTeam = prev.match.split(' - ')[1]
+
+    switch(tip) {
+        case 'Away total: (Over 1.5)':
+            tip = `${awayTeam} total: (Over 1.5)`
+            break;
+
+        case 'Home total: (Over 1.5)':
+            tip = `${homeTeam} total: (Over 1.5)`
+            break;
+
+        case 'Away Win':
+            tip = `${awayTeam} Win`
+            break;
+
+        case 'Home Win':
+            tip = `${homeTeam} Win`
+            break;
+    }
+
+    if(sec == '5654') {
+        let upd = await mikekaDb.findByIdAndUpdate(_id, {$set: {bet: tip, odds}}, {new: true})
+        res.redirect(`/admin/posting#${upd._id}`)
+    } else {
+        res.send('Not found')
+    }
+})
+
 router.post('/edit-slip/:id', async (req, res)=> {
     let _id = req.params.id
     let sec = req.body.secret

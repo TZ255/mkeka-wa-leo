@@ -221,7 +221,7 @@
                         <%= mk.match %>
                     </span>
                     <span class="bt">
-                        <%= mk.tip %> @ <%= mk.odd %>
+                        <%= mk.tip %> @ <%= mk.odds %>
                     </span>
                 </div>
                 <div class="delete" style=" width: 30;">
@@ -235,6 +235,39 @@
             <% } %>
     </div>
     <br><br><br>
+    <h2>Editing Mikeka DB</h2>
+    <div class="mikeka">
+        <% for( let mk of mikeka ) { %>
+            <div class="editmatch" id="<%= mk._id %>">
+                <div class="oneg">
+                    <div class="dt">
+                        <%= mk.date %>
+                    </div>
+                    <div class="mtc">
+                        <span class="gm">
+                            <%= mk.match %>
+                        </span> <br>
+                        <span class="bt">
+                            <%= mk.bet %> @ <%= mk.odds %>
+                        </span>
+                    </div>
+                </div>
+                <div class="edit" style=" width: 30;">
+                    <form action="/edit-mkeka/<%= mk._id %>" method="post"
+                        style="display: flex; justify-content: space-between;">
+                        <%- include('./partials/options.ejs'); %>
+                            <input type="number" placeholder="Odds" name="odds" required step="any">
+                            <input type="text" name="secret" placeholder="secret" required style="display: block;">
+                            <button type="submit" style="display: flex;">Edit</button>
+                    </form>
+                </div>
+                <br>
+                <hr><br>
+            </div>
+            <% } %>
+    </div>
+    <br><br><br>
+
     <!-- editing Betslips -->
     <h2>Editing Betslips</h2>
     <div class="mikeka">
