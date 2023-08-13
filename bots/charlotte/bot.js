@@ -36,6 +36,7 @@ const charlotteFn = async () => {
         rtgrp: -1001899312985,
         rtprem: -1001946174983,
         rt4i4n: -1001880391908,
+        rt4i4n2: -1001701399778,
         rtmalipo: 5849160770
     }
 
@@ -135,21 +136,22 @@ const charlotteFn = async () => {
     bot.command('iphone', async ctx => {
         if (ctx.chat.id == imp.rtmalipo) {
             try {
+                let dest = Number(ctx.message.text.split('=')[1])
                 let all = await gifsModel.find()
 
                 for (let [index, v] of all.entries()) {
                     setTimeout(() => {
                         let url = `https://t.me/rahatupu_tzbot?start=RTBOT-${v.nano}`
-                        bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, v.gifId, {
+                        bot.telegram.copyMessage(dest, imp.replyDb, v.gifId, {
                             reply_markup: {
                                 inline_keyboard: [
                                     [
-                                        { text: '⬇ DOWNLOAD FULL VIDEO', url }
+                                        { text: '📥 DOWNLOAD FULL VIDEO', url }
                                     ]
                                 ]
                             }
                         })
-                            .catch(e => console.log(e.message))
+                        .catch(e => console.log(e.message))
                     }, index * 3.5 * 1000)
                 }
             } catch (err) {
@@ -162,7 +164,7 @@ const charlotteFn = async () => {
     call_reactions_function(bot, imp)
 
     bot.command('broadcast', async ctx => {
-        let deleteErrs = ['user is deactivated', 'chat not found', 'bot was blocked by the user']
+        let deleteErrs = ['user is deactivated', 'bot was blocked by the user']
         let url = 'https://redirecting5.eu/p/tveg/GFOt/46RX'
         let bdsmGame = `https://t.aagm.link/153258/7592/0?bo=3511,3512,3521,3522`
         let rp_mkup = {
@@ -279,12 +281,17 @@ const charlotteFn = async () => {
 
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
+                    let _post3 = await bot.telegram.copyMessage(imp.rt4i4n2, imp.replyDb, rpId)
                     let dots = '•••••••••••••••••••••••••••••••••••••••••••'
                     let trimSize = cdata.split('&size')[0]
 
                     await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
                     await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                        parse_mode: 'HTML', reply_markup: rpm
+                    })
+
+                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpm
                     })
                 }
