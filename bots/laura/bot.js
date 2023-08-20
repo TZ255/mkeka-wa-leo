@@ -5,6 +5,7 @@
 //Laura Codes Starting Here
 const lauraMainFn = async () => {
     const axios = require('axios').default
+    const imdb = require('imdb-api')
     const { Telegraf } = require('telegraf')
     const bot = new Telegraf(process.env.LAURA_TOKEN)
     const chatsModel = require('./databases/chat')
@@ -28,29 +29,25 @@ const lauraMainFn = async () => {
         rt4i4n: -1001880391908,
         rtmalipo: 5849160770,
         matangazoDB: -1001570087172,
+        scrapin: -1001858785908,
+        muvikaDB: -1001802963728
     }
 
     const checkerFn = async (chatid, country, first_name) => {
         let check = await chatsModel.findOne({ chatid })
         if (!check) {
-            let watu = await chatsModel.countDocuments()
             await chatsModel.create({
                 chatid, country, first_name
             })
-            await bot.telegram.sendMessage(imp.shemdoe, `new user from ${country} with the name ${first_name} added to the database. We have now have total of ${watu + 1} people`)
         }
     }
 
-    const nyumbuChecker = async (chatid, username, bot)=> {
-        let check = await nyumbuModel.findOne({chatid})
-        if(!check) {
+    const nyumbuChecker = async (chatid, username, bot) => {
+        let check = await nyumbuModel.findOne({ chatid })
+        if (!check) {
             await nyumbuModel.create({
                 chatid, username, refferer: 'Laura'
             })
-            let watu = await nyumbuModel.countDocuments({refferer: 'Laura'})
-            await bot.telegram.sendMessage(imp.shemdoe, `new Munyero added with name ${username} | we have now ${watu + 1} munyeros`)
-        } else {
-            await bot.telegram.sendMessage(imp.shemdoe, `😡 Munyero is not new`)
         }
     }
 
@@ -72,10 +69,10 @@ const lauraMainFn = async () => {
                         await ctx.reply(`To get this Telenovela please join the channel below.\n\n<b>📺 Brazillian Telenovelas:</b>\n<i>❕${link}\n❕${link}</i>\n\n\n<b>⚠ Disclaimer:</b>\n<i>❕I'm not the owner of the above channel nor affiliate in any of the content in it.</i>`, { parse_mode: 'HTML' })
                         break;
 
-                        case 'kuzimu_ndogo':
-                            await nyumbuChecker(chatid, first_name, bot)
-                            await bot.telegram.copyMessage(chatid, imp.pzone, 8994)
-                            break;
+                    case 'kuzimu_ndogo':
+                        await nyumbuChecker(chatid, first_name, bot)
+                        await bot.telegram.copyMessage(chatid, imp.pzone, 8994)
+                        break;
                 }
             } else {
                 await ctx.reply(`"Hi! Welcome. \n\nI'm Laura, and I can help you find great content on Telegram. Just let me know what information you're looking for, and I'll forward your request to my creator, who will do their best to retrieve it for you. Once they've obtained the information, I'll come back to you with what you're seeking."`)
@@ -100,19 +97,19 @@ const lauraMainFn = async () => {
                         chat_id: u.userId,
                         from_chat_id: -1001570087172, //matangazoDB
                         message_id: mid
-                    }).then(()=> console.log('✅ Message sent to '+u.userId))
-                    .catch(err=> {
-                        console.log(err.message)
-                        if(err.response && err.response.data && err.response.data.description) {
-                           let description = err.response.data.description
-                           description = description.toLowerCase()
-                           if(bads.some((bad)=> description.includes(bad))) {
-                            dramastoreUsers.findOneAndDelete({userId: u.userId})
-                            .then(()=> console.log(`🚮 ${u.userId} deleted`))
-                            .catch(e=> console.log(`❌ ${e.message}`))
-                           } else{console.log(`🤷‍♂️ ${description}`)}
-                        }
-                    })
+                    }).then(() => console.log('✅ Message sent to ' + u.userId))
+                        .catch(err => {
+                            console.log(err.message)
+                            if (err.response && err.response.data && err.response.data.description) {
+                                let description = err.response.data.description
+                                description = description.toLowerCase()
+                                if (bads.some((bad) => description.includes(bad))) {
+                                    dramastoreUsers.findOneAndDelete({ userId: u.userId })
+                                        .then(() => console.log(`🚮 ${u.userId} deleted`))
+                                        .catch(e => console.log(`❌ ${e.message}`))
+                                } else { console.log(`🤷‍♂️ ${description}`) }
+                            }
+                        })
                 }, i * 40)
             })
         } catch (err) {
@@ -135,19 +132,19 @@ const lauraMainFn = async () => {
                         chat_id: u.chatid,
                         from_chat_id: -1001696592315, //mikekaDB
                         message_id: mid
-                    }).then(()=> console.log('✅ Message sent to '+u.chatid))
-                    .catch(err=> {
-                        console.log(err.message)
-                        if(err.response && err.response.data && err.response.data.description) {
-                           let description = err.response.data.description
-                           description = description.toLowerCase()
-                           if(bads.some((bad)=> description.includes(bad))) {
-                            ugModel.findOneAndDelete({chatid: u.chatid})
-                            .then(()=> console.log(`🚮 ${u.chatid} deleted`))
-                            .catch(e=> console.log(`❌ ${e.message}`))
-                           } else{console.log(`🤷‍♂️ ${description}`)}
-                        }
-                    })
+                    }).then(() => console.log('✅ Message sent to ' + u.chatid))
+                        .catch(err => {
+                            console.log(err.message)
+                            if (err.response && err.response.data && err.response.data.description) {
+                                let description = err.response.data.description
+                                description = description.toLowerCase()
+                                if (bads.some((bad) => description.includes(bad))) {
+                                    ugModel.findOneAndDelete({ chatid: u.chatid })
+                                        .then(() => console.log(`🚮 ${u.chatid} deleted`))
+                                        .catch(e => console.log(`❌ ${e.message}`))
+                                } else { console.log(`🤷‍♂️ ${description}`) }
+                            }
+                        })
                 }, i * 40)
             })
         } catch (err) {
@@ -168,7 +165,8 @@ const lauraMainFn = async () => {
 
     bot.on('channel_post', async ctx => {
         try {
-            if (ctx.channelPost.text) {
+            let chan_id = ctx.channelPost.chat.id
+            if (ctx.channelPost.text && ![imp.scrapin, imp.muvikaDB].includes(chan_id)) {
                 let txt = ctx.channelPost.text
                 let msgid = ctx.channelPost.message_id
                 if (txt.toLowerCase() == 'add telenovela') {
@@ -183,6 +181,7 @@ const lauraMainFn = async () => {
                     }, 2000)
                 }
             }
+
         } catch (err) {
             console.log(err.message, err)
             await ctx.reply(err.message)
