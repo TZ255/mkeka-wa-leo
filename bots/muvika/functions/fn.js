@@ -23,15 +23,20 @@ const createUser = async (ctx, delay) => {
 const sendPaidVideo = async (ctx, delay, bot, imp, vid, userid) => {
     let rt = `https://t.me/+lcBycrCJ_9o0ZGI0`
     //upload video
-    await ctx.sendChatAction('upload_video')
+    await ctx.sendChatAction('upload_document')
     let dvid = await bot.telegram.copyMessage(userid, imp.muvikaDB, vid.msgid, {
         reply_markup: {
-            inline_keyboard: [
+            keyboard: [
                 [
-                    { text: "💰 Points Zangu", callback_data: 'salio' },
-                    { text: "➕ Ongeza Points", callback_data: 'vid_ongeza_pts' },
+                    { text: "💰 Points Zangu" },
+                    { text: "➕ Ongeza Points" },
+                ],
+                [
+                    { text: "⛑ Help / Msaada ⛑" }
                 ]
-            ]
+            ],
+            is_persistent: false,
+            resize_keyboard: true
         }
     })
 
@@ -48,17 +53,12 @@ const sendPaidVideo = async (ctx, delay, bot, imp, vid, userid) => {
                 reply_to_message_id: dvid.message_id,
                 parse_mode: "HTML",
                 reply_markup: {
-                    keyboard: [
+                    inline_keyboard: [
                         [
-                            { text: "💰 Points Zangu" },
-                            { text: "➕ Ongeza Points" },
-                        ],
-                        [
-                            { text: "⛑ Help / Msaada ⛑" }
+                            { text: "💰 Points Zangu", callback_data: 'salio' },
+                            { text: "➕ Ongeza Points", callback_data: 'vid_ongeza_pts' },
                         ]
-                    ],
-                    is_persistent: false,
-                    resize_keyboard: true
+                    ]
                 }
             }).catch(e => console.log(e.message))
         }, 3000)
