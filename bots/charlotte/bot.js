@@ -276,8 +276,10 @@ const charlotteFn = async () => {
                     })
 
                     //post to XBONGO
-                    let rtbot = `https://t.me/rahatupu_tzbot?start=RTBOT-${cdata}`
+                    let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
+                    let rtios = `https://t.me/rahatupu_tzbot?start=iphone-RTBOT-${cdata}`
                     let rpm = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: rtbot }]] }
+                    let rpmios = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: rtios }]] }
 
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
@@ -287,12 +289,12 @@ const charlotteFn = async () => {
 
                     await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, {
-                        parse_mode: 'HTML', reply_markup: rpm
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                        parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, {
-                        parse_mode: 'HTML', reply_markup: rpm
+                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${orgCap}\n⏱ Muda: Dakika ${dakika}\n${dots}\n📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                        parse_mode: 'HTML', reply_markup: rpmios
                     })
                 }
             }
