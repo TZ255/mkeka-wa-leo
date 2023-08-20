@@ -92,11 +92,11 @@ const rtfunction = async () => {
 
                 let rev = await muvikaUsers.findOneAndUpdate({chatid: imp.muvikamalipo}, {$inc: {revenue: points}}, {new: true})
 
-                let txt1 = `User Points Added to ${upuser.points}\n\nMapato added to ${rev.revenue.toLocaleString('en-US')}`
+                let txt1 = `User Points Added to ${upuser.points}\n\n<tg-spoiler>Mapato added to ${rev.revenue.toLocaleString('en-US')}</tg-spoiler>`
                 
                 let txt2 = `<b>Hongera 🎉\nMalipo yako yamethibitishwa. Umepokea Points ${points} na sasa una jumla ya Points ${upuser.points} kwenye account yako ya Muvika.\n\nTumia points zako vizuri. Kumbuka Kila Movie utakayo download itakugharimu Points 250.\n\nEnjoy, ❤.</b>`
 
-                await ctx.reply(txt1)
+                await ctx.reply(txt1, {parse_mode: 'HTML'})
                 await delay(1000)
                 await bot.telegram.sendMessage(chatid, txt2, { parse_mode: 'HTML' })
             } else { await ctx.reply('You are not authorized to do this') }
@@ -283,11 +283,11 @@ const rtfunction = async () => {
             }
 
             if (chan_id == imp.muvikaDB && ctx.channelPost.document) {
-                let file_id = ctx.channelPost.document.file_id
+                let file_id = ctx.channelPost.document.file_unique_id
                 let msgid = ctx.channelPost.message_id
                 let nano = file_id + msgid
                 let doc = await muvikaFiles.create({ nano, msgid })
-                await ctx.reply(`<code>${doc.nano}</code>`)
+                await ctx.reply(`<code>${doc.nano}</code>`, {parse_mode: 'HTML'})
             }
         } catch (err) {
             console.log(err.message, err)
