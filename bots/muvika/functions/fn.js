@@ -1,5 +1,7 @@
 const muvikaUsers = require('../database/muvikaUsers')
 const binModel = require('../database/muvikabin')
+const tikModel = require('../database/tiktoks')
+const { TiktokStalk } = require("@tobyg74/tiktok-api-dl")
 
 const createUser = async (ctx, delay) => {
     try {
@@ -120,10 +122,29 @@ const rudiNyumaReply = async (bot, ctx, chatid, imp, msgid, cbmid) => {
     })
 }
 
+const fetching_tiktoks = async (bot, imp) => {
+    try {
+        let all = await tikModel.find()
+
+        for (let user of all) {
+            let userInfo = await TiktokStalk(user.tik_id)
+            if(userInfo.result.stats.videoCount > user.v_count) {
+                let txt = `new video found for the user https://www.tiktok.com/@${user.tik_id}`
+                await bot.telegram.sendMessage(imp.shemdoe, txt)
+                await user.updateOne({$set: {v_count: userInfo.result.stats.videoCount}})
+            }
+        }
+    } catch (err) {
+        console.log(err.message, err)
+        await bot.telegram.sendMessage(imp.shemdoe, err.message)
+    }
+}
+
 module.exports = {
     createUser,
     sendPaidVideo,
     payingInfo,
     mtandaoCallBack,
-    rudiNyumaReply
+    rudiNyumaReply,
+    fetching_tiktoks
 }

@@ -11,6 +11,7 @@
   "author": "shemdoe",
   "license": "ISC",
   "dependencies": {
+    "@tobyg74/tiktok-api-dl": "^1.0.4",
     "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.2",

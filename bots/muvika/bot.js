@@ -6,6 +6,8 @@ const rtfunction = async () => {
     const muvikaFiles = require('./database/muvika')
     const postersModel = require('./database/muvika-posters')
     const muvikaUsers = require('./database/muvikaUsers')
+    const tikModel = require('./database/tiktoks')
+    const { TiktokStalk } = require("@tobyg74/tiktok-api-dl")
     const imdb = require('imdb-api')
 
     //Middlewares
@@ -90,13 +92,13 @@ const rtfunction = async () => {
                     $set: { paid: true }
                 }, { new: true })
 
-                let rev = await muvikaUsers.findOneAndUpdate({chatid: imp.muvikamalipo}, {$inc: {revenue: points}}, {new: true})
+                let rev = await muvikaUsers.findOneAndUpdate({ chatid: imp.muvikamalipo }, { $inc: { revenue: points } }, { new: true })
 
                 let txt1 = `User Points Added to ${upuser.points}\n\n<tg-spoiler>Mapato added to ${rev.revenue.toLocaleString('en-US')}</tg-spoiler>`
-                
+
                 let txt2 = `<b>Hongera 🎉\nMalipo yako yamethibitishwa. Umepokea Points ${points} na sasa una jumla ya Points ${upuser.points} kwenye account yako ya Muvika.\n\nTumia points zako vizuri. Kumbuka Kila Movie utakayo download itakugharimu Points 250.\n\nEnjoy, ❤.</b>`
 
-                await ctx.reply(txt1, {parse_mode: 'HTML'})
+                await ctx.reply(txt1, { parse_mode: 'HTML' })
                 await delay(1000)
                 await bot.telegram.sendMessage(chatid, txt2, { parse_mode: 'HTML' })
             } else { await ctx.reply('You are not authorized to do this') }
@@ -108,11 +110,11 @@ const rtfunction = async () => {
         }
     })
 
-    bot.command('rev', async ctx=> {
+    bot.command('rev', async ctx => {
         try {
-            let rt = await muvikaUsers.findOne({chatid: imp.muvikamalipo})
-            let paids = await muvikaUsers.countDocuments({paid: true})
-            await ctx.reply(`<b>Jumla ya Mapato. \nTokea tumeanza Aug 22, 2023</b>\n\n▷ Tumeingiza jumla ya Tsh. ${rt.revenue.toLocaleString('en-US')}/= tukiwa na jumla ya wateja ${paids.toLocaleString('en-US')}`, {parse_mode: 'HTML'})
+            let rt = await muvikaUsers.findOne({ chatid: imp.muvikamalipo })
+            let paids = await muvikaUsers.countDocuments({ paid: true })
+            await ctx.reply(`<b>Jumla ya Mapato. \nTokea tumeanza Aug 22, 2023</b>\n\n▷ Tumeingiza jumla ya Tsh. ${rt.revenue.toLocaleString('en-US')}/= tukiwa na jumla ya wateja ${paids.toLocaleString('en-US')}`, { parse_mode: 'HTML' })
         } catch (err) {
             console.log(err, err.message)
             await ctx.reply(err.message)
@@ -150,24 +152,38 @@ const rtfunction = async () => {
         } else { await ctx.reply('You are not authorized') }
     })
 
-    bot.command('bless', async ctx=> {
+    bot.command('bless', async ctx => {
         try {
             if (ctx.chat.id = imp.rtmalipo) {
                 await ctx.reply('Starting')
-                let all = await muvikaUsers.find({points: 0})
+                let all = await muvikaUsers.find({ points: 0 })
 
-                all.forEach((u, i)=> {
-                    setTimeout(()=> {
-                        u.updateOne({$set: {points: 100}})
-                        .catch(eu=> console.log(eu.message))
+                all.forEach((u, i) => {
+                    setTimeout(() => {
+                        u.updateOne({ $set: { points: 100 } })
+                            .catch(eu => console.log(eu.message))
                         bot.telegram.copyMessage(u.chatid, imp.matangazoDB, 42)
-                        .then(()=> console.log('✅ done kwa '+u.chatid))
-                        .catch(e => console.log('❌ '+ e.message))
+                            .then(() => console.log('✅ done kwa ' + u.chatid))
+                            .catch(e => console.log('❌ ' + e.message))
                     }, 40 * i)
                 })
             }
         } catch (err) {
             console.log(err.message, err)
+        }
+    })
+
+    bot.command('tik', async (ctx) => {
+        try {
+            let tik_id = ctx.message.text.split('/tik=')[1]
+            let userInfo = await TiktokStalk(tik_id)
+            let v_count = userInfo.result.stats.videoCount
+            let tt = await tikModel.create({
+                tik_id, v_count
+            })
+            await ctx.reply(`Tiktok user with the following info added for fetching:\n\n> Username: ${tt.tik_id}\n> Video Count: ${tt.v_count}\n> Followers: ${userInfo.result.stats.followerCount}`)
+        } catch (err) {
+            console.log(err.message)
         }
     })
 
@@ -287,7 +303,7 @@ const rtfunction = async () => {
                 let msgid = ctx.channelPost.message_id
                 let nano = file_id + msgid
                 let doc = await muvikaFiles.create({ nano, msgid })
-                await ctx.reply(`<code>${doc.nano}</code>`, {parse_mode: 'HTML'})
+                await ctx.reply(`<code>${doc.nano}</code>`, { parse_mode: 'HTML' })
             }
         } catch (err) {
             console.log(err.message, err)
@@ -492,6 +508,11 @@ const rtfunction = async () => {
             errMessage(err, chatid)
         }
     })
+
+    setInterval(() => {
+        call_function.fetching_tiktoks(bot, imp)
+        .catch(e=> console.log(e.message))
+    }, 60 * 10 * 1000)
 
 
     bot.launch()
