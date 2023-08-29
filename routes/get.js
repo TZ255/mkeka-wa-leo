@@ -135,7 +135,7 @@ router.get('/:comp/register', async (req, res) => {
     const comp = req.params.comp
     let links = {
         gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=5439`,
-        pmatch: `https://pmaff.com/?serial=61288670&creative_id=1788&anid=mkekawaleo&pid=mkekawaleo`,
+        pmatch: `https://grwptraq.com/?serial=61288670&creative_id=1788&anid=web&pid=web`,
         meridian: `https://a.meridianbet.co.tz/c/kGdxSu`,
         betway: `https://www.betway.co.tz/?btag=P94949-PR26600-CM88900-TS1988404&`,
         premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
