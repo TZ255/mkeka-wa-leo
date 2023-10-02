@@ -290,13 +290,13 @@ const charlotteFn = async () => {
                     let dots = '•••••••••••••••••••••••••••••••••••••••••••'
                     let trimSize = cdata.split('&size')[0]
 
-                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓 ${_date}\n⏱ Muda: <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
+                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓${_date}\n<b>⏱ Muda:</b> <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓 ${_date}\n⏱ Muda: <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓${_date}\n<b>⏱ Muda:</b> <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓 ${_date}\n⏱ Muda: <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓${_date}\n<b>⏱ Muda:</b> <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
                 }
