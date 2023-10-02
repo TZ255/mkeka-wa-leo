@@ -7,7 +7,6 @@ const elimit = require('express-rate-limit')
 const lauraSourceCodes = require('./bots/laura/bot')
 const CharlloteSourceCodes = require('./bots/charlotte/bot')
 const helenSourceCodes = require('./bots/helen/bot')
-const muvikaSourceCodes = require('./bots/muvika/bot')
 
 const app = express()
 
@@ -41,9 +40,7 @@ if (process.env.local != 'true') {
     lauraSourceCodes.bot()
     CharlloteSourceCodes.bot()
     helenSourceCodes.bot()
-    
 }
-muvikaSourceCodes.bot()
 
 
 app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))
