@@ -252,9 +252,7 @@ const charlotteFn = async () => {
                     let rpId = ctx.channelPost.reply_to_message.message_id
                     let cdata = ctx.channelPost.text
                     let orgCap = ctx.channelPost.reply_to_message.caption
-                    let orgCap_data = orgCap.split('🗓')
-                    let cap_data = orgCap_data[0].split(' - With ')
-                    let _date = orgCap_data[1]
+                    let cap_data = orgCap.split(' - With ')
                     let size = cdata.split('&size=')[1].split('&dur')[0]
                     let seconds = cdata.split('&dur=')[1]
                     let dakika = Math.trunc(Number(seconds)/60)
@@ -287,16 +285,15 @@ const charlotteFn = async () => {
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
                     let _post3 = await bot.telegram.copyMessage(imp.rt4i4n2, imp.replyDb, rpId)
-                    let dots = '•••••••••••••••••••••••••••••••••••••••••••'
                     let trimSize = cdata.split('&size')[0]
 
-                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓${_date}\n<b>⏱ Muda:</b> <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
+                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>📁 Full Video 👇👇 </b>(dakika ${dakika})\n<b><a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓${_date}\n<b>⏱ Muda:</b> <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>📁 Full Video 👇👇 </b>(dakika ${dakika})\n<b><a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n🗓${_date}\n<b>⏱ Muda:</b> <i>Dakika ${dakika}</i>\n${dots}\n<b>📁 Full Video 👇\n<a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>📁 Full Video 👇👇 </b>(dakika ${dakika})\n<b><a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
                 }
