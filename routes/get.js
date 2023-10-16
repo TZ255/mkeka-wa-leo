@@ -141,7 +141,7 @@ router.get('/:comp/register', async (req, res) => {
         premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
         betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
         gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`,
-        ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=73513&bid=1570`
+        ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1490&lpid=48`
     }
     try {
         switch (comp) {
