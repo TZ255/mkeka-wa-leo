@@ -136,7 +136,8 @@ const lauraMainFn = async () => {
                         reply_markup: {
                             keyboard: [
                                 [{text: '💰 BET OF THE DAY (🔥)'}]
-                            ]
+                            ],
+                            resize_keyboard: true, is_persistent: true
                         }
                     }).then(() => console.log('✅ Message sent to ' + u.chatid))
                         .catch(err => {
@@ -176,7 +177,8 @@ const lauraMainFn = async () => {
                         reply_markup: {
                             keyboard: [
                                 [{text: '💰 BET OF THE DAY (🔥)'}]
-                            ]
+                            ],
+                            resize_keyboard: true, is_persistent: true
                         }
                     }).then(() => console.log('✅ Message sent to ' + u.chatid))
                         .catch(err => {
