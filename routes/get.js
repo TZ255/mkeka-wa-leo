@@ -188,7 +188,7 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.ug_22bet);
                 break;
             case '22bet-tz':
-                res.redirect(links.tz_22bet);
+                res.redirect(links.pmatch);
                 break;
             default:
                 res.redirect('/');
