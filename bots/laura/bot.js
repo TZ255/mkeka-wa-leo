@@ -12,6 +12,7 @@ const lauraMainFn = async () => {
     const dramastoreUsers = require('./databases/dstore-chats')
     const nyumbuModel = require('./databases/bongo-nyumbus')
     const ugModel = require('./databases/uganda-nyumbus')
+    const keModel = require('./databases/kenyanDb')
 
     const imp = {
         replyDb: -1001608248942,
@@ -117,7 +118,7 @@ const lauraMainFn = async () => {
         }
     })
 
-    bot.command('editha', async ctx => {
+    bot.command('editha_ug', async ctx => {
         try {
             await ctx.reply('Starting')
             let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
@@ -131,7 +132,52 @@ const lauraMainFn = async () => {
                     axios.post(tgAPI, {
                         chat_id: u.chatid,
                         from_chat_id: -1001696592315, //mikekaDB
-                        message_id: mid
+                        message_id: mid,
+                        reply_markup: {
+                            keyboard: [
+                                [{text: '💰 BET OF THE DAY (🔥)'}]
+                            ]
+                        }
+                    }).then(() => console.log('✅ Message sent to ' + u.chatid))
+                        .catch(err => {
+                            console.log(err.message)
+                            if (err.response && err.response.data && err.response.data.description) {
+                                let description = err.response.data.description
+                                description = description.toLowerCase()
+                                if (bads.some((bad) => description.includes(bad))) {
+                                    ugModel.findOneAndDelete({ chatid: u.chatid })
+                                        .then(() => console.log(`🚮 ${u.chatid} deleted`))
+                                        .catch(e => console.log(`❌ ${e.message}`))
+                                } else { console.log(`🤷‍♂️ ${description}`) }
+                            }
+                        })
+                }, i * 40)
+            })
+        } catch (err) {
+            await ctx.reply(err.message)
+        }
+    })
+
+    bot.command('editha_ke', async ctx => {
+        try {
+            await ctx.reply('Starting')
+            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
+            let txt = ctx.message.text
+            let mid = Number(txt.split('=')[1])
+            let all = await keModel.find({chatid: imp.shemdoe})
+            let bads = ['blocked', 'initiate', 'deactivated']
+
+            all.forEach((u, i) => {
+                setTimeout(() => {
+                    axios.post(tgAPI, {
+                        chat_id: u.chatid,
+                        from_chat_id: -1001696592315, //mikekaDB
+                        message_id: mid,
+                        reply_markup: {
+                            keyboard: [
+                                [{text: '💰 BET OF THE DAY (🔥)'}]
+                            ]
+                        }
                     }).then(() => console.log('✅ Message sent to ' + u.chatid))
                         .catch(err => {
                             console.log(err.message)
