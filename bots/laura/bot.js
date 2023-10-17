@@ -165,7 +165,7 @@ const lauraMainFn = async () => {
             let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
             let txt = ctx.message.text
             let mid = Number(txt.split('=')[1])
-            let all = await keModel.find({chatid: imp.shemdoe})
+            let all = await keModel.find()
             let bads = ['blocked', 'initiate', 'deactivated']
 
             all.forEach((u, i) => {
