@@ -141,7 +141,9 @@ router.get('/:comp/register', async (req, res) => {
         premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
         betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
         gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`,
-        ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1490&lpid=48`
+        ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1490&lpid=48`,
+        ug_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77677&bid=1489&lpid=34`,
+        tz_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77678&bid=1491&lpid=290`
     }
     try {
         switch (comp) {
@@ -181,6 +183,12 @@ router.get('/:comp/register', async (req, res) => {
                 break;
             case 'premierbet':
                 res.redirect(links.premier);
+                break;
+            case '22bet-ug':
+                res.redirect(links.ug_22bet);
+                break;
+            case '22bet-tz':
+                res.redirect(links.tz_22bet);
                 break;
             default:
                 res.redirect('/');
