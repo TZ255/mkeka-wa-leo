@@ -60,7 +60,7 @@ const myBotsFn = async () => {
 
                     for (let [i, v] of lists.entries()) {
                         let num = (await usersModel.countDocuments({ botname: v.botname })).toLocaleString('en-US')
-                        txt = txt + `${i + 1}. ${v.botname} = ${num}\n\n`
+                        txt = txt + `${i + 1}. @${v.botname} = ${num}\n\n`
                     }
                     await ctx.reply(txt)
                 } catch (err) {
