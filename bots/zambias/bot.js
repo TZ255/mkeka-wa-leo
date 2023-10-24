@@ -34,7 +34,7 @@ const myBotsFn = async () => {
                         let tk = await listModel.findOne({ botname })
                         await usersModel.create({ chatid, first_name, botname, token: tk.token })
                     }
-                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. Here I'll be sharing with you many things range from trending news, hot girls, escorts to betting. \n\nTo start, use this command to get the betslip of the day (95% sure) \nClick Here👉 /slip`, {
+                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. Here I'll be sharing with you many things range from trending news, hot girls, escorts to betting. \n\nTo start, use this command to get the betslip of the day (95% sure) \nClick Here👉 /betslip`, {
                         parse_mode: 'HTML',
                         reply_markup: {
                             keyboard: [
@@ -68,7 +68,7 @@ const myBotsFn = async () => {
                 }
             })
 
-            bot.command('slip', async ctx => {
+            bot.command(['betslip','slip'], async ctx => {
                 try {
                     await mkekaReq.mkeka3(ctx, delay, bot, imp)
                 } catch (err) {
@@ -102,7 +102,6 @@ const myBotsFn = async () => {
             })
 
             bot.launch().catch(async ee => {
-                await bot.telegram.sendMessage(imp.halot, ee.message)
                 console.log(ee.message)
             })
         }
