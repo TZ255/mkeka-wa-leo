@@ -56,7 +56,7 @@ const myBotsFn = async () => {
                     let all = await usersModel.countDocuments()
                     let lists = await listModel.find()
 
-                    let txt = `Total Users are ${all.toLocaleString('en-US')}\n\n`
+                    let txt = `Total Users Are ${all.toLocaleString('en-US')}\n\n`
 
                     for (let [i, v] of lists.entries()) {
                         let num = (await usersModel.countDocuments({ botname: v.botname })).toLocaleString('en-US')
