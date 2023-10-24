@@ -187,7 +187,7 @@ const lauraMainFn = async () => {
                                 let description = err.response.data.description
                                 description = description.toLowerCase()
                                 if (bads.some((bad) => description.includes(bad))) {
-                                    ugModel.findOneAndDelete({ chatid: u.chatid })
+                                    keModel.findOneAndDelete({ chatid: u.chatid })
                                         .then(() => console.log(`🚮 ${u.chatid} deleted`))
                                         .catch(e => console.log(`❌ ${e.message}`))
                                 } else { console.log(`🤷‍♂️ ${description}`) }
