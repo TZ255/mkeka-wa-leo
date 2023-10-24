@@ -82,10 +82,10 @@ const myBotsFn = async () => {
                         let rpmsg = ctx.message.reply_to_message.text
                         let txt = ctx.message.text
 
-                        if (rpmsg.toLowerCase() == 'token' && ctx.chat.id == imp.halot) {
+                        if (rpmsg.toLowerCase() == 'token') {
                             let bt = await listModel.create({ token: txt, botname: 'unknown' })
                             await ctx.reply(`Token Added: 👉 ${bt.token} 👈\n\nReply with username of bot`)
-                        } else if (rpmsg.includes('Token Added') && ctx.chat.id == imp.halot) {
+                        } else if (rpmsg.includes('Token Added:')) {
                             let token = rpmsg.split('👉 ')[1].split(' 👈')[0].trim()
                             let bt = await listModel.findOneAndUpdate({ token }, { $set: { botname: txt } }, { new: true })
                             let final = `New Bot with the following info added successfully:\n\n✨ Botname: ${bt.botname}\n✨ Token: ${bt.token}`
