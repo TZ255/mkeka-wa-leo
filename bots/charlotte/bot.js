@@ -144,6 +144,7 @@ const charlotteFn = async () => {
                     setTimeout(() => {
                         let url = `https://t.me/pilau_bot?start=RTBOT-${v.nano}`
                         bot.telegram.copyMessage(dest, imp.replyDb, v.gifId, {
+                            disable_notification: true,
                             reply_markup: {
                                 inline_keyboard: [
                                     [
