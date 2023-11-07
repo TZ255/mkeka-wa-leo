@@ -37,6 +37,7 @@ const charlotteFn = async () => {
         rtprem: -1001946174983,
         rt4i4n: -1001880391908,
         rt4i4n2: -1001701399778,
+        playg: -1001987366621,
         rtmalipo: 5849160770
     }
 
@@ -133,7 +134,7 @@ const charlotteFn = async () => {
         }
     })
 
-    bot.command('iphone', async ctx => {
+    bot.command('backup', async ctx => {
         if (ctx.chat.id == imp.rtmalipo) {
             try {
                 let dest = Number(ctx.message.text.split('=')[1])
@@ -141,7 +142,7 @@ const charlotteFn = async () => {
 
                 for (let [index, v] of all.entries()) {
                     setTimeout(() => {
-                        let url = `https://t.me/rahatupu_tzbot?start=RTBOT-${v.nano}`
+                        let url = `https://t.me/pilau_bot?start=RTBOT-${v.nano}`
                         bot.telegram.copyMessage(dest, imp.replyDb, v.gifId, {
                             reply_markup: {
                                 inline_keyboard: [
@@ -279,12 +280,15 @@ const charlotteFn = async () => {
                     //post to XBONGO
                     let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
                     let rtios = `https://t.me/rahatupu_tzbot?start=iphone-RTBOT-${cdata}`
+                    let plbot = `https://t.me/pilau_bot?start=RTBOT-${cdata}`
                     let rpm = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: rtbot }]] }
                     let rpmios = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: rtios }]] }
+                    let rp_pl = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: plbot }]] }
 
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
                     let _post3 = await bot.telegram.copyMessage(imp.rt4i4n2, imp.replyDb, rpId)
+                    let _post4 = await bot.telegram.copyMessage(imp.playg, imp.replyDb, rpId)
                     let trimSize = cdata.split('&size')[0]
 
                     await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code class="language-java">📁 Bonyeza Hapa Kupata Full Video \nYenye Sauti 👇👇</code></pre>\n<b><a href="${rtbot}">https://t.me/download-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
@@ -295,6 +299,10 @@ const charlotteFn = async () => {
 
                     await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code class="language-java">📁 Bonyeza Hapa Kupata Full Video \nYenye Sauti 👇👇</code></pre>\n<b><a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
+                    })
+
+                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code class="language-java">📁 Bonyeza Hapa Kupata Full Video \nYenye Sauti 👇👇</code></pre>\n<b><a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                        parse_mode: 'HTML', reply_markup: rp_pl
                     })
                 }
             }
