@@ -116,7 +116,7 @@ const charlotteFn = async () => {
                     }
                 }
             } else {
-                await ctx.reply('Hello, Return/Enter to our channel for full videos')
+                await ctx.reply('Hello, Return/Enter to our channel for Full Videos')
             }
         } catch (err) {
             console.log(err.message)
