@@ -302,7 +302,7 @@ const charlotteFn = async () => {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code class="language-java">📁 Bonyeza Hapa Kupata Full Video \nYenye Sauti 👇👇</code></pre>\n<b><a href="${rtios}">https://t.me/download-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code class="language-java">📁 Bonyeza Hapa Kupata Full Video \nYenye Sauti 👇👇</code></pre>\n<b><a href="${plbot}">https://t.me/download-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rp_pl
                     })
                 }
