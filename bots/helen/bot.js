@@ -43,7 +43,8 @@ const helenCodes = async () => {
             await nyumbuModel.create({
                 chatid: ctx.chat.id,
                 username: ctx.chat.first_name,
-                refferer: "Helen"
+                refferer: "Helen",
+                blocked: false
             })
             await bot.telegram.sendMessage(imp.shemdoe, `${ctx.chat.first_name} added to database with ${type}`)
         }
@@ -140,24 +141,22 @@ const helenCodes = async () => {
         let bads = ['bot was blocked', 'deactivated', 'initiate']
         if (myId == imp.shemdoe || myId == imp.halot) {
             try {
-                let all_users = await nyumbuModel.find({ refferer: "Helen" })
+                let all_users = await nyumbuModel.find({ refferer: "Helen", blocked: false })
 
                 all_users.forEach((u, index) => {
-                    if (u.blocked != true) {
-                        setTimeout(() => {
-                            if (index == all_users.length - 1) {
-                                ctx.reply('Nimemaliza conversation')
-                            }
-                            bot.telegram.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
-                                .then(() => console.log('✅ convo sent to ' + u.chatid))
-                                .catch(async(err) => {
-                                    if (bads.some((bad) => err.message.includes(bad))) {
-                                        await nyumbuModel.findOneAndDelete({ chatid: u.chatid }).catch(e=> console.log('❌ Failed to delete user'))
-                                        console.log(u.chatid + ' is deleted 🚮')
-                                    } else {console.log('🤷‍♂️ '+err.message)}
-                                })
-                        }, index * 40)
-                    }
+                    setTimeout(() => {
+                        if (index == all_users.length - 1) {
+                            ctx.reply('Nimemaliza conversation')
+                        }
+                        bot.telegram.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
+                            .then(() => console.log('✅ convo sent to ' + u.chatid))
+                            .catch(async (err) => {
+                                if (bads.some((bad) => err.message.includes(bad))) {
+                                    await nyumbuModel.findOneAndDelete({ chatid: u.chatid }).catch(e => console.log('❌ Failed to delete user'))
+                                    console.log(u.chatid + ' is deleted 🚮')
+                                } else { console.log('🤷‍♂️ ' + err.message) }
+                            })
+                    }, index * 40)
                 })
             } catch (err) {
                 console.log(err.message)
