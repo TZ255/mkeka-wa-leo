@@ -8,7 +8,7 @@ const sendMkeka1 = async (ctx, delay, bot, imp) => {
         let tzHrs = new Date().getHours() + 3
         let mk = await tg_slips.findOne({ siku: td, brand: 'gsb' })
         await waombajiModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { mk1: 1 } })
-        if (mk && tzHrs < 22) {
+        if (mk && (tzHrs != 22 || tzHrs != 23)) {
             await ctx.sendChatAction('upload_photo')
             await delay(500)
             await bot.telegram.copyMessage(ctx.chat.id, imp.mikekaDB, mk.mid)
@@ -33,7 +33,7 @@ const sendMkeka2 = async (ctx, delay, bot, imp) => {
         let tzHrs = new Date().getHours() + 3
         let mk = await tg_slips.findOne({ siku: td, brand: 'betway' })
         await waombajiModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { mk2: 1 } })
-        if (mk && tzHrs < 22) {
+        if (mk && (tzHrs != 22 || tzHrs != 23)) {
             await ctx.sendChatAction('upload_photo')
             await delay(500)
             await bot.telegram.copyMessage(ctx.chat.id, imp.mikekaDB, mk.mid)
@@ -61,7 +61,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
         await waombajiModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { mk3: 1 } })
         let txt = `<b><u>🔥 Mkeka wa Leo [ ${nairobi} ]</u></b>\n\n\n`
         let odds = 1
-        if (keka.length > 0 && tzHrs < 22) {
+        if (keka.length > 0 && (tzHrs != 22 || tzHrs != 23)) {
             for (let m of keka) {
                 txt = txt + `<u><i>${m.date},  ${m.time}</i></u>\n⚽️ ${m.match}\n<b>✅ ${m.bet}</b>\n<i>💰 Odds: ${m.odds}</i> \n\n\n`
                 odds = (odds * m.odds).toFixed(2)
