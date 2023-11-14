@@ -478,7 +478,7 @@ const helenCodes = async () => {
 
                     if (my_msg == 'block 666') {
                         await nyumbuModel.findOneAndUpdate({ chatid: userid }, { blocked: true })
-                        await ctx.reply(userid + ' blocked for mass massaging')
+                        await ctx.reply(userid + ' is blocked for mass massaging')
                     }
 
                     else if (my_msg == 'unblock 666') {
