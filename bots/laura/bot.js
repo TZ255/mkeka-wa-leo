@@ -74,6 +74,16 @@ const lauraMainFn = async () => {
                         await nyumbuChecker(chatid, first_name, bot)
                         await bot.telegram.copyMessage(chatid, imp.pzone, 8994)
                         break;
+
+                    case 'Free-5-USDT':
+                        await ctx.sendChatAction('typing')
+                        setTimeout(() => {
+                            bot.telegram.copyMessage(chatid, imp.matangazoDB, 84, {
+                                reply_markup: {
+                                    inline_keyboard: [[{ text: "➕ RECEIVE YOUR 5 USDT", url: 'https://bc.game/i-vhy4ij2x-n/' }]]
+                                }
+                            }).then(()=> bot.telegram.sendMessage(imp.shemdoe, 'new 5 usdt start')).catch(e=> console.log(e.message)).catch(err=> console.log(err.message))
+                        }, 1500)
                 }
             } else {
                 await ctx.reply(`"Hi! Welcome. \n\nI'm Laura, and I can help you find great content on Telegram. Just let me know what information you're looking for, and I'll forward your request to my creator, who will do their best to retrieve it for you. Once they've obtained the information, I'll come back to you with what you're seeking."`)
@@ -135,7 +145,7 @@ const lauraMainFn = async () => {
                         message_id: mid,
                         reply_markup: {
                             keyboard: [
-                                [{text: '💰 BET OF THE DAY (🔥)'}]
+                                [{ text: '💰 BET OF THE DAY (🔥)' }]
                             ],
                             resize_keyboard: true, is_persistent: true
                         }
@@ -176,7 +186,7 @@ const lauraMainFn = async () => {
                         message_id: mid,
                         reply_markup: {
                             keyboard: [
-                                [{text: '💰 BET OF THE DAY (🔥)'}]
+                                [{ text: '💰 BET OF THE DAY (🔥)' }]
                             ],
                             resize_keyboard: true, is_persistent: true
                         }
