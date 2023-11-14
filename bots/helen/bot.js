@@ -30,7 +30,8 @@ const helenCodes = async () => {
         ohmyDB: -1001586042518,
         xbongo: -1001263624837,
         mikekaDB: -1001696592315,
-        mylove: -1001748858805
+        mylove: -1001748858805,
+        matangazoDB: -1001570087172
     }
 
     const mkArrs = ['mkeka', 'mkeka1', 'mkeka2', 'mkeka3', 'mikeka', 'mkeka wa leo', 'mikeka ya leo', 'mkeka namba 1', 'mkeka namba 2', 'mkeka namba 3', 'mkeka #1', 'mkeka #2', 'mkeka #3', 'mkeka no #1', 'mkeka no #2', 'mkeka no #3', 'za leo', 'naomba mkeka', 'naomba mikeka', 'naomba mkeka wa leo', 'nitumie mkeka', 'ntumie mkeka', 'nitumie mikeka ya leo', 'odds', 'odds za leo', 'odds ya leo', 'mkeka waleo', 'mkeka namba moja', 'mkeka namba mbili', 'mkeka namba tatu', 'nataka mkeka', 'nataka mikeka', 'mkeka wa uhakika', 'odds za uhakika', 'mkeka?', 'mkeka wa leo?', '/mkeka 1', '/mkeka 2', '/mkeka 3']
@@ -53,9 +54,12 @@ const helenCodes = async () => {
     let defaultReplyMkp = {
         keyboard: [
             [
-                { text: "🔥 MKEKA #1" },
-                { text: "💰 MKEKA #2" },
-                { text: "🤑 MKEKA #3" },
+                { text: "🔥 MKEKA 1" },
+                { text: "💰 MKEKA 2" },
+                { text: "🤑 MKEKA 3" },
+            ],
+            [
+                { text: "🪙 Crypto User (Get Free 5 USDT) 🪙" }
             ]
         ],
         is_persistent: true,
@@ -460,7 +464,7 @@ const helenCodes = async () => {
         }
     })
 
-    bot.on('text', async ctx => {
+    bot.on('message', async ctx => {
         try {
             if (ctx.message.reply_to_message && ctx.chat.id == imp.halot) {
                 if (ctx.message.reply_to_message.text) {
@@ -500,7 +504,6 @@ const helenCodes = async () => {
                 }
             }
 
-
             else {
                 //create user if not on database
                 let typ = 'sending message'
@@ -516,24 +519,34 @@ const helenCodes = async () => {
                     await ctx.sendChatAction('typing')
                     await delay(1000)
                     await bot.telegram.copyMessage(userid, imp.pzone, 7664)
-                } else if (txt == '🔥 MKEKA #1') {
+                } else if (txt == '🔥 MKEKA 1') {
                     await call_sendMikeka_functions.sendMkeka1(ctx, delay, bot, imp)
-                } else if (txt == '💰 MKEKA #2') {
+                } else if (txt == '💰 MKEKA 2') {
                     await call_sendMikeka_functions.sendMkeka2(ctx, delay, bot, imp)
-                } else if (txt == '🤑 MKEKA #3') {
+                } else if (txt == '🤑 MKEKA 3') {
                     await call_sendMikeka_functions.sendMkeka3(ctx, delay, bot, imp)
                 } else if (txt == '👑 SUPATIPS') {
                     await call_sendMikeka_functions.supatips(ctx, bot, delay, imp)
-                }
-                else if (txt == '💡 MSAADA') {
+                } else if (txt == '💡 MSAADA') {
                     await bot.telegram.copyMessage(ctx.chat.id, imp.mikekaDB, 481)
-                }
-                else if (txt == '🔥 MIKEKA YA UHAKIKA LEO 💰') {
+                } else if (txt == '🔥 MIKEKA YA UHAKIKA LEO 💰') {
                     await bot.telegram.copyMessage(ctx.chat.id, imp.mikekaDB, 592)
+                } else if (txt == '🪙 Crypto User (Get Free 5 USDT) 🪙') {
+                    await ctx.sendChatAction('typing')
+                    setTimeout(() => {
+                        bot.telegram.copyMessage(userid, imp.matangazoDB, 84, {
+                            reply_markup: {
+                                inline_keyboard: [[{ text: "➕ RECEIVE YOUR 5 USDT", url: 'https://bc.game/i-vhy4ij2x-n/' }]]
+                            }
+                        }).catch(e => console.log(e.message))
+                    }, 1500)
                 }
+
                 //forward to me if sio mkeka
                 else {
-                    await bot.telegram.sendMessage(imp.halot, `<b>${txt}</b> \n\nfrom = <code>${username}</code>\nid = <code>${userid}</code>&mid=${mid}`, { parse_mode: 'HTML', disable_notification: true })
+                    if (ctx.chat.type == 'private') {
+                        await bot.telegram.sendMessage(imp.halot, `<b>${txt}</b> \n\nfrom = <code>${username}</code>\nid = <code>${userid}</code>&mid=${mid}`, { parse_mode: 'HTML', disable_notification: true })
+                    }
                 }
             }
 
