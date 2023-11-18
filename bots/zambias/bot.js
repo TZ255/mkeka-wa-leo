@@ -34,16 +34,15 @@ const myBotsFn = async () => {
                         let tk = await listModel.findOne({ botname })
                         await usersModel.create({ chatid, first_name, botname, token: tk.token })
                     }
-                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. Here I'll be sharing with you many things range from trending news, hot girls, escorts to betting. \n\nTo start, use this command to get the betslip of the day (95% sure) \nClick Here👉 /betslip`, {
+                    let url = `https://playabledownload.com/1584699`
+                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. Unlock the largest library of adult videos and leakage sex tapes as well as our private group for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`, {
                         parse_mode: 'HTML',
                         reply_markup: {
-                            keyboard: [
+                            inline_keyboard: [
                                 [
-                                    { text: '💰 BET OF THE DAY (🔥)' }
+                                    { text: '🔓 UNLOCK INVITE LINK 🥵', url }
                                 ]
-                            ],
-                            is_persistent: true,
-                            resize_keyboard: true
+                            ]
                         }
                     })
                 } catch (e) {
