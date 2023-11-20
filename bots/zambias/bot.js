@@ -34,9 +34,7 @@ const myBotsFn = async () => {
                         let tk = await listModel.findOne({ botname })
                         await usersModel.create({ chatid, first_name, botname, token: tk.token })
                     }
-                    let prep = await ctx.reply('Preparing Invite link...', {
-                        reply_markup: {keyboard: [[{text: '💰 BET OF THE DAY (🔥)'}]], is_persistent: true, resize_keyboard: true}
-                    })
+                    let prep = await ctx.reply('Preparing Invite link...')
                     await delay(1000)
                     await ctx.deleteMessage(prep.message_id)
                     let url = `https://playabledownload.com/1584699`
@@ -47,7 +45,14 @@ const myBotsFn = async () => {
                                 [
                                     { text: '🔓 UNLOCK INVITE LINK 🥵', url }
                                 ]
-                            ]
+                            ],
+                            keyboard: [
+                                [
+                                    {text: '💰 BET OF THE DAY (🔥)'}
+                                ]
+                            ],
+                            resize_keyboard: true,
+                            is_persistent: true
                         }
                     })
                 } catch (e) {
@@ -72,7 +77,7 @@ const myBotsFn = async () => {
                 }
             })
 
-            bot.command(['betslip','slip'], async ctx => {
+            bot.command(['betslip', 'slip'], async ctx => {
                 try {
                     await mkekaReq.mkeka3(ctx, delay, bot, imp)
                 } catch (err) {
