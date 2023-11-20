@@ -38,17 +38,15 @@ const myBotsFn = async () => {
                     await delay(1000)
                     await ctx.deleteMessage(prep.message_id)
                     let url = `https://playabledownload.com/1584699`
-                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. Unlock the largest library of adult videos and leakage sex tapes as well as our private group for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`, {
+                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. \n\nUse the menu buttons below to see what we prepared for you today.\n\nAlso use the command /betslip to get the best bet of the day`, {
                         parse_mode: 'HTML',
                         reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: '🔓 UNLOCK INVITE LINK 🥵', url }
-                                ]
-                            ],
                             keyboard: [
                                 [
-                                    {text: '💰 BET OF THE DAY (🔥)'}
+                                    { text: '💰 BET OF THE DAY (🔥)' }
+                                ],
+                                [
+                                    { text: '🔞 Our Premium Escort Group' }
                                 ]
                             ],
                             resize_keyboard: true,
@@ -103,6 +101,17 @@ const myBotsFn = async () => {
                     } else {
                         if (ctx.message.text == '💰 BET OF THE DAY (🔥)') {
                             await mkekaReq.mkeka3(ctx, delay, bot, imp)
+                        } else if (ctx.message.text == '🔞 Our Premium Escort Group') {
+                            let url = 'https://playabledownload.com/1584699'
+                            let txt = `Unlock the largest library of adult videos and leakage sex tapes as well as our private group for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`
+                            let rpm = {
+                                inline_keyboard: [
+                                    [
+                                        { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                                    ]
+                                ]
+                            }
+                            await ctx.reply(txt, {rpm})
                         }
                     }
                 } catch (err) {
