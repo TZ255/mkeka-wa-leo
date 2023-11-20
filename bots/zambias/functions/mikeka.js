@@ -27,7 +27,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             let zm = `https://track.africabetpartners.com/visit/?bta=35468&nci=5976&utm_campaign=zambia`
             let zm_short = `https://is.gd/register_gsb_zambia`
 
-            let finaText = txt + `<b>🔥 Total Odds: ${odds}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nThese bet options are available at 22Bet with 200% bonus on your first deposit\n\n<b>✓ Register Here \n\n👤 (Kenya 🇰🇪)</b>\n<a href="${ke}">https://1xbet.co.ke/register\nhttps://1xbet.co.ke/register</a>\n\n<b>👤 (Tanzania 🇹🇿)</b>\n<a href="${prm}">https://1xbet.co.tz/register</a>\n\n•••`
+            let finaText = txt + `<b>🔥 Total Odds: ${odds}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nThese bet options are available at <b>1xbet</b> with 200% bonus on your first deposit\n\n<b>✓ Register Here \n\n👤 (Kenya 🇰🇪)</b>\n<a href="${ke}">https://1xbet.co.ke/register\nhttps://1xbet.co.ke/register</a>\n\n<b>👤 (Tanzania 🇹🇿)</b>\n<a href="${prm}">https://1xbet.co.tz/register</a>\n\n•••`
 
             await ctx.reply(finaText, { parse_mode: 'HTML', disable_web_page_preview: true })
         } else {

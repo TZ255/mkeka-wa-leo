@@ -111,7 +111,7 @@ const myBotsFn = async () => {
                                     ]
                                 ]
                             }
-                            await ctx.reply(txt, {rpm})
+                            await ctx.reply(txt, {reply_markup: rpm})
                         }
                     }
                 } catch (err) {
