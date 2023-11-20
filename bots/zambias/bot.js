@@ -34,6 +34,11 @@ const myBotsFn = async () => {
                         let tk = await listModel.findOne({ botname })
                         await usersModel.create({ chatid, first_name, botname, token: tk.token })
                     }
+                    let prep = await ctx.reply('Preparing Invite link...', {
+                        reply_markup: {keyboard: [[{text: '💰 BET OF THE DAY (🔥)'}]], is_persistent: true, resize_keyboard: true}
+                    })
+                    await delay(1000)
+                    await ctx.deleteMessage(prep.message_id)
                     let url = `https://playabledownload.com/1584699`
                     await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. Unlock the largest library of adult videos and leakage sex tapes as well as our private group for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`, {
                         parse_mode: 'HTML',

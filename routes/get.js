@@ -142,6 +142,7 @@ router.get('/:comp/register', async (req, res) => {
         betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
         gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`,
         ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1490&lpid=48`,
+        ke_1xbet: `https://refpa4948989.top/L?tag=d_2869291m_1573c_kenya&site=2869291&ad=1573`,
         ug_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77677&bid=1489&lpid=34`,
         tz_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77678&bid=1491&lpid=290`
     }
@@ -169,8 +170,8 @@ router.get('/:comp/register', async (req, res) => {
                 break;
 
             //bots redirects
-            case 'betika-ke': case '22bet-ke':
-                res.redirect(links.ke_22bet);
+            case 'betika-ke': case '22bet-ke': case '1xbet':
+                res.redirect(links.ke_1xbet);
                 break;
             case 'gsb-tz':
                 res.redirect(links.gsb);
@@ -185,7 +186,7 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.premier);
                 break;
             case '22bet-ug':
-                res.redirect(links.ug_22bet);
+                res.redirect(links.ke_1xbet);
                 break;
             case '22bet-tz':
                 res.redirect(links.pmatch);
