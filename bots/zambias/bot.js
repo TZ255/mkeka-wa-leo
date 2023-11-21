@@ -44,9 +44,6 @@ const myBotsFn = async () => {
                             keyboard: [
                                 [
                                     { text: '💰 BET OF THE DAY (🔥)' }
-                                ],
-                                [
-                                    { text: '🔞 Our Premium Escort Group' }
                                 ]
                             ],
                             resize_keyboard: true,
