@@ -57,9 +57,6 @@ const helenCodes = async () => {
                 { text: "🔥 MKEKA 1" },
                 { text: "💰 MKEKA 2" },
                 { text: "🤑 MKEKA 3" },
-            ],
-            [
-                { text: "🪙 Crypto User (Get Free 5 USDT) 🪙" }
             ]
         ],
         is_persistent: true,
@@ -437,7 +434,7 @@ const helenCodes = async () => {
 
         } catch (err) {
             console.log(err.message, err)
-            await bot.telegram.sendMessage(imp.shemdoe, err.message)
+            await ctx.reply(err.message)
         }
     })
 
@@ -547,11 +544,8 @@ const helenCodes = async () => {
             }
 
         } catch (err) {
-            if (!err.message) {
-                await bot.telegram.sendMessage(imp.shemdoe, err.description)
-            } else {
-                await bot.telegram.sendMessage(imp.shemdoe, err.message)
-            }
+            await bot.telegram.sendMessage(err.message)
+
         }
     })
 
