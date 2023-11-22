@@ -292,17 +292,17 @@ const charlotteFn = async () => {
                     let _post4 = await bot.telegram.copyMessage(imp.playg, imp.replyDb, rpId)
                     let trimSize = cdata.split('&size')[0]
 
-                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Bonyeza hapa kupata Full HD Video 👇👇</code></pre>\n<b><a href="${rtbot}">https://t.me/download-this-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
+                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Full HD Video 👇👇</code></pre>\n<b><a href="${rtbot}">https://t.me/download-this-full-video/${trimSize}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Bonyeza hapa kupata Full HD Video 👇👇</code></pre>\n<b><a href="${rtios}">https://t.me/download-this-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Full HD Video 👇👇</code></pre>\n<b><a href="${rtios}">https://t.me/download-this-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Bonyeza hapa kupata Full HD Video 👇👇</code></pre>\n<b><a href="${rtios}">https://t.me/download-this-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Full HD Video 👇👇</code></pre>\n<b><a href="${rtios}">https://t.me/download-this-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Bonyeza hapa kupata Full HD Video 👇👇</code></pre>\n<b><a href="${plbot}">https://t.me/download-this-full-video/${trimSize}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<pre><code>Full HD Video 👇👇</code></pre>\n<b><a href="${plbot}">https://t.me/download-this-full-video/${trimSize}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rp_pl
                     })
                 }
