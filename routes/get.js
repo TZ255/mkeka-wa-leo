@@ -144,7 +144,8 @@ router.get('/:comp/register', async (req, res) => {
         ke_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1490&lpid=48`,
         ke_1xbet: `https://refpa4948989.top/L?tag=d_2869291m_1573c_kenya&site=2869291&ad=1573`,
         ug_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77677&bid=1489&lpid=34`,
-        tz_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77678&bid=1491&lpid=290`
+        tz_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77678&bid=1491&lpid=290`,
+        tz_888: `https://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`
     }
     try {
         switch (comp) {
@@ -180,16 +181,16 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.gsb_ug);
                 break;
             case 'betway-tz':
-                res.redirect(links.betway);
+                res.redirect(links.tz_888);
                 break;
             case 'premierbet':
-                res.redirect(links.premier);
+                res.redirect(links.tz_888);
                 break;
             case '22bet-ug':
                 res.redirect(links.ke_1xbet);
                 break;
             case '22bet-tz':
-                res.redirect(links.pmatch);
+                res.redirect(links.tz_888);
                 break;
             default:
                 res.redirect('/');
