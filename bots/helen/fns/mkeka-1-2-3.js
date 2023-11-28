@@ -77,7 +77,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             let ke = `https://mkekawaleo.com/1xbet/register`
             let ug = `https://mkekawaleo.com/gsb-ug/register`
             let prm = `https://mkekawaleo.com/premierbet/register`
-            let tz_888 = `https://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`
+            let tz_888 = `http://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`
 
             let finaText = txt + `<b>🔥 Total Odds: ${odds}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nMkeka huu umeandaliwa 888Bet\n\n<i>» Jisajili na upokee Tsh. 3,000 bure pamoja na bonus ya 100% kwa deposit ya kwanza</i> \n\nKama bado huna account,\n\n<b>✓ Jisajili Hapa \n\n👤 (Tanzania 🇹🇿)</b>\n<a href="${tz_888}">https://m.888bet.tz/register\nhttps://m.888bet.tz/register</a>\n▬\n<b>👤 (Kenya 🇰🇪)</b>\n<a href="${ke}">https://1xbet.co.ke/register</a>\n▬\n<b>👤 (Uganda 🇺🇬)</b>\n<a href="${ug}">https://m.gsb.ug/register</a>\n\n©MkekaWaLeo`
 

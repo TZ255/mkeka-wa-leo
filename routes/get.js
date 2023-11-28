@@ -145,7 +145,7 @@ router.get('/:comp/register', async (req, res) => {
         ke_1xbet: `https://refpa4948989.top/L?tag=d_2869291m_1573c_kenya&site=2869291&ad=1573`,
         ug_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77677&bid=1489&lpid=34`,
         tz_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77678&bid=1491&lpid=290`,
-        tz_888: `https://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`
+        tz_888: `http://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`
     }
     try {
         switch (comp) {
@@ -167,6 +167,11 @@ router.get('/:comp/register', async (req, res) => {
                 break;
             case 'premier':
                 res.redirect(links.premier);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
+                break;
+
+            case '888bet':
+                res.redirect(links.tz_888);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
                 break;
 
