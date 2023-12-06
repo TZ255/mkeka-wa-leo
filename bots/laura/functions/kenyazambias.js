@@ -4,8 +4,8 @@ const axios = require('axios').default
 const convoKenya = async (ctx, bot) => {
     try {
         await ctx.reply('Starting')
-        let txt = ctx.message.text
-        let mid = Number(txt.split('=')[1])
+        let text = `Hey there! \n\nAre you a fan of porn videos? \n\nJoin our channel below to watch tons of premium porn videos for FREE!\n
+        <b>❕https://t.me/+oTl9RovuHBE1ODk0\n❕https://t.me/+oTl9RovuHBE1ODk0</b> \n\nDon't miss out! The invitation link expires in just 3 days. ⏳`
         let all = await kenyaZambia.find()
         let bads = ['blocked', 'initiate', 'deactivated']
 
@@ -13,7 +13,9 @@ const convoKenya = async (ctx, bot) => {
             let tgAPI = `https://api.telegram.org/bot${u.token}/sendMessage`
             setTimeout(() => {
                 axios.post(tgAPI, {
-                    chat_id: u.chatid, //continue here
+                    chat_id: u.chatid,
+                    text,
+                    parse_mode: 'HTML',
                     reply_markup: {
                         keyboard: [
                             [{ text: '💰 BET OF THE DAY (🔥)' }]
@@ -27,7 +29,7 @@ const convoKenya = async (ctx, bot) => {
                             let description = err.response.data.description
                             description = description.toLowerCase()
                             if (bads.some((bad) => description.includes(bad))) {
-                                keModel.findOneAndDelete({ chatid: u.chatid })
+                                kenyaZambia.findOneAndDelete({ chatid: u.chatid })
                                     .then(() => console.log(`🚮 ${u.chatid} deleted`))
                                     .catch(e => console.log(`❌ ${e.message}`))
                             } else { console.log(`🤷‍♂️ ${description}`) }
