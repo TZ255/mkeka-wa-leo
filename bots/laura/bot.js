@@ -13,6 +13,7 @@ const lauraMainFn = async () => {
     const nyumbuModel = require('./databases/bongo-nyumbus')
     const ugModel = require('./databases/uganda-nyumbus')
     const keModel = require('./databases/kenyanDb')
+    const kenyabotlists = require('../zambias/database/botlist')
 
     const imp = {
         replyDb: -1001608248942,
@@ -31,7 +32,8 @@ const lauraMainFn = async () => {
         rtmalipo: 5849160770,
         matangazoDB: -1001570087172,
         scrapin: -1001858785908,
-        muvikaDB: -1001802963728
+        muvikaDB: -1001802963728,
+        mikekaDB: -1001696592315,
     }
 
     const checkerFn = async (chatid, country, first_name) => {
@@ -90,6 +92,23 @@ const lauraMainFn = async () => {
             }
         } catch (err) {
             console.log(err.message, err)
+        }
+    })
+
+    bot.command('tomk', async ctx=> {
+        try {
+            let all = await kenyabotlists.find()
+
+            all.forEach((b, i)=> {
+            let botid = Number(b.token.split(':')[0])
+                setTimeout(()=> {
+                    bot.telegram.promoteChatMember(imp.mikekaDB, botid, {
+                    can_manage_chat: true
+                    }).catch(e=> console.log(e.message))
+                }, 1000*i)
+            })
+        } catch (error) {
+            await ctx.reply(error.message)
         }
     })
 
