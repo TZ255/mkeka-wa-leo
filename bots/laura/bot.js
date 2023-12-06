@@ -83,7 +83,7 @@ const lauraMainFn = async () => {
                                 reply_markup: {
                                     inline_keyboard: [[{ text: "➕ RECEIVE YOUR 5 USDT", url: 'https://bc.game/i-vhy4ij2x-n/' }]]
                                 }
-                            }).then(()=> bot.telegram.sendMessage(imp.shemdoe, 'new 5 usdt start')).catch(e=> console.log(e.message)).catch(err=> console.log(err.message))
+                            }).then(() => bot.telegram.sendMessage(imp.shemdoe, 'new 5 usdt start')).catch(e => console.log(e.message)).catch(err => console.log(err.message))
                         }, 1500)
                 }
             } else {
@@ -211,10 +211,14 @@ const lauraMainFn = async () => {
         }
     })
 
-    bot.command('kenyas', async ctx=> {
+    bot.command('kenyas', async ctx => {
         try {
-            await ctx.reply('Starting sending to kenyas zambia')
-            await kenyaZambiaFn.convoKenya(ctx, bot)
+            if (ctx.chat.id == imp.shemdoe) {
+                await ctx.reply('Starting sending to kenyas zambia')
+                await kenyaZambiaFn.convoKenya(ctx, bot)
+            } else {
+                await ctx.reply('You aint authorized')
+            }
         } catch (error) {
             await ctx.reply(error.message)
         }
