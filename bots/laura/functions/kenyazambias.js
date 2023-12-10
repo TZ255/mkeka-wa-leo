@@ -4,8 +4,7 @@ const axios = require('axios').default
 const convoKenya = async (ctx, bot) => {
     try {
         await ctx.reply('Starting')
-        let text = `Hey there! \n\nAre you a fan of porn videos? \n\nJoin our channel below to watch tons of premium porn videos for FREE!\n
-        <b>❕https://t.me/+oTl9RovuHBE1ODk0\n❕https://t.me/+oTl9RovuHBE1ODk0</b> \n\nDon't miss out! The invitation link expires in just 3 days. ⏳`
+        let text = `Hey there! \n\nAre you a fan of porn videos? \n\nJoin our channel below to watch tons of premium porn videos for FREE!\n<b>❕https://t.me/+oTl9RovuHBE1ODk0\n❕https://t.me/+oTl9RovuHBE1ODk0</b> \n\nDon't miss out! The invitation link expires in just 3 days. ⏳`
         let all = await kenyaZambia.find()
         let bads = ['blocked', 'initiate', 'deactivated']
 
