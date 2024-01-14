@@ -21,7 +21,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             let bwTZ = `https://mkekawaleo.com/betway-tz/register`
             let gsb = 'https://mkekawaleo.com/gsb-tz/register'
             let pm = `https://pmaff.com/?serial=61291818&creative_id=1788`
-            let ke = `https://mkekawaleo.com/1xbet/register`
+            let ke = `https://mkekawaleo.com/22bet/register`
             let ug = `https://mkekawaleo.com/gsb-ug/register`
             let prm = `https://mkekawaleo.com/premierbet/register`
             let zm = `https://track.africabetpartners.com/visit/?bta=35468&nci=5976&utm_campaign=zambia`
