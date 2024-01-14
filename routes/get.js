@@ -177,7 +177,7 @@ router.get('/:comp/register', async (req, res) => {
 
             //bots redirects
             case 'betika-ke': case '22bet-ke': case '1xbet':
-                res.redirect(links.ke_1xbet);
+                res.redirect(links.ke_22bet);
                 break;
             case 'gsb-tz':
                 res.redirect(links.gsb);
@@ -192,7 +192,7 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.tz_888);
                 break;
             case '22bet-ug':
-                res.redirect(links.ke_1xbet);
+                res.redirect(links.ke_22bet);
                 break;
             case '22bet-tz':
                 res.redirect(links.tz_888);
