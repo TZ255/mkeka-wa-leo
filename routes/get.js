@@ -137,7 +137,7 @@ router.get('/:comp/register', async (req, res) => {
         gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=5439`,
         pmatch: `https://grwptraq.com/?serial=61288670&creative_id=1788&anid=web&pid=web`,
         meridian: `https://a.meridianbet.co.tz/c/kGdxSu`,
-        betway: `https://www.betway.co.tz/?btag=P94949-PR26600-CM88900-TS1988404&`,
+        betway: `https://www.betway.co.tz/?btag=P94949-PR24698-CM77104-TS1988404&`,
         premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
         betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
         gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`,
@@ -186,7 +186,7 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.gsb_ug);
                 break;
             case 'betway-tz':
-                res.redirect(links.tz_888);
+                res.redirect(links.betway);
                 break;
             case 'premierbet':
                 res.redirect(links.tz_888);
