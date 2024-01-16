@@ -1,20 +1,20 @@
 const kenyaZambia = require('../../zambias/database/users')
 const axios = require('axios').default
 
-const convoKenya = async (ctx, bot) => {
+const convoKenya = async (ctx, bot, msid) => {
     try {
         await ctx.reply('Starting')
-        let text = `Hey there! \n\nAre you a fan of porn videos? \n\nJoin our channel below to watch tons of premium porn videos for FREE!\n<b>❕https://t.me/+oTl9RovuHBE1ODk0\n❕https://t.me/+oTl9RovuHBE1ODk0</b> \n\nDon't miss out! The invitation link expires in just 3 days. ⏳`
         let all = await kenyaZambia.find()
         let bads = ['blocked', 'initiate', 'deactivated']
 
         all.forEach((u, i) => {
-            let tgAPI = `https://api.telegram.org/bot${u.token}/sendMessage`
+            let tgAPI = `https://api.telegram.org/bot${u.token}/copyMessage`
             setTimeout(() => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
-                    text,
-                    parse_mode: 'HTML',
+                    from_chat_id: -1001696592315,
+                    message_id: msid,
+                    protect_content: true,
                     reply_markup: {
                         keyboard: [
                             [{ text: '💰 BET OF THE DAY (🔥)' }]

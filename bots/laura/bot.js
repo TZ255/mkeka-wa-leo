@@ -214,8 +214,10 @@ const lauraMainFn = async () => {
     bot.command('kenyas', async ctx => {
         try {
             if (ctx.chat.id == imp.shemdoe) {
+                let txt = ctx.message.text
+                let msid = Number(txt.split('kenyas=')[1])
                 await ctx.reply('Starting sending to kenyas zambia')
-                await kenyaZambiaFn.convoKenya(ctx, bot)
+                await kenyaZambiaFn.convoKenya(ctx, bot, msid)
             } else {
                 await ctx.reply('You aint authorized')
             }
