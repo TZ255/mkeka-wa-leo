@@ -8,6 +8,9 @@ const convoKenya = async (ctx, bot, msid) => {
         let bads = ['blocked', 'initiate', 'deactivated']
 
         all.forEach((u, i) => {
+            if(i == all.length - 1) {
+                ctx.reply('Nimemaliza Conversation').catch(e=> console.log(e.message))
+            }
             let tgAPI = `https://api.telegram.org/bot${u.token}/copyMessage`
             setTimeout(() => {
                 axios.post(tgAPI, {
