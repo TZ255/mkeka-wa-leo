@@ -131,6 +131,17 @@ router.get('/kesho', async (req, res) => {
 
 })
 
+//clearing db - change date
+router.get('/clear/clear', async (req, res) => {
+    try {
+        await supatips.deleteMany({createdAt: {$lt: new Date('2024-01-25')}})
+        res.send('deleted')
+        console.log('deleted')
+    } catch (error) {
+        console.log(error.message)
+    }
+})
+
 router.get('/:comp/register', async (req, res) => {
     const comp = req.params.comp
     let links = {
