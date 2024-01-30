@@ -156,12 +156,13 @@ router.get('/:comp/register', async (req, res) => {
         ke_1xbet: `https://refpa4293501.top/L?tag=d_2869291m_2528c_&site=2869291&ad=2528`,
         ug_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77677&bid=1489&lpid=34`,
         tz_22bet: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77678&bid=1491&lpid=290`,
-        tz_888: `http://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`
+        tz_888: `http://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`,
+        betwinner: `https://bw-prm.com/carlos-bonus-lite/?extid=mkl&p=%2Fregistration%2F&lang=en&id=29lg`
     }
     try {
         switch (comp) {
             case 'gsb':
-                res.redirect(links.gsb);
+                res.redirect(links.betwinner);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { gsb: 1 } });
                 break;
             case 'pmatch':
@@ -169,20 +170,20 @@ router.get('/:comp/register', async (req, res) => {
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { pmatch: 1 } });
                 break;
             case 'betway':
-                res.redirect(links.betway);
+                res.redirect(links.betwinner);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
                 break;
             case 'meridian':
-                res.redirect(links.meridian);
+                res.redirect(links.betwinner);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { meridian: 1 } });
                 break;
             case 'premier':
-                res.redirect(links.premier);
+                res.redirect(links.betwinner);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
                 break;
 
             case '888bet':
-                res.redirect(links.tz_888);
+                res.redirect(links.betwinner);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
                 break;
 
@@ -191,22 +192,22 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.ke_22bet);
                 break;
             case 'gsb-tz':
-                res.redirect(links.gsb);
+                res.redirect(links.betwinner);
                 break;
             case 'gsb-ug':
-                res.redirect(links.gsb_ug);
+                res.redirect(links.betwinner);
                 break;
             case 'betway-tz':
                 res.redirect(links.betway);
                 break;
             case 'premierbet':
-                res.redirect(links.tz_888);
+                res.redirect(links.betwinner);
                 break;
             case '22bet-ug':
-                res.redirect(links.ke_22bet);
+                res.redirect(links.betwinner);
                 break;
             case '22bet-tz':
-                res.redirect(links.tz_888);
+                res.redirect(links.betwinner);
                 break;
             default:
                 res.redirect('/');
