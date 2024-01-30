@@ -134,7 +134,7 @@ router.get('/kesho', async (req, res) => {
 //clearing db - change date
 router.get('/clear/clear', async (req, res) => {
     try {
-        await supatips.deleteMany({createdAt: {$lt: new Date('2024-01-25')}})
+        await supatips.deleteMany({ createdAt: { $lt: new Date('2024-01-25') } })
         res.send('deleted')
         console.log('deleted')
     } catch (error) {
@@ -184,7 +184,9 @@ router.get('/:comp/register', async (req, res) => {
 
             case '888bet':
                 res.redirect(links.betwinner);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
+                break;
+            case 'betwinner':
+                res.redirect(links.betwinner);
                 break;
 
             //bots redirects

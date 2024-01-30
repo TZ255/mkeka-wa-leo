@@ -57,6 +57,9 @@ const helenCodes = async () => {
                 { text: "🔥 MKEKA 1" },
                 { text: "💰 MKEKA 2" },
                 { text: "🤑 MKEKA 3" },
+            ],
+            [
+                {text: "💯 BetWinner App (200% Bonus)"}
             ]
         ],
         is_persistent: true,
@@ -520,6 +523,8 @@ const helenCodes = async () => {
                     await call_sendMikeka_functions.sendMkeka3(ctx, delay, bot, imp)
                 } else if (txt == '👑 SUPATIPS') {
                     await call_sendMikeka_functions.supatips(ctx, bot, delay, imp)
+                } else if (txt == '💯 BetWinner App (200% Bonus)' || txt.toLowerCase() == 'betwinner') {
+                    await bot.telegram.copyMessage(userid, imp.matangazoDB, 97)
                 } else if (txt == '💡 MSAADA') {
                     await bot.telegram.copyMessage(ctx.chat.id, imp.mikekaDB, 481)
                 } else if (txt == '🔥 MIKEKA YA UHAKIKA LEO 💰') {
