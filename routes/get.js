@@ -162,7 +162,7 @@ router.get('/:comp/register', async (req, res) => {
     try {
         switch (comp) {
             case 'gsb':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { gsb: 1 } });
                 break;
             case 'pmatch':
@@ -170,23 +170,23 @@ router.get('/:comp/register', async (req, res) => {
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { pmatch: 1 } });
                 break;
             case 'betway':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
                 break;
             case 'meridian':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { meridian: 1 } });
                 break;
             case 'premier':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
                 break;
 
             case '888bet':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 break;
             case 'betwinner':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 break;
 
             //bots redirects
@@ -194,7 +194,7 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.ke_22bet);
                 break;
             case 'gsb-tz':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 break;
             case 'gsb-ug':
                 res.redirect(links.betwinner);
@@ -203,13 +203,13 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.betway);
                 break;
             case 'premierbet':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 break;
             case '22bet-ug':
                 res.redirect(links.betwinner);
                 break;
             case '22bet-tz':
-                res.redirect(links.betwinner);
+                res.redirect(links.betway);
                 break;
             default:
                 res.redirect('/');
