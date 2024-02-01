@@ -524,7 +524,7 @@ const helenCodes = async () => {
                 } else if (txt == '👑 SUPATIPS') {
                     await call_sendMikeka_functions.supatips(ctx, bot, delay, imp)
                 } else if (txt == '💯 BetWinner App (200% Bonus)' || txt.toLowerCase() == 'betwinner') {
-                    await bot.telegram.copyMessage(userid, imp.matangazoDB, 97)
+                    await bot.telegram.copyMessage(userid, imp.matangazoDB, 102)
                 } else if (txt == '💡 MSAADA') {
                     await bot.telegram.copyMessage(ctx.chat.id, imp.mikekaDB, 481)
                 } else if (txt == '🔥 MIKEKA YA UHAKIKA LEO 💰') {
