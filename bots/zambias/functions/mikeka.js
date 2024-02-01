@@ -21,13 +21,14 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             let bwTZ = `https://mkekawaleo.com/betway-tz/register`
             let gsb = 'https://mkekawaleo.com/gsb-tz/register'
             let pm = `https://pmaff.com/?serial=61291818&creative_id=1788`
-            let ke = `www.bet-link.top/22bet/register`
+            let ke = `www.bet-link.top/betwinner/register`
+            let tzWinner = `www.bet-link.top/betwinner/register`
             let ug = `https://mkekawaleo.com/gsb-ug/register`
             let prm = `https://mkekawaleo.com/premierbet/register`
             let zm = `https://track.africabetpartners.com/visit/?bta=35468&nci=5976&utm_campaign=zambia`
             let zm_short = `https://is.gd/register_gsb_zambia`
 
-            let finaText = txt + `<b>🔥 Total Odds: ${Number(odds).toLocaleString('en-US')}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nThese bet options are available at <b>22bet</b> with 200% bonus on your first deposit\n\n<b>✓ Register Here </b>\n\n<b>👤 (Kenya 🇰🇪)</b>\n<b><a href="${ke}">https://22bet.co.ke/register\nhttps://22bet.co.ke/register</a></b>\n\n<b>👤 (Tanzania 🇹🇿)</b>\n<b><a href="${prm}">https://22bet.co.tz/register</a></b>\n\n\n•••`
+            let finaText = txt + `<b>🔥 Total Odds: ${Number(odds).toLocaleString('en-US')}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nThese bet options are available at <b>BetWinner</b> with 200% bonus on your first deposit\n\n<b>✓ You Can Register Below </b>\n\n<b>👤 (Kenya 🇰🇪)</b>\n<b><a href="${ke}">https://betwinner.co.ke/register\nhttps://betwinner.co.ke/register</a></b>\n\n<b>👤 (Tanzania 🇹🇿)</b>\n<b><a href="${tzWinner}">https://betwinner.co.tz/register</a></b>\n\n\n•••`
 
             await ctx.reply(finaText, { parse_mode: 'HTML', disable_web_page_preview: true })
         } else {

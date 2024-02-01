@@ -186,12 +186,12 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.betway);
                 break;
             case 'betwinner':
-                res.redirect(links.betway);
+                res.redirect(links.betwinner);
                 break;
 
             //bots redirects
             case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet':
-                res.redirect(links.ke_22bet);
+                res.redirect(links.betwinner);
                 break;
             case 'gsb-tz':
                 res.redirect(links.betway);
