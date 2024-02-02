@@ -65,8 +65,8 @@ const charlotteFn = async () => {
         let name = ctx.chat.first_name
 
         try {
-            if (ctx.startPayload) {
-                let nano = ctx.startPayload
+            if (ctx.payload) {
+                let nano = ctx.payload
 
                 if (nano.includes('fromWeb-')) {
                     let webNano = nano.split('fromWeb-')[1]
