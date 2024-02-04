@@ -74,12 +74,12 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             let bwTZ = `http://mkekawaleo.com/betway-tz/register`
             let gsb = 'http://mkekawaleo.com/gsb-tz/register'
             let pm = `http://pmaff.com/?serial=61291818&creative_id=1788`
-            let ke = `www.bet-link.top/22bet/register`
-            let ug = `www.bet-link.top/gsb-ug/register`
+            let ke = `http://bet-link.top/22bet/register`
+            let ug = `http://bet-link.top/22bet/register`
             let prm = `http://mkekawaleo.com/premierbet/register`
             let tz_888 = `http://mkekawaleo.com/888bet/register`
 
-            let finaText = txt + `<b>🔥 Total Odds: ${odds.toLocaleString('en-US')}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nMkeka huu umeandaliwa <b><a href="${bwTZ}">BetWay</a></b>\n\n<i>» Jisajili na upokee Tsh. 3,000 bure pamoja na bonus ya 150% kwa deposit ya kwanza</i> \n\n\n<b>✓ Jisajili Sasa</b> \n\n<b>👤 (Tanzania 🇹🇿)</b>\n<b><a href="${bwTZ}">https://betway.co.tz/register\nhttps://betway.co.tz/register</a></b>\n\n<b>👤 (Kenya 🇰🇪)</b>\n<b><a href="${ke}">https://22bet.co.ke/register</a></b>\n\n<b>👤 (Uganda 🇺🇬)</b>\n<b><a href="${ug}">https://m.gsb.ug/register</a></b>\n\n\n©MkekaWaLeo`
+            let finaText = txt + `<b>🔥 Total Odds: ${odds.toLocaleString('en-US')}</b>\n\n▬▬▬▬▬▬▬▬▬▬▬▬\n\nMkeka huu umeandaliwa <b><a href="${bwTZ}">BetWay</a></b>\n\n<i>» Jisajili na upokee Tsh. 3,000 bure pamoja na bonus ya 150% kwa deposit ya kwanza</i> \n\n\n<b>✓ Jisajili Sasa</b> \n\n<b>👤 (Tanzania 🇹🇿)</b>\n<b><a href="${bwTZ}">https://betway.co.tz/register\nhttps://betway.co.tz/register</a></b>\n\n<b>👤 (Kenya 🇰🇪)</b>\n<b><a href="${ke}">https://22bet.co.ke/register</a></b>\n\n<b>👤 (Uganda 🇺🇬)</b>\n<b><a href="${ug}">https://22bet.co.ug/register</a></b>\n\n\n©MkekaWaLeo`
 
             await ctx.reply(finaText, { parse_mode: 'HTML', disable_web_page_preview: true })
         } else if (keka.length > 0 && (tzHrs >= 22)) {
