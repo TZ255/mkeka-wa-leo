@@ -40,10 +40,10 @@ app.use(getRouter)
 if (process.env.local != 'true') {
     lauraSourceCodes.bot()
     CharlloteSourceCodes.bot()
-    
+    helenSourceCodes.bot()
     zambiaBotsSourceCodes.myBotsFn()
 }
-helenSourceCodes.bot()
+
 
 
 app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))

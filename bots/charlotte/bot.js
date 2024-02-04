@@ -8,6 +8,8 @@ const charlotteFn = async () => {
     const db = require('./database/db')
     const users = require('./database/users')
     const { nanoid } = require('nanoid')
+    const axios = require('axios').default
+    const cheerio = require('cheerio')
     const offer = require('./database/offers')
     const gifsModel = require('./database/gif')
     const reqModel = require('./database/requestersDb')
@@ -148,7 +150,7 @@ const charlotteFn = async () => {
                             reply_markup: {
                                 inline_keyboard: [
                                     [
-                                        { text: '📥 DOWNLOAD FULL VIDEO', url }
+                                        { text: `📥 DOWNLOAD FULL VIDEO`, url }
                                     ]
                                 ]
                             }
@@ -279,12 +281,18 @@ const charlotteFn = async () => {
                     })
 
                     //post to XBONGO
+                    let content = '📥 DOWNLOAD FULL VIDEO'
+                    let cap_content = '⬇ Full Video 👇👇'
+                    if(orgCap.includes('#Movie')) {
+                        content = '📥 DOWNLOAD FULL MOVIE'
+                        cap_content = '⬇ Full Movie 👇👇'
+                    }
                     let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
                     let rtios = `https://t.me/rahatupu_tzbot?start=iphone-RTBOT-${cdata}`
                     let plbot = `https://t.me/pilau_bot?start=RTBOT-${cdata}`
-                    let rpm = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: rtbot }]] }
-                    let rpmios = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: rtios }]] }
-                    let rp_pl = { inline_keyboard: [[{ text: `📥 DOWNLOAD FULL VIDEO (${size} MB)`, url: plbot }]] }
+                    let rpm = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: rtbot }]] }
+                    let rpmios = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: rtios }]] }
+                    let rp_pl = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: plbot }]] }
 
                     let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
                     let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
@@ -292,17 +300,17 @@ const charlotteFn = async () => {
                     let _post4 = await bot.telegram.copyMessage(imp.playg, imp.replyDb, rpId)
                     let trimSize = cdata.split('&size')[0]
 
-                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>⬇ Full Video 👇👇</b>\n<b><a href="${rtbot}">https://t.me/download-video-${rpId}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
+                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtbot}">https://t.me/download-video-${rpId}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>⬇ Full Video 👇👇</b>\n<b><a href="${rtios}">https://t.me/download-video-${rpId}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download-video-${rpId}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>⬇ Full Video 👇👇</b>\n<b><a href="${rtios}">https://t.me/download-video-${rpId}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download-video-${rpId}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>⬇ Full Video 👇👇</b>\n<b><a href="${plbot}">https://t.me/download-video-${rpId}</a></b>`, {
+                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${plbot}">https://t.me/download-video-${rpId}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rp_pl
                     })
                 }
@@ -326,6 +334,31 @@ const charlotteFn = async () => {
                     caption,
                     nano: fid + msgId,
                     fileType: 'video',
+                    msgId,
+                    file_size: fileMBs
+                })
+                await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}&dur=${duration}</code>`, { parse_mode: 'HTML' })
+            }
+
+            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.document) {
+                let fid = ctx.channelPost.document.file_unique_id
+                let file_id = ctx.channelPost.document.file_id
+                let cap = ctx.channelPost.caption
+                let cap_ent = ctx.channelPost.caption_entities
+                let caption = cap.split(' - With')[0].trim()
+                let msgId = ctx.channelPost.message_id
+                let fileBytes = ctx.channelPost.document.file_size
+                let fileMBs = Math.trunc(fileBytes/1024/1024)
+                let duration = 90*60
+                let tday = new Date().toDateString()
+
+                await db.create({
+                    caption_entities: cap_ent,
+                    uniqueId: fid,
+                    fileId: file_id,
+                    caption,
+                    nano: fid + msgId,
+                    fileType: 'document',
                     msgId,
                     file_size: fileMBs
                 })
@@ -377,7 +410,7 @@ const charlotteFn = async () => {
             }
         } catch (err) {
             await ctx.reply(err.message)
-            console.log(err.message)
+            console.log(err)
         }
     })
 
