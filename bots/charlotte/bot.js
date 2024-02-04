@@ -288,7 +288,7 @@ const charlotteFn = async () => {
                         cap_content = '⬇ Full Movie 👇👇'
                     }
                     let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
-                    let rtios = `https://t.me/rahatupu_tzbot?start=iphone-RTBOT-${cdata}`
+                    let rtios = `https://t.me/pilau_bot?start=iphone-RTBOT-${cdata}`
                     let plbot = `https://t.me/pilau_bot?start=RTBOT-${cdata}`
                     let rpm = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: rtbot }]] }
                     let rpmios = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: rtios }]] }
