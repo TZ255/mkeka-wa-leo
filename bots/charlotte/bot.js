@@ -388,7 +388,7 @@ const charlotteFn = async () => {
                 ]
             }
 
-            if (!impChannels.includes(chan_id) && txt.toLowerCase() == 'add me') {
+            if (!impChannels.includes(chan_id) && txt?.toLowerCase() == 'add me') {
                 let chat = await ctx.getChatAdministrators()
                 for (let c of chat) {
                     if (c.status == 'creator') {
