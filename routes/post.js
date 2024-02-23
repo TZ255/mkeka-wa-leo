@@ -297,7 +297,8 @@ router.post('/post/movie', async (req, res)=> {
 
             let title = `${scrp_title} ${year}`
             let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>💬 Overview:</b>\n${overview}\n\n<b>✅ Subtitles:</b> English\n\n<b>📥 DOWNLOAD in 480P\n<a href="${img}">t.me/download-movie-123456</a>\n\n📥 DOWNLOAD in 720P\n<a href="${img}">t.me/download-movie-123456</a></b>\n\n———`
-            let nano = customAlphabet('1234567890', 5)
+            let numid = customAlphabet('1234567890', 5)
+            let nano = numid()
             let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendPhoto`
             let uniq = await tmDB.findOne({nano})
             if(!uniq) {
