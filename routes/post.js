@@ -306,7 +306,7 @@ router.post('/post/movie', async (req, res)=> {
                     nano, p480, p720, tmd_link: tmd, title
                 })
                 let data = {
-                    replyDB: 1608248942,
+                    replyDB: -1001608248942,
                     photo: img,
                     parse_mode: 'HTML',
                     caption
