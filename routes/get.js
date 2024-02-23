@@ -160,7 +160,7 @@ router.get('/:comp/register', async (req, res) => {
     try {
         switch (comp) {
             case 'gsb':
-                res.redirect(links.gsb);
+                res.redirect(links.betway);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { gsb: 1 } });
                 break;
             case 'pmatch':
@@ -192,10 +192,10 @@ router.get('/:comp/register', async (req, res) => {
                 res.redirect(links.bet22);
                 break;
             case 'gsb-tz':
-                res.redirect(links.gsb);
+                res.redirect(links.betway);
                 break;
             case 'gsb-ug':
-                res.redirect(links.gsb_ug);
+                res.redirect(links.betway);
                 break;
             case 'betway-tz':
                 res.redirect(links.betway);
