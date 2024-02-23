@@ -16,7 +16,9 @@ const tmdSchema = new Schema({
     },
     title: {
         type: String
-    }
+    },
+    replyDB: {type: Number, default: 0},
+    replyMSGID: {type: Number, default: 0},
 }, {strict: false, timestamps: true })
 
 let model = mongoose.model('MOVIE DB', tmdSchema)

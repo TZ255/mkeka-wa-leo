@@ -295,30 +295,43 @@ router.post('/post/movie', async (req, res)=> {
                 genres = genres + `#${g.trim()}, `
             }
 
-            let title = `${scrp_title} ${year}`
-            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>💬 Overview:</b>\n${overview}\n\n<b>✅ Subtitles:</b> English\n\n<b>📥 DOWNLOAD in 480P\n<a href="${img}">t.me/download-movie-123456</a>\n\n📥 DOWNLOAD in 720P\n<a href="${img}">t.me/download-movie-123456</a></b>\n\n———`
+            //sizes of movies
+            let s4 = p480.split('&size=')[1].split('&dur=')[0]
+            let s7 = p720.split('&size=')[1].split('&dur=')[0]
+
+            //nanoid of movie
             let numid = customAlphabet('1234567890', 5)
             let nano = numid()
+
+            //cheerio data
+            let title = `${scrp_title} ${year}`
+            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>📥 DOWNLOAD 480P (${s4})\n<a href="${img}">t.me/download-movie-123456</a>\n\n📥 DOWNLOAD 720P (${s7})\n<a href="${img}">t.me/download-movie-123456</a></b>\n\n———`
             let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendPhoto`
+
+            //check if nanoid is alredy used, if not post
             let uniq = await tmDB.findOne({nano})
             if(!uniq) {
                 await tmDB.create({
                     nano, p480, p720, tmd_link: tmd, title
                 })
                 let data = {
-                    replyDB: -1001608248942,
+                    chat_id: -1001608248942, //replyDB
                     photo: img,
                     parse_mode: 'HTML',
                     caption
                 }
                 let response = await axios.post(laura, data)
+
+                //update database with poster and its channel id
+                await tmDB.findOneAndUpdate({nano}, {$set: {replyDB: data.chat_id, replyMSGID: response.data.result.message_id}})
                 res.send(response.data)
             } else {res.send(`This id ${nano} is alredy in database. Retry again`)}
         } else {
             res.send('You are not authorized to perform this action.')
         }
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message, error)
+        res.send(error)
     }
 })
 
