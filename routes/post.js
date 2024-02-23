@@ -3,7 +3,8 @@ const mikekaDb = require('../model/mkeka-mega')
 const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
 const supatipsModel = require('../model/supatips')
-const nanoid = require('nanoid')
+const tmDB = require('../model/movie-db')
+const {nanoid, customAlphabet} = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
@@ -271,6 +272,53 @@ router.post('/test-posting', async (req, res)=> {
 
     console.log(article, tag)
     res.send('received')
+})
+
+router.post('/post/movie', async (req, res)=> {
+    try {
+        let tmd = req.body.mov_link
+        let p480 = req.body.p480
+        let p720 = req.body.p720
+        let secret = req.body.secret
+
+        if (secret == '5654') {
+            let html = await axios.get(tmd)
+            let $ = cheerio.load(html.data)
+            let scrp_title = $('#original_header .title h2 a').text().trim()
+            let year = $('#original_header .title h2 span.release_date').text().trim()
+            let genre = $('#original_header span.genres').text().trim()
+            let overview = $('#original_header div.header_info div.overview p').text().trim()
+            let genres = ''
+            let img = $('#original_header div.image_content div.blurred img').attr('src')
+            let g_data = genre.split(',')
+            for (let g of g_data) {
+                genres = genres + `#${g.trim()}, `
+            }
+
+            let title = `${scrp_title} ${year}`
+            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>💬 Overview:</b>\n${overview}\n\n<b>✅ Subtitles:</b> English\n\n<b>📥 DOWNLOAD in 480P\n<a href="${img}">t.me/download-movie-123456</a>\n\n📥 DOWNLOAD in 720P\n<a href="${img}">t.me/download-movie-123456</a></b>\n\n———`
+            let nano = customAlphabet('1234567890', 5)
+            let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendPhoto`
+            let uniq = await tmDB.findOne({nano})
+            if(!uniq) {
+                await tmDB.create({
+                    nano, p480, p720, tmd_link: tmd, title
+                })
+                let data = {
+                    replyDB: 1608248942,
+                    photo: img,
+                    parse_mode: 'HTML',
+                    caption
+                }
+                let response = await axios.post(laura, data)
+                res.send(response.data)
+            } else {res.send(`This id ${nano} is alredy in database. Retry again`)}
+        } else {
+            res.send('You are not authorized to perform this action.')
+        }
+    } catch (error) {
+        console.log(error.message)
+    }
 })
 
 module.exports = router

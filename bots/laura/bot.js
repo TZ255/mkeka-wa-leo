@@ -5,6 +5,7 @@
 //Laura Codes Starting Here
 const lauraMainFn = async () => {
     const axios = require('axios').default
+    const cheerio = require('cheerio')
     const imdb = require('imdb-api')
     const { Telegraf } = require('telegraf')
     const bot = new Telegraf(process.env.LAURA_TOKEN)
