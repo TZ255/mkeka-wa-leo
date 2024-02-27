@@ -345,7 +345,7 @@ const charlotteFn = async () => {
                 let file_id = ctx.channelPost.document.file_id
                 let cap = ctx.channelPost.caption
                 let cap_ent = ctx.channelPost.caption_entities
-                let caption = cap.split(' - With')[0].trim()
+                let caption = 'no caption'
                 let msgId = ctx.channelPost.message_id
                 let fileBytes = ctx.channelPost.document.file_size
                 let fileMBs = Math.trunc(fileBytes/1024/1024)
