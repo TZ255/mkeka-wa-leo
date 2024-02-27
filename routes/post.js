@@ -299,13 +299,17 @@ router.post('/post/movie', async (req, res)=> {
             let s4 = p480.split('&size=')[1].split('&dur=')[0]
             let s7 = p720.split('&size=')[1].split('&dur=')[0]
 
+            //movies download link
+            let link4 = `https://t.me/muvikabot?start=MOVIE-FILE${p480}`
+            let link7 = `https://t.me/muvikabot?start=MOVIE-FILE${p720}`
+
             //nanoid of movie
             let numid = customAlphabet('1234567890', 5)
             let nano = numid()
 
             //cheerio data
             let title = `${scrp_title} ${year}`
-            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>📥 DOWNLOAD 480P (${s4})\n<a href="${img}">t.me/download-movie-123456</a>\n\n📥 DOWNLOAD 720P (${s7})\n<a href="${img}">t.me/download-movie-123456</a></b>\n\n———`
+            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>📥 DOWNLOAD 480P (${s4} MB)\n<a href="${link4}">t.me/download-movie-${nano}</a>\n\n📥 DOWNLOAD 720P (${s7} MB)\n<a href="${link7}">t.me/download-movie-${nano}</a></b>\n\n———`
             let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendPhoto`
 
             //check if nanoid is alredy used, if not post

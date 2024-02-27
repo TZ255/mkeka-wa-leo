@@ -268,6 +268,16 @@ router.get('/article/:path', async (req, res) => {
     }
 })
 
+router.get('/download/movie/:movid', async (req, res)=> {
+    try {
+        let movid = req.params.movid
+        let bot_link = `https://telegram.me/muvikabot?start=${movid}`
+        res.redirect(bot_link)
+    } catch (error) {
+        console.log(error.message)
+    }
+})
+
 router.all('*', (req, res) => {
     res.redirect('/')
 })
