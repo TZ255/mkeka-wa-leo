@@ -296,8 +296,12 @@ router.post('/post/movie', async (req, res)=> {
             }
 
             //sizes of movies
-            let s4 = p480.split('&size=')[1].split('&dur=')[0]
-            let s7 = p720.split('&size=')[1].split('&dur=')[0]
+            let s4 = `${p480.split('&size=')[1].split('&dur=')[0]} MB`
+            let s7 = `${p720.split('&size=')[1].split('&dur=')[0]} MB`
+
+            if(Number(s7) > 1024) {
+                s7 = `${(s7/1024).toFixed(1)} GB`
+            }
 
             //movies download link
             let link4 = `https://t.me/muvikabot?start=MOVIE-FILE${p480}`
@@ -309,7 +313,7 @@ router.post('/post/movie', async (req, res)=> {
 
             //cheerio data
             let title = `${scrp_title} ${year}`
-            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>DOWNLOAD NOW\n\n📥 480P (${s4} MB)\n<a href="${link4}">t.me/download-movie-${nano}</a>\n\n📥 720P (${s7} MB)\n<a href="${link7}">t.me/download-movie-${nano}</a></b>\n\n———`
+            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>DOWNLOAD NOW\n\n📥 480P (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a>\n\n📥 720P (${s7})\n<a href="${link7}">t.me/download-movie-${nano}</a></b>\n\n———`
             if (p480 == p720) {
                 caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>DOWNLOAD NOW\n\n📥 540P (${s4} MB)\n<a href="${link4}">t.me/download-movie-${nano}</a></b>\n\n———`
             }
