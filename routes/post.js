@@ -299,7 +299,7 @@ router.post('/post/movie', async (req, res)=> {
             let s4 = `${p480.split('&size=')[1].split('&dur=')[0]} MB`
             let s7 = `${p720.split('&size=')[1].split('&dur=')[0]} MB`
 
-            if(Number(s7) > 1024) {
+            if(Number(s7.split(' MB')[0]) > 1024) {
                 s7 = `${(s7/1024).toFixed(1)} GB`
             }
 
