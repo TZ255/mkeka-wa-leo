@@ -4,6 +4,7 @@ const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
 const supatipsModel = require('../model/supatips')
 const tmDB = require('../model/movie-db')
+const vidDB = require('../model/video-db')
 const {nanoid, customAlphabet} = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
@@ -326,6 +327,32 @@ router.post('/post/movie', async (req, res)=> {
                 await tmDB.create({
                     nano, p480, p720, tmd_link: tmd, title
                 })
+
+                //rename filescaption
+                let _bot = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/editMessageCaption`
+                let file_captn = `<b>🎬 ${title}</b>\n\n<b>📷 Genre:</b> ${genres}\n<b>💬 Subtitles:</b> English ✅`
+                let mid4 = await vidDB.findOne({nano: p480})
+                let mid7 = await vidDB.findOne({nano: p720})
+                let cap_data4 = {
+                    chat_id: -1001586042518, //ohmydb
+                    message_id: mid4.msgId,
+                    parse_mode: "HTML",
+                    caption: file_captn
+                }
+                let cap_data7 = {
+                    chat_id: -1001586042518, //ohmydb
+                    message_id: mid7.msgId,
+                    parse_mode: "HTML",
+                    caption: file_captn
+                }
+                if(p480 == p720) {
+                    await axios.post(_bot, cap_data4)
+                } else {
+                    await axios.post(_bot, cap_data4)
+                    await axios.post(_bot, cap_data7)
+                }
+
+                //poster data
                 let data = {
                     chat_id: -1001608248942, //replyDB
                     photo: img,
