@@ -331,8 +331,8 @@ router.post('/post/movie', async (req, res)=> {
                 //rename filescaption
                 let _bot = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/editMessageCaption`
                 let file_captn = `<b>🎬 ${title}</b>\n\n<b>📷 Genre:</b> ${genres}\n<b>💬 Subtitles:</b> English ✅`
-                let mid4 = await vidDB.findOne({nano: p480})
-                let mid7 = await vidDB.findOne({nano: p720})
+                let mid4 = await vidDB.findOne({nano: p480.split('&size')[0]})
+                let mid7 = await vidDB.findOne({nano: p720.split('&size')[0]})
                 let cap_data4 = {
                     chat_id: -1001586042518, //ohmydb
                     message_id: mid4.msgId,
