@@ -295,7 +295,7 @@ const helenCodes = async () => {
     bot.command('post_to_channels', async ctx => {
         let txt = ctx.message.text
         let ch_link = 'https://t.me/+804l_wD7yYgzM2Q0'
-        let pload_link = `https://t.me/PipyTidaBot?start=ngono_bongo`
+        let pload_link = `https://t.me/dayoncebot?start=ngono_bongo`
         let keyb = [
             [{ text: "❌❌ VIDEO ZA KUTOMBANA HAPA ❤️", url: pload_link },],
             [{ text: "🔥 Unganishwa Na Malaya Mikoa Yote 🔞", url: pload_link },],
