@@ -317,7 +317,7 @@ router.post('/post/movie', async (req, res)=> {
             let title = `${scrp_title} ${year}`
             let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>DOWNLOAD NOW\n\n📥 480P (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a>\n\n📥 720P (${s7})\n<a href="${link7}">t.me/download-movie-${nano}</a></b>\n\n———`
             if (p480 == p720) {
-                caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>DOWNLOAD NOW (${s4} MB)\n<a href="${link4}">t.me/download-movie-${nano}</a></b>\n\n———`
+                caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>📥 DOWNLOAD (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a></b>\n\n———`
             }
             let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendPhoto`
 
