@@ -128,7 +128,7 @@ const charlotteFn = async () => {
     bot.command('p', async ctx => {
         try {
             let com = ctx.message.text
-            let txt = com.split('=')[1]
+            let txt = com.split('/p=')[1]
             let url320 = txt.replace(/2160p/g, '320p')
             await bot.telegram.sendVideo(imp.pzone, url320)
         } catch (err) {
