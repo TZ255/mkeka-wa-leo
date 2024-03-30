@@ -322,9 +322,9 @@ router.post('/post/movie', async (req, res)=> {
 
             //cheerio data
             let title = `${scrp_title} ${year}`
-            let caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 480P (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a>\n\n📥 720P (${s7})\n<a href="${link7}">t.me/download-movie-${nano}</a></b>\n\n———`
+            let caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 480P (${s4})\n<a href="${link4}">👉 t.me/download-this-movie-${nano}</a>\n\n📥 720P (${s7})\n<a href="${link7}">👉 t.me/download-this-movie-${nano}</a></b>\n\n———`
             if (p480 == p720) {
-                caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 DOWNLOAD (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a></b>\n\n———`
+                caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full HD Movie with English Subtitles Below\n\n📥 DOWNLOAD (${s4})\n<a href="${link4}">t.me/download-this-movie-${nano}</a></b>\n\n———`
             }
             let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/editMessageCaption`
             let trailer_id = Number(trailer.split('reply-')[1])
