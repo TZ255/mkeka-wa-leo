@@ -280,7 +280,14 @@ router.post('/post/movie', async (req, res)=> {
         let tmd = req.body.mov_link
         let p480 = req.body.p480
         let p720 = req.body.p720
+        let trailer = req.body.trailer
         let secret = req.body.secret
+
+        let imp = {
+            replyDb: -1001608248942,
+            muvikaReps: -1002045676919,
+            ohMyDB: -1001586042518
+        }
 
         if (secret == '5654') {
             let html = await axios.get(tmd)
@@ -315,17 +322,18 @@ router.post('/post/movie', async (req, res)=> {
 
             //cheerio data
             let title = `${scrp_title} ${year}`
-            let caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>DOWNLOAD NOW\n\n📥 480P (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a>\n\n📥 720P (${s7})\n<a href="${link7}">t.me/download-movie-${nano}</a></b>\n\n———`
+            let caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 480P (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a>\n\n📥 720P (${s7})\n<a href="${link7}">t.me/download-movie-${nano}</a></b>\n\n———`
             if (p480 == p720) {
-                caption = `<b>🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n<b>💬 Subtitles:</b> English ✅\n\n———\n\n<b>📥 DOWNLOAD (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a></b>\n\n———`
+                caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 DOWNLOAD (${s4})\n<a href="${link4}">t.me/download-movie-${nano}</a></b>\n\n———`
             }
-            let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendPhoto`
+            let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/editMessageCaption`
+            let trailer_id = Number(trailer.split('reply-')[1])
 
             //check if nanoid is alredy used, if not post
             let uniq = await tmDB.findOne({nano})
             if(!uniq) {
                 await tmDB.create({
-                    nano, p480, p720, tmd_link: tmd, title
+                    nano, p480, p720, tmd_link: tmd, title, replyMSGID: trailer_id, replyDB: imp.muvikaReps
                 })
 
                 //rename filescaption
@@ -334,13 +342,13 @@ router.post('/post/movie', async (req, res)=> {
                 let mid4 = await vidDB.findOne({nano: p480.split('&size')[0]})
                 let mid7 = await vidDB.findOne({nano: p720.split('&size')[0]})
                 let cap_data4 = {
-                    chat_id: -1001586042518, //ohmydb
+                    chat_id: imp.ohMyDB,
                     message_id: mid4.msgId,
                     parse_mode: "HTML",
                     caption: file_captn
                 }
                 let cap_data7 = {
-                    chat_id: -1001586042518, //ohmydb
+                    chat_id: imp.ohMyDB,
                     message_id: mid7.msgId,
                     parse_mode: "HTML",
                     caption: file_captn
@@ -354,15 +362,12 @@ router.post('/post/movie', async (req, res)=> {
 
                 //poster data
                 let data = {
-                    chat_id: -1001608248942, //replyDB
-                    photo: img,
+                    chat_id: imp.muvikaReps,
+                    message_id: trailer_id,
                     parse_mode: 'HTML',
                     caption
                 }
                 let response = await axios.post(laura, data)
-
-                //update database with poster and its channel id
-                await tmDB.findOneAndUpdate({nano}, {$set: {replyDB: data.chat_id, replyMSGID: response.data.result.message_id}})
                 res.send(response.data)
             } else {res.send(`This id ${nano} is alredy in database. Retry again`)}
         } else {

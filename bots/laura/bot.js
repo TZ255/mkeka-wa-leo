@@ -14,7 +14,10 @@ const lauraMainFn = async () => {
     const nyumbuModel = require('./databases/bongo-nyumbus')
     const ugModel = require('./databases/uganda-nyumbus')
     const keModel = require('./databases/kenyanDb')
+
+    //MODULES
     const kenyaZambiaFn = require('./functions/kenyazambias')
+    const messageFunctions = require('./functions/messagefn')
 
     const imp = {
         replyDb: -1001608248942,
@@ -33,7 +36,8 @@ const lauraMainFn = async () => {
         rtmalipo: 5849160770,
         matangazoDB: -1001570087172,
         scrapin: -1001858785908,
-        muvikaDB: -1001802963728
+        muvikaDB: -1001802963728,
+        muvikaReps: -1002045676919
     }
 
     const checkerFn = async (chatid, country, first_name) => {
@@ -241,20 +245,11 @@ const lauraMainFn = async () => {
     bot.on('channel_post', async ctx => {
         try {
             let chan_id = ctx.channelPost.chat.id
-            if (ctx.channelPost.text && ![imp.scrapin, imp.muvikaDB].includes(chan_id)) {
-                let txt = ctx.channelPost.text
-                let msgid = ctx.channelPost.message_id
-                if (txt.toLowerCase() == 'add telenovela') {
-                    await bot.telegram.copyMessage(ctx.chat.id, imp.matangazoDB, 38)
-                    setTimeout(() => {
-                        ctx.deleteMessage(msgid).catch(e => console.log(e.message))
-                    }, 2000)
-                } else if (txt.toLowerCase() == 'add brazil song') {
-                    await bot.telegram.copyMessage(ctx.chat.id, imp.matangazoDB, 39)
-                    setTimeout(() => {
-                        ctx.deleteMessage(msgid).catch(e => console.log(e.message))
-                    }, 2000)
-                }
+            if (chan_id == imp.muvikaReps && ctx.channelPost.video) {
+                await ctx.reply(`<code>reply-${ctx.channelPost.message_id}</code>`, {
+                    parse_mode: 'HTML',
+                    reply_to_message_id: ctx.channelPost.message_id
+                })
             }
 
         } catch (err) {
@@ -263,79 +258,14 @@ const lauraMainFn = async () => {
         }
     })
 
-    bot.on('text', async ctx => {
+    bot.on('message', async ctx => {
         try {
-            if (ctx.message.reply_to_message && ctx.chat.id == imp.halot) {
-                if (ctx.message.reply_to_message.text) {
-                    let myid = ctx.chat.id
-                    let my_msg_id = ctx.message.message_id
-                    let umsg = ctx.message.reply_to_message.text
-                    let ids = umsg.split('id = ')[1].trim()
-                    let userid = Number(ids.split('&mid=')[0])
-                    let mid = Number(ids.split('&mid=')[1])
-
-                    await bot.telegram.copyMessage(userid, myid, my_msg_id, { reply_to_message_id: mid })
-
-                } else if (ctx.message.reply_to_message.photo) {
-                    let my_msg = ctx.message.text
-                    let umsg = ctx.message.reply_to_message.caption
-                    let ids = umsg.split('id = ')[1].trim()
-                    let userid = Number(ids.split('&mid=')[0])
-                    let mid = Number(ids.split('&mid=')[1])
-
-                    await bot.telegram.sendMessage(userid, my_msg, { reply_to_message_id: mid })
-                }
-            } else {
-                let userid = ctx.chat.id
-                let txt = ctx.message.text
-                let username = ctx.chat.first_name
-                let mid = ctx.message.message_id
-
-                await bot.telegram.sendMessage(imp.halot, `<b>${txt}</b> \n\nfrom = <code>${username}</code>\nid = <code>${userid}</code>&mid=${mid}`, { parse_mode: 'HTML', disable_notification: true })
-            }
-        } catch (err) {
-            console.log(err.message, err)
-        }
-    })
-
-    bot.on('photo', async ctx => {
-        try {
-            let mid = ctx.message.message_id
-            let username = ctx.chat.first_name
-            let chatid = ctx.chat.id
-            let cap = ctx.message.caption
-
-            if (ctx.message.reply_to_message && chatid == imp.halot) {
-                if (ctx.message.reply_to_message.text) {
-                    let umsg = ctx.message.reply_to_message.text
-                    let ids = umsg.split('id = ')[1].trim()
-                    let userid = Number(ids.split('&mid=')[0])
-                    let rmid = Number(ids.split('&mid=')[1])
-
-
-                    await bot.telegram.copyMessage(userid, chatid, mid, {
-                        reply_to_message_id: rmid
-                    })
-                }
-
-                else if (ctx.message.reply_to_message.photo) {
-                    let umsg = ctx.message.reply_to_message.caption
-                    let ids = umsg.split('id = ')[1].trim()
-                    let userid = Number(ids.split('&mid=')[0])
-                    let rmid = Number(ids.split('&mid=')[1])
-
-
-                    await bot.telegram.copyMessage(userid, chatid, mid, {
-                        reply_to_message_id: rmid
-                    })
-                }
-            }
-
-            else {
-                await bot.telegram.copyMessage(imp.halot, chatid, mid, {
-                    caption: cap + `\n\nfrom = <code>${username}</code>\nid = <code>${chatid}</code>&mid=${mid}`,
-                    parse_mode: 'HTML'
-                })
+            if (ctx.message.text) {
+                // calling ontext function
+                await messageFunctions.onTextFn(bot, ctx, imp)
+            } else if (ctx.message.photo) {
+                //calling onphoto function
+                await messageFunctions.onPhotoFn(bot, ctx, imp)
             }
         } catch (err) {
             console.log(err.message, err)
