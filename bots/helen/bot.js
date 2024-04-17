@@ -406,7 +406,7 @@ const helenCodes = async () => {
                             bot.telegram.deleteMessage(ch_id, uj.message_id)
                                 .catch((err) => console.log(err))
                         }, 1000)
-                        await bot.telegram.copyMessage(ch_id, imp.pzone, 8176, {
+                        await bot.telegram.copyMessage(ch_id, imp.pzone, 12925, {
                             reply_markup: { inline_keyboard: keyb }
                         })
                     } else {
