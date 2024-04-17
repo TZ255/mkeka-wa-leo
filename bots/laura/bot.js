@@ -99,6 +99,16 @@ const lauraMainFn = async () => {
         }
     })
 
+    bot.command('price', async ctx=> {
+        try {
+            let res = await axios.get(`https://api.coincap.io/v2/assets/dogelon`)
+            let data = res.data
+            console.log(data.data.priceUsd)
+        } catch (error) {
+            await ctx.reply(error.message)
+        }
+    })
+
     bot.command('dramastore', async ctx => {
         try {
             await ctx.reply('Starting')
