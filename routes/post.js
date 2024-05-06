@@ -319,10 +319,11 @@ router.post('/post/movie', async (req, res)=> {
             //nanoid of movie
             let numid = customAlphabet('1234567890', 5)
             let nano = numid()
+            let _dd = `https://t.me/file/movie/${nano}`
 
             //cheerio data
             let title = `${scrp_title} ${year}`
-            let caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 480P (${s4})\n<a href="${link4}">👉 t.me/download-this-movie-${nano}</a>\n\n📥 720P (${s7})\n<a href="${link7}">👉 t.me/download-this-movie-${nano}</a></b>\n\n———`
+            let caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 480P (${s4})\n<a href="${link4}">${_dd}</a>\n\n📥 720P (${s7})\n<a href="${link7}">${_dd}</a></b>`
             if (p480 == p720) {
                 let dd = `https://t.me/file/movie/${nano}`
                 caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full HD Movie with English Subtitles Below (${s4})\n\n📥 Here 👇👇\n<a href="${link4}">${dd}\n${dd}</a></b>`
