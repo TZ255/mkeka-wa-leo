@@ -1,0 +1,283 @@
+<div class="toggle-cont" id="supa-za-leo">
+    <div class="toggles">
+        <div class="jtoggle" id="jtoggle">« Juzi</div>
+        <div class="ytoggle" id="ytoggle">Jana</div>
+        <div class="ltoggle active_toggle" id="ltoggle">⁕ Leo ⁕</div>
+        <div class="ktoggle" id="ktoggle">Kesho »</div>
+    </div>
+</div>
+
+<!-- juzi -->
+<div class="tble-cont ficha" id="jday">
+    <div class="table-head">
+        <h2>⭐⭐⭐ Over 1.5 Tips | Juzi ⭐⭐⭐</h2>
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Matches</th>
+                <th class="tips-th" scope="col">Tips</th>
+                <th scope="col">Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% jtips.forEach(el=> { %>
+            <tr>
+                <td class="match-td">
+                    <span class="league"><%= el.league %></span> <br>
+                    <%- el.match.replace(/ - /g, '<br>' ) %>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                <td class="matokeo-td"><%= el.matokeo %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <%- include('aff-gsb.ejs'); %>
+</div>
+
+<!-- yesterday -->
+<div class="tble-cont ficha" id="yday">
+    <div class="table-head">
+        <h2>⭐⭐⭐ Over 1.5 Tips | Jana ⭐⭐⭐</h2>
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Matches</th>
+                <th class="tips-th" scope="col">Tips</th>
+                <th scope="col">Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% ytips.forEach(el=> { %>
+            <tr>
+                <td class="match-td">
+                    <span class="league"><%= el.league %></span> <br>
+                    <%- el.match.replace(/ - /g, '<br>' ) %>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+                <td class="matokeo-td"><%= el.matokeo %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <%- include('aff-gsb.ejs'); %>
+</div>
+
+
+<!-- today -->
+<div class="tble-cont" id="lday">
+    <div class="table-head">
+        <h2>⭐⭐⭐ Over 1.5 Tips | Leo ⭐⭐⭐</h2>
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Matches</th>
+                <th class="tips-th" scope="col">Tips</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% stips.forEach(el=> { %>
+            <tr>
+                <td class=" time-td">
+                    <time>
+                        <%= el.time %> <br> <span><%= el.siku %></span>
+                    </time>
+                </td>
+                <td class="match-td">
+                    <!-- include schemas -->
+                    <meta itemprop="name" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %> Tips">
+                    <meta itemprop="description"
+                        content="Over 1.5 Tips | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
+                    <meta itemprop="performer" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
+                    <span class="league" itemprop="location"><%= el.league %></span>
+                    <br>
+                    <span class="home" itemprop="homeTeam">
+                        <%= el.match.split(' - ')[0] %>
+                    </span>
+                    <br>
+                    <span class="away" itemprop="awayTeam">
+                        <%= el.match.split(' - ')[1] %>
+                    </span>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <%- include('aff-gsb.ejs'); %>
+</div>
+
+
+<!-- tomorrow -->
+<div class="tble-cont ficha" id="kday">
+    <div class="table-head">
+        <h2>⭐⭐⭐ Over 1.5 Tips | Kesho ⭐⭐⭐</h2>
+    </div>
+    <table class="table table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Matches</th>
+                <th class="tips-th" scope="col">Tips</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% ktips.forEach(el=> { %>
+            <tr>
+                <td class="time-td">
+                    <time>
+                        <%= el.time %> <br> <span><%= el.siku %></span>
+                    </time>
+                </td>
+                <td class="match-td">
+                    <!-- include schemas -->
+                    <meta itemprop="name" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %> Tips">
+                    <meta itemprop="description"
+                        content="Over 1.5 Tips | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
+                    <meta itemprop="performer" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
+                    <span class="league" itemprop="location"><%= el.league %></span>
+                    <br>
+                    <span class="home" itemprop="homeTeam">
+                        <%= el.match.split(' - ')[0] %>
+                    </span>
+                    <br>
+                    <span class="away" itemprop="awayTeam">
+                        <%= el.match.split(' - ')[1] %>
+                    </span>
+                </td>
+                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <div class="zakesho" id="zakesho">
+        * Tips za Kesho <b id="siku_kesho"></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
+    </div>
+    <%- include('aff-gsb.ejs'); %>
+</div>
+
+
+<script>
+    let yday_cont = document.getElementById('yday')
+    let lday_cont = document.getElementById('lday')
+    let kday_cont = document.getElementById('kday')
+    let jday_cont = document.getElementById('jday')
+
+    let ytoggle = document.getElementById('ytoggle')
+    let ltoggle = document.getElementById('ltoggle')
+    let ktoggle = document.getElementById('ktoggle')
+    let jtoggle = document.getElementById('jtoggle')
+
+
+    ytoggle.addEventListener('click', () => {
+        ytoggle.classList.add('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        yday_cont.classList.remove('ficha')
+        lday_cont.classList.add('ficha')
+        kday_cont.classList.add('ficha')
+        jday_cont.classList.add('ficha')
+    })
+
+    ltoggle.addEventListener('click', () => {
+        ltoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        lday_cont.classList.remove('ficha')
+        yday_cont.classList.add('ficha')
+        kday_cont.classList.add('ficha')
+        jday_cont.classList.add('ficha')
+    })
+
+    jtoggle.addEventListener('click', () => {
+        jtoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+
+        jday_cont.classList.remove('ficha')
+        yday_cont.classList.add('ficha')
+        kday_cont.classList.add('ficha')
+        lday_cont.classList.add('ficha')
+    })
+
+    ktoggle.addEventListener('click', () => {
+        const zakesho_txt = document.getElementById('zakesho')
+
+        ktoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        //stringfy ejs obj then parse back to obj
+        const ktips = JSON.parse(`<%- JSON.stringify(ktips) %>`)
+
+        //kesho kama hamna onyesha hamna na ficha kesho cont
+        if (ktips.length == 0) {
+            zakesho_txt.style.display = 'block'
+        }
+
+        kday_cont.classList.remove('ficha')
+        lday_cont.classList.add('ficha')
+        yday_cont.classList.add('ficha')
+        jday_cont.classList.add('ficha')
+    })
+
+    function over15_sikuKesho() {
+        let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
+        let s = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
+        let siku_kesho = document.getElementById('siku_kesho')
+        let trh_slip = document.getElementById('trh_slip')
+
+        //add one day to show tomorrow
+        switch (d) {
+            case 'Monday':
+                siku_kesho.innerText = 'Jumanne'
+                trh_slip.innerText = 'Jumatatu: ' + s
+                break;
+
+            case 'Tuesday':
+                siku_kesho.innerText = 'Jumatano'
+                trh_slip.innerText = 'Jumanne: ' + s
+                break;
+
+            case 'Wednesday':
+                siku_kesho.innerText = 'Alhamis'
+                trh_slip.innerText = 'Jumatano: ' + s
+                break;
+
+            case 'Thursday':
+                siku_kesho.innerText = 'Ijumaa'
+                trh_slip.innerText = 'Alhamis: ' + s
+                break;
+
+            case 'Friday':
+                siku_kesho.innerText = 'Jumamosi'
+                trh_slip.innerText = 'Ijumaa: ' + s
+                break;
+
+            case 'Saturday':
+                siku_kesho.innerText = 'Jumapili'
+                trh_slip.innerText = 'Jumamosi: ' + s
+                break;
+
+            case 'Sunday':
+                siku_kesho.innerText = 'Jumatatu'
+                trh_slip.innerText = 'Jumapili: ' + s
+                break;
+
+            default:
+                siku_kesho.innerText = '😩'
+                break;
+        }
+    }
+    over15_sikuKesho()
+</script>

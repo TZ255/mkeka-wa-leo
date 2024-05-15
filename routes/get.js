@@ -2,6 +2,7 @@ const router = require('express').Router()
 const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
+const venas15Model = require('../model/venas15')
 const graphModel = require('../model/graph-tips')
 const affModel = require('../model/affiliates-analytics')
 const axios = require('axios').default
@@ -228,7 +229,7 @@ router.get('/admin/posting', async (req, res) => {
     res.render('2-posting/post', { mikeka, slips })
 })
 
-router.get('/betslip/leo', async (req, res) => {
+router.get('/mkeka/betslip-ya-leo', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         await graphModel.findOneAndUpdate({ siku: '23/04/2023' }, { $inc: { loaded: 1 } })
@@ -240,6 +241,44 @@ router.get('/betslip/leo', async (req, res) => {
         res.render('3-landing/landing', { slip, slipOdds })
     } catch (err) {
         console.log(err.message)
+    }
+})
+
+router.get('/mkeka/over-15', async (req, res) => {
+    try {
+        let nd = new Date()
+        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        //venas15 ya leo
+        let stips = await venas15Model.find({ siku: d }).sort('time').select('time league siku match tip matokeo')
+
+        //venas15 ya jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let ytips = await venas15Model.find({ siku: _d }).sort('time').select('time league siku match tip matokeo')
+
+        //venas15 ya juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let jtips = await venas15Model.find({ siku: _s }).sort('time').select('time league siku match tip matokeo')
+
+        //venas15 ya kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let ktips = await venas15Model.find({ siku: kesho }).sort('time').select('time league siku match tip matokeo')
+
+        res.render('5-over15/over15', { stips, ytips, ktips, jtips })
+    } catch (err) {
+        console.error(err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 43
+        }).catch(e => console.log(e.message, e))
     }
 })
 
