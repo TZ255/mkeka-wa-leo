@@ -3,6 +3,7 @@ const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
 const venas15Model = require('../model/venas15')
+const venas25Model = require('../model/venas25')
 const graphModel = require('../model/graph-tips')
 const affModel = require('../model/affiliates-analytics')
 const axios = require('axios').default
@@ -99,8 +100,11 @@ router.get('/', async (req, res) => {
             })
         }
 
+        //tarehes
+        let trh = {leo: d, kesho, jana: _d, juzi: _s}
 
-        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds })
+
+        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds, trh })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -270,14 +274,58 @@ router.get('/mkeka/over-15', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let ktips = await venas15Model.find({ siku: kesho }).sort('time').select('time league siku match tip matokeo')
 
-        res.render('5-over15/over15', { stips, ytips, ktips, jtips })
+        //tarehes
+        let trh = {leo: d, kesho, jana: _d, juzi: _s}
+
+        res.render('5-over15/over15', { stips, ytips, ktips, jtips, trh })
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
             from_chat_id: -1001570087172, //matangazoDB
-            message_id: 43
+            message_id: 125
+        }).catch(e => console.log(e.message, e))
+    }
+})
+
+router.get('/mkeka/over-25', async (req, res) => {
+    try {
+        let nd = new Date()
+        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        //venas25 ya leo
+        let stips = await venas25Model.find({ siku: d }).sort('time').select('time league siku match tip matokeo')
+
+        //venas25 ya jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let ytips = await venas25Model.find({ siku: _d }).sort('time').select('time league siku match tip matokeo')
+
+        //venas25 ya juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let jtips = await venas25Model.find({ siku: _s }).sort('time').select('time league siku match tip matokeo')
+
+        //venas25 ya kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let ktips = await venas25Model.find({ siku: kesho }).sort('time').select('time league siku match tip matokeo')
+
+        //tarehes
+        let trh = {leo: d, kesho, jana: _d, juzi: _s}
+
+        res.render('6-over25/over25', { stips, ytips, ktips, jtips, trh })
+    } catch (err) {
+        console.error(err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 126
         }).catch(e => console.log(e.message, e))
     }
 })

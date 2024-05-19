@@ -11,7 +11,7 @@
 <div class="tble-cont ficha" id="jday">
     <div class="table-head">
         <h2>
-            <span style="display: block;">⭐⭐⭐ Over 1.5 Tips | Juzi ⭐⭐⭐</span>
+            <span style="display: block;">⭐⭐⭐ Over 2.5 Tips | Juzi ⭐⭐⭐</span>
             <span class="spn_trh"><b id="trh_jz"></b><%= trh.juzi %></span>
         </h2>
     </div>
@@ -43,7 +43,7 @@
 <div class="tble-cont ficha" id="yday">
     <div class="table-head">
         <h2>
-            <span style="display: block;">⭐⭐⭐ Over 1.5 Tips | Jana ⭐⭐⭐</span>
+            <span style="display: block;">⭐⭐⭐ Over 2.5 Tips | Jana ⭐⭐⭐</span>
             <span class="spn_trh"><b id="trh_jn"></b><%= trh.jana %></span>
         </h2>
     </div>
@@ -76,7 +76,7 @@
 <div class="tble-cont" id="lday">
     <div class="table-head">
         <h2>
-            <span style="display: block;">⭐⭐⭐ Over 1.5 Tips | Leo ⭐⭐⭐</span>
+            <span style="display: block;">⭐⭐⭐ Over 2.5 Tips | Leo ⭐⭐⭐</span>
             <span class="spn_trh" id="trh_l"><b id="trh_slip"></b><%= trh.leo %></span>
         </h2>
     </div>
@@ -100,7 +100,7 @@
                     <!-- include schemas -->
                     <meta itemprop="name" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %> Tips">
                     <meta itemprop="description"
-                        content="Over 1.5 Tips | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
+                        content="Over 2.5 Tips | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
                     <meta itemprop="performer" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
                     <span class="league" itemprop="location"><%= el.league %></span>
                     <br>
@@ -125,7 +125,7 @@
 <div class="tble-cont ficha" id="kday">
     <div class="table-head">
         <h2>
-            <span style="display: block;">⭐⭐⭐ Over 1.5 Tips | Kesho ⭐⭐⭐</span>
+            <span style="display: block;">⭐⭐⭐ Over 2.5 Tips | Kesho ⭐⭐⭐</span>
             <span class="spn_trh"><b id="trh_ksh"></b><%= trh.kesho %></span>
         </h2>
     </div>
@@ -149,7 +149,7 @@
                     <!-- include schemas -->
                     <meta itemprop="name" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %> Tips">
                     <meta itemprop="description"
-                        content="Over 1.5 Tips | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
+                        content="Over 2.5 Tips | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
                     <meta itemprop="performer" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
                     <span class="league" itemprop="location"><%= el.league %></span>
                     <br>
@@ -243,7 +243,7 @@
         jday_cont.classList.add('ficha')
     })
 
-    function over15_sikuKesho() {
+    function over25_sikuKesho() {
         let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
         let s = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
         let siku_kesho = document.getElementById('siku_kesho')
@@ -315,5 +315,5 @@
                 break;
         }
     }
-    over15_sikuKesho()
+    over25_sikuKesho()
 </script>
