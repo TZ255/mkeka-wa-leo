@@ -189,11 +189,10 @@
     }
 
     main .right .cont .kitu {
-        border-left: 6px #808080 solid;
-        border-bottom: 1px #808080 solid;
+        border-left: 6px #d3d3d3 solid;
         padding: 16px;
-        border-top-left-radius: 16px;
-        border-bottom-left-radius: 16px;
+        border-top-right-radius: 16px;
+        border-bottom-right-radius: 16px;
         color: black;
         background-color: #f5f5f5;
         margin: 12px 4px;
@@ -258,7 +257,7 @@
     }
 
     footer .right ul li {
-        border-left: 6px #808080 solid;
+        border-left: 6px #d3d3d3 solid;
         background-color: #f5f5f5;
         padding: 12px 4px;
         margin: 6px 0;
@@ -275,7 +274,7 @@
 
     footer #tg:active,
     footer #tg:hover {
-        color: dodgerblue;
+        color: gray;
     }
 
     #toAds {
@@ -286,13 +285,17 @@
         width: 100%;
         text-align: center;
         border-radius: 2px;
-        border-left: 1px lightgray solid;
-        border-right: 1px lightgray solid;
+        border-left: 1px #d3d3d3 solid;
+        border-right: 1px #d3d3d3 solid;
         border-radius: 8px;
         margin: 16px auto;
         height: fit-content;
         padding-top: 8px;
         padding-bottom: 8px;
+    }
+
+    .fade.modal-backdrop.show {
+        opacity: 0.7;
     }
 
     @media (max-width: 420px) {
