@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
             //add them to betslip database
             for (let c of copies) {
                 await betslip.create({
-                    date: c.date, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs ')
+                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs ')
                 })
             }
         }
@@ -150,7 +150,7 @@ router.get('/clear/clear', async (req, res) => {
 router.get('/:comp/register', async (req, res) => {
     const comp = req.params.comp
     let links = {
-        gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=5439`,
+        gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=6081`,
         pmatch: `https://grwptraq.com/?serial=61288670&creative_id=1788&anid=web&pid=web`,
         meridian: `https://a.meridianbet.co.tz/c/kGdxSu`,
         betway: `https://www.betway.co.tz/?btag=P94949-PR24698-CM77104-TS1988404&`,
@@ -230,7 +230,19 @@ router.get('/contact/telegram', (req, res) => {
 router.get('/admin/posting', async (req, res) => {
     let mikeka = await mkekadb.find().sort('-createdAt').limit(50)
     let slips = await betslip.find().sort('-createdAt').limit(50)
-    res.render('2-posting/post', { mikeka, slips })
+
+    const formatDateHTML = (theDate) => {
+        let [day, month, year] = theDate.split('/')
+        return `${year}-${month}-${day}`
+    }
+
+    let formatteMikeka = mikeka.map(mk=> {
+        return {
+            ...mk.toObject(),
+            date: formatDateHTML(mk.date)
+        }
+    })
+    res.render('2-posting/post', { mikeka, slips, formatteMikeka })
 })
 
 router.get('/mkeka/betslip-ya-leo', async (req, res) => {

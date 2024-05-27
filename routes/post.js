@@ -201,6 +201,14 @@ router.post('/edit-mkeka/:id', async (req, res)=> {
     let sec = req.body.secret
     let tip = req.body.bet
     let odds = req.body.odds
+    let date = req.body.date
+    let league = req.body.league
+
+    //change date format 
+    if (date.includes('-')) {
+        let [yyyy, mm, dd] = date.split('-')
+        date = `${dd}/${mm}/${yyyy}`
+    }
 
     let prev = await mikekaDb.findById(_id)
     let homeTeam = prev.match.split(' - ')[0]
@@ -225,7 +233,7 @@ router.post('/edit-mkeka/:id', async (req, res)=> {
     }
 
     if(sec == '5654') {
-        let upd = await mikekaDb.findByIdAndUpdate(_id, {$set: {bet: tip, odds}}, {new: true})
+        let upd = await mikekaDb.findByIdAndUpdate(_id, {$set: {bet: tip, odds, league, date}}, {new: true})
         res.redirect(`/admin/posting#${upd._id}`)
     } else {
         res.send('Not found')

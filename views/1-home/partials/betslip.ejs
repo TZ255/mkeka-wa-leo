@@ -19,13 +19,16 @@
             <% for( let mch of slip ) { %>
                 <tr class="table-light">
                     <td>
-                        <b class="tip">
-                            <%= mch.tip %>
-                        </b> <br>
+                        <span class="league">
+                            <%= mch.time %> | <%= mch.league %>
+                        </span> <br>
                         <span class="match">
                             <i class="fa-regular fa-futbol"></i>
                             <%= mch.match %>
-                        </span>
+                        </span> <br>
+                        <b class="tip" onclick="window.open('/gsb/register')">
+                            <%= mch.tip %>
+                        </b> <br>
                     </td>
                     <td class="cell-left" style="vertical-align: middle;">
                         <%= mch.odd %>

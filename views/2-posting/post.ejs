@@ -239,7 +239,7 @@
     <br><br><br>
     <h2>Editing Mikeka DB</h2>
     <div class="mikeka">
-        <% for( let mk of mikeka ) { %>
+        <% for( let mk of formatteMikeka ) { %>
             <div class="editmatch" id="<%= mk._id %>">
                 <div class="oneg">
                     <div class="dt">
@@ -258,7 +258,9 @@
                     <form action="/edit-mkeka/<%= mk._id %>" method="post"
                         style="display: flex; justify-content: space-between;">
                         <%- include('./partials/options.ejs'); %>
-                            <input type="number" placeholder="Odds" name="odds" required step="any">
+                            <input type="date" name="date" id="siku" value="<%= mk.date %>">
+                            <input type="text" name="league" id="league" value="<%= mk.league %>">
+                            <input type="number" placeholder="Odds" name="odds" required step="any" value="<%= mk.odds %>">
                             <input type="text" name="secret" placeholder="secret" required style="display: block;">
                             <button type="submit" style="display: flex;">Edit</button>
                     </form>
