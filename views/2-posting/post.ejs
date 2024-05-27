@@ -102,14 +102,15 @@
             <h2 style="text-align: center;">Accumulator - <sub>Flashscore.mobi is +2</sub> </h2>
             <div class="gr1 gr">
                 <input type="date" name="date" required>
-                <input type="text" placeholder="League" name="league" required>
-                <input type="text" placeholder="Match" name="match" required>
+                <input type="text" placeholder="Match" name="match" id="p_match" required>
+                <input type="text" placeholder="League" name="league" id="p_league" required>
                 <%- include('./partials/options.ejs'); %>
-                    <input type="number" placeholder="Odds" name="odds" required step="any">
-                    <input type="text" placeholder="Secret word" name="secret" required>
+                <input type="number" placeholder="Odds" name="odds" required step="any" style="width: 60px;"
+                    id="p_odds">
+                <input type="text" placeholder="Secret word" name="secret" required style="width: 60px;">
             </div>
             <div class="submit">
-                <button type="submit">SUBMIT BET</button>
+                <button type="submit" id="submit_mega">SUBMIT BET</button>
                 <button id="reset" type="reset">RESET</button>
             </div>
         </div>
@@ -133,7 +134,7 @@
                     <option value="Over 2.5">Over 2.5</option>
                     <option value="Under 3.5">Under 3.5</option>
                 </select>
-                    <input type="text" placeholder="Secret word" name="secret" required>
+                <input type="text" placeholder="Secret word" name="secret" required>
             </div>
             <div class="submit">
                 <button type="submit">SUBMIT BET</button>
@@ -186,27 +187,27 @@
     <h2>Megas</h2>
     <div class="mikeka">
         <% for( let mk of mikeka ) { %>
-            <div class="match">
-                <div class="dt">
-                    <%= mk.date %>
-                </div>
-                <div class="mtc">
-                    <span class="gm">
-                        <%= mk.match %>
-                    </span>
-                    <span class="bt">
-                        <%= mk.bet %> @ <%= mk.odds %>
-                    </span>
-                </div>
-                <div class="delete" style=" width: 30;">
-                    <form action="/delete/<%= mk._id %>" method="post"
-                        style="display: flex; justify-content: space-between;">
-                        <input type="text" name="secret" placeholder="secret" required style="display: block;">
-                        <button type="submit" style="display: flex;">Delete</button>
-                    </form>
-                </div>
+        <div class="match">
+            <div class="dt">
+                <%= mk.date %>
             </div>
-            <% } %>
+            <div class="mtc">
+                <span class="gm">
+                    <%= mk.match %>
+                </span>
+                <span class="bt">
+                    <%= mk.bet %> @ <%= mk.odds %>
+                </span>
+            </div>
+            <div class="delete" style=" width: 30;">
+                <form action="/delete/<%= mk._id %>" method="post"
+                    style="display: flex; justify-content: space-between;">
+                    <input type="text" name="secret" placeholder="secret" required style="display: block;">
+                    <button type="submit" style="display: flex;">Delete</button>
+                </form>
+            </div>
+        </div>
+        <% } %>
     </div>
     <br>
     <hr><br>
@@ -214,61 +215,61 @@
     <h2>Betslips</h2>
     <div class="mikeka">
         <% for( let mk of slips ) { %>
-            <div class="match">
+        <div class="match">
+            <div class="dt">
+                <%= mk.date %>
+            </div>
+            <div class="mtc">
+                <span class="gm">
+                    <%= mk.match %>
+                </span>
+                <span class="bt">
+                    <%= mk.tip %> @ <%= mk.odds %>
+                </span>
+            </div>
+            <div class="delete" style=" width: 30;">
+                <form action="/delete-slip/<%= mk._id %>" method="post"
+                    style="display: flex; justify-content: space-between;">
+                    <input type="text" name="secret" placeholder="secret" required style="display: block;">
+                    <button type="submit" style="display: flex;">Delete</button>
+                </form>
+            </div>
+        </div>
+        <% } %>
+    </div>
+    <br><br><br>
+    <h2>Editing Mikeka DB</h2>
+    <div class="mikeka">
+        <% for( let mk of formatteMikeka ) { %>
+        <div class="editmatch" id="<%= mk._id %>">
+            <div class="oneg">
                 <div class="dt">
                     <%= mk.date %>
                 </div>
                 <div class="mtc">
                     <span class="gm">
                         <%= mk.match %>
-                    </span>
+                    </span> <br>
                     <span class="bt">
-                        <%= mk.tip %> @ <%= mk.odds %>
+                        <%= mk.bet %> @ <%= mk.odds %>
                     </span>
                 </div>
-                <div class="delete" style=" width: 30;">
-                    <form action="/delete-slip/<%= mk._id %>" method="post"
-                        style="display: flex; justify-content: space-between;">
-                        <input type="text" name="secret" placeholder="secret" required style="display: block;">
-                        <button type="submit" style="display: flex;">Delete</button>
-                    </form>
-                </div>
             </div>
-            <% } %>
-    </div>
-    <br><br><br>
-    <h2>Editing Mikeka DB</h2>
-    <div class="mikeka">
-        <% for( let mk of formatteMikeka ) { %>
-            <div class="editmatch" id="<%= mk._id %>">
-                <div class="oneg">
-                    <div class="dt">
-                        <%= mk.date %>
-                    </div>
-                    <div class="mtc">
-                        <span class="gm">
-                            <%= mk.match %>
-                        </span> <br>
-                        <span class="bt">
-                            <%= mk.bet %> @ <%= mk.odds %>
-                        </span>
-                    </div>
-                </div>
-                <div class="edit" style=" width: 30;">
-                    <form action="/edit-mkeka/<%= mk._id %>" method="post"
-                        style="display: flex; justify-content: space-between;">
-                        <%- include('./partials/options.ejs'); %>
-                            <input type="date" name="date" id="siku" value="<%= mk.date %>">
-                            <input type="text" name="league" id="league" value="<%= mk.league %>">
-                            <input type="number" placeholder="Odds" name="odds" required step="any" value="<%= mk.odds %>">
-                            <input type="text" name="secret" placeholder="secret" required style="display: block;">
-                            <button type="submit" style="display: flex;">Edit</button>
-                    </form>
-                </div>
-                <br>
-                <hr><br>
+            <div class="edit" style=" width: 30;">
+                <form action="/edit-mkeka/<%= mk._id %>" method="post"
+                    style="display: flex; justify-content: space-between;">
+                    <%- include('./partials/options.ejs'); %>
+                    <input type="date" name="date" id="siku" value="<%= mk.date %>">
+                    <input type="text" name="league" id="league" value="<%= mk.league %>">
+                    <input type="number" placeholder="Odds" name="odds" required step="any" value="<%= mk.odds %>">
+                    <input type="text" name="secret" placeholder="secret" required style="display: block;">
+                    <button type="submit" style="display: flex;">Edit</button>
+                </form>
             </div>
-            <% } %>
+            <br>
+            <hr><br>
+        </div>
+        <% } %>
     </div>
     <br><br><br>
 
@@ -276,34 +277,42 @@
     <h2>Editing Betslips</h2>
     <div class="mikeka">
         <% for( let mk of slips ) { %>
-            <div class="editmatch" id="<%= mk._id %>">
-                <div class="oneg">
-                    <div class="dt">
-                        <%= mk.date %>
-                    </div>
-                    <div class="mtc">
-                        <span class="gm">
-                            <%= mk.match %>
-                        </span> <br>
-                        <span class="bt">
-                            <%= mk.tip %> @ <%= mk.odd %>
-                        </span>
-                    </div>
+        <div class="editmatch" id="<%= mk._id %>">
+            <div class="oneg">
+                <div class="dt">
+                    <%= mk.date %>
                 </div>
-                <div class="edit" style=" width: 30;">
-                    <form action="/edit-slip/<%= mk._id %>" method="post"
-                        style="display: flex; justify-content: space-between;">
-                        <%- include('./partials/options.ejs'); %>
-                            <input type="number" placeholder="Odds" name="odds" required step="any">
-                            <input type="text" name="secret" placeholder="secret" required style="display: block;">
-                            <button type="submit" style="display: flex;">Edit</button>
-                    </form>
+                <div class="mtc">
+                    <span class="gm">
+                        <%= mk.match %>
+                    </span> <br>
+                    <span class="bt">
+                        <%= mk.tip %> @ <%= mk.odd %>
+                    </span>
                 </div>
-                <br>
-                <hr><br>
             </div>
-            <% } %>
+            <div class="edit" style=" width: 30;">
+                <form action="/edit-slip/<%= mk._id %>" method="post"
+                    style="display: flex; justify-content: space-between;">
+                    <%- include('./partials/options.ejs'); %>
+                    <input type="number" placeholder="Odds" name="odds" required step="any">
+                    <input type="text" name="secret" placeholder="secret" required style="display: block;">
+                    <button type="submit" style="display: flex;">Edit</button>
+                </form>
+            </div>
+            <br>
+            <hr><br>
+        </div>
+        <% } %>
     </div>
+
+    <script>
+        document.getElementById('submit_mega').addEventListener('click', () => {
+            setTimeout(() => {
+                document.getElementById('p_match').value = '';
+            }, 2000)
+        })
+    </script>
 </body>
 
 </html>
