@@ -5,6 +5,10 @@ const slipSchema = new Schema({
     date: {
         type: String,
     },
+    league: {
+        type: String,
+        default: '--'
+    },
     match: {
         type: String,
     },

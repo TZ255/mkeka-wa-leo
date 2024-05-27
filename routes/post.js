@@ -11,6 +11,7 @@ const cheerio = require('cheerio')
 
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
+    let league = req.body.league
     let odds = req.body.odds
 
     //Flashscore.mobi timezone is +2
@@ -59,10 +60,10 @@ router.post('/post', async (req, res) => {
     let d = new Date(date).toLocaleDateString('en-GB')
 
     if (secret == '5654') {
-        let mk = await mikekaDb.create({match, odds, time, bet, date: d})
+        let mk = await mikekaDb.create({match, league, odds, time, bet, date: d})
         res.send(mk)
     } else if (secret == '55') {
-        let mk = await betslip.create({match, odd: odds, tip:bet, date: d})
+        let mk = await betslip.create({match, league, odd: odds, tip:bet, date: d})
         res.send(mk)
     }
     

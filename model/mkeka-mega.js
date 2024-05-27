@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const megaSchema = new Schema({
     match: {type: String},
-    odds: {type: Number},
+    league: {type: String},
+    odds: {type: Number, default: '--'},
     time: {type: String},
     date: {type: String},
     bet: {type: String},
