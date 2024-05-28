@@ -20,11 +20,13 @@
                 <tr class="table-light">
                     <td>
                         <span class="league">
-                            <%= mch.time %> | <%= mch.league %>
+                            <%= mch.time %> | TANZANIA: Premier League
                         </span> <br>
                         <span class="match">
                             <i class="fa-regular fa-futbol"></i>
-                            <%= mch.match %>
+                            <%= mch.match.split(' vs ')[0] %> 
+                            <span class="vs">vs</span>
+                            <%= mch.match.split(' vs ')[1] %>
                         </span> <br>
                         <b class="tip" onclick="window.open('/gsb/register')">
                             <%= mch.tip %>
