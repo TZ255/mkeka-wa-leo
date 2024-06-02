@@ -17,37 +17,35 @@
         </thead>
         <tbody>
             <% for( let mch of slip ) { %>
-                <tr class="table-light">
-                    <td>
-                        <span class="league">
-                            <%= mch.time %> | <%= mch.league %>
-                        </span> <br>
-                        <span class="match">
-                            <i class="fa-regular fa-futbol"></i> &nbsp
-                            <%= mch.match.split(' vs ')[0].substring(0,16) %> 
-                            <span class="vs">vs</span>
-                            <%= mch.match.split(' vs ')[1].substring(0,16) %>
-                        </span> <br>
-                        <b class="tip" onclick="window.open('/gsb/register')">
-                            <%= mch.tip %>
-                        </b> <br>
-                    </td>
-                    <td class="cell-left odds" style="vertical-align: middle;">
-                        <%= mch.odd %>
-                    </td>
-                </tr>
-                <% } %>
-                
-                <tr class="table-secondary">
-                    <th scope="col" style="font-size: 14px;">
-                        Stake: <span class="brown">45,000 TZS</span><br>
-                        Ushindi: <span class="brown" id="slipOdd"></span>
-                    </th>
-                    <th scope="col" class="cell-left" style="font-size: 14px;">
-                        Odds: <span class="brown"><%= slipOdds %></span>  <br>
-                        Bonus: <span style="color:green;">+15%</span>
-                    </th>
-                </tr>
+            <tr class="table-light">
+                <td>
+                    <span class="league">
+                        <%= mch.time %> | <%= mch.league %>
+                    </span> <br>
+                    <span class="match">
+                        <i class="fa-regular fa-futbol"></i> &nbsp
+                        <%= mch.match.split(' vs ')[0].substring(0,16) %>
+                        <span class="vs">vs</span>
+                        <%= mch.match.split(' vs ')[1].substring(0,16) %>
+                    </span> <br>
+                    <b class="tip" onclick="window.open('/gsb/register')">
+                        <%= mch.tip %>
+                    </b> <br>
+                </td>
+                <td class="cell-left odds" style="vertical-align: middle;">
+                    <%= mch.odd %>
+                </td>
+            </tr>
+            <% } %>
+
+            <tr class="table-secondary stake">
+                <th scope="col" colspan="2" style="font-size: 14px; font-weight: lighter;">
+                    Total Odds: <span class="brown"><%= slipOdds %></span> <br>
+                    Stake: <span class="brown">45,000 TZS</span><br>
+                    Ushindi: <span class="brown" id="slipOdd"></span>
+                    <span style="color:green;">+15% bonus</span>
+                </th>
+            </tr>
         </tbody>
     </table>
     <div class="bottomSlip">
