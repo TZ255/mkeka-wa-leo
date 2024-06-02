@@ -24,15 +24,15 @@
                         </span> <br>
                         <span class="match">
                             <i class="fa-regular fa-futbol"></i> &nbsp
-                            <%= mch.match.split(' vs ')[0] %> 
+                            <%= mch.match.split(' vs ')[0].substring(0,14) %> 
                             <span class="vs">vs</span>
-                            <%= mch.match.split(' vs ')[1] %>
+                            <%= mch.match.split(' vs ')[1].substring(0,14) %>
                         </span> <br>
                         <b class="tip" onclick="window.open('/gsb/register')">
                             <%= mch.tip %>
                         </b> <br>
                     </td>
-                    <td class="cell-left" style="vertical-align: middle;">
+                    <td class="cell-left odds" style="vertical-align: middle;">
                         <%= mch.odd %>
                     </td>
                 </tr>
