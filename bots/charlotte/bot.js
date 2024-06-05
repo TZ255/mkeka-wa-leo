@@ -27,7 +27,6 @@ const charlotteFn = async () => {
     const imp = {
         replyDb: -1001608248942,
         pzone: -1001352114412,
-        prem_channel: -1001470139866,
         local_domain: 't.me/rss_shemdoe_bot?start=',
         prod_domain: 't.me/ohmychannelV2bot?start=',
         shemdoe: 741815228,
@@ -40,6 +39,7 @@ const charlotteFn = async () => {
         rt4i4n: -1001880391908,
         rt4i4n2: -1001701399778,
         playg: -1001987366621,
+        ohmy_prem: -1001470139866,
         rtmalipo: 5849160770
     }
 
@@ -420,11 +420,11 @@ const charlotteFn = async () => {
         let cha_title = ctx.chatJoinRequest.chat.title
         let name = ctx.chatJoinRequest.from.first_name
 
-        const notOperate = [imp.xbongo, imp.rtprem, imp.rtgrp]
+        const Operate = [imp.xzone, imp.ohmy_prem]
 
         try {
             //dont process rahatupu
-            if (!notOperate.includes(channel_id)) {
+            if (Operate.includes(channel_id)) {
                 let user = await users.findOne({ chatid })
                 if (!user) {
                     await users.create({ points: 3, name, chatid, unano: `user${chatid}` })
