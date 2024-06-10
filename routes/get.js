@@ -242,7 +242,14 @@ router.get('/admin/posting', async (req, res) => {
             date: formatDateHTML(mk.date)
         }
     })
-    res.render('2-posting/post', { mikeka, slips, formatteMikeka })
+
+    let formatteSlips = slips.map(mk=> {
+        return {
+            ...mk.toObject(),
+            date: formatDateHTML(mk.date)
+        }
+    })
+    res.render('2-posting/post', { mikeka, slips, formatteMikeka, formatteSlips })
 })
 
 router.get('/mkeka/betslip-ya-leo', async (req, res) => {

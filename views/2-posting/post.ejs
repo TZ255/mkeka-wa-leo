@@ -160,9 +160,6 @@
         </div>
     </form>
     <br><br><br>
-
-    <!-- HTML editor. write articles like in word -->
-    <!-- <form action="/test-posting" method="post" target="_blank">
         <textarea id="htmeditor" name="article"></textarea>
         <script src="https://htmeditor.com/js/htmeditor.min.js" htmeditor_textarea="htmeditor" full_screen="no"
             editor_height="480" run_local="no"></script>
@@ -276,7 +273,7 @@
     <!-- editing Betslips -->
     <h2>Editing Betslips</h2>
     <div class="mikeka">
-        <% for( let mk of slips ) { %>
+        <% for( let mk of formatteSlips ) { %>
         <div class="editmatch" id="<%= mk._id %>">
             <div class="oneg">
                 <div class="dt">
@@ -295,7 +292,9 @@
                 <form action="/edit-slip/<%= mk._id %>" method="post"
                     style="display: flex; justify-content: space-between;">
                     <%- include('./partials/options.ejs'); %>
-                    <input type="number" placeholder="Odds" name="odds" required step="any">
+                    <input type="date" name="date" id="siku" value="<%= mk.date %>">
+                    <input type="text" name="league" id="league" value="<%= mk.league %>">
+                    <input type="number" placeholder="Odds" name="odds" required step="any" value="<%= mk.odd %>">
                     <input type="text" name="secret" placeholder="secret" required style="display: block;">
                     <button type="submit" style="display: flex;">Edit</button>
                 </form>

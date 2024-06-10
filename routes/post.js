@@ -37,26 +37,6 @@ router.post('/post', async (req, res) => {
     let homeTeam = match.split(' - ')[0]
     let awayTeam = match.split(' - ')[1]
 
-    switch(bet) {
-        case 'Away total: (Over 1.5)':
-            bet = `${awayTeam} total: (Over 1.5)`
-            break;
-
-        case 'Home total: (Over 1.5)':
-            bet = `${homeTeam} total: (Over 1.5)`
-            break;
-
-        case 'Away Win':
-            bet = `${awayTeam} Win`
-            break;
-
-        case 'Home Win':
-            bet = `${homeTeam} Win`
-            break;
-    }
-
-    
-
     let d = new Date(date).toLocaleDateString('en-GB')
 
     if (secret == '5654') {
@@ -214,24 +194,6 @@ router.post('/edit-mkeka/:id', async (req, res)=> {
     let homeTeam = prev.match.split(' - ')[0]
     let awayTeam = prev.match.split(' - ')[1]
 
-    switch(tip) {
-        case 'Away total: (Over 1.5)':
-            tip = `${awayTeam} total: (Over 1.5)`
-            break;
-
-        case 'Home total: (Over 1.5)':
-            tip = `${homeTeam} total: (Over 1.5)`
-            break;
-
-        case 'Away Win':
-            tip = `${awayTeam} Win`
-            break;
-
-        case 'Home Win':
-            tip = `${homeTeam} Win`
-            break;
-    }
-
     if(sec == '5654') {
         let upd = await mikekaDb.findByIdAndUpdate(_id, {$set: {bet: tip, odds, league, date}}, {new: true})
         res.redirect(`/admin/posting#${upd._id}`)
@@ -245,31 +207,21 @@ router.post('/edit-slip/:id', async (req, res)=> {
     let sec = req.body.secret
     let tip = req.body.bet
     let odd = req.body.odds
+    let date = req.body.date
+    let league = req.body.league
+
+    //change date format 
+    if (date.includes('-')) {
+        let [yyyy, mm, dd] = date.split('-')
+        date = `${dd}/${mm}/${yyyy}`
+    }
 
     let prev = await betslip.findById(_id)
     let homeTeam = prev.match.split(' - ')[0]
     let awayTeam = prev.match.split(' - ')[1]
 
-    switch(tip) {
-        case 'Away total: (Over 1.5)':
-            tip = `${awayTeam} total: (Over 1.5)`
-            break;
-
-        case 'Home total: (Over 1.5)':
-            tip = `${homeTeam} total: (Over 1.5)`
-            break;
-
-        case 'Away Win':
-            tip = `${awayTeam} Win`
-            break;
-
-        case 'Home Win':
-            tip = `${homeTeam} Win`
-            break;
-    }
-
     if(sec == '55') {
-        let upd = await betslip.findByIdAndUpdate(_id, {$set: {tip, odd}}, {new: true})
+        let upd = await betslip.findByIdAndUpdate(_id, {$set: {tip, odd, league, date}}, {new: true})
         res.redirect(`/admin/posting#${upd._id}`)
     } else {
         res.send('Not found')
