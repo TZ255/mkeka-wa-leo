@@ -1,0 +1,30 @@
+<br><br>
+<div id="cas250" class="ad pmatchtz" onclick="window.open('/betway-casino/register')">
+    <img src="/imgs/bw-250cas.webp" alt="Casino Bora Tanzania na Betway">
+    <h4 class="cap">Michezo mingi ya Casino. Freebets kila dakika! Cheza nasi sasa!</h4>
+</div>
+<div id="j4" class="ad pmatchtz" onclick="window.open('/betway/register')">
+    <img src="/imgs/j4-bw.webp" alt="Pata Zaidi Kila Ukiweka Pesa na Betway">
+    <h4 class="cap">Jumanne, <b>Weka Tuweke!</b> Pata zaidi ukiweka pesa kwenye account yako leo!</h4>
+</div>
+<br><br>
+
+
+<script>
+    function showAds() {
+        let cas250 = document.getElementById('cas250');
+        let j4 = document.getElementById('j4');
+        let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
+
+        if (d == "Tuesday") {
+            j4.style.display = 'block';
+            cas250.style.display = 'none';
+        } else {
+            cas250.style.display = 'block';
+            j4.style.display = 'none';
+        }
+    }
+
+    window.onload = showAds;
+</script>
+

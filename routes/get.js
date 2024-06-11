@@ -101,7 +101,7 @@ router.get('/', async (req, res) => {
         }
 
         //tarehes
-        let trh = {leo: d, kesho, jana: _d, juzi: _s}
+        let trh = { leo: d, kesho, jana: _d, juzi: _s }
 
 
         res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds, trh })
@@ -160,7 +160,8 @@ router.get('/:comp/register', async (req, res) => {
         bet22: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1634`,
         ke_1xbet: `https://refpa4293501.top/L?tag=d_2869291m_2528c_&site=2869291&ad=2528`,
         tz_888: `http://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`,
-        betwinner: `https://bw-prm.com/carlos-bonus-lite/?extid=mkl&p=%2Fregistration%2F&lang=en&id=29lg`
+        betwinner: `https://bw-prm.com/carlos-bonus-lite/?extid=mkl&p=%2Fregistration%2F&lang=en&id=29lg`,
+        betway_casino: `https://www.betway.co.tz/lobby/casino/featured/?btag=P94949-PR26702-CM90070-TS1971458&`
     }
     try {
         switch (comp) {
@@ -174,6 +175,10 @@ router.get('/:comp/register', async (req, res) => {
                 break;
             case 'betway':
                 res.redirect(links.betway);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
+                break;
+            case 'betway-casino':
+                res.redirect(links.betway_casino);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
                 break;
             case 'meridian':
@@ -236,14 +241,14 @@ router.get('/admin/posting', async (req, res) => {
         return `${year}-${month}-${day}`
     }
 
-    let formatteMikeka = mikeka.map(mk=> {
+    let formatteMikeka = mikeka.map(mk => {
         return {
             ...mk.toObject(),
             date: formatDateHTML(mk.date)
         }
     })
 
-    let formatteSlips = slips.map(mk=> {
+    let formatteSlips = slips.map(mk => {
         return {
             ...mk.toObject(),
             date: formatDateHTML(mk.date)
@@ -294,7 +299,7 @@ router.get('/mkeka/over-15', async (req, res) => {
         let ktips = await venas15Model.find({ siku: kesho }).sort('time').select('time league siku match tip matokeo')
 
         //tarehes
-        let trh = {leo: d, kesho, jana: _d, juzi: _s}
+        let trh = { leo: d, kesho, jana: _d, juzi: _s }
 
         res.render('5-over15/over15', { stips, ytips, ktips, jtips, trh })
     } catch (err) {
@@ -335,7 +340,7 @@ router.get('/mkeka/over-25', async (req, res) => {
         let ktips = await venas25Model.find({ siku: kesho }).sort('time').select('time league siku match tip matokeo')
 
         //tarehes
-        let trh = {leo: d, kesho, jana: _d, juzi: _s}
+        let trh = { leo: d, kesho, jana: _d, juzi: _s }
 
         res.render('6-over25/over25', { stips, ytips, ktips, jtips, trh })
     } catch (err) {
@@ -374,7 +379,7 @@ router.get('/article/:path', async (req, res) => {
     }
 })
 
-router.get('/download/movie/:movid', async (req, res)=> {
+router.get('/download/movie/:movid', async (req, res) => {
     try {
         let movid = req.params.movid
         let bot_link = `https://telegram.me/muvikabot?start=${movid}`
