@@ -20,7 +20,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             { $match: { date: nairobi } },
             { $sample: { size: 15 } }
         ]))
-        let txt = `<b><u>🔥 Bet of the Day [ ${lusaka} ]</u></b>\n\n\n`
+        let txt = `<b><u>🔥 Bet of the Day [ ${nairobi} ]</u></b>\n\n\n`
         let odds = 1
         if (keka.length > 0) {
             for (let m of keka) {
