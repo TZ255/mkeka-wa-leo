@@ -2,7 +2,8 @@
 
 // CHARLOTTE BOT
 const charlotteFn = async () => {
-    const { Telegraf } = require('telegraf')
+    const { Bot } = require('grammy')
+    const { autoRetry } = require("@grammyjs/auto-retry");
     require('dotenv').config()
     const mongoose = require('mongoose')
     const db = require('./database/db')
@@ -21,8 +22,7 @@ const charlotteFn = async () => {
     //fns
     const call_reactions_function = require('./functions/reactions')
 
-    const bot = new Telegraf(process.env.CHARLOTTE_TOKEN)
-        .catch((err) => console.log(err.message))
+    const bot = new Bot(process.env.CHARLOTTE_TOKEN)
 
     const imp = {
         replyDb: -1001608248942,
@@ -48,7 +48,7 @@ const charlotteFn = async () => {
 
     async function sendVideo(bot, ctx, id, nano) {
         let vid = await db.findOne({ nano })
-        await bot.telegram.copyMessage(id, -1001586042518, vid.msgId, {
+        await bot.api.copyMessage(id, -1001586042518, vid.msgId, {
             protect_content: true,
             reply_markup: {
                 inline_keyboard: [[
@@ -58,17 +58,21 @@ const charlotteFn = async () => {
         })
     }
 
-    bot.catch((err, ctx)=> {
-        console.log(err.message)
-    })
+    bot.catch((err) => {
+        const ctx = err.ctx;
+        console.error(`(Charlotte): ${err.message}`, err);
+    });
 
-    bot.start(async ctx => {
+    //use auto-retry
+    bot.api.config.use(autoRetry());
+
+    bot.command('start', async ctx => {
         let id = ctx.chat.id
         let name = ctx.chat.first_name
 
         try {
-            if (ctx.payload) {
-                let nano = ctx.payload
+            if (ctx.match) {
+                let nano = ctx.match
 
                 if (nano.includes('fromWeb-')) {
                     let webNano = nano.split('fromWeb-')[1]
@@ -83,7 +87,7 @@ const charlotteFn = async () => {
                     await delay(1000)
                     let inf = await ctx.reply(`You got the video. You remained with 2 free videos. \n\nWhen free videos depleted you'll have to open our offer page for 5 seconds to get a video.`)
                     setTimeout(() => {
-                        ctx.deleteMessage(inf.message_id)
+                        ctx.api.deleteMessage(ctx.chat.id, inf.message_id)
                             .catch((e) => console.log(e.message))
                     }, 5000)
                 } else {
@@ -93,7 +97,7 @@ const charlotteFn = async () => {
                         await delay(1000)
                         let inf = await ctx.reply(`You got the video. You remained with ${updt.points} free videos. When free videos depleted you'll have to open our offer page for 5 seconds to get a video.`)
                         setTimeout(() => {
-                            ctx.deleteMessage(inf.message_id)
+                            ctx.api.deleteMessage(ctx.chat.id, inf.message_id)
                                 .catch((e) => console.log(e.message))
                         }, 5000)
                     } else {
@@ -130,7 +134,7 @@ const charlotteFn = async () => {
             let com = ctx.message.text
             let txt = com.split('/p=')[1]
             let url320 = txt.replace(/2160p/g, '320p')
-            await bot.telegram.sendVideo(imp.pzone, url320)
+            await bot.api.sendVideo(imp.pzone, url320)
         } catch (err) {
             await ctx.reply(err.message)
         }
@@ -145,7 +149,7 @@ const charlotteFn = async () => {
                 for (let [index, v] of all.entries()) {
                     setTimeout(() => {
                         let url = `https://t.me/pilau_bot?start=RTBOT-${v.nano}`
-                        bot.telegram.copyMessage(dest, imp.replyDb, v.gifId, {
+                        bot.api.copyMessage(dest, imp.replyDb, v.gifId, {
                             disable_notification: true,
                             reply_markup: {
                                 inline_keyboard: [
@@ -190,7 +194,7 @@ const charlotteFn = async () => {
                         if (index == all_users.length - 1) {
                             ctx.reply('Done sending offers')
                         }
-                        bot.telegram.copyMessage(u.chatid, imp.replyDb, msg_id, {
+                        bot.api.copyMessage(u.chatid, imp.replyDb, msg_id, {
                             reply_markup: rp_mkup
                         }).then(() => console.log('✅ Offer sent to ' + u.chatid))
                             .catch((err) => {
@@ -232,7 +236,7 @@ const charlotteFn = async () => {
             let pts = Number(arr[2])
 
             let updt = await users.findOneAndUpdate({ chatid: id }, { $inc: { points: pts } }, { new: true })
-            await bot.telegram.sendMessage(id, `Congratulations 🎉 \nYour payment is confirmed! You received ${pts} points. Your new balance is ${updt.points} points`)
+            await bot.api.sendMessage(id, `Congratulations 🎉 \nYour payment is confirmed! You received ${pts} points. Your new balance is ${updt.points} points`)
         } catch (err) {
             console.log(err.message)
             await ctx.reply(err.message)
@@ -294,23 +298,23 @@ const charlotteFn = async () => {
                     let rpmios = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: rtios }]] }
                     let rp_pl = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: plbot }]] }
 
-                    let _post = await bot.telegram.copyMessage(imp.rtprem, imp.replyDb, rpId)
-                    let _post2 = await bot.telegram.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
-                    let _post3 = await bot.telegram.copyMessage(imp.rt4i4n2, imp.replyDb, rpId)
-                    let _post4 = await bot.telegram.copyMessage(imp.playg, imp.replyDb, rpId)
+                    let _post = await bot.api.copyMessage(imp.rtprem, imp.replyDb, rpId)
+                    let _post2 = await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
+                    let _post3 = await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId)
+                    let _post4 = await bot.api.copyMessage(imp.playg, imp.replyDb, rpId)
                     let trimSize = cdata.split('&size')[0]
 
-                    await bot.telegram.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtbot}">https://t.me/download/video/${rpId}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
+                    await bot.api.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtbot}">https://t.me/download/video/${rpId}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`, {
+                    await bot.api.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`, {
+                    await bot.api.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.telegram.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${plbot}">https://t.me/download/video/${rpId}</a></b>`, {
+                    await bot.api.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${plbot}">https://t.me/download/video/${rpId}</a></b>`, {
                         parse_mode: 'HTML', reply_markup: rp_pl
                     })
                 }
@@ -367,8 +371,8 @@ const charlotteFn = async () => {
 
             if (ctx.channelPost.chat.id == imp.pzone && ctx.channelPost.forward_date) {
                 let msg_id = ctx.channelPost.message_id
-                await bot.telegram.copyMessage(imp.pzone, imp.pzone, msg_id)
-                await bot.telegram.deleteMessage(imp.pzone, msg_id)
+                await bot.api.copyMessage(imp.pzone, imp.pzone, msg_id)
+                await bot.api.deleteMessage(imp.pzone, msg_id)
             }
 
             let impChannels = [imp.pzone, imp.ohmyDB, imp.replyDb]
@@ -401,9 +405,9 @@ const charlotteFn = async () => {
                     await oh_channels.create({ chan_id, title, owner: chan_owner })
                     let m1 = await ctx.reply('Channel added to DB')
                     await delay(1000)
-                    await ctx.deleteMessage(txtid)
-                    await ctx.deleteMessage(m1.message_id)
-                    await bot.telegram.copyMessage(chan_id, imp.pzone, 7704, {
+                    await ctx.api.deleteMessage(ctx.chat.id, txtid)
+                    await ctx.api.deleteMessage(ctx.chat.id, m1.message_id)
+                    await bot.api.copyMessage(chan_id, imp.pzone, 7704, {
                         reply_markup: rp_mkup
                     })
                 } else { await ctx.reply('Channel already added') }
@@ -429,30 +433,26 @@ const charlotteFn = async () => {
                 if (!user) {
                     await users.create({ points: 3, name, chatid, unano: `user${chatid}` })
                 }
-                await bot.telegram.approveChatJoinRequest(channel_id, chatid)
-                await bot.telegram.sendMessage(chatid, `Congratulations! 🎉 Your request to join <b>${cha_title}</b> is approved.`)
+                await bot.api.approveChatJoinRequest(channel_id, chatid)
+                await bot.api.sendMessage(chatid, `Congratulations! 🎉 Your request to join <b>${cha_title}</b> is approved.`)
             }
 
         } catch (err) {
             console.log(err.message)
-            await bot.telegram.sendMessage(imp.shemdoe, err.message)
+            await bot.api.sendMessage(imp.shemdoe, err.message)
         }
     })
 
 
-    bot.launch().then(() => {
-        console.log('Bot Restarted')
-        bot.telegram.sendMessage(imp.shemdoe, 'Bot Restarted')
-            .catch(e => console.log(e.message))
-    }).catch((err) => {
-        console.log('Bot is not Running')
-        bot.telegram.sendMessage(imp.shemdoe, `Bot not running ${err.message}`)
-            .catch(e => console.log(e.message))
+    // Stopping the bot when the Node.js process is about to be terminated
+    process.once("SIGINT", () => bot.stop());
+    process.once("SIGTERM", () => bot.stop());
+
+    bot.start().catch(e => {
+        if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
+            bot.stop('new update')
+        }
     })
-
-
-    process.once('SIGINT', () => bot.stop('SIGINT'))
-    process.once('SIGTERM', () => bot.stop('SIGTERM'))
 }
 
 

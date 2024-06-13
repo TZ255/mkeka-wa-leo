@@ -20,7 +20,7 @@
 //     let op2link = `https://font5.net/blog/post.html?id=${posts[rrnp]}#getting-full-show-NAN-uid=${ctx.chat.id}&-showid=${m_id}`
 
 //     setTimeout(()=> {
-//         bot.telegram.deleteMessage(ctx.chat.id, prep_ing.message_id)
+//         bot.api.deleteMessage(ctx.chat.id, prep_ing.message_id)
 //         .then(()=> {
 //             ctx.reply(msg2user, {
 //                 parse_mode: 'HTML',

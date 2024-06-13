@@ -1,4 +1,5 @@
-const { Telegraf } = require('telegraf')
+const { Bot } = require('grammy')
+const { autoRetry } = require("@grammyjs/auto-retry");
 const usersModel = require('./database/users')
 const listModel = require('./database/botlist')
 const mkekaMega = require('./database/mkeka-mega')
@@ -18,17 +19,21 @@ const myBotsFn = async () => {
         const tokens = await listModel.find()
 
         for (let tk of tokens) {
-            const bot = new Telegraf(tk.token).catch(e2 => console.log(e2.message))
+            const bot = new Bot(tk.token)
 
-            bot.catch(async (e, ctx) => {
-                console.log(e)
-            })
+            bot.catch((err) => {
+                const ctx = err.ctx;
+                console.error(`(${tk.botname}): ${err.message}`, err);
+            });
 
-            bot.start(async ctx => {
+            //use auto-retry
+            bot.api.config.use(autoRetry());
+
+            bot.command('start', async ctx => {
                 try {
                     let chatid = ctx.chat.id
                     let first_name = ctx.chat.first_name
-                    let botname = ctx.botInfo.username
+                    let botname = ctx.me.username
                     let user = await usersModel.findOne({ chatid })
                     if (!user) {
                         let tk = await listModel.findOne({ botname })
@@ -36,7 +41,7 @@ const myBotsFn = async () => {
                     }
                     let prep = await ctx.reply('Preparing Invite link...')
                     await delay(1000)
-                    await ctx.deleteMessage(prep.message_id)
+                    await ctx.api.deleteMessage(ctx.chat.id, prep.message_id)
                     let url = `https://playabledownload.com/1584699`
                     await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. \n\nUse the menu buttons below to see what we prepared for you today.\n\nAlso use the command /betslip to get the best bet of the day`, {
                         parse_mode: 'HTML',
@@ -108,7 +113,7 @@ const myBotsFn = async () => {
                                     ]
                                 ]
                             }
-                            await ctx.reply(txt, {reply_markup: rpm})
+                            await ctx.reply(txt, { reply_markup: rpm })
                         }
                     }
                 } catch (err) {
@@ -116,8 +121,14 @@ const myBotsFn = async () => {
                 }
             })
 
-            bot.launch().catch(async ee => {
-                console.log(ee.message)
+            // Stopping the bot when the Node.js process is about to be terminated
+            process.once("SIGINT", () => bot.stop());
+            process.once("SIGTERM", () => bot.stop());
+
+            bot.start().catch(e => {
+                if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
+                    bot.stop('new update')
+                }
             })
         }
     } catch (err) {

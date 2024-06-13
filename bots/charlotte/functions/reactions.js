@@ -1,6 +1,6 @@
 module.exports = (bot, imp) => {
     var reacted_users = []
-    bot.action('em1', async ctx => {
+    bot.callbackQuery('em1', async ctx => {
         try {
             //avoid repetitions
             let userid = ctx.callbackQuery.from.id
@@ -37,14 +37,14 @@ module.exports = (bot, imp) => {
                 await ctx.editMessageReplyMarkup(newMkp)
             }
         } catch (err) {
-            await bot.telegram.sendMessage(imp.shemdoe, err.message)
+            await bot.api.sendMessage(imp.shemdoe, err.message)
                 .catch((e) => console.log(e.message))
             console.log(err.message)
         }
     })
 
 
-    bot.action('em2', async ctx => {
+    bot.callbackQuery('em2', async ctx => {
         try {
             //avoid repetitions
             let userid = ctx.callbackQuery.from.id
@@ -83,14 +83,14 @@ module.exports = (bot, imp) => {
             }
 
         } catch (err) {
-            await bot.telegram.sendMessage(imp.shemdoe, err.message)
+            await bot.api.sendMessage(imp.shemdoe, err.message)
                 .catch((e) => console.log(e.message))
             console.log(err.message)
         }
     })
 
 
-    bot.action('em3', async ctx => {
+    bot.callbackQuery('em3', async ctx => {
         try {
             //avoid repetitions
             let userid = ctx.callbackQuery.from.id
@@ -128,7 +128,7 @@ module.exports = (bot, imp) => {
             }
 
         } catch (err) {
-            await bot.telegram.sendMessage(imp.shemdoe, err.message)
+            await bot.api.sendMessage(imp.shemdoe, err.message)
                 .catch((e) => console.log(e.message))
             console.log(err.message)
         }

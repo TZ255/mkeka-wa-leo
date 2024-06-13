@@ -7,8 +7,9 @@ const lauraMainFn = async () => {
     const axios = require('axios').default
     const cheerio = require('cheerio')
     const imdb = require('imdb-api')
-    const { Telegraf } = require('telegraf')
-    const bot = new Telegraf(process.env.LAURA_TOKEN)
+    const { Bot } = require('grammy')
+    const { autoRetry } = require("@grammyjs/auto-retry");
+    const bot = new Bot(process.env.LAURA_TOKEN)
     const chatsModel = require('./databases/chat')
     const dramastoreUsers = require('./databases/dstore-chats')
     const nyumbuModel = require('./databases/bongo-nyumbus')
@@ -58,17 +59,21 @@ const lauraMainFn = async () => {
         }
     }
 
-    bot.catch((err, ctx) => {
-        console.log(err.message)
-    })
+    bot.catch((err) => {
+        const ctx = err.ctx;
+        console.error(`(Dayo): ${err.message}`, err);
+    });
 
-    bot.start(async ctx => {
+    //use auto-retry
+    bot.api.config.use(autoRetry());
+
+    bot.command('start', async ctx => {
         let chatid = ctx.chat.id
         let first_name = ctx.chat.first_name
 
         try {
-            if (ctx.startPayload) {
-                let pload = ctx.startPayload
+            if (ctx.match) {
+                let pload = ctx.match
                 switch (pload) {
                     case 'brazil-telenovelas':
                         let link = `https://t.me/+cR7FN1IMSUFhNmM0`
@@ -78,17 +83,17 @@ const lauraMainFn = async () => {
 
                     case 'kuzimu_ndogo':
                         await nyumbuChecker(chatid, first_name, bot)
-                        await bot.telegram.copyMessage(chatid, imp.pzone, 8994)
+                        await bot.api.copyMessage(chatid, imp.pzone, 8994)
                         break;
 
                     case 'Free-5-USDT':
-                        await ctx.sendChatAction('typing')
+                        await ctx.replyWithChatAction('typing')
                         setTimeout(() => {
-                            bot.telegram.copyMessage(chatid, imp.matangazoDB, 84, {
+                            bot.api.copyMessage(chatid, imp.matangazoDB, 84, {
                                 reply_markup: {
                                     inline_keyboard: [[{ text: "➕ RECEIVE YOUR 5 USDT", url: 'https://bc.game/i-vhy4ij2x-n/' }]]
                                 }
-                            }).then(() => bot.telegram.sendMessage(imp.shemdoe, 'new 5 usdt start')).catch(e => console.log(e.message)).catch(err => console.log(err.message))
+                            }).then(() => bot.api.sendMessage(imp.shemdoe, 'new 5 usdt start')).catch(e => console.log(e.message)).catch(err => console.log(err.message))
                         }, 1500)
                 }
             } else {
@@ -99,7 +104,7 @@ const lauraMainFn = async () => {
         }
     })
 
-    bot.command('price', async ctx=> {
+    bot.command('price', async ctx => {
         try {
             let res = await axios.get(`https://api.coincap.io/v2/assets/dogelon`)
             let data = res.data
@@ -282,11 +287,14 @@ const lauraMainFn = async () => {
         }
     })
 
-    bot.launch().then(() => {
-        bot.telegram.sendMessage(imp.shemdoe, "Bot Restarted")
-    }).catch((err) => {
-        console.log(err.message, err)
-        bot.telegram.sendMessage(imp.shemdoe, err.message)
+    // Stopping the bot when the Node.js process is about to be terminated
+    process.once("SIGINT", () => bot.stop());
+    process.once("SIGTERM", () => bot.stop());
+
+    bot.start().catch(e => {
+        if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
+            bot.stop('new update')
+        }
     })
 }
 

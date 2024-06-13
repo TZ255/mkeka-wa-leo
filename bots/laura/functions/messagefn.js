@@ -9,7 +9,7 @@ const onTextFn = async (bot, ctx, imp) => {
                 let userid = Number(ids.split('&mid=')[0])
                 let mid = Number(ids.split('&mid=')[1])
 
-                await bot.telegram.copyMessage(userid, myid, my_msg_id, { reply_to_message_id: mid })
+                await bot.api.copyMessage(userid, myid, my_msg_id, { reply_to_message_id: mid })
 
             } else if (ctx.message.reply_to_message.photo) {
                 let my_msg = ctx.message.text
@@ -18,7 +18,7 @@ const onTextFn = async (bot, ctx, imp) => {
                 let userid = Number(ids.split('&mid=')[0])
                 let mid = Number(ids.split('&mid=')[1])
 
-                await bot.telegram.sendMessage(userid, my_msg, { reply_to_message_id: mid })
+                await bot.api.sendMessage(userid, my_msg, { reply_to_message_id: mid })
             }
         }
         else if (ctx.chat.type == 'private') {
@@ -27,7 +27,7 @@ const onTextFn = async (bot, ctx, imp) => {
             let username = ctx.chat.first_name
             let mid = ctx.message.message_id
 
-            await bot.telegram.sendMessage(imp.halot, `<b>${txt}</b> \n\nfrom = <code>${username}</code>\nid = <code>${userid}</code>&mid=${mid}`, { parse_mode: 'HTML', disable_notification: true })
+            await bot.api.sendMessage(imp.halot, `<b>${txt}</b> \n\nfrom = <code>${username}</code>\nid = <code>${userid}</code>&mid=${mid}`, { parse_mode: 'HTML', disable_notification: true })
         }
     } catch (error) {
         console.log(error.message, error)
@@ -50,7 +50,7 @@ const onPhotoFn = async (bot, ctx, imp) => {
                 let rmid = Number(ids.split('&mid=')[1])
 
 
-                await bot.telegram.copyMessage(userid, chatid, mid, {
+                await bot.api.copyMessage(userid, chatid, mid, {
                     reply_to_message_id: rmid
                 })
             }
@@ -62,14 +62,14 @@ const onPhotoFn = async (bot, ctx, imp) => {
                 let rmid = Number(ids.split('&mid=')[1])
 
 
-                await bot.telegram.copyMessage(userid, chatid, mid, {
+                await bot.api.copyMessage(userid, chatid, mid, {
                     reply_to_message_id: rmid
                 })
             }
         }
 
         else if(ctx.chat.type == 'private') {
-            await bot.telegram.copyMessage(imp.halot, chatid, mid, {
+            await bot.api.copyMessage(imp.halot, chatid, mid, {
                 caption: cap + `\n\nfrom = <code>${username}</code>\nid = <code>${chatid}</code>&mid=${mid}`,
                 parse_mode: 'HTML'
             })
