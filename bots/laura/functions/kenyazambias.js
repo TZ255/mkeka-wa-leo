@@ -1,7 +1,7 @@
 const kenyaZambia = require('../../zambias/database/users')
 const axios = require('axios').default
 
-const convoKenya = async (ctx, bot, msid) => {
+const convoKenya = async (ctx, bot) => {
     try {
         await ctx.reply('Starting')
         let all = await kenyaZambia.find()
@@ -11,18 +11,18 @@ const convoKenya = async (ctx, bot, msid) => {
             if(i == all.length - 1) {
                 ctx.reply('Nimemaliza Conversation').catch(e=> console.log(e.message))
             }
-            let tgAPI = `https://api.telegram.org/bot${u.token}/copyMessage`
+            let tgAPI = `https://api.telegram.org/bot${u.token}/sendMessage`
             setTimeout(() => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
-                    from_chat_id: -1001696592315,
-                    message_id: msid,
-                    protect_content: true,
+                    text: `What do you need? 🤷‍♀️`,
                     reply_markup: {
-                        keyboard: [
-                            [{ text: '💰 BET OF THE DAY (🔥)' }]
-                        ],
-                        resize_keyboard: true, is_persistent: true
+                        inline_keyboard: [
+                            [
+                                { text: '💰 Money', callback_data: 'money' },
+                                { text: '🍑 Pussy', callback_data: 'pussy' }
+                            ]
+                        ]
                     }
                 }).then(() => console.log('✅ Message sent to ' + u.chatid))
                     .catch(err => {
@@ -37,7 +37,7 @@ const convoKenya = async (ctx, bot, msid) => {
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
-            }, i * 40)
+            }, i * 35)
         })
     } catch (error) {
         console.log('From Laura - Kenya Zambia Convo:  ' + error.message)

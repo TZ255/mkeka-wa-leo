@@ -85,6 +85,15 @@ const myBotsFn = async () => {
                 }
             })
 
+            bot.callbackQuery(['money', 'pussy'], async ctx=> {
+                try {
+                    await mkekaReq.mkeka3(ctx, delay, bot, imp)
+                } catch (error) {
+                    await ctx.reply(error.message)
+                    console.log(error.message, error)
+                }
+            })
+
             bot.on('message', async ctx => {
                 try {
                     if (ctx.message.reply_to_message) {

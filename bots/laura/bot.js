@@ -152,9 +152,7 @@ const lauraMainFn = async () => {
     bot.command('editha_ug', async ctx => {
         try {
             await ctx.reply('Starting')
-            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
-            let txt = ctx.message.text
-            let mid = Number(txt.split('=')[1])
+            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/sendMessage`
             let all = await ugModel.find()
             let bads = ['blocked', 'initiate', 'deactivated']
 
@@ -162,13 +160,14 @@ const lauraMainFn = async () => {
                 setTimeout(() => {
                     axios.post(tgAPI, {
                         chat_id: u.chatid,
-                        from_chat_id: -1001696592315, //mikekaDB
-                        message_id: mid,
+                        text: `What do you need? 🤷‍♀️`,
                         reply_markup: {
-                            keyboard: [
-                                [{ text: '💰 BET OF THE DAY (🔥)' }]
-                            ],
-                            resize_keyboard: true, is_persistent: true
+                            inline_keyboard: [
+                                [
+                                    { text: '💰 Money', callback_data: 'money' },
+                                    { text: '🍑 Pussy', callback_data: 'pussy' },
+                                ]
+                            ]
                         }
                     }).then(() => console.log('✅ Message sent to ' + u.chatid))
                         .catch(err => {
@@ -183,7 +182,7 @@ const lauraMainFn = async () => {
                                 } else { console.log(`🤷‍♂️ ${description}`) }
                             }
                         })
-                }, i * 40)
+                }, i * 35)
             })
         } catch (err) {
             await ctx.reply(err.message)
@@ -193,9 +192,7 @@ const lauraMainFn = async () => {
     bot.command('editha_ke', async ctx => {
         try {
             await ctx.reply('Starting')
-            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
-            let txt = ctx.message.text
-            let mid = Number(txt.split('=')[1])
+            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/sendMessage`
             let all = await keModel.find()
             let bads = ['blocked', 'initiate', 'deactivated']
 
@@ -203,13 +200,14 @@ const lauraMainFn = async () => {
                 setTimeout(() => {
                     axios.post(tgAPI, {
                         chat_id: u.chatid,
-                        from_chat_id: -1001696592315, //mikekaDB
-                        message_id: mid,
+                        text: 'What do you need? 🤷‍♀️',
                         reply_markup: {
-                            keyboard: [
-                                [{ text: '💰 BET OF THE DAY (🔥)' }]
-                            ],
-                            resize_keyboard: true, is_persistent: true
+                            inline_keyboard: [
+                                [
+                                    { text: '💰 Money', callback_data: 'money' },
+                                    { text: '🍑 Pussy', callback_data: 'pussy' }
+                                ]
+                            ]
                         }
                     }).then(() => console.log('✅ Message sent to ' + u.chatid))
                         .catch(err => {
@@ -224,7 +222,7 @@ const lauraMainFn = async () => {
                                 } else { console.log(`🤷‍♂️ ${description}`) }
                             }
                         })
-                }, i * 40)
+                }, i * 35)
             })
         } catch (err) {
             await ctx.reply(err.message)
@@ -234,10 +232,8 @@ const lauraMainFn = async () => {
     bot.command('kenyas', async ctx => {
         try {
             if (ctx.chat.id == imp.shemdoe) {
-                let txt = ctx.message.text
-                let msid = Number(txt.split('kenyas=')[1])
                 await ctx.reply('Starting sending to kenyas zambia')
-                await kenyaZambiaFn.convoKenya(ctx, bot, msid)
+                await kenyaZambiaFn.convoKenya(ctx, bot)
             } else {
                 await ctx.reply('You aint authorized')
             }
