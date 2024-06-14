@@ -39,7 +39,7 @@ router.post('/post', async (req, res) => {
 
     let d = new Date(date).toLocaleDateString('en-GB')
 
-    if (secret == '5654') {
+    if (secret == '5654' && match.includes(' - ')) {
         let mk = await mikekaDb.create({match, league, odds, time, bet, date: d})
         res.send(mk)
     } else if (secret == '55') {
@@ -48,7 +48,7 @@ router.post('/post', async (req, res) => {
     }
     
     else {
-        res.send(`You're not Authorized`)
+        res.send(`You provided incorrects data`)
     }
 
 })

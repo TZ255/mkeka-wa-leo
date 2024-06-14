@@ -3,13 +3,13 @@ const mkekaMega = require('../database/mkeka-mega')
 
 const sendMkeka3 = async (ctx, delay, bot, imp) => {
     try {
-        let bwTZ = `https://mkekawaleo.com/betway-tz/register`
-        let gsb = 'https://mkekawaleo.com/gsb-tz/register'
-        let pm = `https://pmaff.com/?serial=61291818&creative_id=1788`
+        let bwTZ = `http://mkekawaleo.com/betway-tz/register`
+        let gsb = 'http://mkekawaleo.com/gsb-tz/register'
+        let pm = `http://pmaff.com/?serial=61291818&creative_id=1788`
         let ke = `http://bet-link.top/22bet/register`
         let tzWinner = `http://bet-link.top/betwinner/register`
-        let ug = `https://mkekawaleo.com/gsb-ug/register`
-        let prm = `https://mkekawaleo.com/premierbet/register`
+        let ug = `http://mkekawaleo.com/gsb-ug/register`
+        let prm = `http://mkekawaleo.com/premierbet/register`
         let zm = `https://track.africabetpartners.com/visit/?bta=35468&nci=5976&utm_campaign=zambia`
         let zm_short = `https://is.gd/register_gsb_zambia`
 
