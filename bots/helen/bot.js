@@ -554,7 +554,7 @@ const helenCodes = async () => {
             }
 
         } catch (err) {
-            await bot.api.sendMessage(err.message)
+            await bot.api.sendMessage(imp.shemdoe, err.message)
 
         }
     })

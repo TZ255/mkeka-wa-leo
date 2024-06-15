@@ -39,7 +39,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
             }, 1000)
         }
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message, error)
     }
 }
 
