@@ -303,18 +303,25 @@ const charlotteFn = async () => {
                     let _post3 = await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId)
                     let _post4 = await bot.api.copyMessage(imp.playg, imp.replyDb, rpId)
                     let trimSize = cdata.split('&size')[0]
+                    
+                    await bot.api.editMessageCaption(imp.rtprem, _post.message_id, {
+                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtbot}">https://t.me/download/video/${rpId}</a></b>`,
+                        parse_mode: 'HTML',
+                        reply_markup: rpm
+                    })
 
-                    await bot.api.editMessageCaption(imp.rtprem, _post.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtbot}">https://t.me/download/video/${rpId}</a></b>`, { parse_mode: 'HTML', reply_markup: rpm })
-
-                    await bot.api.editMessageCaption(imp.rt4i4n, _post2.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`, {
+                    await bot.api.editMessageCaption(imp.rt4i4n, _post2.message_id, {
+                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`,
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.api.editMessageCaption(imp.rt4i4n2, _post3.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`, {
+                    await bot.api.editMessageCaption(imp.rt4i4n2, _post3.message_id, {
+                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`,
                         parse_mode: 'HTML', reply_markup: rpmios
                     })
 
-                    await bot.api.editMessageCaption(imp.playg, _post4.message_id, '', `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${plbot}">https://t.me/download/video/${rpId}</a></b>`, {
+                    await bot.api.editMessageCaption(imp.playg, _post4.message_id, {
+                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${plbot}">https://t.me/download/video/${rpId}</a></b>`,
                         parse_mode: 'HTML', reply_markup: rp_pl
                     })
                 }
