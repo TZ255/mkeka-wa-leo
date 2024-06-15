@@ -98,7 +98,7 @@ const myBotsFn = async () => {
                 }
             })
 
-            bot.on('message', async ctx => {
+            bot.on(':text', async ctx => {
                 try {
                     if (ctx.message.reply_to_message) {
                         let rpmsg = ctx.message.reply_to_message.text
