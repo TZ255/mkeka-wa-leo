@@ -152,38 +152,41 @@ const lauraMainFn = async () => {
     bot.command('editha_ug', async ctx => {
         try {
             await ctx.reply('Starting')
-            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/sendMessage`
+            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
             let all = await ugModel.find()
             let bads = ['blocked', 'initiate', 'deactivated']
-
-            all.forEach((u, i) => {
-                setTimeout(() => {
-                    axios.post(tgAPI, {
-                        chat_id: u.chatid,
-                        text: `What do you need? 🤷‍♀️`,
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: '💰 Money', callback_data: 'money' },
-                                    { text: '🍑 Pussy', callback_data: 'pussy' },
+            if (ctx.match && ctx.chat.id == imp.shemdoe) {
+                let copyId = Number(ctx.match.trim())
+                all.forEach((u, i) => {
+                    setTimeout(() => {
+                        axios.post(tgAPI, {
+                            chat_id: u.chatid,
+                            from_chat_id: imp.matangazoDB,
+                            message_id: copyId,
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: '💰 Money', callback_data: 'money' },
+                                        { text: '🍑 Pussy', callback_data: 'pussy' },
+                                    ]
                                 ]
-                            ]
-                        }
-                    }).then(() => console.log('✅ Message sent to ' + u.chatid))
-                        .catch(err => {
-                            console.log(err.message)
-                            if (err.response && err.response.data && err.response.data.description) {
-                                let description = err.response.data.description
-                                description = description.toLowerCase()
-                                if (bads.some((bad) => description.includes(bad))) {
-                                    ugModel.findOneAndDelete({ chatid: u.chatid })
-                                        .then(() => console.log(`🚮 ${u.chatid} deleted`))
-                                        .catch(e => console.log(`❌ ${e.message}`))
-                                } else { console.log(`🤷‍♂️ ${description}`) }
                             }
-                        })
-                }, i * 35)
-            })
+                        }).then(() => console.log('✅ Message sent to ' + u.chatid))
+                            .catch(err => {
+                                console.log(err.message)
+                                if (err.response && err.response.data && err.response.data.description) {
+                                    let description = err.response.data.description
+                                    description = description.toLowerCase()
+                                    if (bads.some((bad) => description.includes(bad))) {
+                                        ugModel.findOneAndDelete({ chatid: u.chatid })
+                                            .then(() => console.log(`🚮 ${u.chatid} deleted`))
+                                            .catch(e => console.log(`❌ ${e.message}`))
+                                    } else { console.log(`🤷‍♂️ ${description}`) }
+                                }
+                            })
+                    }, i * 35)
+                })
+            } else {ctx.reply('Not authorized')}
         } catch (err) {
             await ctx.reply(err.message)
         }
@@ -192,38 +195,41 @@ const lauraMainFn = async () => {
     bot.command('editha_ke', async ctx => {
         try {
             await ctx.reply('Starting')
-            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/sendMessage`
+            let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
             let all = await keModel.find()
             let bads = ['blocked', 'initiate', 'deactivated']
-
-            all.forEach((u, i) => {
-                setTimeout(() => {
-                    axios.post(tgAPI, {
-                        chat_id: u.chatid,
-                        text: 'What do you need? 🤷‍♀️',
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: '💰 Money', callback_data: 'money' },
-                                    { text: '🍑 Pussy', callback_data: 'pussy' }
+            if (ctx.match && ctx.chat.id == imp.shemdoe) {
+                let copyId = Number(ctx.match.trim())
+                all.forEach((u, i) => {
+                    setTimeout(() => {
+                        axios.post(tgAPI, {
+                            chat_id: u.chatid,
+                            from_chat_id: imp.matangazoDB,
+                            message_id: copyId,
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: '💰 Money', callback_data: 'money' },
+                                        { text: '🍑 Pussy', callback_data: 'pussy' },
+                                    ]
                                 ]
-                            ]
-                        }
-                    }).then(() => console.log('✅ Message sent to ' + u.chatid))
-                        .catch(err => {
-                            console.log(err.message)
-                            if (err.response && err.response.data && err.response.data.description) {
-                                let description = err.response.data.description
-                                description = description.toLowerCase()
-                                if (bads.some((bad) => description.includes(bad))) {
-                                    keModel.findOneAndDelete({ chatid: u.chatid })
-                                        .then(() => console.log(`🚮 ${u.chatid} deleted`))
-                                        .catch(e => console.log(`❌ ${e.message}`))
-                                } else { console.log(`🤷‍♂️ ${description}`) }
                             }
-                        })
-                }, i * 35)
-            })
+                        }).then(() => console.log('✅ Message sent to ' + u.chatid))
+                            .catch(err => {
+                                console.log(err.message)
+                                if (err.response && err.response.data && err.response.data.description) {
+                                    let description = err.response.data.description
+                                    description = description.toLowerCase()
+                                    if (bads.some((bad) => description.includes(bad))) {
+                                        keModel.findOneAndDelete({ chatid: u.chatid })
+                                            .then(() => console.log(`🚮 ${u.chatid} deleted`))
+                                            .catch(e => console.log(`❌ ${e.message}`))
+                                    } else { console.log(`🤷‍♂️ ${description}`) }
+                                }
+                            })
+                    }, i * 35)
+                })
+            } else {ctx.reply('Not authorized')}
         } catch (err) {
             await ctx.reply(err.message)
         }
