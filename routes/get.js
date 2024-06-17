@@ -354,6 +354,48 @@ router.get('/mkeka/over-25', async (req, res) => {
     }
 })
 
+router.get('/mkeka/mega-odds-leo', async (req, res) => {
+    try {
+        let nd = new Date()
+        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        //mega za leo
+        let stips = await mkekadb.find({ date: d }).sort('time').select('time league date match bet odds')
+
+        //mega odds za jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let ytips = await mkekadb.find({ date: _d }).sort('time').select('time league date match bet odds')
+
+        //mega odds za juzi
+        let juzi = new Date()
+        juzi.setDate(juzi.getDate() - 2)
+        let juziD = juzi.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let jtips = await mkekadb.find({ date: juziD }).sort('time').select('time league date match bet odds')
+
+
+        //mega za kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let ktips = await mkekadb.find({ date: kesho }).sort('time').select('time league date match bet odds')
+
+        //tarehes
+        let trh = { leo: d, kesho, jana: _d, juzi: juziD }
+
+        res.render('7-mega/mega', { stips, ytips, ktips, jtips, trh })
+    } catch (err) {
+        console.error(err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 126
+        }).catch(e => console.log(e.message, e))
+    }
+})
+
 //articles
 router.get('/article/:path', async (req, res) => {
     try {
