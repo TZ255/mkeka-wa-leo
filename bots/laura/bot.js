@@ -155,6 +155,8 @@ const lauraMainFn = async () => {
             let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
             let all = await ugModel.find()
             let bads = ['blocked', 'initiate', 'deactivated']
+            let moneyUrl = `https://t.me/cute_edithabot?start=money`
+            let pussyUrl = `https://t.me/cute_edithabot?start=pussy`
             if (ctx.match && ctx.chat.id == imp.shemdoe) {
                 let copyId = Number(ctx.match.trim())
                 all.forEach((u, i) => {
@@ -166,8 +168,8 @@ const lauraMainFn = async () => {
                             reply_markup: {
                                 inline_keyboard: [
                                     [
-                                        { text: '💰 Money', callback_data: 'money' },
-                                        { text: '🍑 Pussy', callback_data: 'pussy' },
+                                        { text: '💰 Money', url: moneyUrl },
+                                        { text: '🍑 Pussy', url: pussyUrl },
                                     ]
                                 ]
                             }
@@ -198,6 +200,8 @@ const lauraMainFn = async () => {
             let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
             let all = await keModel.find()
             let bads = ['blocked', 'initiate', 'deactivated']
+            let moneyUrl = `https://t.me/cute_edithabot?start=money`
+            let pussyUrl = `https://t.me/cute_edithabot?start=pussy`
             if (ctx.match && ctx.chat.id == imp.shemdoe) {
                 let copyId = Number(ctx.match.trim())
                 all.forEach((u, i) => {
@@ -209,8 +213,8 @@ const lauraMainFn = async () => {
                             reply_markup: {
                                 inline_keyboard: [
                                     [
-                                        { text: '💰 Money', callback_data: 'money' },
-                                        { text: '🍑 Pussy', callback_data: 'pussy' },
+                                        { text: '💰 Money', url: moneyUrl },
+                                        { text: '🍑 Pussy', url: pussyUrl },
                                     ]
                                 ]
                             }
