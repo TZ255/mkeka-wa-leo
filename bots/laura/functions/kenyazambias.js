@@ -1,28 +1,31 @@
 const kenyaZambia = require('../../zambias/database/users')
 const axios = require('axios').default
 
-const convoKenya = async (ctx, bot) => {
+const convoKenya = async (ctx, bot, copyId) => {
     try {
         await ctx.reply('Starting')
         let all = await kenyaZambia.find()
         let bads = ['blocked', 'initiate', 'deactivated']
 
         all.forEach((u, i) => {
-            if(i == all.length - 1) {
-                ctx.reply('Nimemaliza Conversation').catch(e=> console.log(e.message))
+            if (i == all.length - 1) {
+                ctx.reply('Nimemaliza Conversation').catch(e => console.log(e.message))
             }
-            let tgAPI = `https://api.telegram.org/bot${u.token}/sendMessage`
+            let tgAPI = `https://api.telegram.org/bot${u.token}/copyMessage`
             setTimeout(() => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
-                    text: `What do you need? 🤷‍♀️`,
+                    from_chat_id: imp.matangazoDB,
+                    message_id: copyId,
                     reply_markup: {
-                        inline_keyboard: [
+                        keyboard: [
                             [
-                                { text: '💰 Money', callback_data: 'money' },
-                                { text: '🍑 Pussy', callback_data: 'pussy' }
+                                { text: '💰 MONEY 🔥' },
+                                { text: '🍑 PUSSY 😜' },
                             ]
-                        ]
+                        ],
+                        resize_keyboard: true,
+                        is_persistent: true
                     }
                 }).then(() => console.log('✅ Message sent to ' + u.chatid))
                     .catch(err => {

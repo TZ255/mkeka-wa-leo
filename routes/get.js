@@ -431,7 +431,7 @@ router.get('/download/movie/:movid', async (req, res) => {
     }
 })
 
-router.all('*', (req, res) => {
+router.get('*', (req, res) => {
     res.redirect('/')
 })
 

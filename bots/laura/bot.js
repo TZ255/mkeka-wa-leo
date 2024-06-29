@@ -188,7 +188,7 @@ const lauraMainFn = async () => {
                             })
                     }, i * 35)
                 })
-            } else {ctx.reply('Not authorized')}
+            } else { ctx.reply('Not authorized') }
         } catch (err) {
             await ctx.reply(err.message)
         }
@@ -233,7 +233,7 @@ const lauraMainFn = async () => {
                             })
                     }, i * 35)
                 })
-            } else {ctx.reply('Not authorized')}
+            } else { ctx.reply('Not authorized') }
         } catch (err) {
             await ctx.reply(err.message)
         }
@@ -241,9 +241,11 @@ const lauraMainFn = async () => {
 
     bot.command('kenyas', async ctx => {
         try {
-            if (ctx.chat.id == imp.shemdoe) {
+            if (ctx.chat.id == imp.shemdoe && ctx.match.length > 1) {
+                let copyId = Number(ctx.match.trim())
                 await ctx.reply('Starting sending to kenyas zambia')
-                await kenyaZambiaFn.convoKenya(ctx, bot)
+                kenyaZambiaFn.convoKenya(ctx, bot, copyId)
+                    .catch(e => console.log(e.message))
             } else {
                 await ctx.reply('You aint authorized')
             }

@@ -32,6 +32,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 app.set('trust proxy', true) //our app is hosted on server using proxy to pass user request
+//Attached webhook Bots Goes Here
+if (process.env.local != 'true') {
+    zambiaBotsSourceCodes.myBotsFn(app)
+}
 app.use(limiter)
 app.use(postRouter)
 app.use(getRouter)
@@ -41,7 +45,6 @@ if (process.env.local != 'true') {
     lauraSourceCodes.bot()
     CharlloteSourceCodes.bot()
     helenSourceCodes.bot()
-    zambiaBotsSourceCodes.myBotsFn(app)
 }
 
 
