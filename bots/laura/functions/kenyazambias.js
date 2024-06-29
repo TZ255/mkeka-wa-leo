@@ -1,7 +1,7 @@
 const kenyaZambia = require('../../zambias/database/users')
 const axios = require('axios').default
 
-const convoKenya = async (ctx, bot, copyId) => {
+const convoKenya = async (ctx, bot, copyId, imp) => {
     try {
         await ctx.reply('Starting')
         let all = await kenyaZambia.find()

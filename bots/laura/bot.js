@@ -246,7 +246,7 @@ const lauraMainFn = async () => {
             if (ctx.chat.id == imp.shemdoe && ctx.match.length > 1) {
                 let copyId = Number(ctx.match.trim())
                 await ctx.reply('Starting sending to kenyas zambia')
-                kenyaZambiaFn.convoKenya(ctx, bot, copyId)
+                kenyaZambiaFn.convoKenya(ctx, bot, copyId, imp)
                     .catch(e => console.log(e.message))
             } else {
                 await ctx.reply('You aint authorized')
