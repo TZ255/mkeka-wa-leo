@@ -41,7 +41,7 @@ if (process.env.local != 'true') {
     lauraSourceCodes.bot()
     CharlloteSourceCodes.bot()
     helenSourceCodes.bot()
-    zambiaBotsSourceCodes.myBotsFn()
+    zambiaBotsSourceCodes.myBotsFn(app)
 }
 
 

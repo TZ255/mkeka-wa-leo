@@ -1,4 +1,4 @@
-const { Bot } = require('grammy')
+const { Bot, webhookCallback } = require('grammy')
 const { autoRetry } = require("@grammyjs/auto-retry");
 const usersModel = require('./database/users')
 const listModel = require('./database/botlist')
@@ -6,20 +6,31 @@ const mkekaMega = require('./database/mkeka-mega')
 
 const mkekaReq = require('./functions/mikeka')
 
-//delaying
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
-const imp = {
-    halot: 1473393723
-}
+const myBotsFn = async (app) => {
+    //delaying
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
+    //importants data
+    const imp = {
+        halot: 1473393723
+    }
 
-const myBotsFn = async () => {
     try {
         const tokens = await listModel.find()
 
         for (let tk of tokens) {
             const bot = new Bot(tk.token)
+            if (process.env.local != 'true') {
+                let hookPath = `/telebot/kenyas/${tk.botname}`
+                let domain = process.env.DOMAIN
+                await bot.api.setWebhook(`https://${domain}${hookPath}`, {
+                    drop_pending_updates: true
+                })
+                    .then(() => console.log(`hook for ${tk.botname} set`))
+                    .catch(e => console.log(e.message, e))
+                app.use(hookPath, webhookCallback(bot, 'express'))
+            }
 
             bot.catch((err) => {
                 const ctx = err.ctx;
@@ -28,6 +39,12 @@ const myBotsFn = async () => {
 
             //use auto-retry
             bot.api.config.use(autoRetry());
+
+            //set commands
+            bot.api.setMyCommands([
+                {command: 'betslip', description: '🔥 Bet of the Day'},
+                {command: 'hookup', description: '🍑 Beautiful Escorts'},
+            ]).then(()=> console.log(`Commands for ${tk.botname} set`)).catch(e => console.log(e))
 
             bot.command('start', async ctx => {
                 try {
@@ -42,13 +59,13 @@ const myBotsFn = async () => {
                     let prep = await ctx.reply('Preparing Invite link...')
                     await delay(1000)
                     await ctx.api.deleteMessage(ctx.chat.id, prep.message_id)
-                    let url = `https://playabledownload.com/1584699`
-                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. \n\nUse the menu buttons below to see what we prepared for you today.\n\nAlso use the command /betslip to get the best bet of the day`, {
+                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. \n\nUse the menu buttons below to see what we prepared for you today.\n\nAlso use the command \n/betslip for today's sure bet\n\n/hookup for escorts`, {
                         parse_mode: 'HTML',
                         reply_markup: {
                             keyboard: [
                                 [
-                                    { text: '💰 BET OF THE DAY (🔥)' }
+                                    { text: '💰 MONEY 🔥' },
+                                    { text: '🍑 PUSSY 😜' },
                                 ]
                             ],
                             resize_keyboard: true,
@@ -85,7 +102,24 @@ const myBotsFn = async () => {
                 }
             })
 
-            bot.callbackQuery(['money', 'pussy'], async ctx=> {
+            bot.command(['hookup', 'escorts'], async ctx => {
+                try {
+                    let url = 'https://getafilenow.com/1584699'
+                    let txt = `Unlock the largest library of adult videos and leakage sex tapes as well as our private groups for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`
+                    let rpm = {
+                        inline_keyboard: [
+                            [
+                                { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                            ]
+                        ]
+                    }
+                    await ctx.reply(txt, { reply_markup: rpm })
+                } catch (err) {
+                    console.log(err.message)
+                }
+            })
+
+            bot.callbackQuery(['money', 'pussy'], async ctx => {
                 try {
                     await mkekaReq.mkeka3(ctx, delay, bot, imp)
                     let msgid = ctx.callbackQuery.message.message_id
@@ -114,33 +148,27 @@ const myBotsFn = async () => {
                             await ctx.reply(final)
                         }
                     } else {
-                        if (ctx.message.text == '💰 BET OF THE DAY (🔥)') {
-                            await mkekaReq.mkeka3(ctx, delay, bot, imp)
-                        } else if (ctx.message.text == '🔞 Our Premium Escort Group') {
-                            let url = 'https://playabledownload.com/1584699'
-                            let txt = `Unlock the largest library of adult videos and leakage sex tapes as well as our private group for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`
-                            let rpm = {
-                                inline_keyboard: [
-                                    [
-                                        { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                        switch (ctx.message.text) {
+                            case '💰 BET OF THE DAY (🔥)': case '💰 MONEY 🔥':
+                                await mkekaReq.mkeka3(ctx, delay, bot, imp);
+                                break;
+
+                            default:
+                                let url = 'https://getafilenow.com/1584699'
+                                let txt = `Unlock the largest library of adult videos and leakage sex tapes as well as our private groups for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`
+                                let rpm = {
+                                    inline_keyboard: [
+                                        [
+                                            { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                                        ]
                                     ]
-                                ]
-                            }
-                            await ctx.reply(txt, { reply_markup: rpm })
+                                }
+                                await ctx.reply(txt, { reply_markup: rpm })
+
                         }
                     }
                 } catch (err) {
                     console.log(err.message)
-                }
-            })
-
-            // Stopping the bot when the Node.js process is about to be terminated
-            process.once("SIGINT", () => bot.stop());
-            process.once("SIGTERM", () => bot.stop());
-
-            bot.start().catch(e => {
-                if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
-                    bot.stop('new update')
                 }
             })
         }
