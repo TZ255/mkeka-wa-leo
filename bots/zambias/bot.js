@@ -59,7 +59,7 @@ const myBotsFn = async (app) => {
                     let prep = await ctx.reply('Preparing Invite link...')
                     await delay(1000)
                     await ctx.api.deleteMessage(ctx.chat.id, prep.message_id)
-                    await ctx.reply(`Hello <b>${first_name}!</b>\n\nWelcome to our platform. \n\nUse the menu buttons below to see what we prepared for you today.\n\nAlso use the command \n/betslip for today's sure bet\n\n/hookup for escorts`, {
+                    await ctx.reply(`Hello <b>${first_name}!</b>\nWelcome to our platform. Use the menu buttons below to see what we prepared for you today.\n\n<b>Also use the commands</b> \n\n• /betslip for today's sure bet\n• /hookup for escorts`, {
                         parse_mode: 'HTML',
                         reply_markup: {
                             keyboard: [
