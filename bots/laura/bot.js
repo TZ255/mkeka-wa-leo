@@ -116,34 +116,36 @@ const lauraMainFn = async () => {
 
     bot.command('dramastore', async ctx => {
         try {
-            await ctx.reply('Starting')
-            let tgAPI = `https://api.telegram.org/bot${process.env.DS_TOKEN}/copyMessage`
-            let txt = ctx.message.text
-            let mid = Number(txt.split('=')[1])
-            let all = await dramastoreUsers.find()
-            let bads = ['blocked', 'initiate', 'deactivated']
+            if (ctx.chat.id == imp.shemdoe && ctx.match.length > 0) {
+                await ctx.reply('Starting')
+                let tgAPI = `https://api.telegram.org/bot${process.env.DS_TOKEN}/copyMessage`
+                let mid = Number(ctx.match.trim())
+                let all = await dramastoreUsers.find()
+                let bads = ['blocked', 'initiate', 'deactivated']
 
-            all.forEach((u, i) => {
-                setTimeout(() => {
-                    axios.post(tgAPI, {
-                        chat_id: u.userId,
-                        from_chat_id: -1001570087172, //matangazoDB
-                        message_id: mid
-                    }).then(() => console.log('✅ Message sent to ' + u.userId))
-                        .catch(err => {
-                            console.log(err.message)
-                            if (err.response && err.response.data && err.response.data.description) {
-                                let description = err.response.data.description
-                                description = description.toLowerCase()
-                                if (bads.some((bad) => description.includes(bad))) {
-                                    dramastoreUsers.findOneAndDelete({ userId: u.userId })
-                                        .then(() => console.log(`🚮 ${u.userId} deleted`))
-                                        .catch(e => console.log(`❌ ${e.message}`))
-                                } else { console.log(`🤷‍♂️ ${description}`) }
-                            }
-                        })
-                }, i * 40)
-            })
+                all.forEach((u, i) => {
+                    setTimeout(() => {
+                        axios.post(tgAPI, {
+                            chat_id: u.userId,
+                            from_chat_id: -1001570087172, //matangazoDB
+                            message_id: mid
+                        }).then(() => console.log('✅ Message sent to ' + u.userId))
+                            .catch(err => {
+                                console.log(err.message)
+                                if (err.response && err.response.data && err.response.data.description) {
+                                    let description = err.response.data.description
+                                    description = description.toLowerCase()
+                                    if (bads.some((bad) => description.includes(bad))) {
+                                        dramastoreUsers.findOneAndDelete({ userId: u.userId })
+                                            .then(() => console.log(`🚮 ${u.userId} deleted`))
+                                            .catch(e => console.log(`❌ ${e.message}`))
+                                    } else { console.log(`🤷‍♂️ ${description}`) }
+                                }
+                            })
+                    }, i * 40)
+                })
+            }
+
         } catch (err) {
             await ctx.reply(err.message)
         }
@@ -256,7 +258,7 @@ const lauraMainFn = async () => {
 
     bot.command('admin', async ctx => {
         try {
-            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from matangazodb (39) to the new channel.`
+            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from matangazodb (39) to the new channel.\n\n<code>/kenyas <msgid></code> broadcast kenya zambias from matangazodb\n\n<code>/editha_ke, /editha_ug <msgid></code> broadcast editha from matangazodb\n\n<code>/dramastore <msgid></code> broadcast dramastore from matangazodb`
 
             await ctx.reply(commands, { parse_mode: 'HTML' })
         } catch (err) {
