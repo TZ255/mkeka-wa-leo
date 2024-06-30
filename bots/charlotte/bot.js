@@ -273,6 +273,7 @@ const charlotteFn = async (app) => {
                     let cdata = ctx.channelPost.text
                     //replace all newlines and tabs from original caption
                     let orgCap = ctx.channelPost.reply_to_message.caption.replace(/\s+/g, ' ').trim()
+                    console.log(orgCap)
                     let [cap_data, casts] = orgCap.split(' - With ')
                     let [date, title] = cap_data.split('🎥')
                     let size = cdata.split('&size=')[1].split('&dur')[0]
@@ -289,8 +290,8 @@ const charlotteFn = async (app) => {
                     //contents for caption
                     let content = '📥 DOWNLOAD FULL VIDEO'
                     let cap_content = '<b>... Get Full Video 👇👇</b>'
-                    let dateHash = `<b>${date.trim}</b>`
-                    let caption = `<blockquote><b>🎥 Title: </b>${title.trim()}\n<b>👥 Casts: </b>${casts.trim()}<b>📁 Size: </b>${size} MB\n<b>⏳ Duration: </b>${dakika} minutes</blockquote>\n\n${cap_content}`
+                    let dateHash = `<b>${date.trim()}</b>`
+                    let caption = `${dateHash}\n\n<blockquote><b>🎥 Title: </b>${title.trim()}\n<b>👥 Casts: </b>${casts.trim()}\n<b>📁 Size: </b>${size} MB\n<b>⏳ Duration: </b>${dakika} minutes</blockquote>\n\n${cap_content}`
 
                     //bot links
                     let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
