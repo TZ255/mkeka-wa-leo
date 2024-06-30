@@ -1,4 +1,4 @@
-const { Bot } = require('grammy')
+const { Bot, webhookCallback } = require('grammy')
 const { autoRetry } = require("@grammyjs/auto-retry");
 require('dotenv').config()
 const mongoose = require('mongoose')
