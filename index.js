@@ -35,6 +35,7 @@ app.set('trust proxy', true) //our app is hosted on server using proxy to pass u
 //Attached webhook Bots Goes Here
 if (process.env.local != 'true') {
     zambiaBotsSourceCodes.myBotsFn(app)
+    CharlloteSourceCodes.bot(app)
 }
 app.use(limiter)
 app.use(postRouter)
@@ -43,11 +44,8 @@ app.use(getRouter)
 //Attached Bots Goes Here
 if (process.env.local != 'true') {
     lauraSourceCodes.bot()
-    CharlloteSourceCodes.bot()
     helenSourceCodes.bot()
 }
-
-
 
 app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))
 

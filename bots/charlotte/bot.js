@@ -1,16 +1,15 @@
+const { Bot } = require('grammy')
+const { autoRetry } = require("@grammyjs/auto-retry");
+require('dotenv').config()
+const mongoose = require('mongoose')
+const { nanoid } = require('nanoid')
+const axios = require('axios').default
+const cheerio = require('cheerio')
 
 
-// CHARLOTTE BOT
-const charlotteFn = async () => {
-    const { Bot } = require('grammy')
-    const { autoRetry } = require("@grammyjs/auto-retry");
-    require('dotenv').config()
-    const mongoose = require('mongoose')
+const charlotteFn = async (app) => {
     const db = require('./database/db')
     const users = require('./database/users')
-    const { nanoid } = require('nanoid')
-    const axios = require('axios').default
-    const cheerio = require('cheerio')
     const offer = require('./database/offers')
     const gifsModel = require('./database/gif')
     const reqModel = require('./database/requestersDb')
@@ -23,6 +22,18 @@ const charlotteFn = async () => {
     const call_reactions_function = require('./functions/reactions')
 
     const bot = new Bot(process.env.CHARLOTTE_TOKEN)
+
+    //run webhook
+    if (process.env.local != 'true') {
+        let hookPath = `/telebot/tz/charlotte`
+        let domain = process.env.DOMAIN
+        await bot.api.setWebhook(`https://${domain}${hookPath}`, {
+            drop_pending_updates: true
+        })
+            .then(() => console.log(`hook for Charlotte is set`))
+            .catch(e => console.log(e.message, e))
+        app.use(hookPath, webhookCallback(bot, 'express'))
+    }
 
     const imp = {
         replyDb: -1001608248942,
@@ -58,13 +69,14 @@ const charlotteFn = async () => {
         })
     }
 
+    //use auto-retry
+    bot.api.config.use(autoRetry());
+
     bot.catch((err) => {
         const ctx = err.ctx;
         console.error(`(Charlotte): ${err.message}`, err);
     });
 
-    //use auto-retry
-    bot.api.config.use(autoRetry());
 
     bot.command('start', async ctx => {
         let id = ctx.chat.id
@@ -159,7 +171,7 @@ const charlotteFn = async () => {
                                 ]
                             }
                         })
-                        .catch(e => console.log(e.message))
+                            .catch(e => console.log(e.message))
                     }, index * 3.5 * 1000)
                 }
             } catch (err) {
@@ -199,15 +211,15 @@ const charlotteFn = async () => {
                         }).then(() => console.log('✅ Offer sent to ' + u.chatid))
                             .catch((err) => {
                                 for (let d of deleteErrs) {
-                                    if(err.message.toLowerCase().includes(d)) {
+                                    if (err.message.toLowerCase().includes(d)) {
                                         users.findOneAndDelete({ chatid: u.chatid })
-                                        .then(() => { console.log(`❌ ${u.chatid} deleted`) })
+                                            .then(() => { console.log(`❌ ${u.chatid} deleted`) })
                                     }
                                 }
                             })
                     }, index * 40)
                 })
-            } 
+            }
             catch (err) {
                 console.log(err.message)
             }
@@ -263,66 +275,48 @@ const charlotteFn = async () => {
                     let cap_data = orgCap.split(' - With ')
                     let size = cdata.split('&size=')[1].split('&dur')[0]
                     let seconds = cdata.split('&dur=')[1]
-                    let dakika = Math.trunc(Number(seconds)/60)
+                    let dakika = Math.trunc(Number(seconds) / 60)
 
-                    let posts = [
-                        '62c84d54da06342665e31fb7',
-                        '62ca86111afa2af6f7a1026c',
-                        '62cd8fbe9de0786aafdb98b7',
-                        '62df23671eef6dabf5feecde',
-                        '63212e1f6eeba4e82a45bd27',
-                        '632e5c7d2744c9849dd69c0a',
-                        '632e58662744c9849dd69ba1'
-                    ]
-                    let rrnp = Math.floor(Math.random() * posts.length)
-                    let op2link = `https://font5.net/blog/post.html?id=${posts[rrnp]}#getting-full-show-showid=${cdata}`
 
-                    let botlink = `http://t.me/ohmychannelV2bot?start=${cdata}`
-
+                    //save the trailer to database
                     await gifsModel.create({
                         nano: cdata,
                         gifId: rpId
                     })
 
-                    //post to XBONGO
+                    //contents for caption
                     let content = '📥 DOWNLOAD FULL VIDEO'
-                    let cap_content = '⬇ Full Video 👇👇'
-                    if(orgCap.includes('#Movie')) {
-                        content = '📥 DOWNLOAD FULL MOVIE'
-                        cap_content = '⬇ Full Movie 👇👇'
-                    }
+                    let cap_content = '<b>Full Video 👇👇</b>'
+                    let quotes = `<blockquote><b>📁 Size: </b>${dakika}\n<b>⏳ Duration: </b>${size} MB</blockquote>`
+
+                    //bot links
                     let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
                     let rtios = `https://t.me/pilau_bot?start=iphone-RTBOT-${cdata}`
                     let plbot = `https://t.me/pilau_bot?start=RTBOT-${cdata}`
-                    let rpm = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: rtbot }]] }
-                    let rpmios = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: rtios }]] }
-                    let rp_pl = { inline_keyboard: [[{ text: `${content} (${size} MB)`, url: plbot }]] }
 
-                    let _post = await bot.api.copyMessage(imp.rtprem, imp.replyDb, rpId)
-                    let _post2 = await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId)
-                    let _post3 = await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId)
-                    let _post4 = await bot.api.copyMessage(imp.playg, imp.replyDb, rpId)
-                    let trimSize = cdata.split('&size')[0]
-                    
-                    await bot.api.editMessageCaption(imp.rtprem, _post.message_id, {
-                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtbot}">https://t.me/download/video/${rpId}</a></b>`,
+                    //reply_markups
+                    let rpm = { inline_keyboard: [[{ text: `${content}`, url: rtbot }]] }
+                    let rpmios = { inline_keyboard: [[{ text: `${content}`, url: rtios }]] }
+                    let rp_pl = { inline_keyboard: [[{ text: `${content}`, url: plbot }]] }
+
+                    //edit trailer captions
+                    await bot.api.editMessageCaption(imp.replyDb, rpId, {
+                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n${quotes}\n\n${cap_content}`,
                         parse_mode: 'HTML',
+                    })
+
+                    //copy to channels
+                    await bot.api.copyMessage(imp.rtprem, imp.replyDb, rpId, {
                         reply_markup: rpm
                     })
-
-                    await bot.api.editMessageCaption(imp.rt4i4n, _post2.message_id, {
-                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`,
-                        parse_mode: 'HTML', reply_markup: rpmios
+                    await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId, {
+                        reply_markup: rpmios
                     })
-
-                    await bot.api.editMessageCaption(imp.rt4i4n2, _post3.message_id, {
-                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${rtios}">https://t.me/download/video/${rpId}</a></b>`,
-                        parse_mode: 'HTML', reply_markup: rpmios
+                    await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId, {
+                        reply_markup: rpmios
                     })
-
-                    await bot.api.editMessageCaption(imp.playg, _post4.message_id, {
-                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n<b>${cap_content}</b>\n<b><a href="${plbot}">https://t.me/download/video/${rpId}</a></b>`,
-                        parse_mode: 'HTML', reply_markup: rp_pl
+                    await bot.api.copyMessage(imp.playg, imp.replyDb, rpId, {
+                        reply_markup: rp_pl
                     })
                 }
             }
@@ -334,7 +328,7 @@ const charlotteFn = async () => {
                 let caption = cap.split(' - With')[0].trim()
                 let msgId = ctx.channelPost.message_id
                 let fileBytes = ctx.channelPost.video.file_size
-                let fileMBs = Math.trunc(fileBytes/1024/1024)
+                let fileMBs = Math.trunc(fileBytes / 1024 / 1024)
                 let duration = ctx.channelPost.video.duration
                 let tday = new Date().toDateString()
 
@@ -359,8 +353,8 @@ const charlotteFn = async () => {
                 let caption = 'no caption'
                 let msgId = ctx.channelPost.message_id
                 let fileBytes = ctx.channelPost.document.file_size
-                let fileMBs = Math.trunc(fileBytes/1024/1024)
-                let duration = 90*60
+                let fileMBs = Math.trunc(fileBytes / 1024 / 1024)
+                let duration = 90 * 60
                 let tday = new Date().toDateString()
 
                 await db.create({
@@ -450,16 +444,14 @@ const charlotteFn = async () => {
         }
     })
 
-
-    // Stopping the bot when the Node.js process is about to be terminated
-    process.once("SIGINT", () => bot.stop());
-    process.once("SIGTERM", () => bot.stop());
-
-    bot.start().catch(e => {
-        if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
-            bot.stop('new update')
-        }
-    })
+    //running polling locally
+    if (process.env.local == 'true') {
+        bot.start().catch(e => {
+            if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
+                bot.stop('new update')
+            }
+        })
+    }
 }
 
 
