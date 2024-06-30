@@ -271,8 +271,10 @@ const charlotteFn = async (app) => {
                 if (ctx.channelPost.reply_to_message) {
                     let rpId = ctx.channelPost.reply_to_message.message_id
                     let cdata = ctx.channelPost.text
-                    let orgCap = ctx.channelPost.reply_to_message.caption
-                    let cap_data = orgCap.split(' - With ')
+                    //replace all newlines and tabs from original caption
+                    let orgCap = ctx.channelPost.reply_to_message.caption.replace(/\s+/g, ' ').trim()
+                    let [cap_data, casts] = orgCap.split(' - With ')
+                    let [date, title] = cap_data.split('🎥')
                     let size = cdata.split('&size=')[1].split('&dur')[0]
                     let seconds = cdata.split('&dur=')[1]
                     let dakika = Math.trunc(Number(seconds) / 60)
@@ -286,8 +288,9 @@ const charlotteFn = async (app) => {
 
                     //contents for caption
                     let content = '📥 DOWNLOAD FULL VIDEO'
-                    let cap_content = '<b>Full Video 👇👇</b>'
-                    let quotes = `<blockquote><b>📁 Size: </b>${dakika}\n<b>⏳ Duration: </b>${size} MB</blockquote>`
+                    let cap_content = '<b>... Get Full Video 👇👇</b>'
+                    let dateHash = `<b>${date.trim}</b>`
+                    let caption = `<blockquote><b>🎥 Title: </b>${title.trim()}\n<b>👥 Casts: </b>${casts.trim()}<b>📁 Size: </b>${size} MB\n<b>⏳ Duration: </b>${dakika} minutes</blockquote>\n\n${cap_content}`
 
                     //bot links
                     let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
@@ -301,7 +304,7 @@ const charlotteFn = async (app) => {
 
                     //edit trailer captions
                     await bot.api.editMessageCaption(imp.replyDb, rpId, {
-                        caption: `<b>${cap_data[0]}</b> - With <b>${cap_data[1]}</b>\n\n${quotes}\n\n${cap_content}`,
+                        caption: caption,
                         parse_mode: 'HTML',
                     })
 
