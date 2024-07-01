@@ -1,5 +1,6 @@
 const { Bot, webhookCallback } = require('grammy')
 const { autoRetry } = require("@grammyjs/auto-retry");
+const axios = require('axios').default
 const usersModel = require('./database/users')
 const listModel = require('./database/botlist')
 const mkekaMega = require('./database/mkeka-mega')
@@ -144,6 +145,11 @@ const myBotsFn = async (app) => {
                         } else if (rpmsg.includes('Token Added:')) {
                             let token = rpmsg.split('👉 ')[1].split(' 👈')[0].trim()
                             let bt = await listModel.findOneAndUpdate({ token }, { $set: { botname: txt } }, { new: true })
+                            let API = `https://api.telegram.org/bot${token}/setMyDescription`
+                            let data = {
+                                description: `Hey Bambi! Welcome 🤗\n\nClick START to begin a conversation with me`
+                            }
+                            await axios.post(API, data)
                             let final = `New Bot with the following info added successfully:\n\n✨ Botname: ${bt.botname}\n✨ Token: ${bt.token}`
                             await ctx.reply(final)
                         }
@@ -151,6 +157,10 @@ const myBotsFn = async (app) => {
                         switch (ctx.message.text) {
                             case '💰 BET OF THE DAY (🔥)': case '💰 MONEY 🔥':
                                 await mkekaReq.mkeka3(ctx, delay, bot, imp);
+                                break;
+
+                            case 'Token': case 'token': case 'TOKEN':
+                                console.log('Token message received')
                                 break;
 
                             default:
