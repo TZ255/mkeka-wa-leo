@@ -41,12 +41,6 @@ const myBotsFn = async (app) => {
             //use auto-retry
             bot.api.config.use(autoRetry());
 
-            //set commands
-            bot.api.setMyCommands([
-                {command: 'betslip', description: '🔥 Bet of the Day'},
-                {command: 'hookup', description: '🍑 Beautiful Escorts'},
-            ]).then(()=> console.log(`Commands for ${tk.botname} set`)).catch(e => console.log(e))
-
             bot.command('start', async ctx => {
                 try {
                     let chatid = ctx.chat.id
@@ -145,11 +139,25 @@ const myBotsFn = async (app) => {
                         } else if (rpmsg.includes('Token Added:')) {
                             let token = rpmsg.split('👉 ')[1].split(' 👈')[0].trim()
                             let bt = await listModel.findOneAndUpdate({ token }, { $set: { botname: txt } }, { new: true })
-                            let API = `https://api.telegram.org/bot${token}/setMyDescription`
+
+                            //set bot desc
+                            let descAPI = `https://api.telegram.org/bot${token}/setMyDescription`
                             let data = {
                                 description: `Hey Bambi! Welcome 🤗\n\nClick START to begin a conversation with me`
                             }
-                            await axios.post(API, data)
+                            await axios.post(descAPI, data)
+
+                            //set commands
+                            let commAPI = `https://api.telegram.org/bot${token}/setMyCommands`
+                            let commData = {
+                                commands: [
+                                    { command: 'betslip', description: '🔥 Bet of the Day' },
+                                    { command: 'hookup', description: '🍑 Beautiful Escorts' },
+                                ]
+                            }
+                            await axios.post(commAPI, commData)
+
+                            //reply with bot data
                             let final = `New Bot with the following info added successfully:\n\n✨ Botname: ${bt.botname}\n✨ Token: ${bt.token}`
                             await ctx.reply(final)
                         }
