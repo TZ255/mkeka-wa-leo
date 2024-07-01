@@ -56,8 +56,8 @@ const sendMkeka2 = async (ctx, delay, bot, imp) => {
 
 const sendMkeka3 = async (ctx, delay, bot, imp) => {
     try {
-        let bwTZ = `http://mkekawaleo.com/betway-tz/register`
-        let gsb = 'http://mkekawaleo.com/gsb-tz/register'
+        let bwTZ = `http://bet-link.top/betway-tz/register`
+        let gsb = 'http://bet-link.top/gsb-tz/register'
         let pm = `http://pmaff.com/?serial=61291818&creative_id=1788`
         let ke = `http://bet-link.top/22bet/register`
         let ug = `http://bet-link.top/22bet/register`
@@ -79,7 +79,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
         let odds = 1
         if (keka.length > 0 && (tzHrs >= 0 && tzHrs < 22)) {
             for (let m of keka) {
-                txt = txt + `<u>${m.time} | ${m.league}</u>\n⚽️ <b><a href="${bwTZ}">${m.match}</a></b>\n<b>✅ ${m.bet}</b>  @${m.odds} \n\n•••\n\n`
+                txt = txt + `<u>${m.time} | ${m.league}</u>\n⚽️ <b><a href="${bwTZ}">${m.match}</a></b>\n<b>🎯 ${m.bet}</b>  @${m.odds} \n\n•••\n\n`
                 odds = (odds * m.odds).toFixed(2)
             }
 
