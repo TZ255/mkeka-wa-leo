@@ -1,5 +1,4 @@
 const { Bot, webhookCallback } = require('grammy')
-const { autoRetry } = require("@grammyjs/auto-retry");
 require('dotenv').config()
 const mongoose = require('mongoose')
 const { nanoid } = require('nanoid')
@@ -68,9 +67,6 @@ const charlotteFn = async (app) => {
             }
         })
     }
-
-    //use auto-retry
-    bot.api.config.use(autoRetry({rethrowInternalServerErrors: true}));
 
     bot.catch((err) => {
         const ctx = err.ctx;
@@ -150,22 +146,26 @@ const charlotteFn = async (app) => {
                     await ctx.reply('Done')
                 }
                 let gifNano = G.nano
-                if(gifNano.includes('&size=')) {
+                if (gifNano.includes('&size=')) {
                     gifNano = gifNano.split('&size=')[0]
-                    await G.updateOne({$set: {nano: gifNano}})
+                    await G.updateOne({ $set: { nano: gifNano } })
                 }
                 let vid = await db.findOne({ nano: gifNano })
                 if (vid) {
                     let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
-                    await ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
-                        reply_markup: {
-                            inline_keyboard: [
-                                [
-                                    { text: `📥 DOWNLOAD FULL VIDEO`, url }
+                    setTimeout(() => {
+                        ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
+                            reply_markup: {
+                                inline_keyboard: [
+                                    [
+                                        { text: `📥 DOWNLOAD FULL VIDEO`, url }
+                                    ]
                                 ]
-                            ]
-                        }
-                    }).catch(e => console.log(e.message))
+                            }
+                        })
+                            .then((m) => console.log(`${index} posted`))
+                            .catch(e => console.log(e.message))
+                    }, 3 * index)
                     console.log(`${index} posted`)
                 } else {
                     console.log(`${G?.nano} not available`)
