@@ -139,7 +139,7 @@ const charlotteFn = async (app) => {
 
     bot.command('hamisha', async ctx => {
         try {
-            let allGifs = await gifsModel.find().skip(690)
+            let allGifs = await gifsModel.find()
 
             for (let [index, G] of allGifs.entries()) {
                 let gifNano = G.nano
