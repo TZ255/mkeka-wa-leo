@@ -1,5 +1,4 @@
 const { Bot, webhookCallback } = require('grammy')
-const { autoRetry } = require("@grammyjs/auto-retry");
 const axios = require('axios').default
 const usersModel = require('./database/users')
 const listModel = require('./database/botlist')
@@ -37,9 +36,6 @@ const myBotsFn = async (app) => {
                 const ctx = err.ctx;
                 console.error(`(${tk.botname}): ${err.message}`, err);
             });
-
-            //use auto-retry
-            bot.api.config.use(autoRetry());
 
             bot.command('start', async ctx => {
                 try {

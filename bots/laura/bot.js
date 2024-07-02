@@ -8,7 +8,6 @@ const lauraMainFn = async () => {
     const cheerio = require('cheerio')
     const imdb = require('imdb-api')
     const { Bot } = require('grammy')
-    const { autoRetry } = require("@grammyjs/auto-retry");
     const bot = new Bot(process.env.LAURA_TOKEN)
     const chatsModel = require('./databases/chat')
     const dramastoreUsers = require('./databases/dstore-chats')
@@ -63,9 +62,6 @@ const lauraMainFn = async () => {
         const ctx = err.ctx;
         console.error(`(Dayo): ${err.message}`, err);
     });
-
-    //use auto-retry
-    bot.api.config.use(autoRetry());
 
     bot.command('start', async ctx => {
         let chatid = ctx.chat.id

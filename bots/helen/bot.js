@@ -3,7 +3,6 @@
 //Helen Codes
 const helenCodes = async () => {
     const { Bot } = require('grammy')
-    const { autoRetry } = require("@grammyjs/auto-retry");
     require('dotenv').config()
     const nyumbuModel = require('./database/chats')
     const my_channels_db = require('./database/my_channels')
@@ -70,9 +69,6 @@ const helenCodes = async () => {
         const ctx = err.ctx;
         console.error(`(Hellen): ${err.message}`, err);
     });
-
-    //use auto-retry
-    bot.api.config.use(autoRetry());
 
 
     bot.command(['start', 'help', 'stop'], async ctx => {
