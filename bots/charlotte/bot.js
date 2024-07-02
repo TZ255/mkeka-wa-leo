@@ -262,6 +262,28 @@ const charlotteFn = async (app) => {
 
     })
 
+    bot.command('newchannel', async ctx => {
+        try {
+            if ([imp.shemdoe, imp.halot, imp.rtmalipo].includes(ctx.chat.id)) {
+                //create chatlink
+                let expire = 24 * 60 * 60
+                let link = await ctx.api.createChatInviteLink(imp.newRT, {
+                    name: 'main link',
+                    expire_date: expire
+                })
+                let invite = link.invite_link
+
+                //send to premium channels
+                for (let ch of [imp.rtprem, imp.rt4i4n, imp.playg]) {
+                    let bcast = `Channel hii imesimama kufanya kazi. Video mpya zinapakiwa kwenye channel yetu mpya. Jiunge hapa chini (link itaexpire baada ya masaa 24)\n\n<b>🆕 New RT Channel 👇\n${invite}\n${invite}</b>`
+                    await ctx.api.sendMessage(ch, bcast, { parse_mode: 'HTML' })
+                }
+            }
+        } catch (error) {
+            ctx.reply(error.message).catch(e => console.error(e))
+        }
+    })
+
     bot.on('channel_post', async ctx => {
         try {
             if (ctx.channelPost.chat.id == imp.replyDb) {
@@ -313,7 +335,7 @@ const charlotteFn = async (app) => {
                     // await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId, {
                     //     reply_markup: rpmios
                     // })
-                    
+
                     //copy stickers
                     for (let p of [imp.rt4i4n, imp.newRT]) {
                         await bot.api.copyMessage(p, imp.replyDb, 4573)
