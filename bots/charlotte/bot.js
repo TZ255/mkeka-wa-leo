@@ -70,7 +70,7 @@ const charlotteFn = async (app) => {
     }
 
     //use auto-retry
-    bot.api.config.use(autoRetry());
+    bot.api.config.use(autoRetry({rethrowInternalServerErrors: true}));
 
     bot.catch((err) => {
         const ctx = err.ctx;
@@ -147,7 +147,7 @@ const charlotteFn = async (app) => {
 
             for (let [index, G] of allGifs.entries()) {
                 if (index == allGifs.length - 1) {
-                    console.log(`done`)
+                    await ctx.reply('Done')
                 }
                 let gifNano = G.nano
                 if(gifNano.includes('&size=')) {
