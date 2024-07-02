@@ -141,6 +141,33 @@ const charlotteFn = async (app) => {
         }
     })
 
+    bot.command('upda', async ctx => {
+        try {
+            let allGifs = await gifsModel.find().skip(690)
+
+            for (let [index, G] of allGifs.entries()) {
+                if(index == allGifs.length -1) {
+                    console.log(`done`)
+                }
+                let vid = await db.findOne({nano: G.nano})
+                let vnano = vid.nano ? vid.nano : `RTBOT-AgADyxYAAjQaGVA7974`
+                let url = `https://t.me/pilau_bot?start=RTBOT-${vnano}`
+                await ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {text: `📥 DOWNLOAD FULL VIDEO`, url}
+                            ]
+                        ]
+                    }
+                })
+                console.log(`${index} posted`)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
     bot.command('p', async ctx => {
         try {
             let com = ctx.message.text

@@ -9,7 +9,8 @@ const rtSchema = new Schema({
     free: {type: Number, default: 5},
     paid: {type: Boolean, default: false},
     startDate: {type: Date},
-    endDate: {type: Date}
+    endDate: {type: Date},
+    bots: {type: [String]}
 }, {strict: false, timestamps: true })
 
 const ohmyNew = mongoose.connection.useDb('ohmyNew')
