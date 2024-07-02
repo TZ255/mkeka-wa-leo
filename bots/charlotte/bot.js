@@ -137,14 +137,11 @@ const charlotteFn = async (app) => {
         }
     })
 
-    bot.command('upda', async ctx => {
+    bot.command('hamisha', async ctx => {
         try {
             let allGifs = await gifsModel.find().skip(690)
 
             for (let [index, G] of allGifs.entries()) {
-                if (index == allGifs.length - 1) {
-                    await ctx.reply('Done')
-                }
                 let gifNano = G.nano
                 if (gifNano.includes('&size=')) {
                     gifNano = gifNano.split('&size=')[0]
@@ -154,7 +151,7 @@ const charlotteFn = async (app) => {
                 if (vid) {
                     let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
                     setTimeout(() => {
-                        ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
+                        ctx.api.copyMessage(-1002178135948, -1001608248942, G.gifId, {
                             reply_markup: {
                                 inline_keyboard: [
                                     [
@@ -163,10 +160,14 @@ const charlotteFn = async (app) => {
                                 ]
                             }
                         })
-                            .then((m) => console.log(`${index} posted`))
+                            .then((m) => {
+                                console.log(`${index} posted`)
+                                if (index == allGifs.length - 1) {
+                                    ctx.reply('Nimemaliza').catch(e => console.log(e.message))
+                                }
+                            })
                             .catch(e => console.log(e.message))
                     }, 3000 * index)
-                    console.log(`${index} posted`)
                 } else {
                     console.log(`${G?.nano} not available`)
                 }
