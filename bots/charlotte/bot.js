@@ -265,6 +265,7 @@ const charlotteFn = async (app) => {
     bot.command('newchannel', async ctx => {
         try {
             if ([imp.shemdoe, imp.halot, imp.rtmalipo].includes(ctx.chat.id)) {
+                await ctx.reply('starting')
                 //create chatlink
                 let expire = 24 * 60 * 60
                 let link = await ctx.api.createChatInviteLink(imp.newRT, {
