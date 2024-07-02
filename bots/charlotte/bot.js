@@ -149,7 +149,12 @@ const charlotteFn = async (app) => {
                 if (index == allGifs.length - 1) {
                     console.log(`done`)
                 }
-                let vid = await db.findOne({ nano: G.nano })
+                let gifNano = G.nano
+                if(gifNano.includes('&size=')) {
+                    gifNano = gifNano.split('&size=')[0]
+                    await G.updateOne({$set: {nano: gifNano}})
+                }
+                let vid = await db.findOne({ nano: gifNano })
                 if (vid) {
                     let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
                     await ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
@@ -314,7 +319,7 @@ const charlotteFn = async (app) => {
 
                     //save the trailer to database
                     await gifsModel.create({
-                        nano: cdata,
+                        nano: cdata.split('&size=')[0],
                         gifId: rpId
                     })
 
