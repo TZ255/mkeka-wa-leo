@@ -165,7 +165,7 @@ const charlotteFn = async (app) => {
                         })
                             .then((m) => console.log(`${index} posted`))
                             .catch(e => console.log(e.message))
-                    }, 3 * index)
+                    }, 3000 * index)
                     console.log(`${index} posted`)
                 } else {
                     console.log(`${G?.nano} not available`)
