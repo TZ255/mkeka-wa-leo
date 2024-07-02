@@ -150,8 +150,7 @@ const charlotteFn = async (app) => {
                     console.log(`done`)
                 }
                 let vid = await db.findOne({nano: G.nano})
-                let vnano = vid.nano ? vid.nano : `RTBOT-AgADyxYAAjQaGVA7974`
-                let url = `https://t.me/pilau_bot?start=RTBOT-${vnano}`
+                let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
                 await ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
                     reply_markup: {
                         inline_keyboard: [
@@ -160,7 +159,7 @@ const charlotteFn = async (app) => {
                             ]
                         ]
                     }
-                })
+                }).catch(e => console.log(e.message))
                 console.log(`${index} posted`)
             }
         } catch (error) {
