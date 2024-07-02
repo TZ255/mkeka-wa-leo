@@ -267,7 +267,7 @@ const charlotteFn = async (app) => {
             if ([imp.shemdoe, imp.halot, imp.rtmalipo].includes(ctx.chat.id)) {
                 await ctx.reply('starting')
                 //create chatlink
-                let expire = 24 * 60 * 60
+                let expire = ctx.message.date + (24 * 60 * 60)
                 let link = await ctx.api.createChatInviteLink(imp.newRT, {
                     name: 'main link',
                     expire_date: expire
@@ -276,7 +276,7 @@ const charlotteFn = async (app) => {
 
                 //send to premium channels
                 for (let ch of [imp.rtprem, imp.rt4i4n, imp.playg]) {
-                    let bcast = `Channel hii imesimama kufanya kazi. Video mpya zinapakiwa kwenye channel yetu mpya. Jiunge hapa chini (link itaexpire baada ya masaa 24)\n\n<b>🆕 New RT Channel 👇\n${invite}\n${invite}</b>`
+                    let bcast = `Channel hii imesimama kufanya kazi. Video mpya zitaendelea kupakiwa kwenye channel yetu mpya. Jiunge hapa chini (link itaexpire baada ya masaa 24)\n\n<b>🆕 NEW RT PREMIUM 👇\n${invite}\n${invite}</b>`
                     await ctx.api.sendMessage(ch, bcast, { parse_mode: 'HTML' })
                 }
             }
