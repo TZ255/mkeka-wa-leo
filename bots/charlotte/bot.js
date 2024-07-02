@@ -338,7 +338,7 @@ const charlotteFn = async (app) => {
                     // })
 
                     //copy stickers
-                    for (let p of [imp.rt4i4n, imp.newRT]) {
+                    for (let p of [imp.rt4i4n2, imp.newRT]) {
                         await bot.api.copyMessage(p, imp.replyDb, 4573)
                     }
                     await delay(1000)
