@@ -104,39 +104,41 @@ const lauraMainFn = async () => {
 
     bot.command('hamisha', async ctx => {
         try {
-            let allGifs = await gifsModel.find()
+            if (ctx.chat.id == imp.shemdoe) {
+                let allGifs = await gifsModel.find()
 
-            for (let [index, G] of allGifs.entries()) {
-                let gifNano = G.nano
-                if (gifNano.includes('&size=')) {
-                    gifNano = gifNano.split('&size=')[0]
-                    await G.updateOne({ $set: { nano: gifNano } })
-                }
-                let vid = await db.findOne({ nano: gifNano })
-                if (vid) {
-                    let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
-                    setTimeout(() => {
-                        ctx.api.copyMessage(-1002228998665, -1001608248942, G.gifId, {
-                            reply_markup: {
-                                inline_keyboard: [
-                                    [
-                                        { text: `📥 DOWNLOAD FULL VIDEO`, url }
+                for (let [index, G] of allGifs.entries()) {
+                    let gifNano = G.nano
+                    if (gifNano.includes('&size=')) {
+                        gifNano = gifNano.split('&size=')[0]
+                        await G.updateOne({ $set: { nano: gifNano } })
+                    }
+                    let vid = await db.findOne({ nano: gifNano })
+                    if (vid) {
+                        let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
+                        setTimeout(() => {
+                            ctx.api.copyMessage(-1002228998665, -1001608248942, G.gifId, {
+                                reply_markup: {
+                                    inline_keyboard: [
+                                        [
+                                            { text: `📥 DOWNLOAD FULL VIDEO`, url }
+                                        ]
                                     ]
-                                ]
-                            }
-                        })
-                            .then((m) => {
-                                console.log(`${index} posted`)
-                                if (index == allGifs.length - 1) {
-                                    ctx.reply('Nimemaliza').catch(e => console.log(e.message))
                                 }
                             })
-                            .catch(e => console.log(e.message))
-                    }, 4000 * index)
-                } else {
-                    console.log(`${G?.nano} not available`)
-                }
+                                .then((m) => {
+                                    console.log(`${index} posted`)
+                                    if (index == allGifs.length - 1) {
+                                        ctx.reply('Nimemaliza').catch(e => console.log(e.message))
+                                    }
+                                })
+                                .catch(e => console.log(e.message))
+                        }, 4000 * index)
+                    } else {
+                        console.log(`${G?.nano} not available`)
+                    }
 
+                }
             }
         } catch (error) {
             console.log(error)

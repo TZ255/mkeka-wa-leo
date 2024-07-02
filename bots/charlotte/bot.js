@@ -50,7 +50,8 @@ const charlotteFn = async (app) => {
         rt4i4n2: -1001701399778,
         playg: -1001987366621,
         ohmy_prem: -1001470139866,
-        rtmalipo: 5849160770
+        rtmalipo: 5849160770,
+        newRT: -1002228998665
     }
 
     //delaying
@@ -306,16 +307,23 @@ const charlotteFn = async (app) => {
                     })
 
                     //copy to channels
-                    await bot.api.copyMessage(imp.rtprem, imp.replyDb, rpId, {
-                        reply_markup: rpm
-                    })
-                    await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId, {
-                        reply_markup: rpmios
-                    })
+                    // await bot.api.copyMessage(imp.rtprem, imp.replyDb, rpId, {
+                    //     reply_markup: rpm
+                    // })
+                    // await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId, {
+                    //     reply_markup: rpmios
+                    // })
+                    
+                    //copy stickers
+                    for (let p of [imp.rt4i4n, imp.newRT]) {
+                        await bot.api.copyMessage(p, imp.replyDb, 4573)
+                    }
+                    await delay(1000)
                     await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId, {
-                        reply_markup: rpmios
+                        reply_markup: rp_pl
                     })
-                    await bot.api.copyMessage(imp.playg, imp.replyDb, rpId, {
+
+                    await bot.api.copyMessage(imp.newRT, imp.replyDb, rpId, {
                         reply_markup: rp_pl
                     })
                 }
