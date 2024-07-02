@@ -146,21 +146,26 @@ const charlotteFn = async (app) => {
             let allGifs = await gifsModel.find().skip(690)
 
             for (let [index, G] of allGifs.entries()) {
-                if(index == allGifs.length -1) {
+                if (index == allGifs.length - 1) {
                     console.log(`done`)
                 }
-                let vid = await db.findOne({nano: G.nano})
-                let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
-                await ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
-                    reply_markup: {
-                        inline_keyboard: [
-                            [
-                                {text: `📥 DOWNLOAD FULL VIDEO`, url}
+                let vid = await db.findOne({ nano: G.nano })
+                if (vid) {
+                    let url = `https://t.me/pilau_bot?start=RTBOT-${vid?.nano}`
+                    await ctx.api.copyMessage(-1002188090551, -1001608248942, G.gifId, {
+                        reply_markup: {
+                            inline_keyboard: [
+                                [
+                                    { text: `📥 DOWNLOAD FULL VIDEO`, url }
+                                ]
                             ]
-                        ]
-                    }
-                }).catch(e => console.log(e.message))
-                console.log(`${index} posted`)
+                        }
+                    }).catch(e => console.log(e.message))
+                    console.log(`${index} posted`)
+                } else {
+                    console.log(`${G?.nano} not available`)
+                }
+
             }
         } catch (error) {
             console.log(error)
