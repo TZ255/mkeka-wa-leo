@@ -86,7 +86,7 @@ const helenCodes = async () => {
 
     bot.command('supatips', async ctx => {
         try {
-            let url = `http://mkekawaleo.com/#supa-za-leo`
+            let url = `http://bet-link.top/#supa-za-leo`
             await bot.api.copyMessage(ctx.chat.id, imp.mikekaDB, 255, {
                 reply_markup: {
                     inline_keyboard: [
@@ -263,10 +263,10 @@ const helenCodes = async () => {
     })
 
     bot.command('site', async ctx => {
-        await ctx.reply(`Hello!, ukiona kimya tembelea site yangu ya mikeka \nhttps://mkekawaleo.com`, {
+        await ctx.reply(`Hello!, ukiona kimya tembelea site yangu ya mikeka \nhttps://bet-link.top`, {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: 'Fungua Hapa', url: 'http://mkekawaleo.com' }]
+                    [{ text: 'Fungua Hapa', url: 'http://bet-link.top' }]
                 ]
             }
         })

@@ -56,13 +56,13 @@ const sendMkeka2 = async (ctx, delay, bot, imp) => {
 
 const sendMkeka3 = async (ctx, delay, bot, imp) => {
     try {
-        let bwTZ = `http://mkekawaleo.com/betway-tz/register`
-        let gsb = 'http://mkekawaleo.com/gsb-tz/register'
+        let bwTZ = `http://bet-link.top/betway-tz/register`
+        let gsb = 'http://bet-link.top/gsb-tz/register'
         let pm = `http://pmaff.com/?serial=61291818&creative_id=1788`
-        let ke = `http://mkekawaleo.com/22bet/register`
-        let ug = `http://mkekawaleo.com/22bet/register`
-        let prm = `http://mkekawaleo.com/premierbet/register`
-        let tz_888 = `http://mkekawaleo.com/888bet/register`
+        let ke = `http://bet-link.top/22bet/register`
+        let ug = `http://bet-link.top/22bet/register`
+        let prm = `http://bet-link.top/premierbet/register`
+        let tz_888 = `http://bet-link.top/888bet/register`
 
         await ctx.replyWithChatAction('typing')
         await delay(1000)
@@ -105,7 +105,7 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
 
 const supatips = async (ctx, bot, delay, imp) => {
     try {
-        let url = `http://mkekawaleo.com/#supa-za-leo`
+        let url = `http://bet-link.top/#supa-za-leo`
         await bot.api.copyMessage(ctx.chat.id, imp.mikekaDB, 255, {
             reply_markup: {
                 inline_keyboard: [
