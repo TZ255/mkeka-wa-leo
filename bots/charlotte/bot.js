@@ -277,7 +277,7 @@ const charlotteFn = async (app) => {
                 //send to premium channels
                 for (let ch of [imp.rtprem, imp.rt4i4n, imp.playg]) {
                     let bcast = `Video mpya zimepakiwa kwenye channel yetu mpya.\n\n<b>🔥 Join NOW! 👇\n${invite}\n${invite}</b>`
-                    await ctx.api.sendMessage(ch, bcast, { parse_mode: 'HTML' })
+                    await ctx.api.sendMessage(ch, bcast, { parse_mode: 'HTML', link_preview_options: {is_disabled: true} })
                 }
             }
         } catch (error) {
