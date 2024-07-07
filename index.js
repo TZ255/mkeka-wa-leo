@@ -35,8 +35,9 @@ app.set('trust proxy', true) //our app is hosted on server using proxy to pass u
 //Attached webhook Bots Goes Here
 if (process.env.local != 'true') {
     zambiaBotsSourceCodes.myBotsFn(app)
-    CharlloteSourceCodes.bot(app)
+    
 }
+CharlloteSourceCodes.bot(app)
 
 app.use(limiter)
 app.use(postRouter)
