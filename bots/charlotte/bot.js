@@ -456,7 +456,7 @@ const charlotteFn = async (app) => {
         let cha_title = ctx.chatJoinRequest.chat.title
         let name = ctx.chatJoinRequest.from.first_name
 
-        const Operate = [imp.xzone, imp.ohmy_prem]
+        const Operate = [imp.xzone] //we dont know admin
 
         try {
             //dont process rahatupu
