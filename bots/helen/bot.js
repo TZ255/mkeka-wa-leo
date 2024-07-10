@@ -436,7 +436,7 @@ const helenCodes = async () => {
                     await ctx.reply('Mkeka uko live 10bet')
                 } else if (txt.toLowerCase() == 'broad me') {
                     let boturl = `t.me/dayoncebot?start=ngono_bongo`
-                    let appendText = `Jiunge na magroup yetu ya utamu bongo\n\n<a href="${boturl}">❕👉 @xxx_bongo\n❕👉 @xxx_bongo</a>`
+                    let appendText = `Jiunge na magroup yetu ya utamu bongo\n<a href="${boturl}">❕👉 @xxx_bongo\n❕👉 @xxx_bongo</a>`
 
                     //edit the post
                     await ctx.api.editMessageCaption(ctx.chat.id, rp_id, {
