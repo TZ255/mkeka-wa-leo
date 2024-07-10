@@ -2,7 +2,7 @@
 
 //Helen Codes
 const helenCodes = async () => {
-    const { Bot } = require('grammy')
+    const { Bot, InlineKeyboard } = require('grammy')
     require('dotenv').config()
     const nyumbuModel = require('./database/chats')
     const my_channels_db = require('./database/my_channels')
@@ -426,6 +426,7 @@ const helenCodes = async () => {
             if (ctx.channelPost.reply_to_message && ctx.channelPost.chat.id == imp.pzone) {
                 let rp_id = ctx.channelPost.reply_to_message.message_id
                 let rp_msg = ctx.channelPost.reply_to_message.text
+                let rp_cap = ctx.channelPost.reply_to_message?.caption
 
                 if (txt.toLowerCase() == 'post gal') {
                     await mkekadb.create({ mid: rp_id, brand: 'gal' })
@@ -433,6 +434,25 @@ const helenCodes = async () => {
                 } else if (txt.toLowerCase() == 'post 10bet') {
                     await mkekadb.create({ mid: rp_id, brand: '10bet' })
                     await ctx.reply('Mkeka uko live 10bet')
+                } else if (txt.toLowerCase() == 'broad me') {
+                    let boturl = `t.me/dayoncebot?start=ngono_bongo`
+                    let appendText = `Jiunge na magroup yetu ya utamu bongo\n\n<a href="${boturl}">❕👉 @xxx_bongo\n❕👉 @xxx_bongo</a>`
+
+                    //edit the post
+                    await ctx.api.editMessageCaption(ctx.chat.id, rp_id, {
+                        parse_mode: 'HTML',
+                        caption: `<b>${rp_cap}\n\n${appendText}</b>`
+                    })
+                    
+                    //broadcast
+                    let inline_keyboard = new InlineKeyboard()
+                        .url(`🔥 JOIN | Utamu Bongo 🔥`, boturl)
+                    let all_chans = await my_channels_db.find()
+                    for (let ch of all_chans) {
+                        await ctx.api.copyMessage(ch.ch_id, imp.pzone, rp_id, {
+                            reply_markup: inline_keyboard
+                        })
+                    }
                 }
             }
 
