@@ -150,18 +150,19 @@ router.get('/clear/clear', async (req, res) => {
 router.get('/:comp/register', async (req, res) => {
     const comp = req.params.comp
     let links = {
-        gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=6081`,
+        gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=6131`,
         pmatch: `https://grwptraq.com/?serial=61288670&creative_id=1788&anid=web&pid=web`,
         meridian: `https://a.meridianbet.co.tz/c/kGdxSu`,
         betway: `https://www.betway.co.tz/?btag=P94949-PR24698-CM77104-TS1988404&`,
         premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
         betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
-        gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=5740`,
+        gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=6016`,
         bet22: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1634`,
         ke_1xbet: `https://refpa4293501.top/L?tag=d_2869291m_2528c_&site=2869291&ad=2528`,
         tz_888: `http://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`,
         betwinner: `https://bw-prm.com/carlos-bonus-lite/?extid=mkl&p=%2Fregistration%2F&lang=en&id=29lg`,
-        betway_casino: `https://www.betway.co.tz/lobby/casino/featured/?btag=P94949-PR26702-CM90070-TS1971458&`
+        betway_casino: `https://www.betway.co.tz/lobby/casino/featured/?btag=P94949-PR26702-CM90070-TS1971458&`,
+        winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`
     }
     try {
         switch (comp) {
@@ -218,6 +219,9 @@ router.get('/:comp/register', async (req, res) => {
                 break;
             case '22bet-tz':
                 res.redirect(links.betway);
+                break;
+            case 'winner-et':
+                res.redirect(links.winner_ethiopia);
                 break;
             default:
                 res.redirect('/');
