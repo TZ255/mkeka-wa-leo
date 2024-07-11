@@ -23,16 +23,14 @@ const charlotteFn = async (app) => {
     const bot = new Bot(process.env.CHARLOTTE_TOKEN)
 
     //run webhook
-    if (process.env.local != 'true') {
-        let hookPath = `/telebot/tz/charlotte`
-        let domain = process.env.DOMAIN
-        await bot.api.setWebhook(`https://${domain}${hookPath}`, {
-            drop_pending_updates: true
-        })
-            .then(() => console.log(`hook for Charlotte is set`))
-            .catch(e => console.log(e.message, e))
-        app.use(hookPath, webhookCallback(bot, 'express'))
-    }
+    let hookPath = `/telebot/tz/charlotte`
+    let domain = process.env.DOMAIN
+    await bot.api.setWebhook(`https://${domain}${hookPath}`, {
+        drop_pending_updates: true
+    })
+        .then(() => console.log(`hook for Charlotte is set`))
+        .catch(e => console.log(e.message, e))
+    app.use(hookPath, webhookCallback(bot, 'express'))
 
     const imp = {
         replyDb: -1001608248942,
@@ -313,24 +311,24 @@ const charlotteFn = async (app) => {
                         })
                     }
 
-                    //contents for caption
-                    let content = '📥 DOWNLOAD FULL VIDEO'
-                    let cap_content = '<b>Get Full Video 👇👇</b>'
-                    let dateHash = `<blockquote><b>${date.trim()}</b></blockquote>`
-                    let caption = `${dateHash}\n\n<b>🎥 Title: </b>${title.trim()}\n<b>👥 Cast: </b>${casts.trim()}\n\n<blockquote><b>📁  Size: </b>${size} MB   |   🕝  ${dakika} minutes</blockquote>\n${cap_content}`
-
                     //bot links
                     let rtbot = `https://t.me/rahatupu_tzbot?start=android-RTBOT-${cdata}`
                     let rtios = `https://t.me/pilau_bot?start=iphone-RTBOT-${cdata}`
                     let plbot = `https://t.me/pilau_bot?start=RTBOT-${cdata}`
 
                     //reply_markups
+                    let content = '📥 DOWNLOAD FULL VIDEO'
                     let rpm = { inline_keyboard: [[{ text: `${content}`, url: rtbot }]] }
                     let rpmios = { inline_keyboard: [[{ text: `${content}`, url: rtios }]] }
                     let rp_pl = { inline_keyboard: [[{ text: `${content}`, url: plbot }]] }
 
                     //kama sio tangazo, ni trailer ya kawaida, edit na post pilau zone
                     if (tangazo == false) {
+                        //contents for caption
+                        let cap_content = '<b>Get Full Video 👇👇</b>'
+                        let dateHash = `<blockquote><b>${date.trim()}</b></blockquote>`
+                        let caption = `${dateHash}\n\n<b>🎥 Title: </b>${title.trim()}\n<b>👥 Cast: </b>${casts.trim()}\n\n<blockquote><b>📁  Size: </b>${size} MB   |   🕝  ${dakika} minutes</blockquote>\n${cap_content}`
+
                         //edit trailer captions
                         await bot.api.editMessageCaption(imp.replyDb, rpId, {
                             caption: caption,
@@ -345,7 +343,6 @@ const charlotteFn = async (app) => {
                         await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId, {
                             reply_markup: rp_pl
                         })
-
                         await bot.api.copyMessage(imp.newRT, imp.replyDb, rpId, {
                             reply_markup: rp_pl
                         })
@@ -488,15 +485,6 @@ const charlotteFn = async (app) => {
             await bot.api.sendMessage(imp.shemdoe, err.message)
         }
     })
-
-    //running polling locally
-    if (process.env.local == 'true') {
-        bot.start().catch(e => {
-            if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
-                bot.stop('new update')
-            }
-        })
-    }
 }
 
 
