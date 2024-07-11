@@ -277,7 +277,7 @@ const charlotteFn = async (app) => {
                 //send to premium channels
                 for (let ch of [imp.rtprem, imp.rt4i4n, imp.playg]) {
                     let bcast = `Video mpya zimepakiwa kwenye channel yetu mpya.\n\n<b>🔥 Join NOW! 👇\n${invite}\n${invite}</b>`
-                    await ctx.api.sendMessage(ch, bcast, { parse_mode: 'HTML', link_preview_options: {is_disabled: true} })
+                    await ctx.api.sendMessage(ch, bcast, { parse_mode: 'HTML', link_preview_options: { is_disabled: true } })
                 }
             }
         } catch (error) {
@@ -291,6 +291,7 @@ const charlotteFn = async (app) => {
                 if (ctx.channelPost.reply_to_message) {
                     let rpId = ctx.channelPost.reply_to_message.message_id
                     let cdata = ctx.channelPost.text
+                    let tangazo = false
                     //replace all newlines and tabs from original caption
                     let orgCap = ctx.channelPost.reply_to_message.caption.replace(/\s+/g, ' ').trim()
                     console.log(orgCap)
@@ -300,12 +301,17 @@ const charlotteFn = async (app) => {
                     let seconds = cdata.split('&dur=')[1]
                     let dakika = Math.trunc(Number(seconds) / 60)
 
-
-                    //save the trailer to database
-                    await gifsModel.create({
-                        nano: cdata.split('&size=')[0],
-                        gifId: rpId
-                    })
+                    //rekebisha cdata kama ni tangazo
+                    if (cdata.includes(' >> tangazo')) {
+                        cdata = cdata.replace(' >> tangazo', '').trim()
+                        tangazo = true
+                    } else {
+                        //save the trailer to database
+                        await gifsModel.create({
+                            nano: cdata.split('&size=')[0],
+                            gifId: rpId
+                        })
+                    }
 
                     //contents for caption
                     let content = '📥 DOWNLOAD FULL VIDEO'
@@ -323,32 +329,40 @@ const charlotteFn = async (app) => {
                     let rpmios = { inline_keyboard: [[{ text: `${content}`, url: rtios }]] }
                     let rp_pl = { inline_keyboard: [[{ text: `${content}`, url: plbot }]] }
 
-                    //edit trailer captions
-                    await bot.api.editMessageCaption(imp.replyDb, rpId, {
-                        caption: caption,
-                        parse_mode: 'HTML',
-                    })
+                    //kama sio tangazo, ni trailer ya kawaida, edit na post pilau zone
+                    if (tangazo == false) {
+                        //edit trailer captions
+                        await bot.api.editMessageCaption(imp.replyDb, rpId, {
+                            caption: caption,
+                            parse_mode: 'HTML',
+                        })
 
-                    //copy to channels
-                    // await bot.api.copyMessage(imp.rtprem, imp.replyDb, rpId, {
-                    //     reply_markup: rpm
-                    // })
-                    // await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId, {
-                    //     reply_markup: rpmios
-                    // })
+                        //copy stickers
+                        for (let p of [imp.rt4i4n2, imp.newRT]) {
+                            await bot.api.copyMessage(p, imp.replyDb, 4573)
+                        }
+                        await delay(1000)
+                        await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId, {
+                            reply_markup: rp_pl
+                        })
 
-                    //copy stickers
-                    for (let p of [imp.rt4i4n2, imp.newRT]) {
-                        await bot.api.copyMessage(p, imp.replyDb, 4573)
+                        await bot.api.copyMessage(imp.newRT, imp.replyDb, rpId, {
+                            reply_markup: rp_pl
+                        })
                     }
-                    await delay(1000)
-                    await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId, {
-                        reply_markup: rp_pl
-                    })
 
-                    await bot.api.copyMessage(imp.newRT, imp.replyDb, rpId, {
-                        reply_markup: rp_pl
-                    })
+                    //kama ni tangazo, post kwenye channel za matangazo
+                    if (tangazo == true) {
+                        await bot.api.copyMessage(imp.rtprem, imp.replyDb, rpId, {
+                            reply_markup: rpm
+                        })
+                        await bot.api.copyMessage(imp.rt4i4n, imp.replyDb, rpId, {
+                            reply_markup: rpmios
+                        })
+                        await bot.api.copyMessage(imp.playg, imp.replyDb, rpId, {
+                            reply_markup: rpmios
+                        })
+                    }
                 }
             }
             if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.video) {
