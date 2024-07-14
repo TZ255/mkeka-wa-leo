@@ -453,6 +453,19 @@ const helenCodes = async () => {
                             reply_markup: inline_keyboard
                         })
                     }
+                } else if (txt.toLowerCase() == 'broad me') {
+                    let boturl = `t.me/dayoncebot?start=ngono_bongo`
+                    let cap = `<b><a href="${boturl}">❕👉 @xxx_bongo</a></b>`
+
+                    //edit the post
+                    await ctx.api.editMessageCaption(ctx.chat.id, rp_id, {
+                        parse_mode: 'HTML',
+                        caption: cap
+                    })
+                    let all_chans = await my_channels_db.find()
+                    for (let ch of all_chans) {
+                        await ctx.api.copyMessage(ch.ch_id, imp.pzone, rp_id)
+                    }
                 }
             }
 
