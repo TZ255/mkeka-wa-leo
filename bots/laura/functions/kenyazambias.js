@@ -4,18 +4,18 @@ const axios = require('axios').default
 const convoKenya = async (ctx, bot, imp) => {
     try {
         await ctx.reply('Starting broadcasting KenyaZambia')
-        let copyId = Number(ctx.match.trim())
+        let copyId = ctx.match.trim()
         let bads = ['blocked', 'initiate', 'deactivated']
         let cpaGRIP = `https://getafilenow.com/1584699`
 
         let all = await kenyaZambia.find()
         all.forEach((u, i) => {
-            let tgAPI = `https://api.telegram.org/bot${u.token}/copyMessage`
+            let tgAPI = `https://api.telegram.org/bot${u.token}/sendPhoto`
             setTimeout(() => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
-                    from_chat_id: imp.matangazoDB,
-                    message_id: copyId,
+                    photo: copyId,
+                    caption: '🍑😍',
                     reply_markup: {
                         inline_keyboard: [
                             [{ text: '🔞 ESCORTS GROUPS', url: cpaGRIP }],
@@ -27,7 +27,7 @@ const convoKenya = async (ctx, bot, imp) => {
                     }
                 }).then(() => {
                     if (i == all.length - 1) {
-                        ctx.api.sendMessage(imp.shemdoe, `Nimemaliza KenyaZambia`)
+                        ctx.api.sendMessage(imp.shemdoe, `Nimemaliza Kenya-Zambia`)
                             .catch(e => console.log(e.message))
                     }
                 })
