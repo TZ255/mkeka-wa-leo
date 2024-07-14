@@ -453,7 +453,7 @@ const helenCodes = async () => {
                             reply_markup: inline_keyboard
                         })
                     }
-                } else if (txt.toLowerCase() == 'broad me') {
+                } else if (txt.toLowerCase() == 'copy me') {
                     let boturl = `t.me/dayoncebot?start=ngono_bongo`
                     let cap = `<b><a href="${boturl}">❕👉 @xxx_bongo</a></b>`
 
