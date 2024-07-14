@@ -100,7 +100,7 @@ const myBotsFn = async (app) => {
                     let rpm = {
                         inline_keyboard: [
                             [
-                                { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                                { text: '🔓 Unlock Invite Link 🔞🥵', url }
                             ]
                         ]
                     }
@@ -173,7 +173,7 @@ const myBotsFn = async (app) => {
                                 let rpm = {
                                     inline_keyboard: [
                                         [
-                                            { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                                            { text: '🔓 Unlock Invite Link 🔞🥵', url }
                                         ]
                                     ]
                                 }

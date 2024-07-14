@@ -1,16 +1,15 @@
 const kenyaZambia = require('../../zambias/database/users')
 const axios = require('axios').default
 
-const convoKenya = async (ctx, bot, copyId, imp) => {
+const convoKenya = async (ctx, bot, imp) => {
     try {
-        await ctx.reply('Starting')
-        let all = await kenyaZambia.find()
+        await ctx.reply('Starting broadcasting KenyaZambia')
+        let copyId = Number(ctx.match.trim())
         let bads = ['blocked', 'initiate', 'deactivated']
+        let cpaGRIP = `https://getafilenow.com/1584699`
 
+        let all = await kenyaZambia.find()
         all.forEach((u, i) => {
-            if (i == all.length - 1) {
-                ctx.reply('Nimemaliza Conversation').catch(e => console.log(e.message))
-            }
             let tgAPI = `https://api.telegram.org/bot${u.token}/copyMessage`
             setTimeout(() => {
                 axios.post(tgAPI, {
@@ -18,25 +17,26 @@ const convoKenya = async (ctx, bot, copyId, imp) => {
                     from_chat_id: imp.matangazoDB,
                     message_id: copyId,
                     reply_markup: {
-                        keyboard: [
-                            [
-                                { text: '💰 MONEY 🔥' },
-                                { text: '🍑 PUSSY 😜' },
-                            ]
-                        ],
-                        resize_keyboard: true,
-                        is_persistent: true
+                        inline_keyboard: [
+                            [{ text: '🔞 ESCORTS GROUPS', url: cpaGRIP }],
+                            [{ text: '🍑 SUGAR MUMMIES 😍', url: cpaGRIP }],
+                            [{ text: '❤ LOCAL HOT GIRLS ❤', url: cpaGRIP }],
+                            [{ text: '❌ PONO VIDEOS CHANNELS ❌', url: cpaGRIP }],
+                            [{ text: '🔞 SEX CHATTING GROUPS (18+) ❤', url: cpaGRIP }],
+                        ]
                     }
-                }).then(() => console.log('✅ Message sent to ' + u.chatid))
+                }).then(() => {
+                    if (i == all.length - 1) {
+                        ctx.api.sendMessage(imp.shemdoe, `Nimemaliza KenyaZambia`)
+                            .catch(e => console.log(e.message))
+                    }
+                })
                     .catch(err => {
-                        console.log(err.message)
                         if (err.response && err.response.data && err.response.data.description) {
                             let description = err.response.data.description
                             description = description.toLowerCase()
                             if (bads.some((bad) => description.includes(bad))) {
-                                kenyaZambia.findOneAndDelete({ chatid: u.chatid })
-                                    .then(() => console.log(`🚮 ${u.chatid} deleted`))
-                                    .catch(e => console.log(`❌ ${e.message}`))
+                                u.deleteOne()
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })

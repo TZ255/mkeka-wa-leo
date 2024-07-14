@@ -20,6 +20,7 @@ const lauraMainFn = async () => {
     //MODULES
     const kenyaZambiaFn = require('./functions/kenyazambias')
     const messageFunctions = require('./functions/messagefn')
+    const {makeKECPA, makeUGCPA} = require('./functions/cpa-convo')
 
     const imp = {
         replyDb: -1001608248942,
@@ -282,13 +283,21 @@ const lauraMainFn = async () => {
         }
     })
 
+    bot.command('cpa', async ctx => {
+        try {
+            if (ctx.match && ctx.chat.id == imp.shemdoe) {
+                makeKECPA(bot, ctx, imp)
+                makeUGCPA(bot, ctx, imp)
+            } else { ctx.reply('Not authorized') }
+        } catch (err) {
+            await ctx.reply(err.message)
+        }
+    })
+
     bot.command('kenyas', async ctx => {
         try {
             if (ctx.chat.id == imp.shemdoe && ctx.match.length > 1) {
-                let copyId = Number(ctx.match.trim())
-                await ctx.reply('Starting sending to kenyas zambia')
-                kenyaZambiaFn.convoKenya(ctx, bot, copyId, imp)
-                    .catch(e => console.log(e.message))
+                kenyaZambiaFn.convoKenya(ctx, bot, imp)
             } else {
                 await ctx.reply('You aint authorized')
             }
