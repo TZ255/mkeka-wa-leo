@@ -4,18 +4,17 @@ const axios = require('axios').default
 const convoKenya = async (ctx, bot, imp) => {
     try {
         await ctx.reply('Starting broadcasting KenyaZambia')
-        let copyId = ctx.match.trim()
+        let txt = ctx.match.trim()
         let bads = ['blocked', 'initiate', 'deactivated']
         let cpaGRIP = `https://getafilenow.com/1584699`
 
         let all = await kenyaZambia.find()
         all.forEach((u, i) => {
-            let tgAPI = `https://api.telegram.org/bot${u.token}/sendPhoto`
+            let tgAPI = `https://api.telegram.org/bot${u.token}/sendMessage`
             setTimeout(() => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
-                    photo: copyId,
-                    caption: '🍑😍',
+                    text: txt,
                     reply_markup: {
                         inline_keyboard: [
                             [{ text: '🔞 ESCORTS GROUPS', url: cpaGRIP }],
