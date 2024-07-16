@@ -35,7 +35,7 @@ const convoKenya = async (ctx, bot, imp) => {
                             let description = err.response.data.description
                             description = description.toLowerCase()
                             if (bads.some((bad) => description.includes(bad))) {
-                                u.deleteOne()
+                                u.deleteOne().catch(e => console.log(e.message))
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
