@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const { nanoid } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
-const pupp = require('puppeteer')
+const puppeteer = require('puppeteer')
 
 
 const charlotteFn = async (app) => {
@@ -272,7 +272,8 @@ const charlotteFn = async (app) => {
 
     const runPupp = async (ctx, link) => {
         try {
-            const browser = await pupp.launch();
+            //use railway headless browser
+            const browser = await puppeteer.connect({browserWSEndpoint: process.env.BROWSER_WS_ENDPOINT});
             const page = await browser.newPage();
 
             // Delete all cookies to start afresh
@@ -344,7 +345,7 @@ const charlotteFn = async (app) => {
                 }
             }
         } catch (error) {
-            if (error instanceof pupp.errors.TimeoutError) {
+            if (error instanceof puppeteer.errors.TimeoutError) {
                 await ctx.reply("Request timed out.");
             } else {
                 await ctx.reply(error.message);
