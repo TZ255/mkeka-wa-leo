@@ -21,24 +21,6 @@ const charlotteFn = async (app) => {
     //fns
     const call_reactions_function = require('./functions/reactions')
 
-    const bot = new Bot(process.env.CHARLOTTE_TOKEN)
-
-    //run webhook
-    if (process.env.local != 'true') {
-        let hookPath = `/telebot/tz/charlotte`
-        let domain = process.env.DOMAIN
-        await bot.api.setWebhook(`https://${domain}${hookPath}`, {
-            drop_pending_updates: true
-        })
-            .then(() => {
-                let txt = `hook for Charlotte is set`
-                console.log(txt)
-                bot.api.sendMessage(imp.shemdoe, txt).catch(e => console.log(e.message))
-            })
-            .catch(e => console.log(e.message, e))
-        app.use(hookPath, webhookCallback(bot, 'express'))
-    }
-
     const imp = {
         replyDb: -1001608248942,
         pzone: -1001352114412,
@@ -60,6 +42,24 @@ const charlotteFn = async (app) => {
         rtmalipo: 5849160770,
         newRT: -1002228998665,
         matangazoDB: -1001570087172,
+    }
+
+    const bot = new Bot(process.env.CHARLOTTE_TOKEN)
+
+    //run webhook
+    if (process.env.local != 'true') {
+        let hookPath = `/telebot/tz/charlotte`
+        let domain = process.env.DOMAIN
+        await bot.api.setWebhook(`https://${domain}${hookPath}`, {
+            drop_pending_updates: true
+        })
+            .then(() => {
+                let txt = `hook for Charlotte is set`
+                console.log(txt)
+                bot.api.sendMessage(imp.shemdoe, txt).catch(e => console.log(e.message))
+            })
+            .catch(e => console.log(e.message, e))
+        app.use(hookPath, webhookCallback(bot, 'express'))
     }
 
     //delaying
