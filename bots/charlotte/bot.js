@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const { nanoid } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
+const pupp = require('puppeteer')
 
 
 const charlotteFn = async (app) => {
@@ -23,14 +24,20 @@ const charlotteFn = async (app) => {
     const bot = new Bot(process.env.CHARLOTTE_TOKEN)
 
     //run webhook
-    let hookPath = `/telebot/tz/charlotte`
-    let domain = process.env.DOMAIN
-    await bot.api.setWebhook(`https://${domain}${hookPath}`, {
-        drop_pending_updates: true
-    })
-        .then(() => console.log(`hook for Charlotte is set`))
-        .catch(e => console.log(e.message, e))
-    app.use(hookPath, webhookCallback(bot, 'express'))
+    if (process.env.local != 'true') {
+        let hookPath = `/telebot/tz/charlotte`
+        let domain = process.env.DOMAIN
+        await bot.api.setWebhook(`https://${domain}${hookPath}`, {
+            drop_pending_updates: true
+        })
+            .then(() => {
+                let txt = `hook for Charlotte is set`
+                console.log(txt)
+                bot.api.sendMessage(imp.shemdoe, txt).catch(e => console.log(e.message))
+            })
+            .catch(e => console.log(e.message, e))
+        app.use(hookPath, webhookCallback(bot, 'express'))
+    }
 
     const imp = {
         replyDb: -1001608248942,
@@ -39,6 +46,8 @@ const charlotteFn = async (app) => {
         prod_domain: 't.me/ohmychannelV2bot?start=',
         shemdoe: 741815228,
         halot: 1473393723,
+        bberry: 1101685785,
+        airt: 1426255234,
         xzone: -1001740624527,
         ohmyDB: -1001586042518,
         xbongo: -1001263624837,
@@ -261,6 +270,88 @@ const charlotteFn = async (app) => {
 
     })
 
+    const runPupp = async (ctx, link) => {
+        try {
+            const browser = await pupp.launch();
+            const page = await browser.newPage();
+
+            // Delete all cookies to start afresh
+            const cookies = await page.cookies();
+            await page.deleteCookie(...cookies);
+
+            // Enable request interception to prevent file download
+            await page.setRequestInterception(true);
+
+            // Listen to all network requests
+            page.on('request', async (request) => {
+                if (request.url().endsWith(".mkv") && request.url().includes("//dweds")) {
+                    //get dname frm lnk eg https://dl.com/dkd/The.Auditors.E04.(NKIRI.COM).mkv.html
+                    let drama = link.split('/').pop() //remove last item and return it
+                    drama = drama.split('.(NKIRI.COM)')[0]
+                    let epno = drama.split('.').pop()
+                    drama = drama.replace(`.${epno}`, '')
+                    let txt = `${request.url()} | [dramastore.net] ${epno}.${drama}.NK.mkv`
+                    ctx.api.sendMessage(imp.pzone, txt).catch(e => console.log(e.message))
+                    request.abort(); // Abort the request to prevent the file from downloading
+                } else {
+                    request.continue(); // Continue all other requests
+                }
+            });
+
+            // Go to the link
+            await page.goto(link, { waitUntil: 'domcontentloaded' });
+
+            // Click the "Create download link" button
+            let btn = await page.waitForSelector('#commonId #downloadbtn');
+            await btn.click();
+
+            //Wait for the specific request
+            await Promise.all([
+                page.waitForRequest(req =>
+                    req.url().endsWith(".mkv") && req.url().includes("//dweds"),
+                    { timeout: 10000 }
+                )
+            ]);
+
+            // Close the browser
+            await browser.close();
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    bot.command('nkiri', async ctx => {
+        try {
+            if (ctx.match && [imp.shemdoe, imp.halot, imp.bberry, imp.airt].includes(ctx.chat.id)) {
+                let url = ctx.match.trim()
+
+                //go to drama page
+                let html = (await axios.get(url)).data
+                let $ = cheerio.load(html)
+                let links = $(`.elementor-button-wrapper a`)
+
+                let linksArr = []
+                links.each((i, a) => {
+                    let href = $(a).attr('href')
+                    if (href && href.includes('https://downloadwella.com/')) {
+                        linksArr.push(href);
+                        console.log(href)
+                    }
+                })
+
+                for (let link of linksArr) {
+                    await runPupp(ctx, link)
+                }
+            }
+        } catch (error) {
+            if (error instanceof pupp.errors.TimeoutError) {
+                await ctx.reply("Request timed out.");
+            } else {
+                await ctx.reply(error.message);
+            }
+        }
+    });
+
     bot.command('newchannel', async ctx => {
         try {
             if ([imp.shemdoe, imp.halot, imp.rtmalipo].includes(ctx.chat.id)) {
@@ -417,11 +508,11 @@ const charlotteFn = async (app) => {
                 let msg_id = ctx.channelPost.message_id
                 await bot.api.copyMessage(imp.pzone, imp.pzone, msg_id)
                 await bot.api.deleteMessage(imp.pzone, msg_id)
-            } if(ctx.channelPost.chat.id == imp.matangazoDB && ctx.channelPost?.photo) {
+            } if (ctx.channelPost.chat.id == imp.matangazoDB && ctx.channelPost?.photo) {
                 let ph = ctx.channelPost.photo.length - 1
                 await ctx.reply(`Broadcast with Kenya-Zambias\n👉 <code>${ctx.channelPost.photo[ph].file_id}</code>`, {
                     parse_mode: 'HTML',
-                    reply_parameters: {message_id: ctx.channelPost.message_id}
+                    reply_parameters: { message_id: ctx.channelPost.message_id }
                 })
                 console.log(ctx.channelPost.photo)
             }
@@ -493,6 +584,13 @@ const charlotteFn = async (app) => {
             await bot.api.sendMessage(imp.shemdoe, err.message)
         }
     })
+
+    //locally - long polling
+    if (process.env.local == 'true') {
+        console.log('setting polling')
+        await bot.api.deleteWebhook({ drop_pending_updates: true })
+        bot.start()
+    }
 }
 
 
