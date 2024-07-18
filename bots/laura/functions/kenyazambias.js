@@ -40,7 +40,7 @@ const convoKenya = async (ctx, bot, imp) => {
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
-            }, i * 35)
+            }, i * 40)
         })
     } catch (error) {
         console.log('From Laura - Kenya Zambia Convo:  ' + error?.message)

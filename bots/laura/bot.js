@@ -20,7 +20,7 @@ const lauraMainFn = async () => {
     //MODULES
     const kenyaZambiaFn = require('./functions/kenyazambias')
     const messageFunctions = require('./functions/messagefn')
-    const {makeKECPA, makeUGCPA} = require('./functions/cpa-convo')
+    const { makeKECPA, makeUGCPA } = require('./functions/cpa-convo')
 
     const imp = {
         replyDb: -1001608248942,
@@ -174,13 +174,12 @@ const lauraMainFn = async () => {
                         }).then(() => console.log('✅ Message sent to ' + u.userId))
                             .catch(err => {
                                 console.log(err.message)
-                                if (err.response && err.response.data && err.response.data.description) {
+                                if (err.response && err.response?.data && err.response.data?.description) {
                                     let description = err.response.data.description
                                     description = description.toLowerCase()
                                     if (bads.some((bad) => description.includes(bad))) {
-                                        dramastoreUsers.findOneAndDelete({ userId: u.userId })
-                                            .then(() => console.log(`🚮 ${u.userId} deleted`))
-                                            .catch(e => console.log(`❌ ${e.message}`))
+                                        u.deleteOne()
+                                        console.log(`🚮 ${u.userId} deleted`)
                                     } else { console.log(`🤷‍♂️ ${description}`) }
                                 }
                             })
@@ -219,14 +218,13 @@ const lauraMainFn = async () => {
                             }
                         }).then(() => console.log('✅ Message sent to ' + u.chatid))
                             .catch(err => {
-                                console.log(err.message)
-                                if (err.response && err.response.data && err.response.data.description) {
+                                console.log(err?.message)
+                                if (err.response && err.response?.data && err.response.data?.description) {
                                     let description = err.response.data.description
                                     description = description.toLowerCase()
                                     if (bads.some((bad) => description.includes(bad))) {
-                                        ugModel.findOneAndDelete({ chatid: u.chatid })
-                                            .then(() => console.log(`🚮 ${u.chatid} deleted`))
-                                            .catch(e => console.log(`❌ ${e.message}`))
+                                        u.deleteOne()
+                                        console.log(`🚮 ${u.chatid} deleted`)
                                     } else { console.log(`🤷‍♂️ ${description}`) }
                                 }
                             })
@@ -265,17 +263,16 @@ const lauraMainFn = async () => {
                         }).then(() => console.log('✅ Message sent to ' + u.chatid))
                             .catch(err => {
                                 console.log(err.message)
-                                if (err.response && err.response.data && err.response.data.description) {
+                                if (err.response && err.response?.data && err.response.data?.description) {
                                     let description = err.response.data.description
                                     description = description.toLowerCase()
                                     if (bads.some((bad) => description.includes(bad))) {
-                                        keModel.findOneAndDelete({ chatid: u.chatid })
-                                            .then(() => console.log(`🚮 ${u.chatid} deleted`))
-                                            .catch(e => console.log(`❌ ${e.message}`))
+                                        u.deleteOne()
+                                        console.log(`🚮 ${u.chatid} deleted`)
                                     } else { console.log(`🤷‍♂️ ${description}`) }
                                 }
                             })
-                    }, i * 35)
+                    }, i * 40)
                 })
             } else { ctx.reply('Not authorized') }
         } catch (err) {

@@ -88,10 +88,11 @@ const makeUGCPA = async (bot, ctx, imp) => {
                             description = description.toLowerCase()
                             if (bads.some((bad) => description.includes(bad))) {
                                 u.deleteOne()
+                                console.log(`🚮 ${u?.chatid} deleted`)
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
-            }, i * 35)
+            }, i * 40)
         })
     } catch (err) {
         await ctx.reply(err.message)
