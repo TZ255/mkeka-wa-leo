@@ -36,7 +36,7 @@ const convoKenya = async (ctx, bot, imp) => {
                             description = description.toLowerCase()
                             if (bads.some((bad) => description.includes(bad))) {
                                 u.deleteOne().catch(e => console.log(e.message))
-                                console.log(`${u.chatid} deleted`)
+                                console.log(`${u?.chatid} deleted`)
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })

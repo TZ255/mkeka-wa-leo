@@ -159,7 +159,7 @@ const helenCodes = async () => {
                             .catch(async (err) => {
                                 if (bads.some((bad) => err.message.includes(bad))) {
                                     u.deleteOne()
-                                    console.log(`${index+1}. Hellen - ${u.chatid} deleted`)
+                                    console.log(`${index+1}. Hellen - ${u?.chatid} deleted`)
                                 } else { console.log('🤷‍♂️ ' + err.message) }
                             })
                     }, index * 35)

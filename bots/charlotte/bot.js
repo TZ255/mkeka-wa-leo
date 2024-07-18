@@ -217,7 +217,7 @@ const charlotteFn = async (app) => {
                                 for (let d of deleteErrs) {
                                     if (err.message.toLowerCase().includes(d)) {
                                         users.findOneAndDelete({ chatid: u.chatid })
-                                            .then(() => { console.log(`❌ ${u.chatid} deleted`) })
+                                            .then(() => { console.log(`❌ ${u?.chatid} deleted`) })
                                     }
                                 }
                             })
