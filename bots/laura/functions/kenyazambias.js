@@ -31,7 +31,7 @@ const convoKenya = async (ctx, bot, imp) => {
                     }
                 })
                     .catch(err => {
-                        if (err.response && err.response.data && err.response.data.description) {
+                        if (err.response && err.response?.data && err.response.data?.description) {
                             let description = err.response.data.description
                             description = description.toLowerCase()
                             if (bads.some((bad) => description.includes(bad))) {
@@ -43,7 +43,7 @@ const convoKenya = async (ctx, bot, imp) => {
             }, i * 35)
         })
     } catch (error) {
-        console.log('From Laura - Kenya Zambia Convo:  ' + error.message)
+        console.log('From Laura - Kenya Zambia Convo:  ' + error?.message)
     }
 }
 

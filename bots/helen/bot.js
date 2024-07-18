@@ -150,18 +150,19 @@ const helenCodes = async () => {
 
                 all_users.forEach((u, index) => {
                     setTimeout(() => {
-                        if (index == all_users.length - 1) {
-                            ctx.reply('Nimemaliza conversation')
-                        }
                         bot.api.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
-                            .then(() => console.log('✅ convo sent to ' + u.chatid))
+                            .then(() => {
+                                if (index == all_users.length - 1) {
+                                    ctx.reply('Nimemaliza conversation')
+                                }
+                            })
                             .catch(async (err) => {
                                 if (bads.some((bad) => err.message.includes(bad))) {
-                                    await nyumbuModel.findOneAndDelete({ chatid: u.chatid }).catch(e => console.log('❌ Failed to delete user'))
-                                    console.log(u.chatid + ' is deleted 🚮')
+                                    u.deleteOne()
+                                    console.log(`${index+1}. Hellen - ${u.chatid} deleted`)
                                 } else { console.log('🤷‍♂️ ' + err.message) }
                             })
-                    }, index * 40)
+                    }, index * 35)
                 })
             } catch (err) {
                 console.log(err.message)
