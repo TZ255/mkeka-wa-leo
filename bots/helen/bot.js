@@ -162,7 +162,7 @@ const helenCodes = async () => {
                                     console.log(`${index+1}. Hellen - ${u?.chatid} deleted`)
                                 } else { console.log('🤷‍♂️ ' + err.message) }
                             })
-                    }, index * 35)
+                    }, index * 40)
                 })
             } catch (err) {
                 console.log(err.message)

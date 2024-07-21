@@ -43,7 +43,7 @@ const makeKECPA = async (bot, ctx, imp) => {
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
-            }, i * 35)
+            }, i * 40)
         })
     } catch (err) {
         await ctx.reply(err.message)

@@ -228,7 +228,7 @@ const lauraMainFn = async () => {
                                     } else { console.log(`🤷‍♂️ ${description}`) }
                                 }
                             })
-                    }, i * 35)
+                    }, i * 40)
                 })
             } else { ctx.reply('Not authorized') }
         } catch (err) {
