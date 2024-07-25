@@ -92,10 +92,13 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
                         ctx.reply(e.message)
                     })
             }
-            if(idadi > 2) {
-                ctx.reply(long_text).catch(e => console.log(e.message))
-            }
         })
+        if(idadi > 2) {
+            await ctx.reply(long_text)
+            setTimeout(()=> {
+                deleteMessage(ctx, pp.message_id)
+            }, 30000)
+        }
     } catch (error) {
         console.log(error.message)
     }
