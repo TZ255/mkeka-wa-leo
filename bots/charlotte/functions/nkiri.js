@@ -48,8 +48,16 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
         //get all nkiri urls
         let htmls = (await axios.get(drama_url)).data
         let $ = cheerio.load(htmls)
-        let lnks = $('.elementor-button-wrapper a')
-        let epsArr = lnks.slice(-idadi) //get last idadi
+        let lnks = $('.elementor-button-wrapper a').filter(function () {
+            // Return only 'a' elements whose href attribute includes '.mkv'
+            return $(this).attr('href').includes('.mkv');
+        })
+        let epsArr;
+        if (Number(idadi) > 0) {
+            epsArr = lnks.slice(0, Number(idadi)) //get first idadi
+        } else {
+            epsArr = lnks.slice(Number(idadi)) //get last idadi
+        }
 
         epsArr.each((i, el) => {
             let url = $(el).attr('href')
@@ -67,7 +75,7 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
 
             reqEpisodeAxios(Origin, url, formData).then((res) => {
                 let drama = url.split('/').pop() //remove last item and return it
-                drama = drama.replace('.(NKIRI.COM)', 'SHEMDOE').replace('_(NKIRI.COM)', 'SHEMDOE').split('SHEMDOE')[0]
+                drama = drama.replace('.(NKIRI.COM)', 'SHEMDOE').replace('_(NKIRI.COM)', 'SHEMDOE').replace('.(DRAMAKEY.COM)', 'SHEMDOE').replace('_(DRAMAKEY.COM)', 'SHEMDOE').split('SHEMDOE')[0]
                 let epno = drama.split('.').pop()
                 drama = drama.replace(`.${epno}`, '')
                 let n2 = `${epno}.${drama}`.substring(0, 30)

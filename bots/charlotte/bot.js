@@ -295,6 +295,7 @@ const charlotteFn = async (app) => {
     })
 
     bot.on('channel_post', async ctx => {
+        let chan_id = ctx.channelPost.chat.id
         try {
             if (ctx.channelPost.chat.id == imp.replyDb) {
                 if (ctx.channelPost.reply_to_message) {
@@ -437,10 +438,10 @@ const charlotteFn = async (app) => {
                 })
                 console.log(ctx.channelPost.photo)
             }
-
-            if(ctx.channelPost.chat.id == imp.notfy_d && ctx.channelPost?.text.startsWith('Get-')) {
-                let idadi = Number(ctx.channelPost.text.split(`Get-`)[1].split(' ')[0])
-                let url = ctx.channelPost.text.split(`Get-${idadi}`)[1].trim()
+            if(chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata')) {
+                //text will either be Pata-1 url.com or Pata+1 url.com
+                let idadi = ctx.channelPost.text.split(`Pata`)[1].split(' ')[0]
+                let url = ctx.channelPost.text.split(`Pata${idadi}`)[1].trim()
                 await nkiriFunction(ctx, url, idadi)
 
                 setTimeout(()=> {
@@ -452,7 +453,6 @@ const charlotteFn = async (app) => {
             let url = 'https://t.me/+s9therYKwshlNDA8'
             let txt = ctx.channelPost.text
             let txtid = ctx.channelPost.message_id
-            let chan_id = ctx.channelPost.chat.id
             let title = ctx.channelPost.chat.title
             let chan_owner
             let rp_mkup = {
