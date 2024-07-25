@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const { nanoid } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
+const { nkiriFunction, deleteMessage } = require('./functions/nkiri')
 
 
 const charlotteFn = async (app) => {
@@ -41,6 +42,7 @@ const charlotteFn = async (app) => {
         rtmalipo: 5849160770,
         newRT: -1002228998665,
         matangazoDB: -1001570087172,
+        notfy_d: -1002079073174
     }
 
     const bot = new Bot(process.env.CHARLOTTE_TOKEN)
@@ -425,13 +427,25 @@ const charlotteFn = async (app) => {
                 let msg_id = ctx.channelPost.message_id
                 await bot.api.copyMessage(imp.pzone, imp.pzone, msg_id)
                 await bot.api.deleteMessage(imp.pzone, msg_id)
-            } if (ctx.channelPost.chat.id == imp.matangazoDB && ctx.channelPost?.photo) {
+            } 
+            
+            if (ctx.channelPost.chat.id == imp.matangazoDB && ctx.channelPost?.photo) {
                 let ph = ctx.channelPost.photo.length - 1
                 await ctx.reply(`Broadcast with Kenya-Zambias\n👉 <code>${ctx.channelPost.photo[ph].file_id}</code>`, {
                     parse_mode: 'HTML',
                     reply_parameters: { message_id: ctx.channelPost.message_id }
                 })
                 console.log(ctx.channelPost.photo)
+            }
+
+            if(ctx.channelPost.chat.id == imp.notfy_d && ctx.channelPost?.text.startsWith('Get-')) {
+                let idadi = Number(ctx.channelPost.text.split(`Get-`)[1].split(' ')[0])
+                let url = ctx.channelPost.text.split(`Get-${idadi}`)[1].trim()
+                await nkiriFunction(ctx, url, idadi)
+
+                setTimeout(()=> {
+                    deleteMessage(ctx, ctx.channelPost.message_id)
+                }, 60000)
             }
 
             let impChannels = [imp.pzone, imp.ohmyDB, imp.replyDb]
