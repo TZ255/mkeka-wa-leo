@@ -50,6 +50,8 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
         let $ = cheerio.load(htmls)
         let lnks = $('.elementor-button-wrapper a')
         let length = lnks.length
+        let long_text = ``
+        long_text = ''
 
         lnks.each((i, el) => {
             if (i >= length - idadi) {
@@ -73,16 +75,25 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
                     drama = drama.replace(`.${epno}`, '')
                     let n2 = `${epno}.${drama}`.substring(0, 30)
                     let txt = `${res} | [dramastore.net] ${n2}.540p.NK.mkv\n`
-                    ctx.reply(txt).then((t) => {
-                        setTimeout(() => {
-                            deleteMessage(ctx, t.message_id)
-                        }, 15000 * idadi)
-                    })
+                    if (idadi > 2) {
+                        let txt2 = `[dramastore.net] ${n2}.540p.NK.mkv | ${res}\n`
+                        long_text = long_text + txt2
+                    } else {
+                        ctx.reply(txt).then((t) => {
+                            setTimeout(() => {
+                                deleteMessage(ctx, t.message_id)
+                            }, 15000 * idadi)
+                        })
+                    }
+
                 })
                     .catch(e => {
                         console.log(e.message, e)
                         ctx.reply(e.message)
                     })
+            }
+            if(idadi > 2) {
+                ctx.reply(long_text).catch(e => console.log(e.message))
             }
         })
     } catch (error) {
