@@ -49,56 +49,53 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
         let htmls = (await axios.get(drama_url)).data
         let $ = cheerio.load(htmls)
         let lnks = $('.elementor-button-wrapper a')
-        let length = lnks.length
-        let long_text = ``
-        long_text = ''
+        let epsArr = lnks.slice(-idadi) //get last idadi
 
-        lnks.each((i, el) => {
-            if (i >= length - idadi) {
-                let url = $(el).attr('href')
-                let id = url.split('.com/')[1].split('/')[0].trim()
-                let Origin = url.split('.com/')[0] + '.com'
+        epsArr.each((i, el) => {
+            let url = $(el).attr('href')
+            let id = url.split('.com/')[1].split('/')[0].trim()
+            let Origin = url.split('.com/')[0] + '.com'
 
-                const formData = {
-                    op: 'download2',
-                    id,
-                    rand: '',
-                    referer: '',
-                    method_free: '',
-                    method_premium: ''
-                };
+            const formData = {
+                op: 'download2',
+                id,
+                rand: '',
+                referer: '',
+                method_free: '',
+                method_premium: ''
+            };
 
-                reqEpisodeAxios(Origin, url, formData).then((res) => {
-                    let drama = url.split('/').pop() //remove last item and return it
-                    drama = drama.replace('.(NKIRI.COM)', 'SHEMDOE').replace('_(NKIRI.COM)', 'SHEMDOE').split('SHEMDOE')[0]
-                    let epno = drama.split('.').pop()
-                    drama = drama.replace(`.${epno}`, '')
-                    let n2 = `${epno}.${drama}`.substring(0, 30)
-                    let txt = `${res} | [dramastore.net] ${n2}.540p.NK.mkv\n`
-                    if (idadi > 2) {
-                        let txt2 = `[dramastore.net] ${n2}.540p.NK.mkv | ${res}\n`
-                        long_text = long_text + txt2
-                    } else {
+            reqEpisodeAxios(Origin, url, formData).then((res) => {
+                let drama = url.split('/').pop() //remove last item and return it
+                drama = drama.replace('.(NKIRI.COM)', 'SHEMDOE').replace('_(NKIRI.COM)', 'SHEMDOE').split('SHEMDOE')[0]
+                let epno = drama.split('.').pop()
+                drama = drama.replace(`.${epno}`, '')
+                let n2 = `${epno}.${drama}`.substring(0, 30)
+                let txt = `${res} | [dramastore.net] ${n2}.540p.NK.mkv\n`
+                let txt2 = `[dramastore.net] ${n2}.540p.NK.mkv | ${res}\n`
+                if (idadi > 2) {
+                    setTimeout(() => {
+                        ctx.reply(txt2).then((t) => {
+                            setTimeout(() => {
+                                deleteMessage(ctx, t.message_id)
+                            }, 60000 * 5)
+                        })
+                    }, 4000 * i)
+                } else {
+                    setTimeout(() => {
                         ctx.reply(txt).then((t) => {
                             setTimeout(() => {
                                 deleteMessage(ctx, t.message_id)
-                            }, 15000 * idadi)
+                            }, 60000 * 5)
                         })
-                    }
-
+                    }, 4000 * i)
+                }
+            })
+                .catch(e => {
+                    console.log(e.message, e)
+                    ctx.reply(e.message)
                 })
-                    .catch(e => {
-                        console.log(e.message, e)
-                        ctx.reply(e.message)
-                    })
-            }
         })
-        if(idadi > 2) {
-            await ctx.reply(long_text)
-            setTimeout(()=> {
-                deleteMessage(ctx, pp.message_id)
-            }, 30000)
-        }
     } catch (error) {
         console.log(error.message)
     }
