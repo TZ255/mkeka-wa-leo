@@ -72,7 +72,7 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
                     let epno = drama.split('.').pop()
                     drama = drama.replace(`.${epno}`, '')
                     let n2 = `${epno}.${drama}`.substring(0, 30)
-                    let txt = `[dramastore.net] ${n2}.540p.NK.mkv | ${res}\n`
+                    let txt = `${res} | [dramastore.net] ${n2}.540p.NK.mkv\n`
                     ctx.reply(txt).then((t) => {
                         setTimeout(() => {
                             deleteMessage(ctx, t.message_id)
