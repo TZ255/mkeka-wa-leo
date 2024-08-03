@@ -4,6 +4,9 @@ const Schema = mongoose.Schema
 const reqSchema = new Schema({
     chatid: {
         type: Number,
+    },
+    chan_id: {
+        type: Number
     }
 }, {strict: false })
 

@@ -271,6 +271,20 @@ const charlotteFn = async (app) => {
 
     })
 
+    bot.command('approve_pilau', async ctx=> {
+        try {
+            let all_pending = await reqModel.find({chan_id: imp.newRT})
+            await ctx.reply(`We have ${all_pending.length} pending. Attempt approving`)
+            for (let user of all_pending) {
+                await ctx.api.approveChatJoinRequest(user?.chan_id, user?.chatid)
+                await delay(40)
+            }
+            await ctx.reply(`Finishing Approving`)
+        } catch (error) {
+            console.log(error.message, error)
+        }
+    })
+
     bot.command('newchannel', async ctx => {
         try {
             if ([imp.shemdoe, imp.halot, imp.rtmalipo].includes(ctx.chat.id)) {
@@ -279,7 +293,8 @@ const charlotteFn = async (app) => {
                 let expire = ctx.message.date + (24 * 60 * 60)
                 let link = await ctx.api.createChatInviteLink(imp.newRT, {
                     name: 'main link',
-                    expire_date: expire
+                    expire_date: expire,
+                    creates_join_request: true
                 })
                 let invite = link.invite_link
 
@@ -428,8 +443,8 @@ const charlotteFn = async (app) => {
                 let msg_id = ctx.channelPost.message_id
                 await bot.api.copyMessage(imp.pzone, imp.pzone, msg_id)
                 await bot.api.deleteMessage(imp.pzone, msg_id)
-            } 
-            
+            }
+
             if (ctx.channelPost.chat.id == imp.matangazoDB && ctx.channelPost?.photo) {
                 let ph = ctx.channelPost.photo.length - 1
                 await ctx.reply(`Broadcast with Kenya-Zambias\n👉 <code>${ctx.channelPost.photo[ph].file_id}</code>`, {
@@ -438,13 +453,13 @@ const charlotteFn = async (app) => {
                 })
                 console.log(ctx.channelPost.photo)
             }
-            if(chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata')) {
+            if (chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata')) {
                 //text will either be Pata-1 url.com or Pata+1 url.com
                 let idadi = ctx.channelPost.text.split(`Pata`)[1].split(' ')[0]
                 let url = ctx.channelPost.text.split(`Pata${idadi}`)[1].trim()
                 await nkiriFunction(ctx, url, idadi)
 
-                setTimeout(()=> {
+                setTimeout(() => {
                     deleteMessage(ctx, ctx.channelPost.message_id)
                 }, 60000)
             }
@@ -497,17 +512,22 @@ const charlotteFn = async (app) => {
         let cha_title = ctx.chatJoinRequest.chat.title
         let name = ctx.chatJoinRequest.from.first_name
 
-        const Operate = [imp.xzone] //we dont know admin
+        const Operate = [imp.xzone, imp.newRT] //we dont know xzone admin
 
         try {
             //dont process rahatupu
             if (Operate.includes(channel_id)) {
-                let user = await users.findOne({ chatid })
-                if (!user) {
-                    await users.create({ points: 3, name, chatid, unano: `user${chatid}` })
+                if (channel_id == imp.xzone) {
+                    let user = await users.findOne({ chatid })
+                    if (!user) {
+                        await users.create({ points: 3, name, chatid, unano: `user${chatid}` })
+                    }
+                    await bot.api.approveChatJoinRequest(channel_id, chatid)
+                    await bot.api.sendMessage(chatid, `Congratulations! 🎉 Your request to join <b>${cha_title}</b> is approved.`)
+                } else if(channel_id == imp.newRT) {
+                    //find user if already in db. if not add
+                    await reqModel.findOneAndUpdate({chatid}, {$set: {chatid, chan_id: channel_id}}, {upsert: true})
                 }
-                await bot.api.approveChatJoinRequest(channel_id, chatid)
-                await bot.api.sendMessage(chatid, `Congratulations! 🎉 Your request to join <b>${cha_title}</b> is approved.`)
             }
 
         } catch (err) {
