@@ -271,9 +271,9 @@ const charlotteFn = async (app) => {
 
     })
 
-    bot.command('pending_pilau', async ctx=> {
+    bot.command('pending_pilau', async ctx => {
         try {
-            let all_pending = await reqModel.countDocuments({chan_id: imp.newRT})
+            let all_pending = await reqModel.countDocuments({ chan_id: imp.newRT })
             let all_reqs = await reqModel.countDocuments()
             await ctx.reply(`We have ${all_pending} pendings in a DB of ${all_reqs} people`)
         } catch (error) {
@@ -281,12 +281,19 @@ const charlotteFn = async (app) => {
         }
     })
 
-    bot.command('approve_pilau', async ctx=> {
+    bot.command('approve_pilau', async ctx => {
         try {
-            let all_pending = await reqModel.find({chan_id: imp.newRT})
+            let all_pending = await reqModel.find({ chan_id: imp.newRT })
             for (let user of all_pending) {
                 await ctx.api.approveChatJoinRequest(user?.chan_id, user?.chatid)
-                await user.deleteOne()
+                    .then(() => {
+                        user.deleteOne()
+                    })
+                    .catch(e => {
+                        if (e.message.includes('USER_ALREADY_PARTICIPANT')) {
+                            user.deleteOne()
+                        }
+                    })
                 await delay(40)
             }
             await ctx.reply(`Finishing Approving`)
@@ -534,9 +541,9 @@ const charlotteFn = async (app) => {
                     }
                     await bot.api.approveChatJoinRequest(channel_id, chatid)
                     await bot.api.sendMessage(chatid, `Congratulations! 🎉 Your request to join <b>${cha_title}</b> is approved.`)
-                } else if(channel_id == imp.newRT) {
+                } else if (channel_id == imp.newRT) {
                     //find user if already in db. if not add
-                    await reqModel.findOneAndUpdate({chatid}, {$set: {chatid, chan_id: channel_id}}, {upsert: true})
+                    await reqModel.findOneAndUpdate({ chatid }, { $set: { chatid, chan_id: channel_id } }, { upsert: true })
                 }
             }
 
