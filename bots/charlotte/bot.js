@@ -271,12 +271,22 @@ const charlotteFn = async (app) => {
 
     })
 
+    bot.command('pending_pilau', async ctx=> {
+        try {
+            let all_pending = await reqModel.countDocuments({chan_id: imp.newRT})
+            let all_reqs = await reqModel.countDocuments()
+            await ctx.reply(`We have ${all_pending} pendings in a DB of ${all_reqs} people`)
+        } catch (error) {
+            await ctx.reply(error.message)
+        }
+    })
+
     bot.command('approve_pilau', async ctx=> {
         try {
             let all_pending = await reqModel.find({chan_id: imp.newRT})
-            await ctx.reply(`We have ${all_pending.length} pending. Attempt approving`)
             for (let user of all_pending) {
                 await ctx.api.approveChatJoinRequest(user?.chan_id, user?.chatid)
+                await user.deleteOne()
                 await delay(40)
             }
             await ctx.reply(`Finishing Approving`)
