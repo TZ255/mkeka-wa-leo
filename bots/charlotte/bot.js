@@ -284,6 +284,7 @@ const charlotteFn = async (app) => {
     bot.command('approve_pilau', async ctx => {
         try {
             let all_pending = await reqModel.find({ chan_id: imp.newRT })
+            let st = await ctx.reply(`Starting Approving ${all_pending.length} people`)
             for (let user of all_pending) {
                 await ctx.api.approveChatJoinRequest(user?.chan_id, user?.chatid)
                     .then(() => {
@@ -296,7 +297,8 @@ const charlotteFn = async (app) => {
                     })
                 await delay(40)
             }
-            await ctx.reply(`Finishing Approving`)
+            let finish = `Finished Approving ${all_pending.length} people`
+            await ctx.api.editMessageText(ctx.chat.id, st.message_id, finish)
         } catch (error) {
             console.log(error.message, error)
         }
