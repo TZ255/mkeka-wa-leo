@@ -5,7 +5,7 @@ const convoKenya = async (ctx, bot, imp) => {
     try {
         await ctx.reply('Starting broadcasting KenyaZambia')
         let txt = ctx.match.trim()
-        let bads = ['blocked', 'initiate', 'deactivated']
+        let bads = ['blocked', 'initiate', 'deactivated', 'chat not found']
         let cpaGRIP = `https://getafilenow.com/1584699`
 
         let all = await kenyaZambia.find()
@@ -40,7 +40,7 @@ const convoKenya = async (ctx, bot, imp) => {
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
-            }, i * 40)
+            }, i * 50)
         })
     } catch (error) {
         console.log('From Laura - Kenya Zambia Convo:  ' + error?.message)

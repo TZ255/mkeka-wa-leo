@@ -3,11 +3,12 @@
 //Laura Codes Starting Here
 //Laura Codes Starting Here
 //Laura Codes Starting Here
-const lauraMainFn = async () => {
+const lauraMainFn = async (app) => {
     const axios = require('axios').default
     const cheerio = require('cheerio')
     const imdb = require('imdb-api')
-    const { Bot } = require('grammy')
+    const { Bot, webhookCallback } = require('grammy')
+    const { autoRetry } = require("@grammyjs/auto-retry")
     const bot = new Bot(process.env.LAURA_TOKEN)
     const chatsModel = require('./databases/chat')
     const dramastoreUsers = require('./databases/dstore-chats')
@@ -16,6 +17,9 @@ const lauraMainFn = async () => {
     const keModel = require('./databases/kenyanDb')
     const gifsModel = require('../../model/gif')
     const db = require('../../model/video-db')
+
+    //use auto-retry
+    bot.api.config.use(autoRetry());
 
     //MODULES
     const kenyaZambiaFn = require('./functions/kenyazambias')
@@ -42,6 +46,20 @@ const lauraMainFn = async () => {
         muvikaDB: -1001802963728,
         muvikaReps: -1002045676919
     }
+
+    //set webhook
+    let hookPath = `/telebot/${process.env.USER}/laura`
+    await bot.api.setWebhook(`https://${process.env.DOMAIN}${hookPath}`, {
+        drop_pending_updates: true
+    })
+        .then(() => {
+            console.log(`webhook for Laura is set`)
+            bot.api.sendMessage(imp.shemdoe, `${hookPath} set as webhook`)
+                .catch(e => console.log(e.message))
+        })
+        .catch(e => console.log(e.message))
+    app.use(`${hookPath}`, webhookCallback(bot, 'express'))
+
 
     const checkerFn = async (chatid, country, first_name) => {
         let check = await chatsModel.findOne({ chatid })
@@ -163,7 +181,7 @@ const lauraMainFn = async () => {
                 let tgAPI = `https://api.telegram.org/bot${process.env.DS_TOKEN}/copyMessage`
                 let mid = Number(ctx.match.trim())
                 let all = await dramastoreUsers.find()
-                let bads = ['blocked', 'initiate', 'deactivated']
+                let bads = ['blocked', 'initiate', 'deactivated', 'chat not found']
 
                 all.forEach((u, i) => {
                     setTimeout(() => {
@@ -183,7 +201,7 @@ const lauraMainFn = async () => {
                                     } else { console.log(`🤷‍♂️ ${description}`) }
                                 }
                             })
-                    }, i * 40)
+                    }, i * 50)
                 })
             }
 
@@ -197,7 +215,7 @@ const lauraMainFn = async () => {
             await ctx.reply('Starting')
             let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
             let all = await ugModel.find()
-            let bads = ['blocked', 'initiate', 'deactivated']
+            let bads = ['blocked', 'initiate', 'deactivated', 'chat not found']
             let moneyUrl = `https://t.me/cute_edithabot?start=money`
             let pussyUrl = `https://t.me/cute_edithabot?start=pussy`
             if (ctx.match && ctx.chat.id == imp.shemdoe) {
@@ -228,7 +246,7 @@ const lauraMainFn = async () => {
                                     } else { console.log(`🤷‍♂️ ${description}`) }
                                 }
                             })
-                    }, i * 40)
+                    }, i * 50)
                 })
             } else { ctx.reply('Not authorized') }
         } catch (err) {
@@ -272,7 +290,7 @@ const lauraMainFn = async () => {
                                     } else { console.log(`🤷‍♂️ ${description}`) }
                                 }
                             })
-                    }, i * 40)
+                    }, i * 50)
                 })
             } else { ctx.reply('Not authorized') }
         } catch (err) {
@@ -341,16 +359,6 @@ const lauraMainFn = async () => {
             }
         } catch (err) {
             console.log(err.message, err)
-        }
-    })
-
-    // Stopping the bot when the Node.js process is about to be terminated
-    process.once("SIGINT", () => bot.stop());
-    process.once("SIGTERM", () => bot.stop());
-
-    bot.start().catch(e => {
-        if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
-            bot.stop('new update')
         }
     })
 }

@@ -7,7 +7,7 @@ const makeKECPA = async (bot, ctx, imp) => {
         await ctx.reply('Starting cpa for kenyans')
         let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
         let all = await keModel.find()
-        let bads = ['blocked', 'initiate', 'deactivated']
+        let bads = ['blocked', 'initiate', 'deactivated', 'chat not found']
         let moneyUrl = `https://t.me/cute_edithabot?start=money`
         let pussyUrl = `https://t.me/cute_edithabot?start=pussy`
         let cpaGRIP = `https://getafilenow.com/1584699`
@@ -43,7 +43,7 @@ const makeKECPA = async (bot, ctx, imp) => {
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
-            }, i * 40)
+            }, i * 50)
         })
     } catch (err) {
         await ctx.reply(err.message)
@@ -55,7 +55,7 @@ const makeUGCPA = async (bot, ctx, imp) => {
         await ctx.reply('Starting cpa for ugandans')
         let tgAPI = `https://api.telegram.org/bot${process.env.EDITHA_TOKEN}/copyMessage`
         let all = await ugModel.find()
-        let bads = ['blocked', 'initiate', 'deactivated']
+        let bads = ['blocked', 'initiate', 'deactivated', 'chat not found']
         let moneyUrl = `https://t.me/cute_edithabot?start=money`
         let pussyUrl = `https://t.me/cute_edithabot?start=pussy`
         let cpaGRIP = `https://getafilenow.com/1584699`
@@ -92,7 +92,7 @@ const makeUGCPA = async (bot, ctx, imp) => {
                             } else { console.log(`🤷‍♂️ ${description}`) }
                         }
                     })
-            }, i * 40)
+            }, i * 50)
         })
     } catch (err) {
         await ctx.reply(err.message)

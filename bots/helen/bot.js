@@ -1,8 +1,9 @@
 
 
 //Helen Codes
-const helenCodes = async () => {
-    const { Bot, InlineKeyboard } = require('grammy')
+const helenCodes = async (app) => {
+    const { Bot, webhookCallback, InlineKeyboard } = require('grammy')
+    const { autoRetry } = require("@grammyjs/auto-retry")
     require('dotenv').config()
     const nyumbuModel = require('./database/chats')
     const my_channels_db = require('./database/my_channels')
@@ -15,6 +16,9 @@ const helenCodes = async () => {
     const call_sendMikeka_functions = require('./fns/mkeka-1-2-3')
 
     const bot = new Bot(process.env.HELEN_TOKEN)
+
+    //use auto-retry
+    bot.api.config.use(autoRetry());
 
     const imp = {
         replyDb: -1001608248942,
@@ -32,6 +36,19 @@ const helenCodes = async () => {
         mylove: -1001748858805,
         matangazoDB: -1001570087172
     }
+
+    //set webhook
+    let hookPath = `/telebot/${process.env.USER}/helen`
+    await bot.api.setWebhook(`https://${process.env.DOMAIN}${hookPath}`, {
+        drop_pending_updates: true
+    })
+        .then(() => {
+            console.log(`webhook for Hellen is set`)
+            bot.api.sendMessage(imp.shemdoe, `${hookPath} set as webhook`)
+                .catch(e => console.log(e.message))
+        })
+        .catch(e => console.log(e.message))
+    app.use(`${hookPath}`, webhookCallback(bot, 'express'))
 
     const mkArrs = ['mkeka', 'mkeka1', 'mkeka2', 'mkeka3', 'mikeka', 'mkeka wa leo', 'mikeka ya leo', 'mkeka namba 1', 'mkeka namba 2', 'mkeka namba 3', 'mkeka #1', 'mkeka #2', 'mkeka #3', 'mkeka no #1', 'mkeka no #2', 'mkeka no #3', 'za leo', 'naomba mkeka', 'naomba mikeka', 'naomba mkeka wa leo', 'nitumie mkeka', 'ntumie mkeka', 'nitumie mikeka ya leo', 'odds', 'odds za leo', 'odds ya leo', 'mkeka waleo', 'mkeka namba moja', 'mkeka namba mbili', 'mkeka namba tatu', 'nataka mkeka', 'nataka mikeka', 'mkeka wa uhakika', 'odds za uhakika', 'mkeka?', 'mkeka wa leo?', '/mkeka 1', '/mkeka 2', '/mkeka 3']
 
@@ -101,74 +118,32 @@ const helenCodes = async () => {
         }
     })
 
-    bot.command('broadcast', async ctx => {
-        let myId = ctx.chat.id
-        let txt = ctx.message.text
-        let msg_id = Number(txt.split('/broadcast-')[1].trim())
-        if (myId == imp.shemdoe || myId == imp.halot) {
+    const convoFn = async (ctx) => {
+        if ([imp.halot, imp.shemdoe].includes(ctx.chat.id) && ctx.match) {
+            let msg_id = Number(ctx.match.trim())
+            //cht not found - not using bot for longtime or Group/User to copy from not found
+            //bot is not a member of the channel chat - channel not found
+            let bads = ['deactivated', 'blocked', 'initiate', 'chat not found']
             try {
                 let all_users = await nyumbuModel.find({ refferer: "Helen" })
-
-                all_users.forEach((u, index) => {
-                    setTimeout(() => {
-                        if (index == all_users.length - 1) {
-                            ctx.reply('Nimemaliza kutuma offer')
-                        }
-                        bot.api.copyMessage(u.chatid, imp.mikekaDB, msg_id, {
-                            reply_markup: {
-                                inline_keyboard: [
-                                    [
-                                        { text: '🎯 Bonyeza Kujisajili 🎯', url: 'https://track.africabetpartners.com/visit/?bta=35468&nci=5377' }
-                                    ]
-                                ]
-                            }
+                await ctx.reply(`Starting broadcasting for ${all_users.length} users`)
+                for (let [i, u] of all_users.entries()) {
+                    await bot.api.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
+                        .catch((err) => {
+                            if (bads.some((b) => err?.message.toLowerCase().includes(b))) {
+                                u.deleteOne()
+                                console.log(`${i + 1}. Helen - ${u?.chatid} deleted`)
+                            } else { console.log(`🤷‍♂️ ${err.message}`) }
                         })
-                            .then(() => console.log('Offer sent to ' + u.chatid))
-                            .catch((err) => {
-                                if (err.message.includes('blocked') || err.message.includes('initiate')) {
-                                    nyumbuModel.findOneAndDelete({ chatid: u.chatid })
-                                        .then(() => { console.log(u.chatid + ' is deleted') })
-                                }
-                            })
-                    }, index * 40)
-                })
+                }
             } catch (err) {
-                console.log(err.message)
+                console.log(err?.message)
             }
         }
-
-    })
+    }
 
     bot.command('convo', async ctx => {
-        let myId = ctx.chat.id
-        let txt = ctx.message.text
-        let msg_id = Number(txt.split('/convo-')[1].trim())
-        let bads = ['bot was blocked', 'deactivated', 'initiate']
-        if (myId == imp.shemdoe || myId == imp.halot) {
-            try {
-                let all_users = await nyumbuModel.find({ refferer: "Helen", blocked: false })
-
-                all_users.forEach((u, index) => {
-                    setTimeout(() => {
-                        bot.api.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
-                            .then(() => {
-                                if (index == all_users.length - 1) {
-                                    ctx.reply('Nimemaliza conversation')
-                                }
-                            })
-                            .catch(async (err) => {
-                                if (bads.some((bad) => err.message.includes(bad))) {
-                                    u.deleteOne()
-                                    console.log(`${index+1}. Hellen - ${u?.chatid} deleted`)
-                                } else { console.log('🤷‍♂️ ' + err.message) }
-                            })
-                    }, index * 40)
-                })
-            } catch (err) {
-                console.log(err.message)
-            }
-        }
-
+        convoFn(ctx)
     })
 
     bot.command(['mkeka', 'mkeka1'], async ctx => {
@@ -444,7 +419,7 @@ const helenCodes = async () => {
                         parse_mode: 'HTML',
                         caption: `<b>${rp_cap}\n\n${appendText}</b>`
                     })
-                    
+
                     //broadcast
                     let inline_keyboard = new InlineKeyboard()
                         .url(`🔥 JOIN | Utamu Bongo 🔥`, boturl)
@@ -637,17 +612,6 @@ const helenCodes = async () => {
                 await bot.api.sendMessage(imp.shemdoe, err.message)
                 console.log(err)
             }
-        }
-    })
-
-
-    // Stopping the bot when the Node.js process is about to be terminated
-    process.once("SIGINT", () => bot.stop());
-    process.once("SIGTERM", () => bot.stop());
-
-    bot.start().catch(e => {
-        if (e.message.includes('409: Conflict: terminated by other getUpdates')) {
-            bot.stop('new update')
         }
     })
 }
