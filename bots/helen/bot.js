@@ -118,33 +118,36 @@ const helenCodes = async (app) => {
         }
     })
 
-    const convoFn = async (ctx) => {
+    bot.command('convo', async ctx => {
         if ([imp.halot, imp.shemdoe].includes(ctx.chat.id) && ctx.match) {
             let msg_id = Number(ctx.match.trim())
-            //cht not found - not using bot for longtime or Group/User to copy from not found
-            //bot is not a member of the channel chat - channel not found
             let bads = ['deactivated', 'blocked', 'initiate', 'chat not found']
             try {
                 let all_users = await nyumbuModel.find({ refferer: "Helen" })
                 await ctx.reply(`Starting broadcasting for ${all_users.length} users`)
-                for (let [i, u] of all_users.entries()) {
-                    await bot.api.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
-                        .catch((err) => {
-                            if (bads.some((b) => err?.message.toLowerCase().includes(b))) {
-                                u.deleteOne()
-                                console.log(`${i + 1}. Helen - ${u?.chatid} deleted`)
-                            } else { console.log(`🤷‍♂️ ${err.message}`) }
-                        })
-                }
-                await ctx.reply('Nimemaliza conversation')
+    
+                all_users.forEach((u, i) => {
+                    setTimeout(() => {
+                        bot.api.copyMessage(u.chatid, imp.mikekaDB, msg_id, { reply_markup: defaultReplyMkp })
+                            .then(() => {
+                                if (i === all_users.length - 1) {
+                                    ctx.reply('Nimemaliza conversation').catch(e => console.log(e.message))
+                                }
+                            })
+                            .catch((err) => {
+                                if (bads.some((b) => err?.message.toLowerCase().includes(b))) {
+                                    u.deleteOne()
+                                    console.log(`${i + 1}. Helen - ${u?.chatid} deleted`)
+                                } else { 
+                                    console.log(`🤷‍♂️ ${err.message}`) 
+                                }
+                            })
+                    }, i * 50) // 20 messages per second
+                })
             } catch (err) {
                 console.log(err?.message)
             }
         }
-    }
-
-    bot.command('convo', async ctx => {
-        convoFn(ctx)
     })
 
     bot.command(['mkeka', 'mkeka1'], async ctx => {

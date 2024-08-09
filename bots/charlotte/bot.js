@@ -281,7 +281,7 @@ const charlotteFn = async (app) => {
         }
     })
 
-    bot.command('approve_pilau', async ctx => {
+    const approvingFunction = async (ctx) => {
         try {
             let all_pending = await reqModel.find({ chan_id: imp.newRT })
             let st = await ctx.reply(`Starting Approving ${all_pending.length} people`)
@@ -295,13 +295,16 @@ const charlotteFn = async (app) => {
                             user.deleteOne()
                         }
                     })
-                await delay(40)
             }
             let finish = `Finished Approving ${all_pending.length} people`
             await ctx.api.editMessageText(ctx.chat.id, st.message_id, finish)
         } catch (error) {
             console.log(error.message, error)
         }
+    }
+
+    bot.command('approve_pilau', async ctx => {
+        approvingFunction(ctx)
     })
 
     bot.command('newchannel', async ctx => {
