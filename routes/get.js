@@ -7,6 +7,7 @@ const venas25Model = require('../model/venas25')
 const graphModel = require('../model/graph-tips')
 const affModel = require('../model/affiliates-analytics')
 const axios = require('axios').default
+const cheerio = require('cheerio')
 
 //times
 const TimeAgo = require('javascript-time-ago')
@@ -432,6 +433,65 @@ router.get('/download/movie/:movid', async (req, res) => {
         res.redirect(bot_link)
     } catch (error) {
         console.log(error.message)
+    }
+})
+
+router.get('/match/:siku/:check', async (req, res) => {
+    try {
+        let siku = req.params.siku
+        let check = req.params.check
+        let oneMil_url = `https://onemillionpredictions.com/${siku}-football-predictions/accumulator-tips/`
+
+        let html = await axios.get(oneMil_url)
+        let $ = cheerio.load(html.data)
+
+        let matches = []
+        let trs = $('table tbody tr')
+        trs.each((index, el) => {
+            if (index > 0) {
+                let dateTime = $('td:nth-child(1)', el).text().trim()
+                let [siku, time] = dateTime.split(' ')
+                let league = $('td:nth-child(2) span b', el).text().trim()
+                let matchData = $('td:nth-child(2) span', el).html()
+                let bet = $('td:nth-child(3)', el).text().trim()
+                let odds = $('td:nth-child(4)', el).text().trim()
+                let [yyyy, mm, dd] = siku.split('-')
+                let date = `${dd}/${mm}/${yyyy}`
+                if (league.length > 3) {
+                    let [home, away, br] = matchData.split('</b>')[1].split('<br>')
+                    let match = `${home} - ${away}`
+                    matches.push({ date, time, league, match, bet, odds, from: 'one-m' })
+                }
+            }
+        })
+        if (check == "1") {
+            res.send(matches)
+        } else if (check == "5654") {
+            let docs = await mkekadb.insertMany(matches)
+            res.send(docs)
+        } else {
+            res.send('You are not authorized')
+        }
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+router.get('/match/delete/:siku/:pswd', async (req, res) => {
+    try {
+        let date = req.params.siku
+        let siku = date.replace(/-/g, '/')
+        let pswd = req.params.pswd
+
+        if (pswd == "5654") {
+            let cnt = await mkekadb.countDocuments({ date: siku, from: 'one-m' })
+            await mkekadb.deleteMany({ date: siku, from: 'one-m' })
+            res.send(`✅ ${cnt} docs of ${siku} were deleted successfully`)
+        } else {
+            res.send('You are not authorized')
+        }
+    } catch (error) {
+        console.error(error)
     }
 })
 
