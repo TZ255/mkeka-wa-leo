@@ -93,10 +93,36 @@
             padding: 6px;
             border: none;
         }
+
+        .one-inpts {
+            display: flex;
+            justify-content: center;
+        }
+
+        .one-inpts input {
+            display: block;
+            margin: 1px 12px;
+            font-size: medium;
+            padding: 14px 8px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
 <body>
+    <div class="one-m cont" style="text-align: center;">
+        <h3>One Million Params</h3>
+        <form action="/checking/one-m/1" method="get" target="_blank">
+            <div class="one-inpts">
+                <input type="text" name="siku" id="trh" placeholder="Siku eg. saturday">
+                <input type="text" name="table_id" placeholder="id of table">
+            </div>
+            <div class="submit">
+                <button type="submit">Check One Million</button>
+            </div>
+        </form>
+    </div>
+    <br><br>
     <form action="/post" method="post" target="_blank">
         <div class="cont" style="margin-bottom: 24px;">
             <h2 style="text-align: center;">Accumulator - <sub>Flashscore.mobi is +2</sub> </h2>

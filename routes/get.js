@@ -436,18 +436,49 @@ router.get('/download/movie/:movid', async (req, res) => {
     }
 })
 
-router.get('/match/:siku/:check', async (req, res) => {
+const top10 = async (siku, top10_table_id) => {
+    let top10_matches_array = []
+    let top10_url = `https://onemillionpredictions.com/${siku}-football-predictions/top10/`
+    let html = await axios.get(top10_url)
+    let $ = cheerio.load(html.data)
+    let top10_trs = $(`table#${top10_table_id} tbody tr`)
+    console.log(top10_table_id, top10_trs.length)
+    top10_trs.each((index, el) => {
+        if (index > 0) {
+            let dateTime = $('td:nth-child(1)', el).text().trim()
+            let [siku, time] = dateTime.split(' ')
+            let league = $('td:nth-child(2) b', el).text().trim()
+            let matchData = $('td:nth-child(2)', el).html()
+            let bet = $('td:nth-child(3)', el).text().trim()
+            let odds = $('td:nth-child(4)', el).text().trim()
+            let [yyyy, mm, dd] = siku.split('-')
+            let date = `${dd}/${mm}/${yyyy}`
+            if (league.length > 3) {
+                time = `${Number(time.split(':')[0]) + 1}:${time.split(':')[1]}`
+                let [home, away] = matchData.split('</b>')[1].split('<br>')
+                let match = `${home} - ${away}`.split('<span>')[1]
+                top10_matches_array.push({ date, time, league, match, bet, odds, from: 'one-m' })
+            }
+        }
+    })
+    return top10_matches_array;
+}
+
+router.get('/checking/one-m/:check', async (req, res) => {
     try {
-        let siku = req.params.siku
+        let siku = req.query.siku
+        let top10_table_id = req.query.table_id
         let check = req.params.check
         let oneMil_url = `https://onemillionpredictions.com/${siku}-football-predictions/accumulator-tips/`
+        console.log(siku, top10_table_id, check)
 
         let html = await axios.get(oneMil_url)
         let $ = cheerio.load(html.data)
 
         let matches = []
-        let trs = $('table tbody tr')
-        trs.each((index, el) => {
+        //getting acca
+        let acca_trs = $('table tbody tr')
+        acca_trs.each((index, el) => {
             if (index > 0) {
                 let dateTime = $('td:nth-child(1)', el).text().trim()
                 let [siku, time] = dateTime.split(' ')
@@ -458,17 +489,22 @@ router.get('/match/:siku/:check', async (req, res) => {
                 let [yyyy, mm, dd] = siku.split('-')
                 let date = `${dd}/${mm}/${yyyy}`
                 if (league.length > 3) {
+                    time = `${Number(time.split(':')[0]) + 1}:${time.split(':')[1]}`
                     let [home, away, br] = matchData.split('</b>')[1].split('<br>')
                     let match = `${home} - ${away}`
                     matches.push({ date, time, league, match, bet, odds, from: 'one-m' })
                 }
             }
         })
+
+        //getting top10
+        let top10Aarr = await top10(siku, top10_table_id)
         if (check == "1") {
-            res.send(matches)
+            res.send({ matches, top10Aarr })
         } else if (check == "5654") {
             let docs = await mkekadb.insertMany(matches)
-            res.send(docs)
+            let docs2 = await mkekadb.insertMany(top10Aarr)
+            res.send({ docs, docs2 })
         } else {
             res.send('You are not authorized')
         }
