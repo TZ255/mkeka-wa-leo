@@ -449,14 +449,16 @@ const top10 = async (siku, top10_table_id) => {
             let [siku, time] = dateTime.split(' ')
             let league = $('td:nth-child(2) b', el).text().trim()
             let matchData = $('td:nth-child(2)', el).html()
+            matchData = matchData.split('</b>')[1]
+            console.log(matchData)
             let bet = $('td:nth-child(3)', el).text().trim()
             let odds = $('td:nth-child(4)', el).text().trim()
             let [yyyy, mm, dd] = siku.split('-')
             let date = `${dd}/${mm}/${yyyy}`
             if (league.length > 3) {
                 time = `${Number(time.split(':')[0]) + 1}:${time.split(':')[1]}`
-                let [home, away] = matchData.split('</b>')[1].split('<br>')
-                let match = `${home} - ${away}`.split('<span>')[1]
+                let [home, away] = matchData.split('<br>')
+                let match = `${home} - ${away}`
                 top10_matches_array.push({ date, time, league, match, bet, odds, from: 'one-m' })
             }
         }
