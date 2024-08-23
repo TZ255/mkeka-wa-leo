@@ -503,8 +503,14 @@ router.get('/checking/one-m/:check', async (req, res) => {
             res.send({ matches, top10Aarr })
         } else if (check == "5654") {
             let docs = await mkekadb.insertMany(matches)
-            let docs2 = await mkekadb.insertMany(top10Aarr)
-            res.send({ docs, docs2 })
+            for (let doc of top10Aarr) {
+                await mkekadb.findOneAndUpdate({match: doc.match, date: doc.date}, 
+                    {$set: {bet: doc.bet, odds: Number(doc.odds), match: doc.match, date: doc.date, time: doc.time, league: doc.league, from: 'one-m'}},
+                    {upsert: true}
+                )
+            }
+            let allDocs = await mkekadb.find().sort('-createdAt').limit(docs.length + top10Aarr.length)
+            res.send({ allDocs })
         } else {
             res.send('You are not authorized')
         }
