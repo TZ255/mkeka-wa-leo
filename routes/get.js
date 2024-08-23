@@ -448,14 +448,15 @@ const top10 = async (siku, top10_table_id) => {
             let dateTime = $('td:nth-child(1)', el).text().trim()
             let [siku, time] = dateTime.split(' ')
             let league = $('td:nth-child(2) b', el).text().trim()
-            let matchData = $('td:nth-child(2)', el).html()
-            matchData = matchData.split('</b>')[1]
-            console.log(matchData)
             let bet = $('td:nth-child(3)', el).text().trim()
             let odds = $('td:nth-child(4)', el).text().trim()
             let [yyyy, mm, dd] = siku.split('-')
             let date = `${dd}/${mm}/${yyyy}`
-            if (league.length > 3) {
+            if (league.length > 4) {
+                let matchData = $('td:nth-child(2)', el).html()
+                matchData = matchData.split('</b>')[1].replace('<div><span>', '')
+                    .replace('<br></span></div>', '').replace('<span>', '')
+                console.log(matchData)
                 time = `${Number(time.split(':')[0]) + 1}:${time.split(':')[1]}`
                 let [home, away] = matchData.split('<br>')
                 let match = `${home} - ${away}`
@@ -506,9 +507,9 @@ router.get('/checking/one-m/:check', async (req, res) => {
         } else if (check == "5654") {
             let docs = await mkekadb.insertMany(matches)
             for (let doc of top10Aarr) {
-                await mkekadb.findOneAndUpdate({match: doc.match, date: doc.date}, 
-                    {$set: {bet: doc.bet, odds: Number(doc.odds), match: doc.match, date: doc.date, time: doc.time, league: doc.league, from: 'one-m'}},
-                    {upsert: true}
+                await mkekadb.findOneAndUpdate({ match: doc.match, date: doc.date },
+                    { $set: { bet: doc.bet, odds: Number(doc.odds), match: doc.match, date: doc.date, time: doc.time, league: doc.league, from: 'one-m' } },
+                    { upsert: true }
                 )
             }
             let allDocs = await mkekadb.find().sort('-createdAt').limit(docs.length + top10Aarr.length)
