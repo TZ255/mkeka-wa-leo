@@ -452,6 +452,14 @@ const top10 = async (siku, top10_table_id) => {
             let odds = $('td:nth-child(4)', el).text().trim()
             let [yyyy, mm, dd] = siku.split('-')
             let date = `${dd}/${mm}/${yyyy}`
+            switch (bet) {
+                case '1':
+                    bet = 'Home Win'
+                    break;
+                case '2':
+                    'Away Win'
+                    break;
+            }
             if (league.length > 4) {
                 let matchData = $('td:nth-child(2)', el).html()
                 matchData = matchData.split('</b>')[1].replace('<div><span>', '')
