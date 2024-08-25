@@ -457,7 +457,7 @@ const top10 = async (siku, top10_table_id) => {
                     bet = 'Home Win'
                     break;
                 case '2':
-                    'Away Win'
+                    bet = 'Away Win'
                     break;
             }
             if (league.length > 4) {
