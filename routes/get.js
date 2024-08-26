@@ -441,15 +441,14 @@ const top10 = async (siku, top10_table_id) => {
     let top10_url = `https://onemillionpredictions.com/${siku}-football-predictions/top10/`
     let html = await axios.get(top10_url)
     let $ = cheerio.load(html.data)
-    let top10_trs = $(`table#${top10_table_id} tbody tr`)
-    console.log(top10_table_id, top10_trs.length)
+    let top10_trs = $(`table`).eq(2).find('tbody tr')
     top10_trs.each((index, el) => {
         if (index > 0) {
             let dateTime = $('td:nth-child(1)', el).text().trim()
             let [siku, time] = dateTime.split(' ')
             let league = $('td:nth-child(2) b', el).text().trim()
             let bet = $('td:nth-child(3)', el).text().trim()
-            let odds = $('td:nth-child(4)', el).text().trim()
+            let odds = $('td:nth-child(4)', el).text().trim() || 1
             let [yyyy, mm, dd] = siku.split('-')
             let date = `${dd}/${mm}/${yyyy}`
             switch (bet) {
@@ -459,11 +458,15 @@ const top10 = async (siku, top10_table_id) => {
                 case '2':
                     bet = 'Away Win'
                     break;
+                case 'X':
+                    bet = "Draw"
+                    break;
             }
             if (league.length > 4) {
                 let matchData = $('td:nth-child(2)', el).html()
                 matchData = matchData.split('</b>')[1].replace('<div><span>', '')
-                    .replace('<br></span></div>', '').replace('<span>', '')
+                    .replace('<br></span></div>', '').replace('<span>', '').replace('<div>', '')
+                    .replace('</div>', '')
                 console.log(matchData)
                 time = `${Number(time.split(':')[0]) + 1}:${time.split(':')[1]}`
                 let [home, away] = matchData.split('<br>')
@@ -481,7 +484,6 @@ router.get('/checking/one-m/:check', async (req, res) => {
         let top10_table_id = req.query.table_id
         let check = req.params.check
         let oneMil_url = `https://onemillionpredictions.com/${siku}-football-predictions/accumulator-tips/`
-        console.log(siku, top10_table_id, check)
 
         let html = await axios.get(oneMil_url)
         let $ = cheerio.load(html.data)
@@ -496,9 +498,20 @@ router.get('/checking/one-m/:check', async (req, res) => {
                 let league = $('td:nth-child(2) span b', el).text().trim()
                 let matchData = $('td:nth-child(2) span', el).html()
                 let bet = $('td:nth-child(3)', el).text().trim()
-                let odds = $('td:nth-child(4)', el).text().trim()
+                let odds = $('td:nth-child(4)', el).text().trim() || 1
                 let [yyyy, mm, dd] = siku.split('-')
                 let date = `${dd}/${mm}/${yyyy}`
+                switch (bet) {
+                    case '1':
+                        bet = 'Home Win'
+                        break;
+                    case '2':
+                        bet = 'Away Win'
+                        break;
+                    case 'X':
+                        bet = "Draw"
+                        break;
+                }
                 if (league.length > 3) {
                     time = `${Number(time.split(':')[0]) + 1}:${time.split(':')[1]}`
                     let [home, away, br] = matchData.split('</b>')[1].split('<br>')
@@ -513,14 +526,16 @@ router.get('/checking/one-m/:check', async (req, res) => {
         if (check == "1") {
             res.send({ matches, top10Aarr })
         } else if (check == "5654") {
-            let docs = await mkekadb.insertMany(matches)
-            for (let doc of top10Aarr) {
+            if (top10Aarr.length > 0) {
+                await mkekadb.insertMany(top10Aarr)
+            }
+            for (let doc of matches) {
                 await mkekadb.findOneAndUpdate({ match: doc.match, date: doc.date },
                     { $set: { bet: doc.bet, odds: Number(doc.odds), match: doc.match, date: doc.date, time: doc.time, league: doc.league, from: 'one-m' } },
                     { upsert: true }
                 )
             }
-            let allDocs = await mkekadb.find().sort('-createdAt').limit(docs.length + top10Aarr.length)
+            let allDocs = await mkekadb.find().sort('-createdAt').limit(15)
             res.send({ allDocs })
         } else {
             res.send('You are not authorized')
