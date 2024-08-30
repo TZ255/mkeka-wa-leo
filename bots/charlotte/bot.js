@@ -45,7 +45,9 @@ const charlotteFn = async (app) => {
         notfy_d: -1002079073174
     }
 
-    const bot = new Bot(process.env.CHARLOTTE_TOKEN)
+    const bot = new Bot(process.env.CHARLOTTE_TOKEN, {
+        client: { apiRoot: `http://188.166.85.43:8081` }
+    })
 
     //run webhook
     if (process.env.local != 'true') {
