@@ -241,7 +241,7 @@ router.post('/post/movie', async (req, res)=> {
         let tmd = req.body.mov_link
         let p480 = req.body.p480
         let p720 = req.body.p720
-        let trailer = req.body.trailer
+        //let trailer = req.body.trailer
         let secret = req.body.secret
 
         let imp = {
@@ -284,19 +284,19 @@ router.post('/post/movie', async (req, res)=> {
 
             //cheerio data
             let title = `${scrp_title} ${year}`
-            let caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 480P (${s4})\n<a href="${link4}">${_dd}</a>\n\n📥 720P (${s7})\n<a href="${link7}">${_dd}</a></b>`
+            let caption = `<b>🎬 Movie ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full Movie with English Subtitles Below\n\n📥 480P (${s4})\n<a href="${link4}">${_dd}</a>\n\n📥 720P (${s7})\n<a href="${link7}">${_dd}</a></b>`
             if (p480 == p720) {
                 let dd = `https://t.me/file/movie/${nano}`
-                caption = `<b>#Trailer\n🎬 ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full HD Movie with English Subtitles Below (${s4})\n\n📥 Here 👇👇\n<a href="${link4}">${dd}\n${dd}</a></b>`
+                caption = `<b>🎬 Movie: ${title}</b>\n\n<b>Genre:</b> ${genres}\n\n<b>📄 Overview:</b>\n${overview}\n\n———\n\n<b>Download Full HD Movie with English Subtitles Below (${s4})\n\n📥 Here 👇👇\n<a href="${link4}">${dd}\n${dd}</a></b>`
             }
-            let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/editMessageCaption`
-            let trailer_id = Number(trailer.split('reply-')[1])
+            let laura = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendPhoto`
+            //let trailer_id = Number(trailer.split('reply-')[1])
 
             //check if nanoid is alredy used, if not post
             let uniq = await tmDB.findOne({nano})
             if(!uniq) {
                 await tmDB.create({
-                    nano, p480, p720, tmd_link: tmd, title, replyMSGID: trailer_id, replyDB: imp.muvikaReps
+                    nano, p480, p720, tmd_link: tmd, title, replyDB: imp.muvikaReps
                 })
 
                 //rename filescaption
@@ -326,7 +326,7 @@ router.post('/post/movie', async (req, res)=> {
                 //poster data
                 let data = {
                     chat_id: imp.muvikaReps,
-                    message_id: trailer_id,
+                    photo: img,
                     parse_mode: 'HTML',
                     caption
                 }
