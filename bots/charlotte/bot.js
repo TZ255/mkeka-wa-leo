@@ -477,10 +477,10 @@ const charlotteFn = async (app) => {
                 })
                 console.log(ctx.channelPost.photo)
             }
-            if (chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata')) {
-                //text will either be Pata-1 url.com or Pata+1 url.com
-                let idadi = ctx.channelPost.text.split(`Pata`)[1].split(' ')[0]
-                let url = ctx.channelPost.text.split(`Pata${idadi}`)[1].trim()
+            if (chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata') && ctx.channelPost?.reply_to_message?.reply_markup) {
+                //text will either be Pata-1 or Pata+1
+                let idadi = ctx.channelPost.text.split(`Pata`)[1]
+                let url = ctx.channelPost.reply_to_message.reply_markup.inline_keyboard[0][1].url
                 await nkiriFunction(ctx, url, idadi)
 
                 setTimeout(() => {
