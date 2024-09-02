@@ -293,13 +293,12 @@ const helenCodes = async (app) => {
         let channels = await my_channels_db.find()
 
         for (ch of channels) {
-            await bot.api.copyMessage(ch.ch_id, imp.pzone, mid, {
+            bot.api.copyMessage(ch.ch_id, imp.pzone, mid, {
                 disable_notification: true,
                 reply_markup: {
                     inline_keyboard: keyb
                 }
-            })
-            await delay(40)
+            }).catch(e => console.log(e.message))
         }
     })
 
@@ -437,11 +436,11 @@ const helenCodes = async (app) => {
                     let boturl = `t.me/dayoncebot?start=ngono_bongo`
                     let all_chans = await my_channels_db.find()
                     for (let ch of all_chans) {
-                        await ctx.api.copyMessage(ch.ch_id, imp.pzone, rp_id, {
+                        ctx.api.copyMessage(ch.ch_id, imp.pzone, rp_id, {
                             reply_markup: {
                                 inline_keyboard: [[{text: "XXX Bongo ❤", url: boturl}]]
                             }
-                        })
+                        }).catch(e=> console.log(e.message))
                     }
                 }
             }
