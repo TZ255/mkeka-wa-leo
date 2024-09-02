@@ -285,7 +285,7 @@ const helenCodes = async (app) => {
             [{ text: "🔥 Unganishwa Na Malaya Mikoa Yote 🔞", url: pload_link },],
             [{ text: "🍑🍑 Magroup Ya Ngono na Madada Poa 🔞", url: pload_link },],
             [{ text: "💋 XXX ZA BONGO ❌❌❌", url: pload_link },],
-            [{ text: "🔥🔥 Connection Za Chuo na Mastaa 🔞", url: pload_link }]
+            [{ text: "🔥🔥 Connection za Chuo na Mastaa 🔞", url: pload_link }]
         ]
 
         let mid = Number(txt.split('post_to_channels=')[1])
