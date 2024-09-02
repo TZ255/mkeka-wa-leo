@@ -526,10 +526,10 @@ router.get('/checking/one-m/:check', async (req, res) => {
         if (check == "1") {
             res.send({ matches, top10Aarr })
         } else if (check == "5654") {
-            if (top10Aarr.length > 0) {
-                await mkekadb.insertMany(top10Aarr)
+            if (matches.length > 0) {
+                await mkekadb.insertMany(matches)
             }
-            for (let doc of matches) {
+            for (let doc of top10Aarr) {
                 await mkekadb.findOneAndUpdate({ match: doc.match, date: doc.date },
                     { $set: { bet: doc.bet, odds: Number(doc.odds), match: doc.match, date: doc.date, time: doc.time, league: doc.league, from: 'one-m' } },
                     { upsert: true }
