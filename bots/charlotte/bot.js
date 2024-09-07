@@ -1,10 +1,12 @@
 const { Bot, webhookCallback } = require('grammy')
+const { autoRetry } = require("@grammyjs/auto-retry")
 require('dotenv').config()
 const mongoose = require('mongoose')
 const { nanoid } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 const { nkiriFunction, deleteMessage } = require('./functions/nkiri')
+const { DJMwangaFn } = require('./functions/mwanga')
 
 
 const charlotteFn = async (app) => {
@@ -48,6 +50,9 @@ const charlotteFn = async (app) => {
     const bot = new Bot(process.env.CHARLOTTE_TOKEN, {
         client: { apiRoot: `http://188.166.85.43:8081` }
     })
+
+    //use auto-retry
+    bot.api.config.use(autoRetry());
 
     //run webhook
     if (process.env.local != 'true') {
@@ -566,6 +571,14 @@ const charlotteFn = async (app) => {
         await bot.api.deleteWebhook({ drop_pending_updates: true })
         bot.start()
     }
+
+    //djmwanga interval every 1 hour
+    setInterval(() => {
+        bot.api.sendMessage(741815228, 'Scraping DJ Mwanga', { disable_notification: true })
+            .catch(e => console.log(e.message))
+        let durl = `https://djmwanga.com/category/audio`
+        DJMwangaFn(bot, durl)
+    }, 60000 * 60)
 }
 
 
