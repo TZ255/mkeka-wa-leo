@@ -44,7 +44,8 @@ const charlotteFn = async (app) => {
         rtmalipo: 5849160770,
         newRT: -1002228998665,
         matangazoDB: -1001570087172,
-        notfy_d: -1002079073174
+        notfy_d: -1002079073174,
+        ohmy_backup: -1002363155302
     }
 
     const bot = new Bot(process.env.CHARLOTTE_TOKEN, {
@@ -457,6 +458,9 @@ const charlotteFn = async (app) => {
                 let duration = ctx.channelPost.video.duration
                 let tday = new Date().toDateString()
 
+                //forwad to backup channel
+                let bckp = await ctx.copyMessage(imp.ohmy_backup)
+
                 await db.create({
                     caption_entities: cap_ent,
                     uniqueId: fid,
@@ -465,7 +469,8 @@ const charlotteFn = async (app) => {
                     nano: fid + msgId,
                     fileType: 'video',
                     msgId,
-                    file_size: fileMBs
+                    file_size: fileMBs,
+                    backup: bckp.message_id
                 })
                 await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}&dur=${duration}</code>`, { parse_mode: 'HTML' })
             }
@@ -482,6 +487,9 @@ const charlotteFn = async (app) => {
                 let duration = 90 * 60
                 let tday = new Date().toDateString()
 
+                //forwad to backup channel
+                let bckp = await ctx.copyMessage(imp.ohmy_backup)
+
                 await db.create({
                     caption_entities: cap_ent,
                     uniqueId: fid,
@@ -490,7 +498,8 @@ const charlotteFn = async (app) => {
                     nano: fid + msgId,
                     fileType: 'document',
                     msgId,
-                    file_size: fileMBs
+                    file_size: fileMBs,
+                    backup: bckp.message_id
                 })
                 await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}&dur=${duration}</code>`, { parse_mode: 'HTML' })
             }

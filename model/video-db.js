@@ -22,9 +22,12 @@ const tgSchema = new Schema({
     },
     msgId: {
         type: Number
+    },
+    backup: {
+        type: Number
     }
 
-}, { timestamps: true })
+}, { timestamps: true, strict: false })
 
 const ohmyNew = mongoose.connection.useDb('ohmyNew')
 const model = ohmyNew.model('tgDb', tgSchema)
