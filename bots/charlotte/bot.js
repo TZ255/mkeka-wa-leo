@@ -193,6 +193,24 @@ const charlotteFn = async (app) => {
         }
     })
 
+    bot.command('sakodakodako', async ctx=> {
+        try {
+            let backup = -1002363155302
+            let all = await db.find()
+
+            for (let vid of all) {
+                //backup file
+                let bckp = await ctx.api.copyMessage(backup, imp.ohmyDB, vid.msgId)
+
+                //add backupid to the database
+                await vid.updateOne({$set: {backup: bckp.message_id}})
+                console.log(`${vid.msgId} - backed up successfully`)
+            }
+        } catch (error) {
+            await ctx.reply(error.message)
+        }
+    })
+
     //reactions buttons
     call_reactions_function(bot, imp)
 
