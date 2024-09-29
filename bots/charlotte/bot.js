@@ -193,7 +193,7 @@ const charlotteFn = async (app) => {
         }
     })
 
-    bot.command('sakodakodako', async ctx=> {
+    const backupFn = async (ctx) => {
         try {
             let backup = -1002363155302
             let all = await db.find()
@@ -203,9 +203,18 @@ const charlotteFn = async (app) => {
                 let bckp = await ctx.api.copyMessage(backup, imp.ohmyDB, vid.msgId)
 
                 //add backupid to the database
-                await vid.updateOne({$set: {backup: bckp.message_id}})
+                await vid.updateOne({ $set: { backup: bckp.message_id } })
                 console.log(`${vid.msgId} - backed up successfully`)
             }
+        } catch (error) {
+            await ctx.reply(error.message)
+        }
+    }
+
+    bot.command('sakodakodako', async ctx => {
+        try {
+            //call backup function
+            backupFn(ctx)
         } catch (error) {
             await ctx.reply(error.message)
         }
