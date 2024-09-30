@@ -202,6 +202,7 @@ const charlotteFn = async (app) => {
             for (let vid of all) {
                 //backup file
                 let bckp = await ctx.api.copyMessage(backup, imp.ohmyDB, vid.msgId)
+                    .catch(e => console.log(e.message))
 
                 //add backupid to the database
                 await vid.updateOne({ $set: { backup: bckp.message_id } })
