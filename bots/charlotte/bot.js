@@ -205,7 +205,8 @@ const charlotteFn = async (app) => {
                     .catch(e => console.log(e.message))
 
                 //add backupid to the database
-                await vid.updateOne({ $set: { backup: bckp.message_id } })
+                await vid.updateOne({ $set: { backup: bckp?.message_id } })
+                    .catch(e => console.log(e.message))
                 console.log(`${vid.msgId} - backed up successfully`)
             }
         } catch (error) {
