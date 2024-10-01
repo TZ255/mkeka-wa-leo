@@ -49,7 +49,7 @@ const charlotteFn = async (app) => {
     }
 
     const bot = new Bot(process.env.CHARLOTTE_TOKEN, {
-        client: { apiRoot: `http://188.166.85.43:8081` }
+        client: { apiRoot: process.env.API_ROOT }
     })
 
     //use auto-retry
