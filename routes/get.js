@@ -163,6 +163,7 @@ router.get('/:comp/register', async (req, res) => {
         tz_888: `http://media.888africa.com/C.ashx?btag=a_416b_310c_&affid=356&siteid=416&adid=310&c=`,
         betwinner: `https://bw-prm.com/carlos-bonus-lite/?extid=mkl&p=%2Fregistration%2F&lang=en&id=29lg`,
         betway_casino: `https://www.betway.co.tz/lobby/casino/featured/?btag=P94949-PR26702-CM90070-TS1971458&`,
+        betway_arsenal: `https://www.betway.co.tz/Arsenal-Xclusives?btag=P94949-PR37833-CM109867-TS2034255`,
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`
     }
     try {
@@ -181,6 +182,10 @@ router.get('/:comp/register', async (req, res) => {
                 break;
             case 'betway-casino':
                 res.redirect(links.betway_casino);
+                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
+                break;
+            case 'betway-arsenal':
+                res.redirect(links.betway_arsenal);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
                 break;
             case 'meridian':
