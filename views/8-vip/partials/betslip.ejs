@@ -1,0 +1,121 @@
+<div class="main_cont">
+    <h6><sub>*chagua mtandao wako hapa chini</sub></h6>
+    <div class="head">
+        <h3 id="voda_h3">Voda</h3>
+        <h3 id="tigo_h3">Tigo</h3>
+        <h3 id="airtel_h3">Airtel</h3>
+        <h3 id="halotel_h3">Halotel</h3>
+    </div>
+    <div class="mitandao_maelezo">
+        <div class="voda">
+            <h4>VodaCom M-Pesa 🇹🇿</h4>
+            <b class="namba">Jina:</b> <b class="namba">MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
+            <ul>
+                <li>Piga *150*00#</li>
+                <li>Chagua 4. (Lipa kwa MPesa)</li>
+                <li>Chagua 1. (Lipa kwa Simu)</li>
+                <li>Chagua 1. (Ingiza Lipa Namba)</li>
+                <li>Chagua 1. (M-Pesa)</li>
+                <li>Weka lipa namba <b class="namba">8455234</b></li>
+            </ul>
+            <span class="malipo">Baada ya malipo tuma screenshot ya muamala wako kwa Admin wetu wa MKEKA wa LEO WhatsApp ili kupata link ya group letu la VIP</span>
+            <hr>
+        </div>
+        <div class="tigo">
+            <h4>Tigo Pesa 🇹🇿</h4>
+            <b class="namba">Jina:</b> <b class="namba">MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
+            <ul>
+                <li>Piga *150*01#</li>
+                <li>Chagua 5. Lipa kwa simu</li>
+                <li>Chagua Mitandao mingine</li>
+                <li>Chagua M-Pesa</li>
+                <li>Weka lipa namba <b class="namba">8455234</b></li>
+                <li>Weka kiasi na PIN kisha thibitisha</li>
+            </ul>
+            <span class="malipo">Baada ya malipo tuma screenshot ya muamala wako kwa Admin wetu wa MKEKA wa LEO WhatsApp ili kupata link ya group letu la VIP</span>
+            <hr>
+        </div>
+        <div class="airtel">
+            <h4>Airtel Money 🇹🇿</h4>
+            <b class="namba">Jina:</b> <b class="namba">PAULO <i class="fa-solid fa-crown"></i></b>
+            <ul>
+                <li>Piga *150*60#</li>
+                <li>Chagua 1. Tuma Pesa</li>
+                <li>Chagua 2. Mitandao Mingine</li>
+                <li>Chagua 2. M-Pesa</li>
+                <li>Chagua 1. Namba ya M-Pesa</li>
+                <li>Weka namba <b class="namba">0757259678 (PAULO)</b></li>
+            </ul>
+            <span class="malipo">Baada ya malipo tuma screenshot ya muamala wako kwa Admin wetu wa MKEKA wa LEO WhatsApp ili kupata link ya group letu la VIP</span>
+            <hr>
+        </div>
+        <div class="halotel">
+            <h4>Halopesa 🇹🇿</h4>
+            <b class="namba">Jina:</b> <b class="namba">PAULO <i class="fa-solid fa-crown"></i></b>
+            <ul>
+                <li>Piga *150*60#</li>
+                <li>Chagua 1. Tuma Pesa</li>
+                <li>Chagua 2. Mitandao Mingine</li>
+                <li>Chagua 2. M-Pesa</li>
+                <li>Weka namba <b class="namba">0757259678 (PAULO)</b></li>
+            </ul>
+            <span class="malipo">Baada ya malipo tuma screenshot ya muamala wako kwa Admin wetu wa MKEKA wa LEO WhatsApp ili kupata link ya group letu la VIP</span>
+            <hr>
+        </div>
+    </div>
+
+    <div class="social" style="width: 98%; margin: auto;">
+        <h4 style="font-size: 16px; font-weight: bold;">Admin Contacts:</h4>
+        <div class="tsap">
+            <i class="fa-brands fa-whatsapp"></i>
+            <b>WhatsApp: <a href="https://wa.me/+254769028387">+254 769 028 387</a></b>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Function to hide all divs except the specified one
+    function showOnly(divClass) {
+        const allDivs = document.querySelectorAll('.mitandao_maelezo > div');
+        allDivs.forEach(div => {
+            if (div.classList.contains(divClass)) {
+                div.style.display = 'block';
+            } else {
+                div.style.display = 'none';
+            }
+        });
+    }
+
+    // Function to set active class on h3 and remove from others
+    function setActiveH3(activeH3) {
+        const allH3s = document.querySelectorAll('.head h3');
+        allH3s.forEach(h3 => {
+            h3.classList.remove('active');
+        });
+        activeH3.classList.add('active');
+    }
+
+    // Get all h3 elements
+    const h3Elements = document.querySelectorAll('.head h3');
+
+    // Set the first h3 as active and show its corresponding div on page load
+    if (h3Elements.length > 0) {
+        const firstH3 = h3Elements[0];
+        setActiveH3(firstH3);
+        const firstProviderClass = firstH3.id.split('_')[0];
+        showOnly(firstProviderClass);
+    }
+
+    // Add click event listeners to all h3 elements
+    h3Elements.forEach(h3 => {
+        h3.addEventListener('click', function() {
+            const providerClass = this.id.split('_')[0];
+            showOnly(providerClass);
+            setActiveH3(this);
+        });
+    });
+});
+</script>

@@ -406,6 +406,14 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
     }
 })
 
+router.get('/mkeka/vip', async (req, res) => {
+    try {
+        res.render('8-vip/vip')
+    } catch (err) {
+        console.log(err.message)
+    }
+})
+
 //articles
 router.get('/article/:path', async (req, res) => {
     try {
