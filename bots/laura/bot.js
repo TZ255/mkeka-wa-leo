@@ -182,25 +182,28 @@ const lauraMainFn = async (app) => {
                 let mid = Number(ctx.match.trim())
                 let all = await dramastoreUsers.find()
                 let bads = ['blocked', 'initiate', 'deactivated', 'chat not found']
+                let wapuuzi = [1006615854, 1937862156, 1652556985]
 
                 all.forEach((u, i) => {
                     setTimeout(() => {
-                        axios.post(tgAPI, {
-                            chat_id: u.userId,
-                            from_chat_id: -1001570087172, //matangazoDB
-                            message_id: mid
-                        }).then(() => console.log('✅ Message sent to ' + u.userId))
-                            .catch(err => {
-                                console.log(err.message)
-                                if (err.response && err.response?.data && err.response.data?.description) {
-                                    let description = err.response.data.description
-                                    description = description.toLowerCase()
-                                    if (bads.some((bad) => description.includes(bad))) {
-                                        u.deleteOne()
-                                        console.log(`🚮 ${u.userId} deleted`)
-                                    } else { console.log(`🤷‍♂️ ${description}`) }
-                                }
+                        if (!wapuuzi.includes(u.userId)) {
+                            axios.post(tgAPI, {
+                                chat_id: u.userId,
+                                from_chat_id: -1001570087172, //matangazoDB
+                                message_id: mid
                             })
+                                .catch(err => {
+                                    console.log(err.message)
+                                    if (err.response && err.response?.data && err.response.data?.description) {
+                                        let description = err.response.data.description
+                                        description = description.toLowerCase()
+                                        if (bads.some((bad) => description.includes(bad))) {
+                                            u.deleteOne()
+                                            console.log(`🚮 ${u.userId} deleted`)
+                                        } else { console.log(`🤷‍♂️ ${description}`) }
+                                    }
+                                })
+                        }
                     }, i * 50)
                 })
             }
