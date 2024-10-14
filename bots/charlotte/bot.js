@@ -48,9 +48,7 @@ const charlotteFn = async (app) => {
         ohmy_backup: -1002363155302
     }
 
-    const bot = new Bot(process.env.CHARLOTTE_TOKEN, {
-        client: { apiRoot: process.env.API_ROOT }
-    })
+    const bot = new Bot(process.env.CHARLOTTE_TOKEN)
 
     //use auto-retry
     bot.api.config.use(autoRetry());
