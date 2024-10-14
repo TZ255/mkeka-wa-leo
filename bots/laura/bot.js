@@ -177,7 +177,7 @@ const lauraMainFn = async (app) => {
     const DStoreBroad = async (ctx) => {
         try {
             await ctx.reply('Starting')
-            let tgAPI = `${process.env.API_ROOT}/bot${process.env.DS_TOKEN}/copyMessage`
+            let tgAPI = `https://api.telegram.org/bot${process.env.DS_TOKEN}/copyMessage`
             let mid = Number(ctx.match.trim())
             let all = await dramastoreUsers.find()
             let bads = ['blocked', 'initiate', 'deactivated', 'chat not found']
