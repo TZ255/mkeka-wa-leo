@@ -9,6 +9,31 @@ const { nanoid, customAlphabet } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
+let imp = {
+    replyDb: -1001608248942,
+    pzone: -1001352114412,
+    local_domain: 't.me/rss_shemdoe_bot?start=',
+    prod_domain: 't.me/ohmychannelV2bot?start=',
+    shemdoe: 741815228,
+    halot: 1473393723,
+    bberry: 1101685785,
+    airt: 1426255234,
+    xzone: -1001740624527,
+    ohmyDB: -1001586042518,
+    xbongo: -1001263624837,
+    rtgrp: -1001899312985,
+    rtprem: -1001946174983,
+    rt4i4n: -1001880391908,
+    rt4i4n2: -1001701399778,
+    playg: -1001987366621,
+    ohmy_prem: -1001470139866,
+    rtmalipo: 5849160770,
+    newRT: -1002228998665,
+    matangazoDB: -1001570087172,
+    notfy_d: -1002079073174,
+    ohmy_backup: -1002363155302
+}
+
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
     let league = req.body.league
@@ -371,8 +396,8 @@ router.post('/checking/one-m/1', async (req, res) => {
                 }
 
                 //search if in database dont push
-                let check_match = await mikekaDb.findOne({date: matchDoc.date, match: matchDoc.match})
-                if(!check_match) {
+                let check_match = await mikekaDb.findOne({ date: matchDoc.date, match: matchDoc.match })
+                if (!check_match) {
                     collection.push(matchDoc)
                 }
             }
@@ -385,6 +410,22 @@ router.post('/checking/one-m/1', async (req, res) => {
     } catch (error) {
         console.error(error)
         res.send(error.message)
+    }
+})
+
+router.post('/post/mpesa', async (req, res) => {
+    try {
+        let msg = req.body.msg
+        let tgAPI = `https://api.telegram.org/bot${process.env.CHARLOTTE_TOKEN}/sendMessage`
+        let data = {
+            chat_id: -1002104835299, text: msg
+        }
+        axios.post(tgAPI, data)
+            .catch(e => axios.post(tgAPI, { chat_id: imp.shemdoe, text: e.message }))
+        res.end()
+    } catch (error) {
+        console.log(error)
+        res.status(404).send('Faaiiiled')
     }
 })
 
