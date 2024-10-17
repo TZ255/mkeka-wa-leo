@@ -49,7 +49,7 @@
             margin: 8px;
         }
 
-        .submit #reset {
+        button.reset {
             background-color: gray;
         }
 
@@ -111,12 +111,14 @@
 <body>
     <div class="one-m cont" style="text-align: center;">
         <h3>One Million Params</h3>
-        <form action="/checking/one-m/1" method="get" target="_blank">
+        <form action="/checking/one-m/1" method="post" target="_blank">
             <div class="one-inpts">
-                <input type="text" name="siku" id="trh" placeholder="Siku eg. saturday">
+                <textarea name="data" id="d-data" cols="45" rows="18" placeholder="All data in 4 lines &#10;Date & Time &#10;League &#10;HomeTeam &#10;AwayTeam, Tip & Odd"></textarea> <br>
+                <textarea name="secret" id="secret" cols="45" rows="1" placeholder="Secret"></textarea>
             </div>
             <div class="submit">
-                <button type="submit">Check One Million</button>
+                <button id="txtar_sub" type="submit">Post 1 Mil</button>
+                <button type="reset" class="reset">Reset</button>
             </div>
         </form>
     </div>
@@ -135,7 +137,7 @@
             </div>
             <div class="submit">
                 <button type="submit" id="submit_mega">SUBMIT BET</button>
-                <button id="reset" type="reset">RESET</button>
+                <button id="reset" type="reset" class="reset">RESET</button>
             </div>
         </div>
     </form>
@@ -162,7 +164,7 @@
             </div>
             <div class="submit">
                 <button type="submit">SUBMIT BET</button>
-                <button id="reset" type="reset">RESET</button>
+                <button id="reset" type="reset" class="reset">RESET</button>
             </div>
         </div>
     </form>
@@ -179,7 +181,7 @@
             </div>
             <div class="submit">
                 <button type="submit">POST MOVIE</button>
-                <button id="reset" type="reset">RESET</button>
+                <button id="reset" type="reset" class="reset">RESET</button>
             </div>
         </div>
     </form>

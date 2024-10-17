@@ -5,7 +5,7 @@ const betslip = require('../model/betslip')
 const supatipsModel = require('../model/supatips')
 const tmDB = require('../model/movie-db')
 const vidDB = require('../model/video-db')
-const {nanoid, customAlphabet} = require('nanoid')
+const { nanoid, customAlphabet } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
@@ -27,7 +27,7 @@ router.post('/post', async (req, res) => {
 
     //modify time here
     time = `${left_side}:${right_side}`
-    switch(left_side) {
+    switch (left_side) {
         case 24: case 1: case 2: case 3: case 4:
             time = `23:59`
     }
@@ -40,13 +40,13 @@ router.post('/post', async (req, res) => {
     let d = new Date(date).toLocaleDateString('en-GB')
 
     if (secret == '5654' && match.includes(' - ')) {
-        let mk = await mikekaDb.create({match, league, odds, time, bet, date: d})
+        let mk = await mikekaDb.create({ match, league, odds, time, bet, date: d })
         res.send(mk)
     } else if (secret == '55') {
-        let mk = await betslip.create({match, league, odd: odds, tip:bet, date: d})
+        let mk = await betslip.create({ match, league, odd: odds, tip: bet, date: d })
         res.send(mk)
     }
-    
+
     else {
         res.send(`You provided incorrects data`)
     }
@@ -93,7 +93,7 @@ router.post('/post', async (req, res) => {
 //     //         break;
 //     // }
 
-    
+
 
 //     let d = new Date(date).toLocaleDateString('en-GB')
 
@@ -104,14 +104,14 @@ router.post('/post', async (req, res) => {
 //     //     let mk = await betslip.create({match, odd: odds, tip:bet, date: d})
 //     //     res.send(mk)
 //     // }
-    
+
 //     // else {
 //     //     res.send(`You're not Authorized`)
 //     // }
 
 // })
 
-router.post('/post/supatips', async (req, res)=> {
+router.post('/post/supatips', async (req, res) => {
     try {
         let match = req.body.match
         let tip = req.body.tip
@@ -128,7 +128,7 @@ router.post('/post/supatips', async (req, res)=> {
                 siku, league, match, tip, time, nano
             })
             res.send(mk)
-        } else {res.send('Unauthorized')}
+        } else { res.send('Unauthorized') }
     } catch (err) {
         res.send(err.message)
     }
@@ -144,7 +144,7 @@ router.post('/post-fb', async (req, res) => {
     let siku = new Date(date).toLocaleDateString('en-GB')
 
     if (secret == '5654') {
-        let mk = await fb_mikeka.create({siku, image, maelezo})
+        let mk = await fb_mikeka.create({ siku, image, maelezo })
         res.send(mk)
     } else {
         res.send(`You're not Authorized`)
@@ -152,11 +152,11 @@ router.post('/post-fb', async (req, res) => {
 
 })
 
-router.post('/delete/:id', async (req, res)=> {
+router.post('/delete/:id', async (req, res) => {
     let _id = req.params.id
     let sec = req.body.secret
 
-    if(sec == '5654') {
+    if (sec == '5654') {
         await mikekaDb.findByIdAndDelete(_id)
         res.redirect('/admin/posting')
     } else {
@@ -164,11 +164,11 @@ router.post('/delete/:id', async (req, res)=> {
     }
 })
 
-router.post('/delete-slip/:id', async (req, res)=> {
+router.post('/delete-slip/:id', async (req, res) => {
     let _id = req.params.id
     let sec = req.body.secret
 
-    if(sec == '55') {
+    if (sec == '55') {
         await betslip.findByIdAndDelete(_id)
         res.redirect('/admin/posting')
     } else {
@@ -176,7 +176,7 @@ router.post('/delete-slip/:id', async (req, res)=> {
     }
 })
 
-router.post('/edit-mkeka/:id', async (req, res)=> {
+router.post('/edit-mkeka/:id', async (req, res) => {
     let _id = req.params.id
     let sec = req.body.secret
     let tip = req.body.bet
@@ -194,15 +194,15 @@ router.post('/edit-mkeka/:id', async (req, res)=> {
     let homeTeam = prev.match.split(' - ')[0]
     let awayTeam = prev.match.split(' - ')[1]
 
-    if(sec == '5654') {
-        let upd = await mikekaDb.findByIdAndUpdate(_id, {$set: {bet: tip, odds, league, date}}, {new: true})
+    if (sec == '5654') {
+        let upd = await mikekaDb.findByIdAndUpdate(_id, { $set: { bet: tip, odds, league, date } }, { new: true })
         res.redirect(`/admin/posting#${upd._id}`)
     } else {
         res.send('Not found')
     }
 })
 
-router.post('/edit-slip/:id', async (req, res)=> {
+router.post('/edit-slip/:id', async (req, res) => {
     let _id = req.params.id
     let sec = req.body.secret
     let tip = req.body.bet
@@ -220,15 +220,15 @@ router.post('/edit-slip/:id', async (req, res)=> {
     let homeTeam = prev.match.split(' - ')[0]
     let awayTeam = prev.match.split(' - ')[1]
 
-    if(sec == '55') {
-        let upd = await betslip.findByIdAndUpdate(_id, {$set: {tip, odd, league, date}}, {new: true})
+    if (sec == '55') {
+        let upd = await betslip.findByIdAndUpdate(_id, { $set: { tip, odd, league, date } }, { new: true })
         res.redirect(`/admin/posting#${upd._id}`)
     } else {
         res.send('Not found')
     }
 })
 
-router.post('/test-posting', async (req, res)=> {
+router.post('/test-posting', async (req, res) => {
     let tag = req.body.tag
     let article = req.body.article
 
@@ -236,7 +236,7 @@ router.post('/test-posting', async (req, res)=> {
     res.send('received')
 })
 
-router.post('/post/movie', async (req, res)=> {
+router.post('/post/movie', async (req, res) => {
     try {
         let tmd = req.body.mov_link
         let p480 = req.body.p480
@@ -268,9 +268,9 @@ router.post('/post/movie', async (req, res)=> {
             let s4 = `${p480.split('&size=')[1].split('&dur=')[0]} MB`
             let s7 = `${p720.split('&size=')[1].split('&dur=')[0]} MB`
 
-            if(Number(s7.split(' MB')[0]) > 1024) {
+            if (Number(s7.split(' MB')[0]) > 1024) {
                 let sz = Number(s7.split(' MB')[0])
-                s7 = `${(sz/1024).toFixed(1)} GB`
+                s7 = `${(sz / 1024).toFixed(1)} GB`
             }
 
             //movies download link
@@ -293,8 +293,8 @@ router.post('/post/movie', async (req, res)=> {
             //let trailer_id = Number(trailer.split('reply-')[1])
 
             //check if nanoid is alredy used, if not post
-            let uniq = await tmDB.findOne({nano})
-            if(!uniq) {
+            let uniq = await tmDB.findOne({ nano })
+            if (!uniq) {
                 await tmDB.create({
                     nano, p480, p720, tmd_link: tmd, title, replyDB: imp.muvikaReps
                 })
@@ -302,8 +302,8 @@ router.post('/post/movie', async (req, res)=> {
                 //rename filescaption
                 let _bot = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/editMessageCaption`
                 let file_captn = `<b>🎬 ${title}</b>\n\n<b>📷 Genre:</b> ${genres}\n<b>💬 Subtitles:</b> English ✅`
-                let mid4 = await vidDB.findOne({nano: p480.split('&size')[0]})
-                let mid7 = await vidDB.findOne({nano: p720.split('&size')[0]})
+                let mid4 = await vidDB.findOne({ nano: p480.split('&size')[0] })
+                let mid7 = await vidDB.findOne({ nano: p720.split('&size')[0] })
                 let cap_data4 = {
                     chat_id: imp.ohMyDB,
                     message_id: mid4.msgId,
@@ -316,7 +316,7 @@ router.post('/post/movie', async (req, res)=> {
                     parse_mode: "HTML",
                     caption: file_captn
                 }
-                if(p480 == p720) {
+                if (p480 == p720) {
                     await axios.post(_bot, cap_data4)
                 } else {
                     await axios.post(_bot, cap_data4)
@@ -332,13 +332,59 @@ router.post('/post/movie', async (req, res)=> {
                 }
                 let response = await axios.post(laura, data)
                 res.send(response.data)
-            } else {res.send(`This id ${nano} is alredy in database. Retry again`)}
+            } else { res.send(`This id ${nano} is alredy in database. Retry again`) }
         } else {
             res.send('You are not authorized to perform this action.')
         }
     } catch (error) {
         console.log(error.message, error)
         res.send(error)
+    }
+})
+
+router.post('/checking/one-m/1', async (req, res) => {
+    try {
+        let thisYear = new Date().getFullYear()
+        let collection = []
+
+        let bulkdata = req.body.data
+        let secret = req.body.secret
+        bulkdata = bulkdata.split('==')
+
+        if (secret == "5654") {
+            for (let bd of bulkdata) {
+                console.log(bd.trim())
+                let dataArr = bd.trim().split('\n')
+                // Use filter to remove empty strings
+                let filterdArr = dataArr.filter(d => d !== "")
+                let matchDoc = {
+                    time: filterdArr[0].split(' ')[1].trim(),
+                    date: filterdArr[0].split(' ')[0].trim() + `/${thisYear}`,
+                    league: filterdArr[1].trim(),
+                    match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
+                    bet: filterdArr[4].trim(),
+                    odds: Number(filterdArr[5].trim())
+                }
+                //check if year included
+                if (filterdArr[0].split(' ')[0].trim().length > 7) {
+                    matchDoc.date = filterdArr[0].split(' ')[0].trim()
+                }
+
+                //search if in database dont push
+                let check_match = await mikekaDb.findOne({date: matchDoc.date, match: matchDoc.match})
+                if(!check_match) {
+                    collection.push(matchDoc)
+                }
+            }
+            let savedDocs = await mikekaDb.insertMany(collection)
+            res.send(savedDocs)
+        } else {
+            res.send('Not authorized')
+        }
+
+    } catch (error) {
+        console.error(error)
+        res.send(error.message)
     }
 })
 
