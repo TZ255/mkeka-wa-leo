@@ -518,11 +518,11 @@ const charlotteFn = async (app) => {
                 })
                 console.log(ctx.channelPost.photo)
             }
-            if (chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata') && ctx.channelPost?.reply_to_message?.reply_markup) {
+            if (chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata')) {
                 //text will either be Pata-1 or Pata+1
                 let idadi = ctx.channelPost.text.split(`Pata`)[1]
                 let url = ''
-                if(ctx.channelPost.reply_to_message?.reply_markup?.inline_keyboard) {
+                if(ctx.channelPost.reply_to_message?.reply_markup) {
                     url = ctx.channelPost.reply_to_message.reply_markup.inline_keyboard[0][1].url
                 } else {
                     url = ctx.channelPost?.reply_to_message?.text
