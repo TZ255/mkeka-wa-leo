@@ -565,8 +565,8 @@ router.get('/match/delete/:siku/:pswd', async (req, res) => {
         let pswd = req.params.pswd
 
         if (pswd == "5654") {
-            let cnt = await mkekadb.countDocuments({ date: siku, from: 'one-m' })
-            await mkekadb.deleteMany({ date: siku, from: 'one-m' })
+            let cnt = await mkekadb.countDocuments({ date: siku })
+            await mkekadb.deleteMany({ date: siku })
             res.send(`✅ ${cnt} docs of ${siku} were deleted successfully`)
         } else {
             res.send('You are not authorized')

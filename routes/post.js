@@ -387,12 +387,25 @@ router.post('/checking/one-m/1', async (req, res) => {
                     date: filterdArr[0].split(' ')[0].trim() + `/${thisYear}`,
                     league: filterdArr[1].trim(),
                     match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
-                    bet: filterdArr[4].trim(),
+                    bet: filterdArr[4].trim().replace('.5 Goals', '.5'),
                     odds: Number(filterdArr[5].trim())
                 }
                 //check if year included
                 if (filterdArr[0].split(' ')[0].trim().length > 7) {
                     matchDoc.date = filterdArr[0].split(' ')[0].trim()
+                }
+
+                //check tips and correct them
+                switch (matchDoc.bet) {
+                    case "1":
+                        matchDoc.bet = 'Home Win'
+                        break;
+                    case "2":
+                        matchDoc.bet = 'Away Win'
+                        break;
+                    case "X":
+                        matchDoc.bet = 'Draw'
+                        break;
                 }
 
                 //search if in database dont push
