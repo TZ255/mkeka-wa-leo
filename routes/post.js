@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const mikekaDb = require('../model/mkeka-mega')
+const bttsModel = require('../model/btts')
 const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
 const supatipsModel = require('../model/supatips')
@@ -8,6 +9,7 @@ const vidDB = require('../model/video-db')
 const { nanoid, customAlphabet } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
+const OpenAI = require('openai');
 
 let imp = {
     replyDb: -1001608248942,
@@ -415,6 +417,93 @@ router.post('/checking/one-m/1', async (req, res) => {
                 }
             }
             let savedDocs = await mikekaDb.insertMany(collection)
+            res.send(savedDocs)
+        } else {
+            res.send('Not authorized')
+        }
+
+    } catch (error) {
+        console.error(error)
+        res.send(error.message)
+    }
+})
+
+// router.post('/checking/afootballreport', async (req, res) => {
+//     try {
+//         let thisYear = new Date().getFullYear()
+//         let collection = []
+
+//         let bulkdata = req.body.data
+//         let secret = req.body.secret
+//         bulkdata = bulkdata.split('==')
+
+//         if (secret == "5654") {
+//             for (let bd of bulkdata) {
+//                 let dataArr = bd.trim().split('\n')
+//                 // Use filter to remove empty strings
+//                 let filterdArr = dataArr.filter(d => d !== "")
+//                 let matchDoc = {
+//                     date: `${filterdArr[0].trim().split('/')[1]}/${filterdArr[0].trim().split('/')[0]}/${thisYear}`,
+//                     time: filterdArr[1].trim(),
+//                     league: filterdArr[2].trim(),
+//                     match: `${filterdArr[3].trim()}`,
+//                     bet: filterdArr[4].trim().replace('BTTS', 'YES'),
+//                     expl: filterdArr[5].trim()
+//                 }
+//                 //check if year included
+//                 if (filterdArr[0].trim().length > 7) {
+//                     matchDoc.date = filterdArr[0].trim()
+//                 }
+
+//                 //search if in database dont push
+//                 let check_match = await bttsModel.findOne({ date: matchDoc.date, match: matchDoc.match })
+//                 if (!check_match) {
+//                     collection.push(matchDoc)
+//                 }
+//             }
+//             let savedDocs = await bttsModel.insertMany(collection)
+//             res.send(savedDocs)
+//         } else {
+//             res.send('Not authorized')
+//         }
+
+//     } catch (error) {
+//         console.error(error)
+//         res.send(error.message)
+//     }
+// })
+
+router.post('/checking/afootballreport', async (req, res) => {
+    try {
+        let thisYear = new Date().getFullYear()
+        let collection = []
+
+        let bulkdata = req.body.data
+        let secret = req.body.secret
+        let trh = req.body.trh
+        bulkdata = bulkdata.split(trh)
+        //filterout empty data
+        bulkdata = bulkdata.filter(bulk => bulk.length > 10)
+
+        if (secret == "5654") {
+            for (let bd of bulkdata) {
+                let dataArr = bd.trim().split('\n')
+                // Use filter to remove empty strings
+                let filterdArr = dataArr.filter(d => d !== "" && d != "\t\r")
+                let matchDoc = {
+                    date: `${trh.split('/')[1]}/${trh.split('/')[0]}/2024`,
+                    time: filterdArr[0].trim(),
+                    league: filterdArr[1].trim(),
+                    match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
+                    bet: filterdArr[4].trim().replace('Btts', 'YES'),
+                    expl: filterdArr[5].split('in the last ')[1].split(' ')[0]
+                }
+                let no_gms = filterdArr[5].split('in the last ')[1].split(' ')[0]
+                let of_team = filterdArr[5].split('games of ')[1]
+                matchDoc.expl = `Timu zote zimefungana kwenye michezo ${no_gms} ya mwisho ya ${of_team}`
+                collection.push(matchDoc)
+            }
+            let savedDocs = await bttsModel.insertMany(collection)
             res.send(savedDocs)
         } else {
             res.send('Not authorized')

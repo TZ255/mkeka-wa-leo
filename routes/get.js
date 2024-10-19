@@ -6,6 +6,7 @@ const venas15Model = require('../model/venas15')
 const venas25Model = require('../model/venas25')
 const graphModel = require('../model/graph-tips')
 const affModel = require('../model/affiliates-analytics')
+const bttsModel = require('../model/btts')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
@@ -567,6 +568,24 @@ router.get('/match/delete/:siku/:pswd', async (req, res) => {
         if (pswd == "5654") {
             let cnt = await mkekadb.countDocuments({ date: siku })
             await mkekadb.deleteMany({ date: siku })
+            res.send(`✅ ${cnt} docs of ${siku} were deleted successfully`)
+        } else {
+            res.send('You are not authorized')
+        }
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+router.get('/match/delete-afoot/:siku/:pswd', async (req, res) => {
+    try {
+        let date = req.params.siku
+        let siku = date.replace(/-/g, '/')
+        let pswd = req.params.pswd
+
+        if (pswd == "5654") {
+            let cnt = await bttsModel.countDocuments({ date: siku })
+            await bttsModel.deleteMany({ date: siku })
             res.send(`✅ ${cnt} docs of ${siku} were deleted successfully`)
         } else {
             res.send('You are not authorized')
