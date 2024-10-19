@@ -18,13 +18,28 @@ const timeAgo = new TimeAgo('en-US')
 
 router.get('/', async (req, res) => {
     try {
+        //leo
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        //jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        //juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        //kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        //mikeka mega
         let mikeka = await mkekadb.find({ date: d }).sort('time')
 
         //check if there is no any slip
-        let check_slip = await betslip.find({ date: d })
-        if (check_slip.length < 1) {
+        let slip = await betslip.find({ date: d })
+        if (slip.length < 1) {
             //find random 3 from mkekadb
             let copies = await mkekadb.aggregate(([
                 { $match: { date: d } }, //not neccessary if you dont need match
@@ -39,8 +54,6 @@ router.get('/', async (req, res) => {
             }
         }
 
-        let slip = await betslip.find({ date: d })
-
         let megaOdds = 1
         let slipOdds = 1
 
@@ -51,28 +64,21 @@ router.get('/', async (req, res) => {
             slipOdds = (slipOdds * od.odd).toFixed(2)
         }
 
-        //supatip ya leo
-        let stips1 = await supatips.find({ siku: d }).sort('time')
+        //supatip zote
+        let allSupa = await supatips.find({ siku: {$in: [d, _d, _s, kesho]}}).sort('time')
+
+        //supatips leo
+        let stips1 = allSupa.filter(doc => doc.siku == d)
         let stips = []
 
         //supatip ya jana
-        let _nd = new Date()
-        _nd.setDate(_nd.getDate() - 1)
-        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ytips = await supatips.find({ siku: _d }).sort('time')
+        let ytips = allSupa.filter(doc => doc.siku == _d)
 
         //supatip ya juzi
-        let _jd = new Date()
-        _jd.setDate(_jd.getDate() - 2)
-        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let jtips = await supatips.find({ siku: _s }).sort('time')
+        let jtips = allSupa.filter(doc => doc.siku == _s)
 
         //supatip ya kesho
-        let new_d = new Date()
-        new_d.setDate(new_d.getDate() + 1)
-        //hapa  hapa
-        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ktips1 = await supatips.find({ siku: kesho }).sort('time')
+        let ktips1 = allSupa.filter(doc => doc.siku == kesho)
         let ktips = []
 
         //loop leo&kesho to create for schemaorg yyy-mmm-dddThh:mm
