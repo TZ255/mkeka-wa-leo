@@ -3,6 +3,7 @@ const mikekaDb = require('../model/mkeka-mega')
 const bttsModel = require('../model/btts')
 const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
+const over15Mik = require('../model/ove15mik')
 const supatipsModel = require('../model/supatips')
 const tmDB = require('../model/movie-db')
 const vidDB = require('../model/video-db')
@@ -36,6 +37,8 @@ let imp = {
     ohmy_backup: -1002363155302
 }
 
+const over15Eligible = ['Over 2.5', 'GG & Over 2.5', 'GG', 'Over 1.5', '1st Half. Over 0.5', '1/1', '2/2', '1 & GG', '2 & GG', 'X2 & GG', '1X & GG', '1 & Over 1.5', '2 & Over 1.5', '1 & Over 2.5', '2 & Over 2.5', 'Home Total. Over 1.5', 'Away Total. Over 1.5', 'Over 3.5 Goals', 'Over 1.5 Goals', 'Over 2.5 Goals']
+
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
     let league = req.body.league
@@ -65,6 +68,13 @@ router.post('/post', async (req, res) => {
     let awayTeam = match.split(' - ')[1]
 
     let d = new Date(date).toLocaleDateString('en-GB')
+
+    //check if eligible for Over15Mik table
+    if(over15Eligible.includes(bet)) {
+        let ov = await over15Mik.findOneAndUpdate({date: d, match}, {$set: {
+            date: d, match, bet, time, odds, league
+        }}, {upsert: true})
+    }
 
     if (secret == '5654' && match.includes(' - ')) {
         let mk = await mikekaDb.create({ match, league, odds, time, bet, date: d })
@@ -417,8 +427,8 @@ router.post('/checking/one-m/1', async (req, res) => {
                 }
                 if (for_over15.includes(matchDoc.bet.toLowerCase())) {
                     //save to over1.5 collection
-                    await betslip.create({
-                        date: matchDoc.date, league: matchDoc.league, time: matchDoc.time, match: matchDoc.match, tip: 'Over 1.5', odd: matchDoc.odds
+                    await over15Mik.create({
+                        date: matchDoc.date, league: matchDoc.league, time: matchDoc.time, match: matchDoc.match, bet: 'Over 1.5', odds: matchDoc.odds
                     })
                 }
             }
