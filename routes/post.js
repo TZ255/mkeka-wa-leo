@@ -373,6 +373,7 @@ router.post('/checking/one-m/1', async (req, res) => {
     try {
         let thisYear = new Date().getFullYear()
         let collection = []
+        let for_over15 = ['over 2.5', 'over 1.5', 'btts', 'yes', 'gg']
 
         let bulkdata = req.body.data
         let secret = req.body.secret
@@ -380,7 +381,6 @@ router.post('/checking/one-m/1', async (req, res) => {
 
         if (secret == "5654") {
             for (let bd of bulkdata) {
-                console.log(bd.trim())
                 let dataArr = bd.trim().split('\n')
                 // Use filter to remove empty strings
                 let filterdArr = dataArr.filter(d => d !== "")
@@ -414,6 +414,12 @@ router.post('/checking/one-m/1', async (req, res) => {
                 let check_match = await mikekaDb.findOne({ date: matchDoc.date, match: matchDoc.match })
                 if (!check_match) {
                     collection.push(matchDoc)
+                }
+                if (for_over15.includes(matchDoc.bet.toLowerCase())) {
+                    //save to over1.5 collection
+                    await betslip.create({
+                        date: matchDoc.date, league: matchDoc.league, time: matchDoc.time, match: matchDoc.match, tip: 'Over 1.5', odd: matchDoc.odds
+                    })
                 }
             }
             let savedDocs = await mikekaDb.insertMany(collection)
