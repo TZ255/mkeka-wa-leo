@@ -50,19 +50,16 @@ const myBotsFn = async (app) => {
                     let prep = await ctx.reply('Preparing Invite link...')
                     await delay(1000)
                     await ctx.api.deleteMessage(ctx.chat.id, prep.message_id)
-                    await ctx.reply(`Hello <b>${first_name}!</b>\nWelcome to our platform. Use the menu buttons below to see what we prepared for you today.\n\n<b>Also use the commands</b> \n\n• /betslip for today's sure bet\n• /hookup for escorts`, {
-                        parse_mode: 'HTML',
-                        reply_markup: {
-                            keyboard: [
-                                [
-                                    { text: '💰 MONEY 🔥' },
-                                    { text: '🍑 PUSSY 😜' },
-                                ]
-                            ],
-                            resize_keyboard: true,
-                            is_persistent: true
-                        }
-                    })
+                    let url = 'https://getafilenow.com/1584699'
+                    let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock our largest library of Pono Videos. Leakage sex tapes and & private groups for escort and hookups.\n\n<code>JOIN 👇👇</code>`
+                    let rpm = {
+                        inline_keyboard: [
+                            [
+                                { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                            ]
+                        ]
+                    }
+                    await ctx.reply(txt, { reply_markup: rpm, parse_mode: 'HTML' })
                 } catch (e) {
                     console.log(e.message, e)
                 }
