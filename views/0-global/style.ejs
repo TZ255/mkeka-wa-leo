@@ -241,18 +241,38 @@
     }
 
     footer {
-        display: flex;
         background-color: white;
         color: #808080;
-        justify-content: space-between;
         box-shadow: 0 0 0 white, 0 -12px 12px gray;
-        padding: 24px;
         margin-top: 64px;
+        padding: 36px 0;
     }
 
-    footer .left,
-    footer.right {
-        width: 47%;
+    footer .left {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    footer .footer {
+        display: flex;
+        justify-content: start;
+        flex-wrap: wrap;
+        width: 98%;
+        margin: 12px auto;
+    }
+
+    footer .footer li {
+        margin-top: 6px;
+    }
+
+    footer .footer .rightside,
+    footer .footer .middle,
+    footer .footer .leftside {
+        width: calc(95% / 3);
+        min-width: 320px;
+        font-size: 12px;
+        padding: 12px;
     }
 
     footer a {
@@ -261,34 +281,33 @@
         font-weight: bold;
     }
 
+    footer a:active, footer a:hover {
+        color: #808080;
+    }
+
     footer h4 {
-        font-size: 16px;
+        font-size: 14px !important;
     }
 
     footer h3 {
-        font-size: 20px;
+        font-size: 14px;
         margin-top: 10px;
     }
 
     footer .h4 {
         color: #808080;
         margin-top: 12px;
-        margin-bottom: 0;
-        font-size: 18px;
-        margin-left: -24px;
+        margin-bottom: 8px;
         font-weight: bold;
+        border-bottom: 1px solid #d3d3d3;
+        width: fit-content;
+        padding-right: 6px;
     }
 
-    footer .right ul {
-        list-style: none;
-    }
-
-    footer .right ul li {
-        border-left: 6px #d3d3d3 solid;
-        background-color: #f5f5f5;
+    /* footer .right ul li {
         padding: 12px 4px;
         margin: 6px 0;
-    }
+    } */
 
     footer #tg,
     footer #email {
@@ -329,19 +348,6 @@
         header {
             box-shadow: 0 12px 12px gray;
             margin-bottom: 32px;
-        }
-
-        footer h3 {
-            font-size: 18px;
-            margin-top: 12px;
-            border-right: 2px solid gray;
-            padding-right: 4px;
-        }
-
-        footer h4.rights {
-            font-size: 12px;
-            border-right: 2px solid gray;
-            padding-right: 4px;
         }
     }
 
