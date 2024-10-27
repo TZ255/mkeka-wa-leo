@@ -1,37 +1,34 @@
 <div class="cont" itemscope>
     <h2 class="header" id="mega-za-leo">
-        ⭐⭐⭐ Mega Odds za Leo ⭐⭐⭐
+        <div>⭐⭐⭐ Mega Odds za Leo ⭐⭐⭐</div>
+        <div style="font-size: 12px; margin-top: 12px;">📅 <%= trh.leo %></div>
     </h2>
-    <% mikeka.forEach(el=> { %>
-        <div class="sect">
-            <div class="time">
-                <span>
-                    <%= el.time %>
-                </span>
-                <span>
-                    <%= el.date %>
-                </span>
-            </div>
-            <div class="game">
-                <div class="league">
-                    <%= el.league %>
+    <ul class="list-group list-group-flush">
+        <% mikeka.forEach(el=> { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="ms-2 me-auto">
+                <div class="date" style="font-size: 12px; color: #808080;">
+                    <div class="dtime">
+                        <%= el.time %>
+                    </div>
+                    <div class="ligi">
+                        <%= el.league %>
+                    </div>
                 </div>
-                <div class="match">
-                    <%= el.match.split(' - ')[0] %> <br>
-                    <%= el.match.split(' - ')[1] %>
-                </div>
-                <div class="tip">
-                    <%= el.bet %>
+                <div class="fw-bold">
+                    <div class="match">
+                        <%= el.match.split(' - ')[0] %><br>
+                        <%= el.match.split(' - ')[1] %>
+                    </div>
+                    <div class="bet" onclick="window.open('/gsb/register')"><%= el.bet %></div>
                 </div>
             </div>
-            <div class="odds">
-                <span onclick="window.open('/gsb/register')">
-                    <%= Number(el.odds).toLocaleString('en-US') %>
-                </span>
-
-            </div>
-        </div>
+            <span class="badge text-bg-success rounded-pill" onclick="window.open('/gsb/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 16px 8px; cursor: pointer;">
+                <%= Number(el.odds).toLocaleString('en-US') %>
+            </span>
+        </li>
         <% }) %>
+    </ul>
 </div>
 <div class="total">
     <div class="subtotal">
@@ -54,6 +51,7 @@
         * bonus ya ukaribisho (150%) hadi Tsh. 3,500,000/=
     </div>
     <div class="sasa">
-        <button onclick="window.open('/pmatch/register')"><i class="fa-solid fa-circle-dollar-to-slot"></i> PATA BONUS HII SASA!</button>
+        <button onclick="window.open('/pmatch/register')"><i class="fa-solid fa-circle-dollar-to-slot"></i> PATA BONUS
+            HII SASA!</button>
     </div>
 </div>

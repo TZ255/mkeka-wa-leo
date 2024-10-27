@@ -38,7 +38,9 @@
             <% }) %>
         </tbody>
     </table>
+    <% if (jtips.length > 0) { %>
     <%- include('aff.ejs'); %>
+    <% } %>
 </div>
 
 <!-- yesterday -->
@@ -72,7 +74,9 @@
             <% }) %>
         </tbody>
     </table>
+    <% if (ytips.length > 0) { %>
     <%- include('aff.ejs'); %>
+    <% } %>
 </div>
 
 
@@ -122,7 +126,14 @@
             <% }) %>
         </tbody>
     </table>
+    <% if (stips.length === 0) { %>
+        <div class="zakesho">
+            * Supa Tips za <b>Leo: <%= trh.leo %></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
+        </div>
+        <% } %>
+    <% if (stips.length > 0) { %>
     <%- include('aff.ejs'); %>
+    <% } %>
 </div>
 
 
@@ -172,8 +183,12 @@
             <% }) %>
         </tbody>
     </table>
-    <div class="zakesho" id="zakesho">
+    <% if (ktips.length === 0) { %>
+    <div class="zakesho">
         * Supa Tips za Kesho <b id="siku_kesho"></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
     </div>
+    <% } %>
+    <% if (ktips.length > 0) { %>
     <%- include('aff.ejs'); %>
+    <% } %>
 </div>

@@ -15,11 +15,12 @@
         margin: 12px auto 24px auto;
     }
 
-    .vip:active, .vip:hover {
+    .vip:active,
+    .vip:hover {
         background-color: #2BB741;
         color: white;
     }
-    
+
     hr.style-eight {
         overflow: visible;
         /* For IE */
@@ -94,7 +95,6 @@
 
     .left .zakesho {
         margin: 12px auto 40px auto;
-        display: none;
         text-align: center;
         color: brown;
         font-weight: bold;
@@ -172,7 +172,7 @@
         color: gold;
         margin-bottom: 4px;
     }
-    
+
     .left .tble-cont .aff h4 i {
         color: gold;
     }
@@ -293,20 +293,6 @@
 
     /* ******************************* */
 
-    .left .cont {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        background-color: white;
-        width: 98%;
-        flex-direction: column;
-        margin: 12px auto 4px auto;
-        border-left: black solid 2px;
-        border-right: black solid 2px;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
-
     .cont .header {
         background-color: black;
         color: white;
@@ -318,85 +304,37 @@
         text-align: center;
     }
 
-    .cont .sect {       
-        padding: 16px;
-        width: 98%;
-        margin: auto;
-        display: flex;
-        justify-content: space-between;
-        border-radius: 2px;
-        border-bottom: 1px solid lightgray;
-    }
+    /* anza hapa */
 
-    .cont .sect .time,
-    .cont .sect .odds {
-        width: 15%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .cont .sect .time {
-        flex-direction: column;
-        color: #808080;
-    }
-
-    .cont .sect .time span {
-        display: flex;
-    }
-
-    .cont .sect .odds span {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: green;
-        cursor: pointer;
-        color: white;
-        font-weight: bold;
-    }
-
-    .cont .sect .game .match {
-        font-weight: bold;
-        font-family: serif;
-        font-size: 14px;
-    }
-
-    .cont .sect .game .league {
-        color: #808080;
-        text-decoration: underline;
+    .cont .list-group li .date {
         font-size: 10px;
-    }
-
-    .cont .sect .game .tip {
-        color: brown;
-        font-weight: bold;
-        font-size: 14px;
-    }
-
-    .cont .sect .game {
-        width: 60%;
-        padding: 4px 4px 4px 12px;
+        color: #808080;
         display: flex;
-        justify-content: center;
-        flex-direction: column;
-        border-left: 1px solid #d3d3d3;
-        border-radius: 1px;
+    }
+
+    .left .cont .list-group li .dtime {
+        border-right: 1px solid #d3d3d3;
+        padding-right: 4px;
+    }
+
+    .left .cont .list-group li .ligi {
+        padding-left: 4px;
+    }
+
+    .left .cont .list-group li .bet {
+        color: green;
+        cursor: pointer;
     }
 
     .total {
         width: 98%;
-        margin: 0 auto 12px auto;
+        margin: 16px auto 12px auto;
         background-color: white;
         display: flex;
         flex-direction: column;
         padding: 16px;
-        border-left: black solid 2px;
-        border-right: black solid 2px;
-        border-radius: 10px;
         border-bottom: black solid 2px;
+        border-top: #d3d3d3 solid 2px;
     }
 
     .subtotal {
@@ -470,12 +408,8 @@
     }
 
     @media (max-width: 480px) {
-        main .left .cont .sect {
-            font-size: 12px;
-        }
-
-        main .left .cont .sect .game {
-            padding: 4px;
+        .left .cont .list-group li .date {
+            font-size: 10px;
         }
 
         main .left .total .btm {
