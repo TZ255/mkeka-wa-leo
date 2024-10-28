@@ -413,6 +413,52 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
     }
 })
 
+router.get('/mkeka/over-05-first-half', async (req, res) => {
+    try {
+        //leo
+        let nd = new Date()
+        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        //jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        //juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        //kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        //mikeka ya kuchukua
+        let arr = ['Over 2.5', 'Over 2.5 Goals', 'GG', 'Over 3.5', 'Over 3.5 Goals', 'Away Total. Over 1.5', 'Home Total. Over 1.5', 'GG & Over 2.5', '2 & GG', '1 & GG', '2 & Over 2.5', '2 & Over 1.5', '1 & Over 2.5', '1 & Over 1.5', '12 & GG', 'X2 & GG', '1X & GG', '2/2', '1/1', '1st Half. Over 0.5']
+        let over05Tips = await mkekadb.find({ 
+            date: {$in: [d, _d, _s, kesho]}, 
+            bet: {$in: arr}
+        }).sort('time')
+
+        //tarehes
+        let trh = { leo: d, kesho, jana: _d, juzi: _s }
+
+        //filter
+        let stips = over05Tips.filter(doc => doc.date === d)
+        let ytips = over05Tips.filter(doc => doc.date === _d)
+        let ktips = over05Tips.filter(doc => doc.date === kesho)
+        let jtips = over05Tips.filter(doc => doc.date === _s)
+
+        res.render('9-over05/over05', { stips, ytips, ktips, jtips, trh })
+    } catch (err) {
+        console.error(err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 126
+        }).catch(e => console.log(e.message, e))
+    }
+})
+
 router.get('/mkeka/vip', async (req, res) => {
     try {
         res.render('8-vip/vip')
