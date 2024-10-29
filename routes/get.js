@@ -13,6 +13,7 @@ const cheerio = require('cheerio')
 //times
 const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
+const { WeekDayFn } = require('./fns/weekday')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -21,18 +22,22 @@ router.get('/', async (req, res) => {
         //leo
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //jana
         let _nd = new Date()
         _nd.setDate(_nd.getDate() - 1)
         let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //juzi
         let _jd = new Date()
         _jd.setDate(_jd.getDate() - 2)
         let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
         let mikeka = await mkekadb.find({ date: d }).sort('time')
@@ -110,9 +115,10 @@ router.get('/', async (req, res) => {
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
 
 
-        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds, trh })
+        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds, trh, jumasiku })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -293,32 +299,38 @@ router.get('/mkeka/over-15', async (req, res) => {
     try {
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-
-        //venas15 ya leo
-        let stips = await venas15Model.find({ siku: d }).sort('time').select('time league siku match tip matokeo')
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //venas15 ya jana
         let _nd = new Date()
         _nd.setDate(_nd.getDate() - 1)
         let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ytips = await venas15Model.find({ siku: _d }).sort('time').select('time league siku match tip matokeo')
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //venas15 ya juzi
         let _jd = new Date()
         _jd.setDate(_jd.getDate() - 2)
         let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let jtips = await venas15Model.find({ siku: _s }).sort('time').select('time league siku match tip matokeo')
+        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //venas15 ya kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ktips = await venas15Model.find({ siku: kesho }).sort('time').select('time league siku match tip matokeo')
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        
+        let Alltips = await venas15Model.find({ siku: {$in: [d, kesho, _d, _s]} }).sort('time').select('time league siku match tip matokeo')
+
+        let ktips = Alltips.filter(doc => doc.siku === kesho)
+        let jtips = Alltips.filter(doc => doc.siku === _s)
+        let ytips = Alltips.filter(doc => doc.siku === _d)
+        let stips = Alltips.filter(doc => doc.siku === d)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
 
-        res.render('5-over15/over15', { stips, ytips, ktips, jtips, trh })
+        res.render('5-over15/over15', { stips, ytips, ktips, jtips, trh, jumasiku })
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -334,32 +346,38 @@ router.get('/mkeka/over-25', async (req, res) => {
     try {
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-
-        //venas25 ya leo
-        let stips = await venas25Model.find({ siku: d }).sort('time').select('time league siku match tip matokeo')
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //venas25 ya jana
         let _nd = new Date()
         _nd.setDate(_nd.getDate() - 1)
         let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ytips = await venas25Model.find({ siku: _d }).sort('time').select('time league siku match tip matokeo')
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //venas25 ya juzi
         let _jd = new Date()
         _jd.setDate(_jd.getDate() - 2)
         let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let jtips = await venas25Model.find({ siku: _s }).sort('time').select('time league siku match tip matokeo')
+        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //venas25 ya kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ktips = await venas25Model.find({ siku: kesho }).sort('time').select('time league siku match tip matokeo')
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        
+        let Alltips = await venas25Model.find({ siku: {$in: [d, kesho, _d, _s]} }).sort('time').select('time league siku match tip matokeo')
+
+        let ktips = Alltips.filter(doc => doc.siku === kesho)
+        let jtips = Alltips.filter(doc => doc.siku === _s)
+        let ytips = Alltips.filter(doc => doc.siku === _d)
+        let stips = Alltips.filter(doc => doc.siku === d)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
 
-        res.render('6-over25/over25', { stips, ytips, ktips, jtips, trh })
+        res.render('6-over25/over25', { stips, ytips, ktips, jtips, trh, jumasiku })
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -375,33 +393,39 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
     try {
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-
-        //mega za leo
-        let stips = await mkekadb.find({ date: d }).sort('time').select('time league date match bet odds')
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mega odds za jana
         let _nd = new Date()
         _nd.setDate(_nd.getDate() - 1)
         let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ytips = await mkekadb.find({ date: _d }).sort('time').select('time league date match bet odds')
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mega odds za juzi
         let juzi = new Date()
         juzi.setDate(juzi.getDate() - 2)
         let juziD = juzi.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let jtips = await mkekadb.find({ date: juziD }).sort('time').select('time league date match bet odds')
+        let juzi_juma = juzi.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
 
         //mega za kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let ktips = await mkekadb.find({ date: kesho }).sort('time').select('time league date match bet odds')
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+
+        let Alltips = await mkekadb.find({ date: {$in: [d, _d, juziD, kesho]} }).sort('time').select('time league date match bet odds')
+        
+        let ktips = Alltips.filter(tip => tip.date === kesho)
+        let stips = Alltips.filter(tip => tip.date === d)
+        let ytips = Alltips.filter(tip => tip.date === _d)
+        let jtips = Alltips.filter(tip => tip.date === juziD)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: juziD }
+        let jumasiku = {juzi: WeekDayFn(juzi_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
 
-        res.render('7-mega/mega', { stips, ytips, ktips, jtips, trh })
+        res.render('7-mega/mega', { stips, ytips, ktips, jtips, trh, jumasiku })
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -418,18 +442,22 @@ router.get('/mkeka/over-05-first-half', async (req, res) => {
         //leo
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //jana
         let _nd = new Date()
         _nd.setDate(_nd.getDate() - 1)
         let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //juzi
         let _jd = new Date()
         _jd.setDate(_jd.getDate() - 2)
         let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka ya kuchukua
         let arr = ['Over 2.5', 'Over 2.5 Goals', 'GG', 'Over 3.5', 'Over 3.5 Goals', 'Away Total. Over 1.5', 'Home Total. Over 1.5', 'GG & Over 2.5', '2 & GG', '1 & GG', '2 & Over 2.5', '2 & Over 1.5', '1 & Over 2.5', '1 & Over 1.5', '12 & GG', 'X2 & GG', '1X & GG', '2/2', '1/1', '1st Half. Over 0.5']
@@ -440,6 +468,7 @@ router.get('/mkeka/over-05-first-half', async (req, res) => {
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
 
         //filter
         let stips = over05Tips.filter(doc => doc.date === d)
@@ -447,7 +476,7 @@ router.get('/mkeka/over-05-first-half', async (req, res) => {
         let ktips = over05Tips.filter(doc => doc.date === kesho)
         let jtips = over05Tips.filter(doc => doc.date === _s)
 
-        res.render('9-over05/over05', { stips, ytips, ktips, jtips, trh })
+        res.render('9-over05/over05', { stips, ytips, ktips, jtips, trh, jumasiku })
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`

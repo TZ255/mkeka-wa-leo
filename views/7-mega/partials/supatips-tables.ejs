@@ -12,7 +12,7 @@
     <div class="table-head">
         <h2>
             <span style="display: block;">⭐⭐⭐ Mega Odds | Juzi ⭐⭐⭐</span>
-            <span class="spn_trh"><b id="trh_jz"></b><%= trh.juzi %></span>
+            <span class="spn_trh"><b><%= jumasiku.juzi %>: </b><%= trh.juzi %></span>
         </h2>
     </div>
     <table class="table table-dark table-striped-columns">
@@ -48,7 +48,7 @@
     <div class="table-head">
         <h2>
             <span style="display: block;">⭐⭐⭐ Mega Odds | Jana ⭐⭐⭐</span>
-            <span class="spn_trh"><b id="trh_jn"></b><%= trh.jana %></span>
+            <span class="spn_trh"><b><%= jumasiku.jana %>: </b><%= trh.jana %></span>
         </h2>
     </div>
     <table class="table table-dark table-striped-columns">
@@ -85,7 +85,7 @@
     <div class="table-head">
         <h2>
             <span style="display: block;">⭐⭐⭐ Mega Odds | Leo ⭐⭐⭐</span>
-            <span class="spn_trh" id="trh_l"><b id="trh_slip"></b><%= trh.leo %></span>
+            <span class="spn_trh" id="trh_l"><b><%= jumasiku.leo %>: </b><%= trh.leo %></span>
         </h2>
     </div>
     <table class="table table-dark table-striped-columns">
@@ -125,7 +125,14 @@
             <% }) %>
         </tbody>
     </table>
-    <%- include('aff-gsb.ejs'); %>
+    <% if (stips.length === 0) { %>
+        <div class="zakesho" id="zakesho">
+            * Tips za Leo <b><%= jumasiku.leo %></b> bado zipo kwenye maandalizi. <a href="/">Angalia mikeka mingine iliyotayari.</a>
+        </div>
+    <% } %>
+    <% if (stips.length > 0) { %>
+        <%- include('aff-gsb.ejs'); %>
+    <% } %>
 </div>
 
 
@@ -134,7 +141,7 @@
     <div class="table-head">
         <h2>
             <span style="display: block;">⭐⭐⭐ Mega Odds | Kesho ⭐⭐⭐</span>
-            <span class="spn_trh"><b id="trh_ksh"></b><%= trh.kesho %></span>
+            <span class="spn_trh"><b><%= jumasiku.kesho %>: </b><%= trh.kesho %></span>
         </h2>
     </div>
     <table class="table table-dark table-striped-columns">
@@ -174,10 +181,14 @@
             <% }) %>
         </tbody>
     </table>
-    <div class="zakesho" id="zakesho">
-        * Tips za Kesho <b id="siku_kesho"></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
-    </div>
-    <%- include('aff-gsb.ejs'); %>
+    <% if (ktips.length === 0) { %>
+        <div class="zakesho" id="zakesho">
+            * Tips za Kesho <b id="siku_kesho"><%= jumasiku.kesho %></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
+        </div>
+    <% } %>
+    <% if (ktips.length > 0) { %>
+        <%- include('aff-gsb.ejs'); %>
+    <% } %>
 </div>
 
 
@@ -230,98 +241,14 @@
     })
 
     ktoggle.addEventListener('click', () => {
-        const zakesho_txt = document.getElementById('zakesho')
-
         ktoggle.classList.add('active_toggle')
         ytoggle.classList.remove('active_toggle')
         ltoggle.classList.remove('active_toggle')
         jtoggle.classList.remove('active_toggle')
-
-        //stringfy ejs obj then parse back to obj
-        const ktips = JSON.parse(`<%- JSON.stringify(ktips) %>`)
-
-        //kesho kama hamna onyesha hamna na ficha kesho cont
-        if (ktips.length == 0) {
-            zakesho_txt.style.display = 'block'
-        }
 
         kday_cont.classList.remove('ficha')
         lday_cont.classList.add('ficha')
         yday_cont.classList.add('ficha')
         jday_cont.classList.add('ficha')
     })
-
-    function over25_sikuKesho() {
-        let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
-        let s = new Date().toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'})
-        let siku_kesho = document.getElementById('siku_kesho')
-        let trh_slip = document.getElementById('trh_slip')
-        let trh_ksh = document.getElementById('trh_ksh')
-        let trh_jn = document.getElementById('trh_jn')
-        let trh_jz = document.getElementById('trh_jz')
-
-        //add one day to show tomorrow
-        switch (d) {
-            case 'Monday':
-                siku_kesho.innerText = 'Jumanne'
-                trh_slip.innerText = 'Jumatatu: '
-                trh_jz.innerText = 'Jumamosi: '
-                trh_jn.innerText = 'Jumapili: '
-                trh_ksh.innerText = 'Jumanne: '
-                break;
-
-            case 'Tuesday':
-                siku_kesho.innerText = 'Jumatano'
-                trh_slip.innerText = 'Jumanne: '
-                trh_jz.innerText = 'Jumapili: '
-                trh_jn.innerText = 'Jumatatu: '
-                trh_ksh.innerText = 'Jumatano: '
-                break;
-
-            case 'Wednesday':
-                siku_kesho.innerText = 'Alhamis'
-                trh_slip.innerText = 'Jumatano: '
-                trh_jz.innerText = 'Jumatatu: '
-                trh_jn.innerText = 'Jumanne: '
-                trh_ksh.innerText = 'Alhamis: '
-                break;
-
-            case 'Thursday':
-                siku_kesho.innerText = 'Ijumaa'
-                trh_slip.innerText = 'Alhamis: '
-                trh_jz.innerText = 'Jumanne: '
-                trh_jn.innerText = 'Jumatano: '
-                trh_ksh.innerText = 'Ijumaa: '
-                break;
-
-            case 'Friday':
-                siku_kesho.innerText = 'Jumamosi'
-                trh_slip.innerText = 'Ijumaa: '
-                trh_jz.innerText = 'Jumatano: '
-                trh_jn.innerText = 'Alhamis: '
-                trh_ksh.innerText = 'Jumamosi: '
-                break;
-
-            case 'Saturday':
-                siku_kesho.innerText = 'Jumapili'
-                trh_slip.innerText = 'Jumamosi: '
-                trh_jz.innerText = 'Alhamis: '
-                trh_jn.innerText = 'Ijumaa: '
-                trh_ksh.innerText = 'Jumapili'
-                break;
-
-            case 'Sunday':
-                siku_kesho.innerText = 'Jumatatu'
-                trh_slip.innerText = 'Jumapili: '
-                trh_jz.innerText = 'Ijumaa: '
-                trh_jn.innerText = 'Jumamosi: '
-                trh_ksh.innerText = 'Jumatatu: '
-                break;
-
-            default:
-                siku_kesho.innerText = '😩'
-                break;
-        }
-    }
-    over25_sikuKesho()
 </script>
