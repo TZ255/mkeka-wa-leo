@@ -20,10 +20,10 @@
                         <%= el.match.split(' - ')[0] %><br>
                         <%= el.match.split(' - ')[1] %>
                     </div>
-                    <div class="bet" onclick="window.open('/gsb/register')"><%= el.bet %></div>
+                    <div class="bet" onclick="window.open('/betway/register')"><%= el.bet %></div>
                 </div>
             </div>
-            <span class="badge text-bg-success rounded-pill" onclick="window.open('/gsb/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 16px 8px; cursor: pointer;">
+            <span class="badge text-bg-success rounded-pill" onclick="window.open('/betway/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 16px 8px; cursor: pointer;">
                 <%= Number(el.odds).toLocaleString('en-US') %>
             </span>
         </li>
