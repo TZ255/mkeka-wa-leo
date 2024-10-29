@@ -16,10 +16,10 @@
         ktoggle.classList.remove('active_toggle')
         jtoggle.classList.remove('active_toggle')
 
-        yday_cont.classList.remove('ficha')
-        lday_cont.classList.add('ficha')
-        kday_cont.classList.add('ficha')
-        jday_cont.classList.add('ficha')
+        yday_cont.style.display = 'block'
+        lday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
     })
 
     ltoggle.addEventListener('click', () => {
@@ -28,10 +28,10 @@
         ktoggle.classList.remove('active_toggle')
         jtoggle.classList.remove('active_toggle')
 
-        lday_cont.classList.remove('ficha')
-        yday_cont.classList.add('ficha')
-        kday_cont.classList.add('ficha')
-        jday_cont.classList.add('ficha')
+        lday_cont.style.display = 'block'
+        yday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
     })
 
     jtoggle.addEventListener('click', () => {
@@ -40,10 +40,10 @@
         ktoggle.classList.remove('active_toggle')
         ltoggle.classList.remove('active_toggle')
 
-        jday_cont.classList.remove('ficha')
-        yday_cont.classList.add('ficha')
-        kday_cont.classList.add('ficha')
-        lday_cont.classList.add('ficha')
+        jday_cont.style.display = 'block'
+        yday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        lday_cont.style.display = 'none'
     })
 
     ktoggle.addEventListener('click', () => {
@@ -52,9 +52,9 @@
         ltoggle.classList.remove('active_toggle')
         jtoggle.classList.remove('active_toggle')
 
-        kday_cont.classList.remove('ficha')
-        lday_cont.classList.add('ficha')
-        yday_cont.classList.add('ficha')
-        jday_cont.classList.add('ficha')
+        kday_cont.style.display = 'block'
+        lday_cont.style.display = 'none'
+        yday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
     })
 </script>
