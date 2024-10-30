@@ -1,9 +1,15 @@
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DYRTYF0H7"></script>
+<!-- Defer loading of gtag.js until after page load -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  window.addEventListener('load', function() {
+    var gtagScript = document.createElement('script');
+    gtagScript.async = true;
+    gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-8DYRTYF0H7';
+    document.head.appendChild(gtagScript);
 
-  gtag('config', 'G-8DYRTYF0H7');
+    // Initialize the dataLayer and gtag function after script is added
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8DYRTYF0H7');
+  });
 </script>
