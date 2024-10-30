@@ -1,6 +1,10 @@
 <div class="cont" itemscope>
     <h2 class="header" id="mega-za-leo">
-        <div>⭐⭐⭐ Mega Odds za Leo ⭐⭐⭐</div>
+        <div>
+            <i class="fa-solid fa-star star8"></i>
+            Mega Odds za Leo 
+            <i class="fa-solid fa-star star8"></i>
+        </div>
         <div style="font-size: 12px; margin-top: 12px;">📅 <%= jumasiku.leo %>: <%= trh.leo %></div>
     </h2>
     <ul class="list-group list-group-flush">
@@ -20,10 +24,10 @@
                         <%= el.match.split(' - ')[0] %><br>
                         <%= el.match.split(' - ')[1] %>
                     </div>
-                    <div class="bet" onclick="window.open('/betway/register')"><%= el.bet %></div>
+                    <div class="bet" onclick="window.open('/888bet/register')"><%= el.bet %></div>
                 </div>
             </div>
-            <span class="badge text-bg-success rounded-pill" onclick="window.open('/betway/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 16px 8px; cursor: pointer;">
+            <span class="badge rounded-pill" onclick="window.open('/888bet/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 16px 8px; cursor: pointer; background-color: #fc6200; color: black; font-family: serif;">
                 <%= Number(el.odds).toLocaleString('en-US') %>
             </span>
         </li>
@@ -34,7 +38,7 @@
     <div class="subtotal">
         <div class="btm w40">
             <span class="hdr">Bookie</span>
-            <span class="ct">Parimatch</span>
+            <span class="ct" style="background-color: #fc6200; color: black; font-weight: bold;">888Bet</span>
         </div>
         <div class="btm w25">
             <span class="hdr">Total Odds</span>
@@ -44,14 +48,16 @@
         </div>
         <div class="btm w25">
             <span class="hdr">Bonus</span>
-            <span class="ct">150%</span>
+            <span class="ct">400%</span>
         </div>
     </div>
     <div class="tangazo">
-        * bonus ya ukaribisho (150%) hadi Tsh. 3,500,000/=
+        * Pata Tsh. 2,000 BURE! Kwa Kujisajili Leo
     </div>
     <div class="sasa">
-        <button onclick="window.open('/pmatch/register')"><i class="fa-solid fa-circle-dollar-to-slot"></i> PATA BONUS
-            HII SASA!</button>
+        <button onclick="window.open('/888bet/register')" style="width: 80%; max-width: 300px;">
+            <i class="fa-solid fa-circle-dollar-to-slot"></i> 
+            PATA TSH. 2,000 BURE!&nbsp; 
+            <i class="fa-solid fa-up-right-from-square"></i></button>
     </div>
 </div>
