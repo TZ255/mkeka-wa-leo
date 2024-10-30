@@ -27,8 +27,8 @@
                     <div class="bet" onclick="window.open('/888bet/register')"><%= el.bet %></div>
                 </div>
             </div>
-            <span class="badge rounded-pill" onclick="window.open('/888bet/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 16px 8px; cursor: pointer; background-color: #fc6200; color: black; font-family: serif;">
-                <%= Number(el.odds).toLocaleString('en-US') %>
+            <span class="badge rounded-pill" onclick="window.open('/888bet/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 17px 8px; cursor: pointer; background-color: #fc6200; color: white; font-family: serif; font-size: 16px;">
+                <%= String(el.odds).padEnd(4, '0') %>
             </span>
         </li>
         <% }) %>
@@ -43,7 +43,7 @@
         <div class="btm w25">
             <span class="hdr">Total Odds</span>
             <span class="ct">
-                <%= megaOdds %>
+                <%= Number(megaOdds).toLocaleString('en-US') %>
             </span>
         </div>
         <div class="btm w25">
