@@ -1,32 +1,52 @@
 <style>
-    body {
-        font-family: serif !important;
-    }
-    body h4 {
-        font-size: 18px !important;
-        margin-top: 32px;
-    }
     :root {
         --aliceblue: #f0f8ff;
         --brown: #a52a2a;
-        --lightGray: #d3d3d3;
+        --lightGray: #f5f5f5;
         --gold: #ffd700;
         --green: #008000;
         --h2font: 18px;
         --h1font: 20px;
         --h3font: 16px;
+        --darkGray: #4d4d4d;
     }
-    .left .p {
+
+    body .articleCont {
+        color: var(--darkGray) !important;
+    }
+
+    body .articleCont h2 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    body .articleCont h3 {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    body .articleCont h4 {
+        font-size: 18px !important;
+        margin-top: 32px;
+        margin-left: 12px;
+        font-weight: bold;
+    }
+
+    .left .articleCont .pf {
         padding: 0 12px;
+        text-align: justify;
     }
 
-    .left p,
-    .left li {
-        color: gray !important;
+    .left .articleCont ul {
+        list-style: circle;
     }
 
-    .left .brown {
-        border-left: 3px solid brown;
+    .left .articleCont ul li{
+        margin-left: 24px !important;
+    }
+
+    .left .articleCont .brown {
+        border-left: 4px solid brown;
         margin-top: 32px;
         border-bottom: 1px solid var(--lightGray);
         padding: 4px 12px;
@@ -34,33 +54,31 @@
         font-weight: bold;
     }
 
-    .left div.batans {
+    .left .articleCont div.batans {
         text-align: center !important;
-        margin: 12px auto 24px auto;
+        margin: 24px auto 24px auto;
     }
-    .left div.batans button {
+    .left .articleCont div.batans button {
         background-color: var(--green);
         color: white;
-        padding: 12px 24px;
+        padding: 18px 4px;
         border: none;
-        border-radius: 32px;
+        border-radius: 4px;
         cursor: pointer;
         font-weight: bold;
         font-size: 12px;
         width: 75%;
+        max-width: 300px;
     }
 
-    .left .zingine {
-        margin: 32px auto;
-    }
-
-    .left .zingine h2 {
-        font-size: 20px;
-    }
-
-    .left a {
+    .left .articleCont a {
         text-decoration: none;
         color: var(--green);
         font-weight: bold;
+    }
+
+    .left .articleCont a:active, .left .articleCont a:hover {
+        color: var(--darkGray);
+        text-decoration: underline;
     }
 </style>
