@@ -219,7 +219,7 @@ router.get('/:comp/register', async (req, res) => {
                 break;
 
             //bots redirects
-            case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet':
+            case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet': case 'betlion-ke':
                 res.redirect(links.betlion_ke);
                 break;
             case 'gsb-tz':
