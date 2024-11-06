@@ -1,4 +1,11 @@
 <style>
+    :root {
+        --betwayColor: #00A826;
+        --bet888Color: #fc6200;
+        --bet888TipColor: #c44e00;
+        --darkBlack: #494747;
+    }
+    
     .vip {
         display: block;
         background-color: #2BB741;
@@ -128,7 +135,7 @@
     }
 
     .cont .header .star8 {
-        color: #fc6200 !important;
+        color: #00A826;
     }
 
     .cont .list-group li .date {
@@ -148,12 +155,12 @@
 
     .left .cont .list-group li .match {
         font-family: 'Trebuchet MS', Arial, sans-serif;
-        color: #494747;
+        color: var(--darkBlack);
         font-size: 18px;
     }
 
     .left .cont .list-group li .bet {
-        color: #c44e00;
+        color: #00A826;
         cursor: pointer;
     }
 
@@ -216,8 +223,8 @@
     }
 
     .total .sasa button {
-        background-color: #fc6200;
-        color: black;
+        background-color: var(--betwayColor);
+        color: white;
         border: none;
         cursor: pointer;
         padding: 12px;
@@ -228,8 +235,7 @@
 
     .total .sasa button:hover,
     .total .sasa button:active {
-        background-color: white;
-        border: #fc6200 1px solid;
+        border: var(--betwayColor) 1px solid;
     }
 
     @media (max-width: 800px) {
