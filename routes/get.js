@@ -70,7 +70,7 @@ router.get('/', async (req, res) => {
         }
 
         //supatip zote
-        let allSupa = await supatips.find({ siku: {$in: [d, _d, _s, kesho]}}).sort('time')
+        let allSupa = await supatips.find({ siku: { $in: [d, _d, _s, kesho] } }).sort('time')
 
         //supatips leo
         let stips1 = allSupa.filter(doc => doc.siku == d)
@@ -115,7 +115,7 @@ router.get('/', async (req, res) => {
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
-        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
+        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
 
         res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds, trh, jumasiku })
@@ -178,7 +178,8 @@ router.get('/:comp/register', async (req, res) => {
         betway_casino: `https://www.betway.co.tz/lobby/casino/all/?register=1&btag=P94949-PR37903-CM111051-TS2045159`,
         betway_arsenal: `https://www.betway.co.tz/Arsenal-Xclusives?btag=P94949-PR37833-CM109867-TS2034255`,
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
-        betlion_ke: `https://media.888africa.com/C.ashx?btag=a_416b_311c_&affid=356&siteid=416&adid=311&c=`
+        betlion_ke: `https://media.888africa.com/C.ashx?btag=a_416b_311c_&affid=356&siteid=416&adid=311&c=`,
+        leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1077&anid=`
     }
     try {
         switch (comp) {
@@ -216,6 +217,9 @@ router.get('/:comp/register', async (req, res) => {
                 break;
             case 'betwinner':
                 res.redirect(links.betwinner);
+                break;
+            case 'leonbet':
+                res.redirect(links.leonbet);
                 break;
 
             //bots redirects
@@ -319,8 +323,8 @@ router.get('/mkeka/over-15', async (req, res) => {
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
-        
-        let Alltips = await venas15Model.find({ siku: {$in: [d, kesho, _d, _s]} }).sort('time').select('time league siku match tip matokeo')
+
+        let Alltips = await venas15Model.find({ siku: { $in: [d, kesho, _d, _s] } }).sort('time').select('time league siku match tip matokeo')
 
         let ktips = Alltips.filter(doc => doc.siku === kesho)
         let jtips = Alltips.filter(doc => doc.siku === _s)
@@ -329,7 +333,7 @@ router.get('/mkeka/over-15', async (req, res) => {
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
-        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
+        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
         res.render('5-over15/over15', { stips, ytips, ktips, jtips, trh, jumasiku })
     } catch (err) {
@@ -366,8 +370,8 @@ router.get('/mkeka/over-25', async (req, res) => {
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
-        
-        let Alltips = await venas25Model.find({ siku: {$in: [d, kesho, _d, _s]} }).sort('time').select('time league siku match tip matokeo')
+
+        let Alltips = await venas25Model.find({ siku: { $in: [d, kesho, _d, _s] } }).sort('time').select('time league siku match tip matokeo')
 
         let ktips = Alltips.filter(doc => doc.siku === kesho)
         let jtips = Alltips.filter(doc => doc.siku === _s)
@@ -376,7 +380,7 @@ router.get('/mkeka/over-25', async (req, res) => {
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
-        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
+        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
         res.render('6-over25/over25', { stips, ytips, ktips, jtips, trh, jumasiku })
     } catch (err) {
@@ -415,8 +419,8 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        let Alltips = await mkekadb.find({ date: {$in: [d, _d, juziD, kesho]} }).sort('time').select('time league date match bet odds')
-        
+        let Alltips = await mkekadb.find({ date: { $in: [d, _d, juziD, kesho] } }).sort('time').select('time league date match bet odds')
+
         let ktips = Alltips.filter(tip => tip.date === kesho)
         let stips = Alltips.filter(tip => tip.date === d)
         let ytips = Alltips.filter(tip => tip.date === _d)
@@ -424,7 +428,7 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: juziD }
-        let jumasiku = {juzi: WeekDayFn(juzi_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
+        let jumasiku = { juzi: WeekDayFn(juzi_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
         res.render('7-mega/mega', { stips, ytips, ktips, jtips, trh, jumasiku })
     } catch (err) {
@@ -462,14 +466,14 @@ router.get('/mkeka/over-05-first-half', async (req, res) => {
 
         //mikeka ya kuchukua
         let arr = ['Over 2.5', 'Over 2.5 Goals', 'GG', 'Over 3.5', 'Over 3.5 Goals', 'Away Total. Over 1.5', 'Home Total. Over 1.5', 'GG & Over 2.5', '2 & GG', '1 & GG', '2 & Over 2.5', '2 & Over 1.5', '1 & Over 2.5', '1 & Over 1.5', '12 & GG', 'X2 & GG', '1X & GG', '2/2', '1/1', '1st Half. Over 0.5']
-        let over05Tips = await mkekadb.find({ 
-            date: {$in: [d, _d, _s, kesho]}, 
-            bet: {$in: arr}
+        let over05Tips = await mkekadb.find({
+            date: { $in: [d, _d, _s, kesho] },
+            bet: { $in: arr }
         }).sort('time')
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
-        let jumasiku = {juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma)}
+        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
         //filter
         let stips = over05Tips.filter(doc => doc.date === d)
