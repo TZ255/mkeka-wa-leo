@@ -179,7 +179,7 @@ router.get('/:comp/register', async (req, res) => {
         betway_arsenal: `https://www.betway.co.tz/Arsenal-Xclusives?btag=P94949-PR37833-CM109867-TS2034255`,
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
         betlion_ke: `https://media.888africa.com/C.ashx?btag=a_416b_311c_&affid=356&siteid=416&adid=311&c=`,
-        leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1077&anid=`
+        leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1078&anid=`
     }
     try {
         switch (comp) {
