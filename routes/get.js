@@ -174,7 +174,7 @@ router.get('/:comp/register', async (req, res) => {
         bet22: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1634`,
         ke_1xbet: `https://refpa4293501.top/L?tag=d_2869291m_2528c_&site=2869291&ad=2528`,
         tz_888: `https://media.888africa.com/C.ashx?btag=a_416b_307c_&affid=356&siteid=416&adid=307&c=`,
-        betwinner: `https://bwredir.com/29lg?extid=mkl&p=%2Fregistration%2F`,
+        betwinner: `https://bw-prm.com/bonus-100-01/?p=%2Fregistration%2F&lang=en&id=29lf`,
         betway_casino: `https://www.betway.co.tz/lobby/casino/all/?register=1&btag=P94949-PR37903-CM111051-TS2045159`,
         betway_arsenal: `https://www.betway.co.tz/Arsenal-Xclusives?btag=P94949-PR37833-CM109867-TS2034255`,
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
@@ -224,7 +224,7 @@ router.get('/:comp/register', async (req, res) => {
 
             //bots redirects
             case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet': case 'betlion-ke':
-                res.redirect(links.betlion_ke);
+                res.redirect(links.betwinner);
                 break;
             case 'gsb-tz':
                 res.redirect(links.gsb);
