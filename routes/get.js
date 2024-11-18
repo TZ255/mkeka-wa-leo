@@ -4,6 +4,7 @@ const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
 const venas15Model = require('../model/venas15')
 const venas25Model = require('../model/venas25')
+const passion35 = require('../model/pp35')
 const graphModel = require('../model/graph-tips')
 const affModel = require('../model/affiliates-analytics')
 const bttsModel = require('../model/btts')
@@ -498,6 +499,53 @@ router.get('/mkeka/vip', async (req, res) => {
         res.render('8-vip/vip')
     } catch (err) {
         console.log(err.message)
+    }
+})
+
+router.get('/mkeka/over-under-35', async (req, res) => {
+    try {
+        let nd = new Date()
+        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+
+        //passion35 ya jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+
+        //passion35 ya juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+
+        //passion35 ya kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+
+        let Alltips = await passion35.find({ siku: { $in: [d, kesho, _d, _s] } }).sort('time').select('time league siku match tip matokeo')
+
+        let ktips = Alltips.filter(doc => doc.siku === kesho)
+        let jtips = Alltips.filter(doc => doc.siku === _s)
+        let ytips = Alltips.filter(doc => doc.siku === _d)
+        let stips = Alltips.filter(doc => doc.siku === d)
+
+        //tarehes
+        let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
+
+        res.render('10-over35/over35', { stips, ytips, ktips, jtips, trh, jumasiku })
+    } catch (err) {
+        console.error(err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 126
+        }).catch(e => console.log(e.message, e))
     }
 })
 
