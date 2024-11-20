@@ -19,6 +19,7 @@
             <% for( let mch of slip ) { %>
                 <tr class="table-light">
                     <td>
+                        <span style="color: #808080; font-size: 10px; text-decoration: underline;"><%= mch.time %> | <%= mch.league %></span><br>
                         <b class="tip">
                             <%= mch.tip %>
                         </b> <br>
@@ -62,7 +63,7 @@
     slipOdd.innerText = (Number(totalSlipOdd) * 56000).toLocaleString('en-US') + ' TZS'
 
     function jiunge() {
-        let url = `https://track.africabetpartners.com/visit/?bta=35468&nci=5847&utm_campaign=gsb-fb`
+        let url = `/gsb/register`
         window.open(url)
     }
 </script>

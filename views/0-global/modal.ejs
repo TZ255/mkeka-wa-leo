@@ -13,7 +13,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" id="betBtn" class="btn btn-primary" style="background-color: green; border: green; padding: 14px 20px;"><b>BASHIRI SASA!</b></button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="padding: 8px 12px; background-color: white; border: 1px solid #808080; color: #808080;">X</button>
+        <button type="button" id="betBtn" class="btn btn-primary" style="background-color: green; border: green; padding: 8px 20px;"><b>BASHIRI SASA!</b></button>
       </div>
     </div>
   </div>
@@ -27,7 +28,7 @@
   }
 
   // Set a timeout to call the function after 20 seconds
-  setTimeout(showDelayedModal, 20000);
+  setTimeout(showDelayedModal, 15000);
 
   // Add event listener to the button for opening an external link
   document.getElementById('betBtn').addEventListener('click', function() {
