@@ -15,6 +15,7 @@ const cheerio = require('cheerio')
 const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
 const { WeekDayFn } = require('./fns/weekday')
+const { processMatches } = require('./fns/apimatches')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -726,6 +727,33 @@ router.get('/match/delete-afoot/:siku/:pswd', async (req, res) => {
         }
     } catch (error) {
         console.error(error)
+    }
+})
+
+router.get('/get/tips', async (req, res) => {
+    try {
+        //leo
+        let d = new Date()
+        let leo = d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        //kesho
+        let dk = new Date()
+        dk.setDate(dk.getDate() + 1)
+        let kesho = dk.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        //keshokutwa
+        let dkt = new Date()
+        dkt.setDate(dkt.getDate() + 2)
+        let kesho_kutwa = dkt.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+        let AllTips = await mkekadb.find({ date: { $in: [leo, kesho, kesho_kutwa] } })
+            .sort('time').select('_id time league match date odds bet')
+        let processedMatches = processMatches(AllTips)
+
+        res.send(processedMatches)
+    } catch (error) {
+        console.log(error.message)
+        res.status(501).send({error: 'There has been an error processing your request'})
     }
 })
 
