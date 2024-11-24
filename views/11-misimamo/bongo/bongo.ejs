@@ -40,6 +40,10 @@
             height: 20px !important;
             border-radius: 6px !important;
         }
+
+        .PST {
+            text-decoration: line-through;
+        }
     </style>
 </head>
 
@@ -107,17 +111,22 @@
                         <% standing.season_fixtures.forEach(fixt => { %>
                          <tr class="tdata">
                             <td class="text-muted text-center">
-                                <span class="time d-block">
+                                <span class="time d-block <%= fixt.fixture.status.short %>">
                                     <%= new Date(fixt.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
                                 </span>
-                                <span class="date d-block">
+                                <span class="date d-block <%= fixt.fixture.status.short %>">
                                     <%= new Date(fixt.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
                                 </span>
+                                <% if (fixt.fixture.status.short === "PST") { %>
+                                    <span class="date d-block text-danger">
+                                        postponed
+                                    </span>
+                                <% } %>
                             </td>
                             <td class="text-center text-muted">
                                 <%= fixt.league.round.split(' - ')[1] %>
                             </td>
-                            <td>
+                            <td class="<%= fixt.fixture.status.short %>">
                                 <%= fixt.teams.home.name %> <br> <%= fixt.teams.away.name %>
                             </td>
                             <td class="text-center fw-bold">
