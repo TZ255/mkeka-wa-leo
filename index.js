@@ -8,6 +8,7 @@ const lauraSourceCodes = require('./bots/laura/bot')
 const CharlloteSourceCodes = require('./bots/charlotte/bot')
 const helenSourceCodes = require('./bots/helen/bot')
 const zambiaBotsSourceCodes = require('./bots/zambias/bot')
+const { UpdateFixuresFn, UpdateStandingFn } = require('./routes/fns/bongo-ligi')
 
 const app = express()
 
@@ -48,6 +49,20 @@ app.use(getRouter)
 if (process.env.local != 'true') {
     //
 }
+
+//updating ligis
+setInterval(() => {
+    let d = new Date().toLocaleTimeString('en-GB', { timeZone: 'Africa/Nairobi' })
+    let [hh, mm, ss] = d.split(":")
+    let time = `${hh}:${mm}`
+
+    if (hh > 13 && mm * 1 === 59) {
+        UpdateFixuresFn()
+        setTimeout(()=> {
+            UpdateStandingFn()
+        }, 5000)
+    }
+}, 1000 * 59)
 
 app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))
 

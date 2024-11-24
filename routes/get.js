@@ -16,6 +16,8 @@ const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
 const { WeekDayFn } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
+const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
+const StandingLigiKuuModel = require('../model/Ligi/bongo')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -742,9 +744,38 @@ router.get('/get/tips/upcoming/:date', async (req, res) => {
         res.send(processedMatches)
     } catch (error) {
         console.log(error.message)
-        res.status(501).send({error: 'There has been an error processing your request. Ensure you provides the correct parameter'})
+        res.status(501).send({ error: 'There has been an error processing your request. Ensure you provides the correct parameter' })
     }
 })
+
+router.get('/standings', (req, res) => {
+    let jumasiku = {
+        mwaka: new Date().getFullYear()
+    }
+
+    res.render('11-misimamo/standings', { jumasiku })
+})
+
+//this have static route because of keywords for tanzania league for ranking
+//Other leagues will have dynamic route like /standings/:id/:season
+router.get('/standings/567/2024', async (req, res) => {
+    let league_season = "2024"
+    let jumasiku = {
+        mwaka: new Date().getFullYear()
+    }
+
+    try {
+        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season })
+        res.render('11-misimamo/bongo/bongo', { standing, jumasiku })
+    } catch (error) {
+        console.log(error?.message)
+    }
+})
+
+// router.get('/API/ligi', (req, res) => {
+    
+//     //res.end()
+// })
 
 router.get('*', (req, res) => {
     res.redirect('/')

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Msimamo wa ligi kuu ya NBC Tanzania Bara 2024/2025. Angalia msimamo wa ligi kuu ya NBC Tanzania, Ratiba na Matokeo ya mechi za leo na nyuma">
+    <%- include('../../0-global/favicon.ejs') %>
+    <link rel="canonical" href="https://mkekawaleo.com/standings/567/2024">
+    <title>Msimamo wa Ligi Kuu ya NBC Tanzania Bara 2024/2025 - Ratiba na Matokeo</title>
+    <%- include('../../0-global/style.ejs'); %>
+    <%- include('../../0-global/google.ejs'); %>
+    <%- include('../../0-global/fonts.ejs'); %>
+    <style>
+        .tdata {
+            font-size: 12px;
+        }
+
+        .champ1, .champ2 {
+            background: green !important;
+            color: white !important;
+        }
+        .champ3, .champ4 {
+            background: #1e90ff !important;
+            color: white !important;
+        }
+        .champ13, .champ14 {
+            background-color: #a52a2a !important;
+            color: white !important;
+        }
+        .champ15, .champ16 {
+            background-color: red !important;
+            color: white !important;
+        }
+
+        .spanchamp {
+            width: 20px !important;
+            height: 20px !important;
+            border-radius: 6px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../../0-global/header.ejs'); %>
+    <main>
+        <section class="left">
+            <div class="">
+                <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara 2024/2025 - Ratiba na Matokeo</h1>
+                <p class="p-2">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025. Matokeo na Ratiba ya msimu mzima</p>
+
+                <h2 class="h2 fs-6">Msimamo</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col" class="fw-bold">Team</th>
+                        <th scope="col" class="text-center">MP</th>
+                        <th scope="col" class="text-center">W</th>
+                        <th scope="col" class="text-center">D</th>
+                        <th scope="col" class="text-center">L</th>
+                        <th scope="col" class="text-center">GD</th>
+                        <th scope="col" class="text-center">Pts</th>
+                    </thead>
+                    <tbody>
+                        <% standing.standing.forEach(team => { %>
+                         <tr>
+                            <td class="tdata text-center champ<%= team.rank %>"><%= team.rank %>.</td>
+                            <td class="tdata"><%= team.team.name %></td>
+                            <td class="tdata text-center"><%= team.all.played %></td>
+                            <td class="tdata text-center"><%= team.all.win %></td>
+                            <td class="tdata text-center"><%= team.all.draw %></td>
+                            <td class="tdata text-center"><%= team.all.lose %></td>
+                            <td class="tdata text-center"><%= team.goalsDiff %></td>
+                            <td class="text-success tdata text-center fw-bold"><%= team.points %></td>
+                         </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+                <div class="desc d-flex align-middle p-2">
+                    <span class="spanchamp d-block" style="background-color: green;"></span>
+                    <span class="d-block ps-2">Champions League</span>
+                </div>
+                <div class="desc d-flex align-middle p-2">
+                    <span class="spanchamp d-block" style="background-color: #1e90ff;"></span>
+                    <span class="d-block ps-2">CAF Confederation Cup</span>
+                </div>
+                <div class="desc d-flex align-middle p-2">
+                    <span class="spanchamp d-block" style="background-color: #a52a2a;"></span>
+                    <span class="d-block ps-2">Relegation Play-Off</span>
+                </div>
+                <div class="desc d-flex align-middle p-2">
+                    <span class="spanchamp d-block" style="background-color: red;"></span>
+                    <span class="d-block ps-2">Relegation</span>
+                </div>
+                <br><br>
+                <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa 2024/2025</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <th scope="col" class="tdata text-center">Date</th>
+                        <th scope="col" class="text-center tdata">Round</th>
+                        <th scope="col" class="tdata">Match</th>
+                        <th scope="col" class="text-center tdata">Results</th>
+                    </thead>
+                    <tbody>
+                        <% standing.season_fixtures.forEach(fixt => { %>
+                         <tr class="tdata">
+                            <td class="text-muted text-center">
+                                <span class="time d-block">
+                                    <%= new Date(fixt.fixture.date).toLocaleTimeString().split(':')[0] %>:<%= new Date(fixt.fixture.date).toLocaleTimeString().split(':')[1] %>
+                                </span>
+                                <span class="date d-block">
+                                    <%= new Date(fixt.fixture.date).toLocaleDateString() %> 
+                                </span>
+                            </td>
+                            <td class="text-center text-muted">
+                                <%= fixt.league.round.split(' - ')[1] %>
+                            </td>
+                            <td>
+                                <%= fixt.teams.home.name %> <br> <%= fixt.teams.away.name %>
+                            </td>
+                            <td class="text-center fw-bold">
+                                <%= fixt.goals.home ?? '-' %> <br> <%= fixt.goals.away ?? '-' %>
+                            </td>
+                         </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            <%- include('../../0-global/somapia.ejs'); %>
+        </section>
+
+        <%- include('../../0-global/right.ejs'); %>
+    </main>
+
+    <%- include('../../0-global/footer.ejs'); %>
+
+    <%- include('../../0-global/modal.ejs'); %>
+    <%- include('../../0-global/script.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+</html>
