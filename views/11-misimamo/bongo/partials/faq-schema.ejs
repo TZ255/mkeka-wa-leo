@@ -92,7 +92,7 @@
       "name": "Msimamo wa Ligi Kuu Tanzania Bara 2024/2025",
       "sportsType": "Football",
       "team": [
-        <% standing.standing.forEach(team => { %>
+        <% standing.standing.forEach((team, index, array) => { %>
         {
           "@type": "SportsTeam",
           "name": "<%= team.team.name %>",
@@ -103,7 +103,7 @@
           "losses": "<%= team.all.lose %>",
           "goalDifference": "<%= team.goalsDiff %>",
           "points": "<%= team.points %>"
-        },
+        }<%= index < array.length - 1 ? ',' : '' %>
         <% }) %>
       ]
     }
