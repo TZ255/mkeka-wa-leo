@@ -69,46 +69,42 @@
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SportsOrganization",
-    "name": "NBC Tanzania Premier League",
+    "@type": "SportsSeason",
+    "name": "Ligi Kuu Tanzania Bara 2024/2025",
+    "startDate": "2024-08-16",
+    "endDate": "2025-05-24",
     "sport": "Soccer",
-    "event": {
-      "@type": "SportsEvent",
-      "name": "2024/2025 Season Standings",
-      "competitor": [
+    "location": {
+      "@type": "Place",
+      "name": "Tanzania",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "TZ"
+      }
+    },
+    "league": {
+      "@type": "SportsOrganization",
+      "name": "Ligi Kuu ya NBC Tanzania Bara",
+      "url": "https://mkekawaleo.com/standings/567/2024"
+    },
+    "standing": {
+      "@type": "SportsOrganization",
+      "name": "Msimamo wa Ligi Kuu Tanzania Bara 2024/2025",
+      "sportsType": "Football",
+      "team": [
         <% standing.standing.forEach(team => { %>
         {
           "@type": "SportsTeam",
           "name": "<%= team.team.name %>",
           "position": "<%= team.rank %>",
-          "additionalProperty": [
-            {
-              "name": "Matches Played",
-              "value": "<%= team.all.played %>"
-            },
-            {
-              "name": "Wins",
-              "value": "<%= team.all.win %>"
-            },
-            {
-              "name": "Draws",
-              "value": "<%= team.all.draw %>"
-            },
-            {
-              "name": "Losses",
-              "value": "<%= team.all.lose %>"
-            },
-            {
-              "name": "Goal Difference",
-              "value": "<%= team.goalsDiff %>"
-            },
-            {
-              "name": "Points",
-              "value": "<%= team.points %>"
-            }
-          ]
-        }<% if (standing.standing.indexOf(team) !== standing.standing.length - 1) { %>,<% } %>
-        <% }); %>
+          "gamesPlayed": "<%= team.all.played %>",
+          "wins": "<%= team.all.win %>",
+          "draws": "<%= team.all.draw %>",
+          "losses": "<%= team.all.lose %>",
+          "goalDifference": "<%= team.goalsDiff %>",
+          "points": "<%= team.points %>"
+        },
+        <% }) %>
       ]
     }
   }
