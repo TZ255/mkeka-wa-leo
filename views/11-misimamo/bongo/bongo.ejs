@@ -13,24 +13,31 @@
     <%- include('../../0-global/style.ejs'); %>
     <%- include('../../0-global/google.ejs'); %>
     <%- include('../../0-global/fonts.ejs'); %>
+    <%- include('./partials/faq-schema.ejs'); %>
     <style>
         .tdata {
             font-size: 12px;
         }
 
-        .champ1, .champ2 {
+        .champ1,
+        .champ2 {
             background: green !important;
             color: white !important;
         }
-        .champ3, .champ4 {
+
+        .champ3 {
             background: #1e90ff !important;
             color: white !important;
         }
-        .champ13, .champ14 {
+
+        .champ13,
+        .champ14 {
             background-color: #a52a2a !important;
             color: white !important;
         }
-        .champ15, .champ16 {
+
+        .champ15,
+        .champ16 {
             background-color: red !important;
             color: white !important;
         }
@@ -51,13 +58,16 @@
     <%- include('../../0-global/header.ejs'); %>
     <main>
         <section class="left">
-            <div class="">
+            <div class="intro">
                 <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara 2024/2025 - Ratiba na Matokeo</h1>
-                <p class="p-2">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025. Matokeo na Ratiba ya msimu mzima</p>
-
+                <p class="p-2">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa
+                    2024/2025.
+                    Matokeo na Ratiba ya msimu mzima</p>
+            </div>
+            <div class="table-section">
                 <h2 class="h2 fs-6">Msimamo</h2>
                 <table class="table table-striped">
-                    <thead>
+                    <thead style="font-size: 14px !important;">
                         <th scope="col" class="text-center">#</th>
                         <th scope="col" class="fw-bold">Team</th>
                         <th scope="col" class="text-center">MP</th>
@@ -69,7 +79,7 @@
                     </thead>
                     <tbody>
                         <% standing.standing.forEach(team => { %>
-                         <tr>
+                        <tr>
                             <td class="tdata text-center champ<%= team.rank %>"><%= team.rank %>.</td>
                             <td class="tdata"><%= team.team.name %></td>
                             <td class="tdata text-center"><%= team.all.played %></td>
@@ -78,7 +88,7 @@
                             <td class="tdata text-center"><%= team.all.lose %></td>
                             <td class="tdata text-center"><%= team.goalsDiff %></td>
                             <td class="text-success tdata text-center fw-bold"><%= team.points %></td>
-                         </tr>
+                        </tr>
                         <% }) %>
                     </tbody>
                 </table>
@@ -98,7 +108,9 @@
                     <span class="spanchamp d-block" style="background-color: red;"></span>
                     <span class="d-block ps-2">Relegation</span>
                 </div>
-                <br><br>
+            </div>
+            <br>
+            <div class="ratiba-section">
                 <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa 2024/2025</h2>
                 <table class="table table-striped">
                     <thead>
@@ -109,7 +121,7 @@
                     </thead>
                     <tbody>
                         <% standing.season_fixtures.forEach(fixt => { %>
-                         <tr class="tdata">
+                        <tr class="tdata">
                             <td class="text-muted text-center">
                                 <span class="time d-block <%= fixt.fixture.status.short %>">
                                     <%= new Date(fixt.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
@@ -118,9 +130,9 @@
                                     <%= new Date(fixt.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
                                 </span>
                                 <% if (fixt.fixture.status.short === "PST") { %>
-                                    <span class="date d-block text-danger">
-                                        postponed
-                                    </span>
+                                <span class="date d-block text-danger">
+                                    postponed
+                                </span>
                                 <% } %>
                             </td>
                             <td class="text-center text-muted">
@@ -132,14 +144,14 @@
                             <td class="text-center fw-bold">
                                 <%= fixt.goals.home ?? '-' %> <br> <%= fixt.goals.away ?? '-' %>
                             </td>
-                         </tr>
+                        </tr>
                         <% }) %>
                     </tbody>
                 </table>
             </div>
+            <%- include('./partials/faqpage.ejs'); %>
             <%- include('../../0-global/somapia.ejs'); %>
         </section>
-
         <%- include('../../0-global/right.ejs'); %>
     </main>
 
@@ -153,4 +165,5 @@
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
 </body>
+
 </html>
