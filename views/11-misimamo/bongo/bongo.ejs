@@ -67,7 +67,7 @@
             <div class="table-section" itemscope itemtype="https://schema.org/Table">
                 <h2 class="h2 fs-6" itemprop="about">Msimamo wa Ligi Kuu Tanzania Bara 2024/25</h2>
                 <table class="table table-striped">
-                    <thead style="font-size: 14px !important;">
+                    <thead style="font-size: 13px !important;">
                         <th scope="col" class="text-center">#</th>
                         <th scope="col" class="fw-bold">Team</th>
                         <th scope="col" class="text-center">MP</th>
@@ -112,42 +112,42 @@
             <br>
             <div class="ratiba-section" itemscope itemprop="https://schema.org/Table">
                 <h2 class="h2 fs-6" itemprop="about">Matokeo na Ratiba ya Msimu Mzima wa 2024/2025</h2>
+                <% agg.forEach(round => { %>
+                <h3 class="h3 p-2 bg-dark text-light"><%= round.round.replace('Regular Season -', 'Round') %></h3>
                 <table class="table table-striped">
                     <thead>
                         <th scope="col" class="tdata text-center">Date</th>
-                        <th scope="col" class="text-center tdata">Round</th>
                         <th scope="col" class="tdata">Match</th>
                         <th scope="col" class="text-center tdata">Results</th>
                     </thead>
                     <tbody>
-                        <% standing.season_fixtures.forEach(fixt => { %>
+                        <% round.fixtures.forEach(fixture => { %>
                         <tr class="tdata">
                             <td class="text-muted text-center">
-                                <span class="time d-block <%= fixt.fixture.status.short %>">
-                                    <%= new Date(fixt.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
+                                <span class="time d-block <%= fixture.fixture.status.short %>">
+                                    <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
                                 </span>
-                                <span class="date d-block <%= fixt.fixture.status.short %>">
-                                    <%= new Date(fixt.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
+                                <span class="date d-block <%= fixture.fixture.status.short %>">
+                                    <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
                                 </span>
-                                <% if (fixt.fixture.status.short === "PST") { %>
+                                <% if (fixture.fixture.status.short === "PST") { %>
                                 <span class="date d-block text-danger">
                                     postponed
                                 </span>
                                 <% } %>
                             </td>
-                            <td class="text-center text-muted">
-                                <%= fixt.league.round.split(' - ')[1] %>
-                            </td>
-                            <td class="<%= fixt.fixture.status.short %>">
-                                <%= fixt.teams.home.name %> <br> <%= fixt.teams.away.name %>
+                            <td class="<%= fixture.fixture.status.short %>">
+                                <%= fixture.teams.home.name %> <br> <%= fixture.teams.away.name %>
                             </td>
                             <td class="text-center fw-bold">
-                                <%= fixt.goals.home ?? '-' %> <br> <%= fixt.goals.away ?? '-' %>
+                                <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>
                             </td>
                         </tr>
                         <% }) %>
                     </tbody>
                 </table>
+                <br>
+                <% }) %>
             </div>
             <%- include('./partials/faqpage.ejs'); %>
             <%- include('../../0-global/somapia.ejs'); %>
@@ -165,4 +165,5 @@
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

@@ -765,15 +765,45 @@ router.get('/standings/567/2024', async (req, res) => {
     }
 
     try {
-        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season })
-        res.render('11-misimamo/bongo/bongo', { standing, jumasiku })
+        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season }).select('standing')
+        const agg = await StandingLigiKuuModel.aggregate([
+            {
+                $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
+            },
+            {
+                $group: {
+                    _id: "$season_fixtures.league.round", // Group by the round field
+                    fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
+                }
+            },
+            {
+                $project: {
+                    round: "$_id", // Rename _id to round
+                    fixtures: 1,
+                    numericRound: {
+                        $toInt: {
+                            $arrayElemAt: [
+                                { $split: ["$_id", " - "] },
+                                1 // Extract numeric part after " - "
+                            ]
+                        }
+                    },
+                    _id: 0 // Exclude the default _id field
+                }
+            },
+            {
+                $sort: { numericRound: 1 } // Sort by the numeric part of the round
+            }
+        ])
+
+        res.render('11-misimamo/bongo/bongo', { standing, agg, jumasiku })
     } catch (error) {
         console.log(error?.message)
     }
 })
 
 // router.get('/API/ligi', (req, res) => {
-    
+
 //     //res.end()
 // })
 
