@@ -72,7 +72,7 @@ router.post('/post', async (req, res) => {
     //check if eligible for Over15Mik table
     if(over15Eligible.includes(bet)) {
         let ov = await over15Mik.findOneAndUpdate({date: d, match}, {$set: {
-            date: d, match, bet, time, odds, league
+            date: d, match, bet, time, odds: Number(odds), league
         }}, {upsert: true})
     }
 
