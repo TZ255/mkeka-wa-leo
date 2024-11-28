@@ -110,42 +110,47 @@
                 </div>
             </div>
             <br>
-            <div class="ratiba-section" itemscope itemprop="https://schema.org/Table">
-                <h2 class="h2 fs-6" itemprop="about">Matokeo na Ratiba ya Msimu Mzima wa 2024/2025</h2>
+            <div class="ratiba-section" itemscope>
+                <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa 2024/2025</h2>
                 <% agg.forEach(round => { %>
-                <h3 class="h3 p-2 bg-dark text-light"><%= round.round.replace('Regular Season -', 'Round') %></h3>
-                <table class="table table-striped">
-                    <thead>
-                        <th scope="col" class="tdata text-center">Date</th>
-                        <th scope="col" class="tdata">Match</th>
-                        <th scope="col" class="text-center tdata">Results</th>
-                    </thead>
-                    <tbody>
-                        <% round.fixtures.forEach(fixture => { %>
-                        <tr class="tdata">
-                            <td class="text-muted text-center">
-                                <span class="time d-block <%= fixture.fixture.status.short %>">
-                                    <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
-                                </span>
-                                <span class="date d-block <%= fixture.fixture.status.short %>">
-                                    <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
-                                </span>
-                                <% if (fixture.fixture.status.short === "PST") { %>
-                                <span class="date d-block text-danger">
-                                    postponed
-                                </span>
-                                <% } %>
-                            </td>
-                            <td class="<%= fixture.fixture.status.short %>">
-                                <%= fixture.teams.home.name %> <br> <%= fixture.teams.away.name %>
-                            </td>
-                            <td class="text-center fw-bold">
-                                <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>
-                            </td>
-                        </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
+                <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
+                    <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
+                        <%= round.round.replace('Regular Season -', 'Mzunguko wa') %>
+                    </h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <th scope="col" class="tdata text-center">Date</th>
+                            <th scope="col" class="tdata">Match</th>
+                            <th scope="col" class="text-center tdata">Results</th>
+                        </thead>
+                        <tbody>
+                            <% round.fixtures.forEach(fixture => { %>
+                            <tr class="tdata">
+                                <td class="text-muted text-center">
+                                    <span class="time d-block <%= fixture.fixture.status.short %>">
+                                        <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
+                                    </span>
+                                    <span class="date d-block <%= fixture.fixture.status.short %>">
+                                        <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
+                                    </span>
+                                    <% if (fixture.fixture.status.short === "PST") { %>
+                                    <span class="date d-block text-danger">
+                                        postponed
+                                    </span>
+                                    <% } %>
+                                </td>
+                                <td class="<%= fixture.fixture.status.short %>">
+                                    <%= fixture.teams.home.name %> <br> <%= fixture.teams.away.name %>
+                                </td>
+                                <td class="text-center fw-bold">
+                                    <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
                 <br>
                 <% }) %>
             </div>
