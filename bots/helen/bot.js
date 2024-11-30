@@ -436,11 +436,7 @@ const helenCodes = async (app) => {
                     let boturl = `t.me/dayoncebot?start=ngono_bongo`
                     let all_chans = await my_channels_db.find()
                     for (let ch of all_chans) {
-                        ctx.api.copyMessage(ch.ch_id, imp.pzone, rp_id, {
-                            reply_markup: {
-                                inline_keyboard: [[{text: "XXX Bongo ❤", url: boturl}]]
-                            }
-                        }).catch(e=> console.log(e.message))
+                        ctx.api.copyMessage(ch.ch_id, imp.pzone, rp_id).catch(e=> console.log(e.message))
                     }
                 }
             }
