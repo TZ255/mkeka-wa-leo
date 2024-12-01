@@ -81,7 +81,7 @@
                         <% standing.standing.forEach(team => { %>
                         <tr>
                             <td class="tdata text-center champ<%= team.rank %>"><%= team.rank %>.</td>
-                            <td class="tdata"><%= team.team.name %></td>
+                            <td class="tdata"><%= team.team.name.replace('Kitayosce', 'Tabora United') %></td>
                             <td class="tdata text-center"><%= team.all.played %></td>
                             <td class="tdata text-center"><%= team.all.win %></td>
                             <td class="tdata text-center"><%= team.all.draw %></td>
@@ -140,7 +140,7 @@
                                     <% } %>
                                 </td>
                                 <td class="<%= fixture.fixture.status.short %>">
-                                    <%= fixture.teams.home.name %> <br> <%= fixture.teams.away.name %>
+                                    <%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United') %> <br> <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United') %>
                                 </td>
                                 <td class="text-center fw-bold">
                                     <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>
@@ -164,7 +164,7 @@
                      <li itemscope itemtype="https://schema.org/ListItem" class="list-group-item">
                         <a itemprop="item" href="/ratiba/567/<%= team.team.id %>/2024" class="text-success text-decoration-none">
                             <span itemprop="name">
-                                Ratiba na Matokeo ya Mechi za <%= team.team.name %>
+                                Ratiba na Matokeo ya Mechi za <%= team.team.name.replace('Kitayosce', 'Tabora United') %>
                             </span>
                         </a>
                         <meta itemprop="position" content="<%= team.rank %>">

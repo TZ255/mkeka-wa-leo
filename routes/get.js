@@ -822,7 +822,17 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
             team_info: league.standing.filter(t => t.team.id == team_id)[0],
             team_id
         }
-        res.render('11-misimamo/24-25/bongo/ratiba/ratiba', {ratiba, standing, partials})
+
+        switch (partials.team_info.team.name) {
+            case 'Young Africans':
+                partials.team_info.team.name = 'Yanga SC'
+                break;
+            case 'Kitayosce':
+                partials.team_info.team.name = 'Tabora United'
+                break;
+        }
+
+        res.render('11-misimamo/24-25/bongo/ratiba/ratiba', { ratiba, standing, partials })
     } catch (error) {
         console.error(error?.message, error)
         res.send(`Kumetokea changamoto. Fungua page hii upya`)
