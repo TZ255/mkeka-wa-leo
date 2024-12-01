@@ -761,7 +761,8 @@ router.get('/standings', (req, res) => {
 router.get('/standings/567/2024', async (req, res) => {
     let league_season = "2024"
     let jumasiku = {
-        mwaka: new Date().getFullYear()
+        mwaka: new Date().getFullYear(),
+        season: `${league_season}/${Number(league_season) + 1}`
     }
 
     try {
@@ -796,9 +797,35 @@ router.get('/standings/567/2024', async (req, res) => {
             }
         ])
 
-        res.render('11-misimamo/bongo/bongo', { standing, agg, jumasiku })
+        res.render('11-misimamo/24-25/bongo/bongo', { standing, agg, jumasiku })
     } catch (error) {
         console.log(error?.message)
+    }
+})
+
+router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
+    try {
+        let league_id = req.params.leagueid
+        let team_id = req.params.teamid
+        let season = req.params.season
+
+        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let standing = league.standing
+        let fixtures = league.season_fixtures
+        let ratiba = fixtures.filter(fix =>
+            fix.teams.home.id == team_id || fix.teams.away.id == team_id
+        )
+
+        let partials = {
+            path: req.path,
+            season: `${season}/${Number(season) + 1}`,
+            team_info: league.standing.filter(t => t.team.id == team_id)[0],
+            team_id
+        }
+        res.render('11-misimamo/24-25/bongo/ratiba/ratiba', {ratiba, standing, partials})
+    } catch (error) {
+        console.error(error?.message, error)
+        res.send(`Kumetokea changamoto. Fungua page hii upya`)
     }
 })
 

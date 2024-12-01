@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Msimamo wa ligi kuu ya NBC Tanzania Bara 2024/2025. Angalia msimamo wa ligi kuu ya NBC Tanzania, Ratiba na Matokeo ya mechi za leo na nyuma">
-    <%- include('../../0-global/favicon.ejs') %>
+        content="Msimamo wa ligi kuu ya NBC Tanzania Bara <%= jumasiku.season %>. Angalia msimamo wa ligi kuu ya NBC Tanzania, Ratiba na Matokeo ya mechi za leo na nyuma">
+    <%- include('../../../0-global/favicon.ejs') %>
     <link rel="canonical" href="https://mkekawaleo.com/standings/567/2024">
-    <title>Msimamo wa Ligi Kuu ya NBC Tanzania Bara 2024/2025 - Ratiba na Matokeo</title>
-    <%- include('../../0-global/style.ejs'); %>
-    <%- include('../../0-global/google.ejs'); %>
-    <%- include('../../0-global/fonts.ejs'); %>
+    <title>Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= jumasiku.season %> - Ratiba na Matokeo</title>
+    <%- include('../../../0-global/style.ejs'); %>
+    <%- include('../../../0-global/google.ejs'); %>
+    <%- include('../../../0-global/fonts.ejs'); %>
     <%- include('./partials/faq-schema.ejs'); %>
     <style>
         .tdata {
@@ -55,13 +55,13 @@
 </head>
 
 <body>
-    <%- include('../../0-global/header.ejs'); %>
+    <%- include('../../../0-global/header.ejs'); %>
     <main>
         <section class="left">
             <div class="intro">
-                <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara 2024/2025 - Ratiba na Matokeo</h1>
+                <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= jumasiku.season %> - Ratiba na Matokeo</h1>
                 <p class="p-2">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa
-                    2024/2025.
+                    <%= jumasiku.season %>.
                     Matokeo na Ratiba ya msimu mzima</p>
             </div>
             <div class="table-section" itemscope itemtype="https://schema.org/Table">
@@ -111,7 +111,7 @@
             </div>
             <br>
             <div class="ratiba-section" itemscope>
-                <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa 2024/2025</h2>
+                <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa <%= jumasiku.season %></h2>
                 <% agg.forEach(round => { %>
                 <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
                     <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
@@ -154,16 +154,34 @@
                 <br>
                 <% }) %>
             </div>
+            <br>
+            <div class="ratiba-timu">
+                <h2 class="h2 fs-6">
+                    Ratiba na Matokeo kwa Timu Moja Moja - Msimu wa <%= jumasiku.season %>
+                </h2>
+                <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
+                    <% standing.standing.forEach(team => { %>
+                     <li itemscope itemtype="https://schema.org/ListItem" class="list-group-item">
+                        <a itemprop="item" href="/ratiba/567/<%= team.team.id %>/2024" class="text-success text-decoration-none">
+                            <span itemprop="name">
+                                Ratiba na Matokeo ya Mechi za <%= team.team.name %>
+                            </span>
+                        </a>
+                        <meta itemprop="position" content="<%= team.rank %>">
+                     </li>
+                    <% }) %>
+                </ul>
+            </div>
             <%- include('./partials/faqpage.ejs'); %>
-            <%- include('../../0-global/somapia.ejs'); %>
+            <%- include('../../../0-global/somapia.ejs'); %>
         </section>
-        <%- include('../../0-global/right.ejs'); %>
+        <%- include('../../../0-global/right.ejs'); %>
     </main>
 
-    <%- include('../../0-global/footer.ejs'); %>
+    <%- include('../../../0-global/footer.ejs'); %>
 
-    <%- include('../../0-global/modal.ejs'); %>
-    <%- include('../../0-global/script.ejs'); %>
+    <%- include('../../../0-global/modal.ejs'); %>
+    <%- include('../../../0-global/script.ejs'); %>
 
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
