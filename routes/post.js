@@ -422,7 +422,7 @@ router.post('/checking/one-m/1', async (req, res) => {
 
                 //check odds to correct them - check if integer i.e no decimal
                 if(Number.isInteger(matchDoc.odds)) {
-                    matchDoc.odds = matchDoc.odds + 0.1
+                    matchDoc.odds = matchDoc.odds + 0.01
                 }
 
                 //search if in database dont push
