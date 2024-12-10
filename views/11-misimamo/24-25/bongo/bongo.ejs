@@ -6,10 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Msimamo wa ligi kuu ya NBC Tanzania Bara <%= jumasiku.season %>. Angalia msimamo wa ligi kuu ya NBC Tanzania, Ratiba na Matokeo ya mechi za leo na nyuma">
+        content="Msimamo wa ligi kuu ya NBC Tanzania Bara <%= partials.season %>. Angalia msimamo wa ligi kuu ya NBC Tanzania, Ratiba na Matokeo ya mechi za leo na nyuma">
     <%- include('../../../0-global/favicon.ejs') %>
+    <meta property="article:published_time" content="<%= partials.createdAt %>">
+    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
     <link rel="canonical" href="https://mkekawaleo.com/standings/567/2024">
-    <title>Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= jumasiku.season %> - Ratiba na Matokeo</title>
+    <title>Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season %> - Ratiba na Matokeo</title>
     <%- include('../../../0-global/style.ejs'); %>
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
@@ -59,9 +61,9 @@
     <main>
         <section class="left">
             <div class="intro">
-                <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= jumasiku.season %> - Ratiba na Matokeo</h1>
+                <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season %> - Ratiba na Matokeo</h1>
                 <p class="p-2">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa
-                    <%= jumasiku.season %>.
+                    <%= partials.season %>.
                     Matokeo na Ratiba ya msimu mzima</p>
             </div>
             <div class="table-section" itemscope itemtype="https://schema.org/Table">
@@ -111,7 +113,7 @@
             </div>
             <br>
             <div class="ratiba-section" itemscope>
-                <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa <%= jumasiku.season %></h2>
+                <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa <%= partials.season %></h2>
                 <% agg.forEach(round => { %>
                 <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
                     <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
@@ -157,7 +159,7 @@
             <br>
             <div class="ratiba-timu">
                 <h2 class="h2 fs-6">
-                    Ratiba na Matokeo kwa Timu Moja Moja - Msimu wa <%= jumasiku.season %>
+                    Ratiba na Matokeo kwa Timu Moja Moja - Msimu wa <%= partials.season %>
                 </h2>
                 <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
                     <% standing.standing.forEach(team => { %>

@@ -760,13 +760,9 @@ router.get('/standings', (req, res) => {
 //Other leagues will have dynamic route like /standings/:id/:season
 router.get('/standings/567/2024', async (req, res) => {
     let league_season = "2024"
-    let jumasiku = {
-        mwaka: new Date().getFullYear(),
-        season: `${league_season}/${Number(league_season) + 1}`
-    }
 
     try {
-        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season }).select('standing')
+        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season })
         const agg = await StandingLigiKuuModel.aggregate([
             {
                 $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
@@ -797,7 +793,14 @@ router.get('/standings/567/2024', async (req, res) => {
             }
         ])
 
-        res.render('11-misimamo/24-25/bongo/bongo', { standing, agg, jumasiku })
+        let partials = {
+            mwaka: new Date().getFullYear(),
+            season: `${league_season}/${Number(league_season) + 1}`,
+            createdAt: standing.createdAt.toISOString(),
+            updatedAt: standing.updatedAt.toISOString()
+        }
+
+        res.render('11-misimamo/24-25/bongo/bongo', { standing, agg, partials })
     } catch (error) {
         console.log(error?.message)
     }
@@ -824,7 +827,10 @@ router.get([ratibaRoutes], async (req, res) => {
             path: req.path,
             season: `${season}/${Number(season) + 1}`,
             team_info: league.standing.filter(t => t.team.id == team_id)[0],
-            team_id
+            team_id,
+            canonical_path: `/ratiba/${league_id}/${team_id}/${season}`,
+            createdAt: league.createdAt.toISOString(),
+            updatedAt: league.updatedAt.toISOString()
         }
 
         switch (partials.team_info.team.name) {
