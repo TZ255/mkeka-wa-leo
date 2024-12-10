@@ -803,7 +803,11 @@ router.get('/standings/567/2024', async (req, res) => {
     }
 })
 
-router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
+let ratibaRoutes = [
+    '/ratiba/:leagueid/:teamid/:season',
+    '/ratiba/:leagueid/:teamid/:season//',
+]
+router.get([ratibaRoutes], async (req, res) => {
     try {
         let league_id = req.params.leagueid
         let team_id = req.params.teamid
