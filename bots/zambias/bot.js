@@ -13,7 +13,9 @@ const myBotsFn = async (app) => {
 
     //importants data
     const imp = {
-        halot: 1473393723
+        halot: 1473393723,
+        shemdoe: 741815228,
+        matangazoDB: -1001570087172
     }
 
     try {
@@ -71,14 +73,26 @@ const myBotsFn = async (app) => {
             bot.command('stats', async ctx => {
                 try {
                     let all = await usersModel.countDocuments()
-                    let lists = await listModel.find()
+
+                    let lists = await usersModel.aggregate([
+                        {
+                            $group: {
+                                _id: "$botname",
+                                idadi: {$sum: 1}
+                            }
+                        },
+                        {
+                            $sort: {idadi: -1}
+                        }
+                    ])
 
                     let txt = `Total Users Are ${all.toLocaleString('en-US')}\n\n`
 
                     for (let [i, v] of lists.entries()) {
-                        let num = (await usersModel.countDocuments({ botname: v.botname })).toLocaleString('en-US')
-                        txt = txt + `${i + 1}. @${v.botname} = ${num}\n\n`
+                        let num = v.idadi.toLocaleString('en-US')
+                        txt = txt + `${i + 1}. @${v._id} = ${num}\n\n`
                     }
+
                     await ctx.reply(txt)
                 } catch (err) {
                     console.log(err.message)
@@ -107,6 +121,39 @@ const myBotsFn = async (app) => {
                     await ctx.reply(txt, { reply_markup: rpm })
                 } catch (err) {
                     console.log(err.message)
+                }
+            })
+
+            bot.command('convo', async ctx => {
+                let convoBots = ["Kenya_Kuma_Kutombana_Bot", "Kuma_Kinembe_Nairobi_Kisumu_Bot"]
+                let admins = [imp.halot, imp.shemdoe]
+                if (admins.includes(ctx.chat.id) && convoBots.includes(ctx.me.username) && ctx.match) {
+                    let msg_id = Number(ctx.match.trim())
+                    let bads = ['deactivated', 'blocked', 'initiate', 'chat not found']
+                    try {
+                        let all_users = await usersModel.find({botname: ctx.me.username})
+                        await ctx.reply(`Starting broadcasting for ${all_users.length} users`)
+            
+                        all_users.forEach((u, i) => {
+                            setTimeout(() => {
+                                bot.api.copyMessage(u.chatid, imp.matangazoDB, msg_id)
+                                    .then(() => {
+                                        if (i === all_users.length - 1) {
+                                            ctx.reply('Nimemaliza conversation').catch(e => console.log(e.message))
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        if (bads.some((b) => err?.message.toLowerCase().includes(b))) {
+                                            u.deleteOne()
+                                        } else { 
+                                            console.log(`🤷‍♂️ ${err.message}`) 
+                                        }
+                                    })
+                            }, i * 50) // 20 messages per second
+                        })
+                    } catch (err) {
+                        console.log(err?.message)
+                    }
                 }
             })
 
