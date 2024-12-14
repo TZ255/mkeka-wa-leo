@@ -21,16 +21,15 @@ const myBotsFn = async (app) => {
 
         for (let tk of tokens) {
             const bot = new Bot(tk.token)
-            if (process.env.local != 'true') {
-                let hookPath = `/telebot/kenyas/${tk.botname}`
-                let domain = process.env.DOMAIN
-                await bot.api.setWebhook(`https://${domain}${hookPath}`, {
-                    drop_pending_updates: true
-                })
-                    .then(() => console.log(`hook for ${tk.botname} set`))
-                    .catch(e => console.log(e.message, e))
-                app.use(hookPath, webhookCallback(bot, 'express'))
-            }
+            let hookPath = `/telebot/kenyas/${tk.botname}`
+            let domain = process.env.DOMAIN
+            await bot.api.setWebhook(`https://${domain}${hookPath}`, {
+                drop_pending_updates: true
+            })
+                .then(() => console.log(`hook for ${tk.botname} set`))
+                .catch(e => console.log(e.message, e))
+            app.use(hookPath, webhookCallback(bot, 'express'))
+
 
             bot.catch((err) => {
                 const ctx = err.ctx;
@@ -47,15 +46,19 @@ const myBotsFn = async (app) => {
                         let tk = await listModel.findOne({ botname })
                         await usersModel.create({ chatid, first_name, botname, token: tk.token })
                     }
-                    let prep = await ctx.reply('Preparing Invite link...')
+                    let prep = await ctx.reply('Preparing Our Premium Groups...')
                     await delay(1000)
                     await ctx.api.deleteMessage(ctx.chat.id, prep.message_id)
-                    let url = 'https://getafilenow.com/1584699'
-                    let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock our largest library of Pono Videos. Leakage sex tapes and & private groups for escort and hookups.\n\n<code>JOIN 👇👇</code>`
+                    let url = 'https://scbfile.com/UnlockProtectedFile'
+                    let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\nFollow the guide below to get started.\n\n<code>Open the Guide 👇👇</code>`
                     let rpm = {
                         inline_keyboard: [
                             [
-                                { text: '🔓 UNLOCK INVITE LINK 🥵', url }
+                                { text: '🔓 Unlock Our Premium Groups 🥵', url }
+                            ],
+                            [
+                                { text: '🔞 Pono Videos', url },
+                                { text: '🍑 Hookups', url },
                             ]
                         ]
                     }
@@ -165,16 +168,20 @@ const myBotsFn = async (app) => {
                                 break;
 
                             default:
-                                let url = 'https://getafilenow.com/1584699'
-                                let txt = `Unlock the largest library of adult videos and leakage sex tapes as well as our private groups for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`
+                                let url = 'https://scbfile.com/UnlockProtectedFile'
+                                let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\nFollow the guide below to get started.\n\n<code>Open the Guide 👇👇</code>`
                                 let rpm = {
                                     inline_keyboard: [
                                         [
-                                            { text: '🔓 Unlock Invite Link 🔞🥵', url }
+                                            { text: '🔓 Unlock Our Premium Groups 🥵', url }
+                                        ],
+                                        [
+                                            { text: '🔞 Pono Videos', url },
+                                            { text: '🍑 Hookups', url },
                                         ]
                                     ]
                                 }
-                                await ctx.reply(txt, { reply_markup: rpm })
+                                await ctx.reply(txt, { reply_markup: rpm, parse_mode: 'HTML' })
 
                         }
                     }
