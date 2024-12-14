@@ -51,15 +51,15 @@ const myBotsFn = async (app) => {
                     let prep = await ctx.reply('Preparing Our Premium Groups...')
                     await delay(1000)
                     await ctx.api.deleteMessage(ctx.chat.id, prep.message_id)
-                    let url = 'https://scbfile.com/UnlockProtectedFile'
-                    let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\nFollow the guide below to get started.\n\n<code>Open the Guide 👇👇</code>`
+                    let url = 'https://scbfile.com/1584699'
+                    let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\n<code>Join NOW! 👇👇</code>`
                     let rpm = {
                         inline_keyboard: [
                             [
-                                { text: '🔓 Unlock Our Premium Groups 🥵', url }
+                                { text: '🔓 UNLOCK OUR GROUPS 🥵', url }
                             ],
                             [
-                                { text: '🔞 Pono Videos', url },
+                                { text: '🔞 Pono Groups', url },
                                 { text: '🍑 Hookups', url },
                             ]
                         ]
@@ -126,7 +126,7 @@ const myBotsFn = async (app) => {
 
             bot.command(['hookup', 'escorts'], async ctx => {
                 try {
-                    let url = 'https://getafilenow.com/1584699'
+                    let url = 'https://scbfile.com/1584699'
                     let txt = `Unlock the largest library of adult videos and leakage sex tapes as well as our private groups for escorts and hookups.\n\nBelow, prove your are not a robot to unlock the group invite link.`
                     let rpm = {
                         inline_keyboard: [
@@ -236,15 +236,15 @@ const myBotsFn = async (app) => {
                                 break;
 
                             default:
-                                let url = 'https://scbfile.com/UnlockProtectedFile'
-                                let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\nFollow the guide below to get started.\n\n<code>Open the Guide 👇👇</code>`
+                                let url = 'https://scbfile.com/1584699'
+                                let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\n<code>Join NOW! 👇👇</code>`
                                 let rpm = {
                                     inline_keyboard: [
                                         [
-                                            { text: '🔓 Unlock Our Premium Groups 🥵', url }
+                                            { text: '🔓 UNLOCK OUR GROUPS 🥵', url }
                                         ],
                                         [
-                                            { text: '🔞 Pono Videos', url },
+                                            { text: '🔞 Pono Groups', url },
                                             { text: '🍑 Hookups', url },
                                         ]
                                     ]
