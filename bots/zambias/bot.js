@@ -43,7 +43,7 @@ const myBotsFn = async (app) => {
                     let chatid = ctx.chat.id
                     let first_name = ctx.chat.first_name
                     let botname = ctx.me.username
-                    let user = await usersModel.findOne({ chatid })
+                    let user = await usersModel.findOne({ chatid, botname })
                     if (!user) {
                         let tk = await listModel.findOne({ botname })
                         await usersModel.create({ chatid, first_name, botname, token: tk.token })
