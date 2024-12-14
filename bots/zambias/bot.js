@@ -99,6 +99,23 @@ const myBotsFn = async (app) => {
                 }
             })
 
+            bot.command('stats2', async ctx => {
+                try {
+                    let all = await usersModel.countDocuments()
+                    let lists = await listModel.find()
+
+                    let txt = `Total Users Are ${all.toLocaleString('en-US')}\n\n`
+
+                    for (let [i, v] of lists.entries()) {
+                        let num = (await usersModel.countDocuments({ botname: v.botname })).toLocaleString('en-US')
+                        txt = txt + `${i + 1}. @${v.botname} = ${num}\n\n`
+                    }
+                    await ctx.reply(txt)
+                } catch (err) {
+                    console.log(err.message)
+                }
+            })
+
             bot.command(['betslip', 'slip'], async ctx => {
                 try {
                     await mkekaReq.mkeka3(ctx, delay, bot, imp)
@@ -125,7 +142,11 @@ const myBotsFn = async (app) => {
             })
 
             bot.command('convo', async ctx => {
-                let convoBots = ["Kenya_Kuma_Kutombana_Bot", "Kuma_Kinembe_Nairobi_Kisumu_Bot"]
+                let convoBots = [
+                    "Kenya_Kuma_Kutombana_Bot", 
+                    "Kuma_Kinembe_Nairobi_Kisumu_Bot",
+                    "lugazi_sugar_mummybot"
+                ]
                 let admins = [imp.halot, imp.shemdoe]
                 if (admins.includes(ctx.chat.id) && convoBots.includes(ctx.me.username) && ctx.match) {
                     let msg_id = Number(ctx.match.trim())
