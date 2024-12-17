@@ -18,6 +18,7 @@ const { WeekDayFn } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
+const { UpdateOtherFixuresFn, UpdateOtherStandingFn } = require('./fns/other-ligi')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -806,6 +807,59 @@ router.get('/standings/567/2024', async (req, res) => {
     }
 })
 
+router.get('/standings/:league/:season', async (req, res) => {
+    let league_season = req.params.season
+    let league_id = req.params.league
+
+    try {
+        const standing = await StandingLigiKuuModel.findOne({ league_id, league_season })
+        if (standing) {
+            const agg = await StandingLigiKuuModel.aggregate([
+                {
+                    $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
+                },
+                {
+                    $group: {
+                        _id: "$season_fixtures.league.round", // Group by the round field
+                        fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
+                    }
+                },
+                {
+                    $project: {
+                        round: "$_id", // Rename _id to round
+                        fixtures: 1,
+                        numericRound: {
+                            $toInt: {
+                                $arrayElemAt: [
+                                    { $split: ["$_id", " - "] },
+                                    1 // Extract numeric part after " - "
+                                ]
+                            }
+                        },
+                        _id: 0 // Exclude the default _id field
+                    }
+                },
+                {
+                    $sort: { numericRound: 1 } // Sort by the numeric part of the round
+                }
+            ])
+
+            let partials = {
+                season: `${league_season}/${Number(league_season) + 1}`,
+                createdAt: standing.createdAt.toISOString(),
+                updatedAt: standing.updatedAt.toISOString(),
+                ligi: `${standing.country} ${standing.league_name}`
+            }
+
+            res.render('11-misimamo/24-25/bongo/bongo', { standing, agg, partials })
+        } else {
+            res.redirect('/')
+        }
+    } catch (error) {
+        console.log(error?.message)
+    }
+})
+
 let ratibaRoutes = [
     '/ratiba/:leagueid/:teamid/:season',
     '/ratiba/:leagueid/:teamid/:season//',
@@ -849,10 +903,17 @@ router.get([ratibaRoutes], async (req, res) => {
     }
 })
 
-// router.get('/API/ligi', (req, res) => {
-
-//     //res.end()
-// })
+router.get('/API/ligi', (req, res) => {
+    try {
+        UpdateOtherStandingFn(39, 2024)
+        setTimeout(()=>{
+            UpdateOtherFixuresFn(39, 2024)
+            res.send('Done')
+        }, 5000)
+    } catch (error) {
+        res.send('Error')
+    }
+})
 
 router.get('*', (req, res) => {
     res.redirect('/')
