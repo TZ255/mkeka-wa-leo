@@ -64,7 +64,14 @@
                 <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season %> - Ratiba na Matokeo</h1>
                 <p class="p-2">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa
                     <%= partials.season %>.
-                    Matokeo na Ratiba ya msimu mzima</p>
+                    Matokeo na Ratiba ya msimu mzima
+                </p>
+                <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-muted">
+                    <i class="fa-regular fa-clock"></i> Updated on:
+                    <abbr class="date published" title="<%= partials.updatedAt %>">
+                        <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
+                    </abbr>
+                </span>
             </div>
             <div class="table-section" itemscope itemtype="https://schema.org/Table">
                 <h2 class="h2 fs-6" itemprop="about">Msimamo wa Ligi Kuu Tanzania Bara 2024/25</h2>

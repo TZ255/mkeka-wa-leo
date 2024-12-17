@@ -9,6 +9,7 @@ const CharlloteSourceCodes = require('./bots/charlotte/bot')
 const helenSourceCodes = require('./bots/helen/bot')
 const zambiaBotsSourceCodes = require('./bots/zambias/bot')
 const { UpdateFixuresFn, UpdateStandingFn } = require('./routes/fns/bongo-ligi')
+const { UpdateOtherStandingFn, UpdateOtherFixuresFn } = require('./routes/fns/other-ligi')
 
 const app = express()
 
@@ -57,11 +58,22 @@ setInterval(() => {
     let [hh, mm, ss] = d.split(":")
     let time = `${hh}:${mm}`
 
-    if (hh > 13 && mm * 1 === 59) {
+    if (Number(hh) > 13 && Number(mm) * 1 === 59) {
         UpdateFixuresFn()
-        setTimeout(()=> {
+        setTimeout(() => {
             UpdateStandingFn()
         }, 5000)
+    }
+
+    if (Number(hh) > 12 || Number(hh) < 2) {
+        switch (Number(mm)) {
+            case 55: //EPL on every 55 minute
+                UpdateOtherStandingFn(39, 2024)
+                setTimeout(() => {
+                    UpdateOtherFixuresFn(39, 2024)
+                }, 5000)
+                break;
+        }
     }
 }, 1000 * 59)
 

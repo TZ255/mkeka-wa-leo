@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Angalia ratiba ya mechi za <%= partials.team_info.team.name %> pamoja na matokeo ya msimu mzima wa <%= partials.season %>">
+    <meta property="article:modified_time" content="<%= partials.team_info.update %>">
+    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
+    <%- include('../../../../0-global/favicon.ejs') %>
+    <title>Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> <%= partials.season %></title>
+    <%- include('../../../../0-global/style.ejs'); %>
+    <%- include('../../../../0-global/google.ejs'); %>
+    <%- include('../../../../0-global/fonts.ejs'); %>
+    <style>
+        .tdata {
+            font-size: 12px;
+        }
+
+        .PST {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../../../../0-global/header.ejs'); %>
+    <main>
+        <section class="left">
+            <h1 class="fs-4 mx-2 my-4">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> Msimu wa
+                <%= partials.season %></h1>
+            <div>
+                <h2 class="h2 fs-6 mb-3">Utangulizi</h2>
+                <div class="utangulizi p-2 text-align-justify">
+                    <p>
+                        <%= partials.team_info.team.name %> ni timu inayoshiriki <%= partials.ligi %> <%= partials.season %> ikiwa inashikilia nafasi ya
+                        <%= partials.team_info.rank %> katika <a href="/standings/<%= partials.league_id %>/2024" class="text-success">Msimamo
+                            wa <%= partials.ligi %> <%= partials.season %></a> na ikiwa na jumla ya <b
+                            class="text-success">points <%= partials.team_info.points %></b>. Hadi sasa imecheza jumla
+                        ya mechi
+                        <%= partials.team_info.all.played %>, mechi <%= partials.team_info.home.played %> zikiwa za
+                        nyumbani na <%= partials.team_info.away.played %> za ugenini.
+                    </p>
+                    <p>
+                        <%= partials.team_info.team.name %> imeshinda mechi <%= partials.team_info.all.win %>, droo
+                        <%= partials.team_info.all.draw %> na kufungwa mechi
+                        <%= partials.team_info.all.lose %>. Amefunga mabao
+                        <%= partials.team_info.all.goals.for %> na kufungwa <%= partials.team_info.all.goals.against %>
+                        hivyo kuifanya kuwa na tofauti ya mabao <%= partials.team_info.goalsDiff %>
+                    </p>
+                </div>
+                <div class="table-section" itemscope itemtype="https://schema.org/Table">
+                    <h2 class="h2 fs-6 mb-3" itemprop="about">Msimamo wa <%= partials.team_info.team.name %> Katika <%= partials.ligi %> <%= partials.season %></h2>
+                    <table class="table table-striped">
+                        <thead style="font-size: 13px !important;">
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="fw-bold">Team</th>
+                            <th scope="col" class="text-center">MP</th>
+                            <th scope="col" class="text-center">W</th>
+                            <th scope="col" class="text-center">D</th>
+                            <th scope="col" class="text-center">L</th>
+                            <th scope="col" class="text-center">GD</th>
+                            <th scope="col" class="text-center">Pts</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="tdata text-center"><%= partials.team_info.rank %>.</td>
+                                <td class="tdata"><%= partials.team_info.team.name %></td>
+                                <td class="tdata text-center"><%= partials.team_info.all.played %></td>
+                                <td class="tdata text-center"><%= partials.team_info.all.win %></td>
+                                <td class="tdata text-center"><%= partials.team_info.all.draw %></td>
+                                <td class="tdata text-center"><%= partials.team_info.all.lose %></td>
+                                <td class="tdata text-center"><%= partials.team_info.goalsDiff %></td>
+                                <td class="text-success tdata text-center fw-bold"><%= partials.team_info.points %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <hr><br>
+                <div class="table-section" itemscope itemtype="https://schema.org/Table">
+                    <h2 class="h2 fs-6 mb-3" itemprop="about">Mechi za <%= partials.team_info.team.name %> kwa Msimu
+                        Mzima wa <%= partials.season %> Pamoja na Matokeo</h2>
+                    <table class="table table-striped">
+                        <thead>
+                            <th scope="col" class="tdata text-center">Date</th>
+                            <th scope="col" class="tdata">Match</th>
+                            <th scope="col" class="text-center tdata">Results</th>
+                        </thead>
+                        <tbody>
+                            <% ratiba.forEach(fixture => { %>
+                            <tr class="tdata">
+                                <td class="text-muted text-center">
+                                    <span class="time d-block <%= fixture.fixture.status.short %>">
+                                        <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
+                                    </span>
+                                    <span class="date d-block <%= fixture.fixture.status.short %>">
+                                        <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
+                                    </span>
+                                    <% if (fixture.fixture.status.short === "PST") { %>
+                                    <span class="date d-block text-danger">
+                                        postponed
+                                    </span>
+                                    <% } %>
+                                </td>
+                                <td class="<%= fixture.fixture.status.short %>">
+                                    <%= fixture.teams.home.name %> <br> 
+                                    <%= fixture.teams.away.name %>
+                                </td>
+                                <td class="text-center fw-bold">
+                                    <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+                <br><hr><br>
+                <%- include('./partials/faq.ejs'); %>
+                <br>
+                <%- include('../../../../0-global/somapia.ejs'); %>
+            </div>
+            <br><br>
+        </section>
+    </main>
+
+    <%- include('../../../../0-global/footer.ejs'); %>
+    <%- include('../../../../0-global/script.ejs'); %>
+    <%- include('../../../../0-global/modal-leon.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

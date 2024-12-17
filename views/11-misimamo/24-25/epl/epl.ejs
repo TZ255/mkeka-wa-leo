@@ -6,11 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Msimamo wa <%= partials.ligi %> <%= partials.season %>. Angalia msimamo wa <%= partials.ligi %>, Ratiba na Matokeo ya mechi za msimu mzima">
+        content="Msimamo wa Ligi Kuu ya Uingereza (EPL) <%= partials.season %>. Angalia msimamo wa <%= partials.ligi %>, Ratiba na Matokeo ya mechi za msimu mzima">
     <%- include('../../../0-global/favicon.ejs') %>
     <meta property="article:published_time" content="<%= partials.createdAt %>">
     <meta property="article:modified_time" content="<%= partials.updatedAt %>">
-    <link rel="canonical" href="https://mkekawaleo.com/standings/567/2024">
     <title>Msimamo wa <%= partials.ligi %> <%= partials.season %> - Ratiba na Matokeo</title>
     <%- include('../../../0-global/style.ejs'); %>
     <%- include('../../../0-global/google.ejs'); %>
@@ -21,24 +20,21 @@
         }
 
         .champ1,
-        .champ2 {
+        .champ2,
+        .champ3,
+        .champ4 {
             background: green !important;
             color: white !important;
         }
 
-        .champ3 {
+        .champ5 {
             background: #1e90ff !important;
             color: white !important;
         }
 
-        .champ13,
-        .champ14 {
-            background-color: #a52a2a !important;
-            color: white !important;
-        }
-
-        .champ15,
-        .champ16 {
+        .champ18,
+        .champ19,
+        .champ20 {
             background-color: red !important;
             color: white !important;
         }
@@ -60,13 +56,20 @@
     <main>
         <section class="left">
             <div class="intro">
-                <h1 class="fs-3 p-2">Msimamo wa <%= partials.ligi %> <%= partials.season %> - Ratiba na Matokeo</h1>
+                <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu Uingereza <%= partials.season %> - Ratiba na Matokeo</h1>
                 <p class="p-2">Hapa chini tumekuwekea msimamo wa <%= partials.ligi %> kwa msimu wa
                     <%= partials.season %>.
-                    Matokeo na Ratiba ya msimu mzima</p>
+                    Matokeo na Ratiba ya msimu mzima
+                </p>
+                <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-muted">
+                    <i class="fa-regular fa-clock"></i> Updated on:
+                    <abbr class="date published" title="<%= partials.updatedAt %>">
+                        <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
+                    </abbr>
+                </span>
             </div>
             <div class="table-section" itemscope itemtype="https://schema.org/Table">
-                <h2 class="h2 fs-6" itemprop="about">Msimamo wa <%= partials.ligi %> <%= partials.season %></h2>
+                <h2 class="h2 fs-6" itemprop="about">Msimamo wa Ligi Kuu Uingereza <%= partials.season %></h2>
                 <table class="table table-striped">
                     <thead style="font-size: 13px !important;">
                         <th scope="col" class="text-center">#</th>
@@ -95,15 +98,11 @@
                 </table>
                 <div class="desc d-flex align-middle p-2">
                     <span class="spanchamp d-block" style="background-color: green;"></span>
-                    <span class="d-block ps-2">Champions League</span>
+                    <span class="d-block ps-2">UEFA Champions League</span>
                 </div>
                 <div class="desc d-flex align-middle p-2">
                     <span class="spanchamp d-block" style="background-color: #1e90ff;"></span>
-                    <span class="d-block ps-2">CAF Confederation Cup</span>
-                </div>
-                <div class="desc d-flex align-middle p-2">
-                    <span class="spanchamp d-block" style="background-color: #a52a2a;"></span>
-                    <span class="d-block ps-2">Relegation Play-Off</span>
+                    <span class="d-block ps-2">Europa League</span>
                 </div>
                 <div class="desc d-flex align-middle p-2">
                     <span class="spanchamp d-block" style="background-color: red;"></span>
@@ -112,7 +111,7 @@
             </div>
             <br>
             <div class="ratiba-section" itemscope>
-                <h2 class="h2 fs-6">Matokeo na Ratiba ya Msimu Mzima wa <%= partials.season %></h2>
+                <h2 class="h2 fs-6">Matokeo na Ratiba Ligi Kuu Uingereza kwa Msimu Mzima wa <%= partials.season %></h2>
                 <% agg.forEach(round => { %>
                 <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
                     <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
@@ -163,7 +162,7 @@
                 <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
                     <% standing.standing.forEach(team => { %>
                      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="list-group-item">
-                        <a itemprop="item" href="/ratiba/567/<%= team.team.id %>/2024" class="text-success text-decoration-none">
+                        <a itemprop="item" href="/ratiba/<%= partials.league_id %>/<%= team.team.id %>/2024" class="text-success text-decoration-none">
                             <span itemprop="name">
                                 Ratiba na Matokeo ya Mechi za <%= team.team.name %>
                             </span>

@@ -18,6 +18,7 @@ const { WeekDayFn } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
+const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn } = require('./fns/other-ligi')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -812,9 +813,9 @@ router.get('/standings/:league/:season', async (req, res) => {
     let league_id = req.params.league
 
     try {
-        const standing = await StandingLigiKuuModel.findOne({ league_id, league_season })
+        const standing = await OtherStandingLigiKuuModel.findOne({ league_id, league_season })
         if (standing) {
-            const agg = await StandingLigiKuuModel.aggregate([
+            const agg = await OtherStandingLigiKuuModel.aggregate([
                 {
                     $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
                 },
@@ -848,10 +849,17 @@ router.get('/standings/:league/:season', async (req, res) => {
                 season: `${league_season}/${Number(league_season) + 1}`,
                 createdAt: standing.createdAt.toISOString(),
                 updatedAt: standing.updatedAt.toISOString(),
-                ligi: `${standing.country} ${standing.league_name}`
+                ligi: `${standing.country} ${standing.league_name}`,
+                league_id
             }
 
-            res.render('11-misimamo/24-25/bongo/bongo', { standing, agg, partials })
+            switch (league_id) {
+                case '39':
+                    res.render('11-misimamo/24-25/epl/epl', { standing, agg, partials })
+                    break;
+            }
+
+
         } else {
             res.redirect('/')
         }
@@ -860,9 +868,11 @@ router.get('/standings/:league/:season', async (req, res) => {
     }
 })
 
+
+//BONGO LEague -- Check other league belows this one
 let ratibaRoutes = [
-    '/ratiba/:leagueid/:teamid/:season',
-    '/ratiba/:leagueid/:teamid/:season//',
+    '/ratiba/567/:teamid/:season',
+    '/ratiba/567/:teamid/:season//',
 ]
 router.get([ratibaRoutes], async (req, res) => {
     try {
@@ -903,17 +913,56 @@ router.get([ratibaRoutes], async (req, res) => {
     }
 })
 
-router.get('/API/ligi', (req, res) => {
+//other ligi
+router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
     try {
-        UpdateOtherStandingFn(39, 2024)
-        setTimeout(()=>{
-            UpdateOtherFixuresFn(39, 2024)
-            res.send('Done')
-        }, 5000)
+        let league_id = req.params.leagueid
+        let team_id = req.params.teamid
+        let season = req.params.season
+
+        let league = await OtherStandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let standing = league.standing
+        let fixtures = league.season_fixtures
+        let ratiba = fixtures.filter(fix =>
+            fix.teams.home.id == team_id || fix.teams.away.id == team_id
+        )
+
+        let partials = {
+            path: req.path,
+            season: `${season}/${Number(season) + 1}`,
+            team_info: league.standing.filter(t => t.team.id == team_id)[0],
+            team_id,
+            league_id,
+            ligi: `${league.country} ${league.league_name}`,
+            canonical_path: `/ratiba/${league_id}/${team_id}/${season}`,
+            createdAt: league.createdAt.toISOString(),
+            updatedAt: league.updatedAt.toISOString()
+        }
+
+        switch (league_id) {
+            case '39':
+                res.render('11-misimamo/24-25/epl/ratiba/ratiba', { ratiba, standing, partials })
+                break;
+        }
+
+
     } catch (error) {
-        res.send('Error')
+        console.error(error?.message, error)
+        res.send(`Kumetokea changamoto. Fungua page hii upya`)
     }
 })
+
+// router.get('/API/ligi', (req, res) => {
+//     try {
+//         UpdateOtherStandingFn(39, 2024)
+//         setTimeout(()=>{
+//             UpdateOtherFixuresFn(39, 2024)
+//             res.send('Done')
+//         }, 5000)
+//     } catch (error) {
+//         res.send('Error')
+//     }
+// })
 
 router.get('*', (req, res) => {
     res.redirect('/')
