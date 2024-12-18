@@ -62,16 +62,16 @@ setInterval(() => {
     let hours = Number(hh)
     let mins = Number(mm)
 
-    //update bongo at 21,22,23, and 06:01
-    if ((hours > 20 || hours == 6) && mins == 1) {
+    //update bongo at 18,19,21,23, and 04:01
+    if (([18, 19, 21, 23, 4].includes(hours)) && mins == 1) {
         UpdateFixuresFn()
         setTimeout(() => {
             UpdateStandingFn()
         }, 5000)
     }
 
-    //update europe leagues at 21,22,23 and 4:02
-    if (hours > 20 || hours == 4) {
+    //update europe leagues
+    if ([18, 20, 22, 3].includes(hours)) {
         switch (mins) {
             case 2: //EPL on every 02 minute
                 UpdateOtherStandingFn(39, 2024)
