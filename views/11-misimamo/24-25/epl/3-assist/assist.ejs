@@ -14,12 +14,17 @@
     <%- include('../../../../0-global/style.ejs'); %>
     <%- include('../../../../0-global/google.ejs'); %>
     <%- include('../../../../0-global/fonts.ejs'); %>
+    <style>
+        p {
+            text-align: justify !important;
+        }
+    </style>
 </head>
 
 <body>
     <%- include('../../../../0-global/header.ejs'); %>
     <main>
-        <section class="left">
+        <section class="left text-align-justify">
             <h1 class="fs-4 mx-2 my-4">
                 Wachezaji Wanaongoza kwa Asisti EPL Msimu wa <%= partials.season %>
             </h1>
@@ -66,7 +71,7 @@
                             <% }) %>
                         </tbody>
                         <caption class="p-2 fst-italic">
-                            Orodha hii inasasishwa mara kwa mara kulingana na mechi za kila wiki. Ona pia, <a href="/wafungaji-bora/39/2024" class="text-success">Orodha ya Wafungaji Bora wa EPL 2024/25</a>
+                            Orodha hii inasasishwa mara kwa mara kulingana na mechi za kila wiki. <br>Ona pia, <a href="/wafungaji-bora/39/2024" class="text-success">Orodha ya Wafungaji Bora wa EPL 2024/25</a>
                         </caption>
                     </table>
                 </div>
@@ -76,27 +81,27 @@
                 <div class="fill-up-section">
                     <h2 class="h2 fs-6">Uchambuzi wa Asisti kwa Baadhi ya Wachezaji</h2>
                     <div class="mchezaji p-2">
-                        <h3 class="fw-bold fs-6">Bukayo Saka (Arsenal 2024/25)</h3>
+                        <h3 class="fw-bold fs-5">Bukayo Saka (Arsenal 2024/25)</h3>
                         <p>Saka ameendelea kung'ara katika safu ya ushambuliaji ya Arsenal, akitoa pasi muhimu zinazowezesha mabao. Uwezo wake wa kucheza pande zote za uwanja na maamuzi sahihi unamfanya kuwa mchezaji muhimu kwa "The Gunners".</p>
                     </div>
                     <div class="mchezaji p-2">
-                        <h3 class="fw-bold fs-6">Mohamed Salah (Liverpool 2024/25)</h3>
+                        <h3 class="fw-bold fs-5">Mohamed Salah (Liverpool 2024/25)</h3>
                         <p>Salah, mbali na kufunga mabao, amekuwa na mchango mkubwa katika kuunda nafasi za mabao kwa wenzake. Kasi yake na uwezo wa kuvutia mabeki kumemruhusu kutoa pasi za mwisho zenye tija kwa Liverpool.</p>
                     </div>
                     <div class="mchezaji p-2">
-                        <h3 class="fw-bold fs-6">Cole Palmer (Chelsea 2024/25)</h3>
+                        <h3 class="fw-bold fs-5">Cole Palmer (Chelsea 2024/25)</h3>
                         <p>Palmer, kijana machachari na kipaji kizuri, ameonyesha uwezo mkubwa wa kuunda nafasi za mabao kwa Chelsea. Ubunifu wake na utulivu katika kutoa pasi za mwisho vimekuwa muhimu kwa mafanikio ya timu.</p>
                     </div>
                     <div class="mchezaji p-2">
-                        <h3 class="fw-bold fs-6">Antonee Robinson (Fulham 2024/25)</h3>
+                        <h3 class="fw-bold fs-5">Antonee Robinson (Fulham 2024/25)</h3>
                         <p>Robinson, beki wa kushoto, amekuwa na mchango mkubwa katika safu ya ushambuliaji ya Fulham, akitoa asisti sita hadi sasa. Uwezo wake wa kupanda na kushuka uwanjani umemfanya kuwa silaha muhimu kwa timu.</p>
                     </div>
                     <div class="mchezaji p-2">
-                        <h3 class="fw-bold fs-6">Son Heung-Min (Tottenham Hotspur 2024/25)</h3>
+                        <h3 class="fw-bold fs-5">Son Heung-Min (Tottenham Hotspur 2024/25)</h3>
                         <p>Son ameendelea kuwa mchezaji tegemeo kwa Spurs, akichangia mabao na asisti. Uwezo wake wa kucheza nafasi mbalimbali za ushambuliaji na kutoa pasi za mwisho umemfanya kuwa mchezaji wa kipekee ndani na nje ya timu hii.</p>
                     </div>
                     <div class="maswali p-2">
-                        <h3>Maswali kwako Shabiki wa EPL</h3>
+                        <h3 class="fs-4">Maswali kwako Shabiki wa EPL</h3>
                         <ul class="">
                             <li>Ni mchezaji gani unayemwona ataongoza kwa asisti hadi mwisho wa msimu huu?</li>
                             <li>Je, unafikiri kuna mchezaji ambaye hajatajwa lakini ana uwezo wa kuibuka na kuwa mtoa asisti bora?</li>

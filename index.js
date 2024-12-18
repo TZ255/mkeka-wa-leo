@@ -10,7 +10,7 @@ const CharlloteSourceCodes = require('./bots/charlotte/bot')
 const helenSourceCodes = require('./bots/helen/bot')
 const zambiaBotsSourceCodes = require('./bots/zambias/bot')
 const { UpdateFixuresFn, UpdateStandingFn } = require('./routes/fns/bongo-ligi')
-const { UpdateOtherStandingFn, UpdateOtherFixuresFn } = require('./routes/fns/other-ligi')
+const { UpdateOtherStandingFn, UpdateOtherFixuresFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./routes/fns/other-ligi')
 
 const app = express()
 
@@ -59,20 +59,36 @@ setInterval(() => {
     let d = new Date().toLocaleTimeString('en-GB', { timeZone: 'Africa/Nairobi' })
     let [hh, mm, ss] = d.split(":")
     let time = `${hh}:${mm}`
+    let hours = Number(hh)
+    let mins = Number(mm)
 
-    if (Number(hh) > 13 && Number(mm) * 1 === 59) {
+    //update bongo at 21,22,23, and 06:01
+    if ((hours > 20 || hours == 6) && mins == 1) {
         UpdateFixuresFn()
         setTimeout(() => {
             UpdateStandingFn()
         }, 5000)
     }
 
-    if (Number(hh) > 12 || Number(hh) < 2) {
-        switch (Number(mm)) {
-            case 55: //EPL on every 55 minute
+    //update europe leagues at 21,22,23 and 4:02
+    if (hours > 20 || hours == 4) {
+        switch (mins) {
+            case 2: //EPL on every 02 minute
                 UpdateOtherStandingFn(39, 2024)
                 setTimeout(() => {
                     UpdateOtherFixuresFn(39, 2024)
+                }, 5000)
+                break;
+        }
+    }
+
+    //update assist and goals at 03:03 and at 10:03 
+    if ([3, 10].includes(hours)) {
+        switch (mins) {
+            case 31: //EPL top scorer on every 31
+                UpdateOtherTopScorerFn(39, 2024)
+                setTimeout(() => {
+                    UpdateOtherTopAssistFn(39, 2024)
                 }, 5000)
                 break;
         }
