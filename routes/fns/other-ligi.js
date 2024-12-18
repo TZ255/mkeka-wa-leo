@@ -97,7 +97,71 @@ const UpdateOtherFixuresFn = async (league_id, season) => {
     }
 }
 
+const UpdateOtherTopScorerFn = async (league_id, season) => {
+    try {
+        const options = {
+            method: 'GET',
+            url: 'https://api-football-v1.p.rapidapi.com/v3/players/topscorers',
+            params: {
+                league: `${league_id}`,
+                season: `${season}`
+            },
+            headers: {
+                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+            }
+        };
+
+        const response = await axios.request(options);
+        if(response.status === 200 && response?.data?.response.length > 0) {
+            let top_scorers = response.data.response
+            await OtherLigiKuuModel.findOneAndUpdate({league_id, league_season: season}, {
+                $set: { top_scorers },
+            })
+            console.log(`${league_id} top scorers updated`)
+        } else {
+            ErrorFn(`Error fetching Other Ligi Kuu Standing`)
+        }
+    } catch (error) {
+        console.log(error?.message, error)
+        let message = `Error Updating Top Scorers: ${error?.message}`
+        ErrorFn(message)
+    }
+}
+
+const UpdateOtherTopAssistFn = async (league_id, season) => {
+    try {
+        const options = {
+            method: 'GET',
+            url: 'https://api-football-v1.p.rapidapi.com/v3/players/topassists',
+            params: {
+                league: `${league_id}`,
+                season: `${season}`
+            },
+            headers: {
+                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+            }
+        };
+
+        const response = await axios.request(options);
+        if(response.status === 200 && response?.data?.response.length > 0) {
+            let top_assists = response.data.response
+            await OtherLigiKuuModel.findOneAndUpdate({league_id, league_season: season}, {
+                $set: { top_assists },
+            })
+            console.log(`${league_id} top assists updated`)
+        } else {
+            ErrorFn(`Error fetching ${league_id} top assists`)
+        }
+    } catch (error) {
+        console.log(error?.message, error)
+        let message = `Error Updating Top Asists: ${error?.message}`
+        ErrorFn(message)
+    }
+}
+
 module.exports = {
-    UpdateOtherStandingFn, UpdateOtherFixuresFn
+    UpdateOtherStandingFn, UpdateOtherFixuresFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn
 }
 
