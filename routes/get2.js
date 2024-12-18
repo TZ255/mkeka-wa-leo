@@ -139,7 +139,7 @@ let ratibaRoutes = [
 ]
 router.get([ratibaRoutes], async (req, res) => {
     try {
-        let league_id = req.params.leagueid
+        let league_id = 567
         let team_id = req.params.teamid
         let season = req.params.season
 
