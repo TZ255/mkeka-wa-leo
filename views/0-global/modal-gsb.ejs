@@ -37,7 +37,7 @@
     // Function to start the interval timer
     function startModalInterval() {
       showModal(); // Show immediately first time
-      modalShowInterval = setInterval(showModal, 20000); // Then every 20 seconds
+      modalShowInterval = setInterval(showModal, 30000); // Then every 20 seconds
     }
   
     // Function to handle modal hide event
@@ -47,7 +47,7 @@
         clearInterval(modalShowInterval);
       }
       // Start new interval
-      modalShowInterval = setInterval(showModal, 20000);
+      modalShowInterval = setInterval(showModal, 30000);
     }
   
     // Add event listener for when modal is hidden

@@ -156,6 +156,10 @@ router.get('/kesho', async (req, res) => {
 
 })
 
+router.get('/mkeka', (req, res) => {
+    res.render('1-mikeka-sub/mikeka')
+})
+
 //clearing db - change date
 router.get('/clear/clear', async (req, res) => {
     try {
