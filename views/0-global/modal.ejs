@@ -3,35 +3,64 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"><b style="font-size: 16px;">MECHI MOJA IMECHANA? USIWAZE! 🎉</b></h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b style="font-size: 16px;">MECHI MOJA IMECHANA? USIWAZE!
+            🎉</b></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" style="text-align: justify;">
-        Huku tunakurudishia hadi mara 50 ya dau lako iwapo mkeka umechanwa na mechi moja. <br><br> Yaani! <b>BETWAY</b> tumekuletea <b>BETSAVER</b> , Mechi moja ikichana ni kama tumeshinda tu! 🤑 <br>
+        Huku tunakurudishia hadi mara 50 ya dau lako iwapo mkeka umechanwa na mechi moja. <br><br> Yaani! <b>BETWAY</b>
+        tumekuletea <b>BETSAVER</b> , Mechi moja ikichana ni kama tumeshinda tu! 🤑 <br>
         <div style="width: 100%; height: fit-content;">
-          <img src="/imgs/betsaver.webp" alt="BetWay, Betsaver Refund. Rudishiwa hadi mara 50 ya dau lako" style="width: 100%;" onclick="window.open('/betway/register')">
+          <img src="/imgs/betsaver.webp" alt="BetWay, Betsaver Refund. Rudishiwa hadi mara 50 ya dau lako"
+            style="width: 100%;" onclick="window.open('/betway/register')">
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="padding: 8px 12px; background-color: white; border: 1px solid #808080; color: #808080;">X</button>
-        <button type="button" id="betBtn" class="btn btn-primary" style="background-color: green; border: green; padding: 8px 20px;"><b>BASHIRI SASA!</b></button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          style="padding: 8px 12px; background-color: white; border: 1px solid #808080; color: #808080;">X</button>
+        <button type="button" id="betBtn" class="btn btn-primary"
+          style="background-color: green; border: green; padding: 8px 20px;"><b>BASHIRI SASA!</b></button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // Function to show the modal after 30 seconds
-  function showDelayedModal() {
-    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
-    myModal.show();
+  let modalInstance;
+  let modalShowInterval;
+
+  // Function to show the modal
+  function showModal() {
+    if (!modalInstance) {
+      modalInstance = new bootstrap.Modal(document.getElementById('exampleModal'));
+    }
+    modalInstance.show();
   }
 
-  // Set a timeout to call the function after 20 seconds
-  setTimeout(showDelayedModal, 15000);
+  // Function to start the interval timer
+  function startModalInterval() {
+    showModal(); // Show immediately first time
+    modalShowInterval = setInterval(showModal, 20000); // Then every 20 seconds
+  }
 
-  // Add event listener to the button for opening an external link
-  document.getElementById('betBtn').addEventListener('click', function() {
+  // Function to handle modal hide event
+  function handleModalHide() {
+    // Clear existing interval if any
+    if (modalShowInterval) {
+      clearInterval(modalShowInterval);
+    }
+    // Start new interval
+    modalShowInterval = setInterval(showModal, 20000);
+  }
+
+  // Add event listener for when modal is hidden
+  document.getElementById('exampleModal').addEventListener('hidden.bs.modal', handleModalHide);
+
+  // Add event listener to the bet button
+  document.getElementById('betBtn').addEventListener('click', function () {
     window.open('/betway/register');
   });
+
+  // Start the initial timer
+  setTimeout(startModalInterval, 15000);
 </script>
