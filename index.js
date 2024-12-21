@@ -71,7 +71,7 @@ setInterval(() => {
     }
 
     //update europe leagues
-    if ([18, 20, 22, 3].includes(hours)) {
+    if ([18, 20, 22, 23, 3].includes(hours)) {
         switch (mins) {
             case 2: //EPL on every 02 minute
                 UpdateOtherStandingFn(39, 2024)
