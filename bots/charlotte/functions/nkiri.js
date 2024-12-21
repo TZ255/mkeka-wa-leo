@@ -53,11 +53,19 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
             return $(this).attr('href').includes('.mkv');
         })
         let epsArr;
-        if (Number(idadi) > 0) {
-            epsArr = lnks.slice(0, Number(idadi)) //get first idadi
+
+        //check if is not a number i.e 3-7 or 4-8
+        if (isNaN(idadi) && idadi.includes('-')) {
+            let [start, end] = idadi.split('-')
+            epsArr = lnks.slice(Number(start) - 1, Number(end))
         } else {
-            epsArr = lnks.slice(Number(idadi)) //get last idadi
+            if (Number(idadi) > 0) {
+                epsArr = lnks.slice(0, Number(idadi)) //get first idadi
+            } else {
+                epsArr = lnks.slice(Number(idadi)) //get last idadi
+            }
         }
+
 
         epsArr.each((i, el) => {
             let url = $(el).attr('href')
