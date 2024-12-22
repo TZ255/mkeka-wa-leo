@@ -80,6 +80,9 @@ router.get('/standings/:league/:season', async (req, res) => {
         if (standing) {
             const agg = await OtherStandingLigiKuuModel.aggregate([
                 {
+                    $match: { league_id: Number(league_id), league_season }
+                },
+                {
                     $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
                 },
                 {
@@ -113,13 +116,21 @@ router.get('/standings/:league/:season', async (req, res) => {
                 createdAt: standing.createdAt.toISOString(),
                 updatedAt: standing.updatedAt.toISOString(),
                 ligi: `${standing.country} ${standing.league_name}`,
-                league_id
+                league_id,
+                canonical_path: `/standings/${league_id}/${league_season}`
             }
 
             switch (league_id) {
                 case '39':
                     res.render('11-misimamo/24-25/epl/epl', { standing, agg, partials })
                     break;
+
+                case '140':
+                    res.render('11-misimamo/24-25/laliga/laliga', { standing, agg, partials })
+                    break;
+
+                default:
+                    res.redirect('/')
             }
 
 
@@ -206,6 +217,13 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
             case '39':
                 res.render('11-misimamo/24-25/epl/1-ratiba/ratiba', { ratiba, standing, partials })
                 break;
+
+            case '140':
+                res.render('11-misimamo/24-25/laliga/1-ratiba/ratiba', { ratiba, standing, partials })
+                break;
+
+            default:
+                res.redirect('/')
         }
 
 
@@ -237,6 +255,13 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
             case '39':
                 res.render('11-misimamo/24-25/epl/2-scorer/scorer', { top_scorers, partials })
                 break;
+
+            case '140':
+                res.render('11-misimamo/24-25/laliga/2-scorer/scorer', { top_scorers, partials })
+                break;
+
+            default:
+                res.redirect('/')
         }
 
 
@@ -268,6 +293,13 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
             case '39':
                 res.render('11-misimamo/24-25/epl/3-assist/assist', { top_assists, partials })
                 break;
+
+            case '140':
+                res.render('11-misimamo/24-25/laliga/3-assist/assist', { top_assists, partials })
+                break;
+
+            default:
+                res.redirect('/')
         }
 
 
@@ -277,11 +309,23 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
     }
 })
 
+// router.get('/API/score', (req, res) => {
+//     try {
+//         UpdateOtherTopScorerFn(140, 2024)
+//         setTimeout(()=>{
+//             UpdateOtherTopAssistFn(140, 2024)
+//             res.send('Done')
+//         }, 5000)
+//     } catch (error) {
+//         res.send('Error')
+//     }
+// })
+
 // router.get('/API/ligi', (req, res) => {
 //     try {
-//         UpdateOtherTopScorerFn(39, 2024)
+//         UpdateOtherStandingFn(140, 2024)
 //         setTimeout(()=>{
-//             UpdateOtherTopAssistFn(39, 2024)
+//             UpdateOtherFixuresFn(140, 2024)
 //             res.send('Done')
 //         }, 5000)
 //     } catch (error) {

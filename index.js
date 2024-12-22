@@ -79,6 +79,13 @@ setInterval(() => {
                     UpdateOtherFixuresFn(39, 2024)
                 }, 5000)
                 break;
+
+            case 5: //LaLiga on every 05 minute
+                UpdateOtherStandingFn(140, 2024)
+                setTimeout(() => {
+                    UpdateOtherFixuresFn(140, 2024)
+                }, 5000)
+                break;
         }
     }
 
@@ -89,6 +96,13 @@ setInterval(() => {
                 UpdateOtherTopScorerFn(39, 2024)
                 setTimeout(() => {
                     UpdateOtherTopAssistFn(39, 2024)
+                }, 5000)
+                break;
+
+            case 33: //LaLiga top scorer on every 33
+                UpdateOtherTopScorerFn(140, 2024)
+                setTimeout(() => {
+                    UpdateOtherTopAssistFn(140, 2024)
                 }, 5000)
                 break;
         }
