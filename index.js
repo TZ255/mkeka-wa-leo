@@ -89,8 +89,8 @@ setInterval(() => {
         }
     }
 
-    //update assist and goals at 03:03 and at 10:03 
-    if ([3, 10].includes(hours)) {
+    //update assist and goals at 03:31 and at 10:31 
+    if ([3, 10, 21].includes(hours)) {
         switch (mins) {
             case 31: //EPL top scorer on every 31
                 UpdateOtherTopScorerFn(39, 2024)
