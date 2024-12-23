@@ -9,6 +9,7 @@ const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
+const { testSp, extractData } = require('./fns/jsjsjjs')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -332,6 +333,12 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 //         res.send('Error')
 //     }
 // })
+
+router.get('/API/testing', (req, res)=> {
+    //testSp()
+    extractData('soccer-predictions/tomorrow/')
+    res.end()
+})
 
 router.get('*', (req, res) => {
     res.redirect('/')
