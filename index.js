@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const getRouter = require('./routes/get')
 const getRouter2 = require('./routes/get2')
+const getRouter3 = require('./routes/get3')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
 const lauraSourceCodes = require('./bots/laura/bot')
@@ -48,6 +49,7 @@ app.use(limiter)
 app.use(postRouter)
 app.use(getRouter)
 app.use(getRouter2)
+app.use(getRouter3)
 
 //Attached Bots Goes Here
 if (process.env.local != 'true') {

@@ -340,8 +340,4 @@ router.get('/API/testing', (req, res)=> {
     res.end()
 })
 
-router.get('*', (req, res) => {
-    res.redirect('/')
-})
-
 module.exports = router

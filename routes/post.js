@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const mikekaDb = require('../model/mkeka-mega')
-const bttsModel = require('../model/btts')
+const bttsModel = require('../model/ya-uhakika/btts')
 const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
 const over15Mik = require('../model/ove15mik')

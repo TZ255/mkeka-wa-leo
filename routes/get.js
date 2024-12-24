@@ -7,7 +7,7 @@ const venas25Model = require('../model/venas25')
 const passion35 = require('../model/pp35')
 const graphModel = require('../model/graph-tips')
 const affModel = require('../model/affiliates-analytics')
-const bttsModel = require('../model/btts')
+const bttsModel = require('../model/ya-uhakika/btts')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
