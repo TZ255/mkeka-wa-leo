@@ -1,56 +1,89 @@
 <section class="right">
-    <h2 class="h2" style="font-size: 16px;">🎁 Bonuses & Offers</h2>
-    <%- include('./banner4.ejs'); %>
-    <h2 class="h2" style="font-size: 16px;">Ofa Zingine</h2>
-    <div class="cont">
-        <div class="num kitu" itemscope>
-            <h3 itemprop="brand">⚽️ GAL SPORT BETTING</h3>
-            <a href="/gsb/register" class="phn">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-                JISAJILI KAMPUNI NO. 1 TANZANIA
-            </a>
+    <h2 class="h2" style="font-size: 16px;">Bonasi na Ofa</h2>
+    <section class="posts d-flex flex-column justify-content-center flex-wrap p-1">
+        <div class="card border mb-4" onclick="RightOpen('betway')" style="cursor: pointer;">
+            <img src="/ofa/bet100.webp" class="card-img-top" alt="Betway - Bet kuanzia Tsh. 100">
+            <div class="card-body">
+                <div class="text-decoration-none">
+                    <h3 class="fs-5 text-secondary">
+                        Bet Kuanzia Tsh. 100
+                    </h3>
+                    <p class="card-text text-muted" style="font-size: 12px; text-align: justify;">
+                        Shinda hata kwa 100 tu. Beti mikeka yako leo ndani ya betway kwa dau la kuanzia Tsh. 100 na
+                        ushinde beti zenye bonus ya hadi 700%
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="num kitu" itemscope>
-            <h3 itemprop="brand">100% First Deposit Bonus</h3>
-            <a href="/888bet/register" class="phn">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-                PATA BONUS 🎁
-            </a>
+        <div class="card border mb-4" onclick="RightOpen('gsb')" style="cursor: pointer;">
+            <img src="/ofa/pick6.webp" class="card-img-top" alt="GSB Ofa - Beti Jackpot Bure">
+            <div class="card-body">
+                <div class="text-decoration-none">
+                    <h3 class="fs-5 text-secondary">
+                        FreePick6 - Beti Jackpot BURE!
+                    </h3>
+                    <p class="card-text text-muted" style="font-size: 12px; text-align: justify;">
+                        Jitayarishe kwa changamoto kuu ya utabiri ukitumia FreePick6!
+
+                        Karibu kwenye FreePick6, ambapo ujuzi wako wa kutabiri unaweza kukuongoza kwenye ushindi mkubwa!
+                        Kila wiki, una nafasi ya kutabiri alama sahihi za michezo 6 ya soka liyochaguliwa na kushinda dau nono la hadi milioni 10
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="num kitu" itemscope>
-            <h3 itemprop="brand">5,000 TZS BURE Ukipakuwa App Yetu</h3>
-            <a href="/leonbet/register" class="phn">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-                CHUKUA OFA YAKO NDANI YA LEONBET
-            </a>
+        <div class="card border mb-4" onclick="RightOpen('gsb')" style="cursor: pointer;">
+            <img src="/ofa/gsb100.webp" class="card-img-top" alt="Gal Sport Betting Ofa - 100% ofa ya ukaribisho" loading="lazy">
+            <div class="card-body">
+                <div class="text-decoration-none">
+                    <h3 class="fs-5 text-secondary">
+                        Ofa ya Ukaribisho 100%
+                    </h3>
+                    <p class="card-text text-muted" style="font-size: 12px; text-align: justify;">
+                        Pata ofa ya ukaribisho ya hadi 1,000,000 kwenye deposit yako ya kwanza. Hii ndiyo njia mwafaka
+                        ya kuanza nasi na kufurahia msisimko wa kubashiri katika michezo. Usikose ofa hii ya kusisimua,
+                        jisajili leo na upate bonasi yako!
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="num kitu" itemscope>
-            <h3 itemprop="brand">⚽️ PariMatch (150% on 1st Deposit)</h3>
-            <a href="/pmatch/register" target="_blank" class="latra" itemprop="url">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-                JISAJILI PARIMATCH
-            </a>
+        <div class="card border mb-4" onclick="RightOpen('leonbet')" style="cursor: pointer;">
+            <img src="/ofa/leon5000.webp" class="card-img-top" alt="Leonbet Ofa - 5,000 BURE" loading="lazy">
+            <div class="card-body">
+                <div class="text-decoration-none">
+                    <h3 class="fs-5 text-secondary">
+                        5,000 BURE! Ofa ya App
+                    </h3>
+                    <p class="card-text text-muted" style="font-size: 12px; text-align: justify;">
+                        Changamkia mchongo!
+                        Pakua app ya Android ya LEON na upate bonasi ya 5,000 TZS kutumia kwenye michezo yote ya Sloti
+                        na Live Casino.
+                        Ni burudani bampa to bampa na LEON!
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="num kitu" itemscope>
-            <h3 itemprop="brand">BetBuilder na MeridianBet</h3>
-            <a href="/meridian/register" target="_blank" class="latra" itemprop="url">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-                BET BETBUILDER SASA
-            </a>
+        <div class="card border mb-4" onclick="RightOpen('leonbet')" style="cursor: pointer;">
+            <img src="/ofa/leon10.webp" class="card-img-top" alt="Leonbet Ofa - Rudishiwa 10%" loading="lazy">
+            <div class="card-body">
+                <div class="text-decoration-none">
+                    <h3 class="fs-5 text-secondary">
+                        Rudishiwa 10% Kila Siku
+                    </h3>
+                    <p class="card-text text-muted" style="font-size: 12px; text-align: justify;">
+                        Sloti kumenoga, cheza bila wasiwasi na Urudishiwe 10% Kila Siku.
+                        Cheza michezo sloti uipendayo na urudishiwe dau lako hadi 560,000 TZS kila siku.
+                        Usikae kinyonge, cheza sloti na ushinde zawadi deile!
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="num kitu" itemscope>
-            <h3 itemprop="brand">💰 Shinda TV na Pesa Taslimu</h3>
-            <a href="/betway/register" target="_blank" class="latra" itemprop="url">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-                SHINDA SASA
-            </a>
-        </div>
-        <div class="num kitu" itemscope>
-            <h3 itemprop="brand">💰 Chukua Ts. 2,000 Bure</h3>
-            <a href="/premier/register" target="_blank" class="latra" itemprop="url">
-                <i class="fa-solid fa-square-arrow-up-right"></i>
-                DAKA OFA YAKO SASA
-            </a>
-        </div>
-    </div>
+    </section>
+    <br><br><br>
 </section>
+
+<script>
+    function RightOpen(e) {
+        let url = `/${e}/register`
+        window.open(url, '_self')
+    }
+</script>
