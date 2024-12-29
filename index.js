@@ -58,55 +58,57 @@ if (process.env.local != 'true') {
 
 //updating ligis
 setInterval(() => {
-    let d = new Date().toLocaleTimeString('en-GB', { timeZone: 'Africa/Nairobi' })
-    let [hh, mm, ss] = d.split(":")
-    let time = `${hh}:${mm}`
-    let hours = Number(hh)
-    let mins = Number(mm)
+    if (process.env.local != 'true') {
+        let d = new Date().toLocaleTimeString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let [hh, mm, ss] = d.split(":")
+        let time = `${hh}:${mm}`
+        let hours = Number(hh)
+        let mins = Number(mm)
 
-    //update bongo at 18,19,21,23, and 04:01
-    if (([18, 19, 21, 23, 4].includes(hours)) && mins == 1) {
-        UpdateFixuresFn()
-        setTimeout(() => {
-            UpdateStandingFn()
-        }, 5000)
-    }
-
-    //update europe leagues
-    if ([18, 19, 20, 22, 23, 3].includes(hours)) {
-        switch (mins) {
-            case 2: //EPL on every 02 minute
-                UpdateOtherStandingFn(39, 2024)
-                setTimeout(() => {
-                    UpdateOtherFixuresFn(39, 2024)
-                }, 5000)
-                break;
-
-            case 5: //LaLiga on every 05 minute
-                UpdateOtherStandingFn(140, 2024)
-                setTimeout(() => {
-                    UpdateOtherFixuresFn(140, 2024)
-                }, 5000)
-                break;
+        //update bongo at 18,19,21,23, and 04:01
+        if (([18, 19, 21, 23, 4].includes(hours)) && mins == 1) {
+            UpdateFixuresFn()
+            setTimeout(() => {
+                UpdateStandingFn()
+            }, 5000)
         }
-    }
 
-    //update assist and goals at 03:31 and at 10:31 
-    if ([3, 10, 21].includes(hours)) {
-        switch (mins) {
-            case 31: //EPL top scorer on every 31
-                UpdateOtherTopScorerFn(39, 2024)
-                setTimeout(() => {
-                    UpdateOtherTopAssistFn(39, 2024)
-                }, 5000)
-                break;
+        //update europe leagues
+        if ([18, 19, 20, 22, 23, 3].includes(hours)) {
+            switch (mins) {
+                case 2: //EPL on every 02 minute
+                    UpdateOtherStandingFn(39, 2024)
+                    setTimeout(() => {
+                        UpdateOtherFixuresFn(39, 2024)
+                    }, 5000)
+                    break;
 
-            case 33: //LaLiga top scorer on every 33
-                UpdateOtherTopScorerFn(140, 2024)
-                setTimeout(() => {
-                    UpdateOtherTopAssistFn(140, 2024)
-                }, 5000)
-                break;
+                case 5: //LaLiga on every 05 minute
+                    UpdateOtherStandingFn(140, 2024)
+                    setTimeout(() => {
+                        UpdateOtherFixuresFn(140, 2024)
+                    }, 5000)
+                    break;
+            }
+        }
+
+        //update assist and goals at 03:31 and at 10:31 
+        if ([3, 10, 21].includes(hours)) {
+            switch (mins) {
+                case 31: //EPL top scorer on every 31
+                    UpdateOtherTopScorerFn(39, 2024)
+                    setTimeout(() => {
+                        UpdateOtherTopAssistFn(39, 2024)
+                    }, 5000)
+                    break;
+
+                case 33: //LaLiga top scorer on every 33
+                    UpdateOtherTopScorerFn(140, 2024)
+                    setTimeout(() => {
+                        UpdateOtherTopAssistFn(140, 2024)
+                    }, 5000)
+                    break;
+            }
         }
     }
 }, 1000 * 59)
