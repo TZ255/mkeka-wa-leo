@@ -63,7 +63,7 @@ router.get('/standings/567/2024', async (req, res) => {
             mwaka: new Date().getFullYear(),
             season: `${league_season}/${Number(league_season) + 1}`,
             createdAt: standing.createdAt.toISOString(),
-            updatedAt: standing.updatedAt.toISOString()
+            updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
         }
 
         res.render('11-misimamo/24-25/bongo/bongo', { standing, agg, partials })
@@ -115,7 +115,7 @@ router.get('/standings/:league/:season', async (req, res) => {
             let partials = {
                 season: `${league_season}/${Number(league_season) + 1}`,
                 createdAt: standing.createdAt.toISOString(),
-                updatedAt: standing.updatedAt.toISOString(),
+                updatedAt: standing.standing[0].update,
                 ligi: `${standing.country} ${standing.league_name}`,
                 league_id,
                 canonical_path: `/standings/${league_id}/${league_season}`
@@ -169,7 +169,7 @@ router.get([ratibaRoutes], async (req, res) => {
             team_id,
             canonical_path: `/ratiba/${league_id}/${team_id}/${season}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.updatedAt.toISOString()
+            updatedAt: league.standing[0].update
         }
 
         switch (partials.team_info.team.name) {
@@ -211,7 +211,7 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
             ligi: `${league.country} ${league.league_name}`,
             canonical_path: `/ratiba/${league_id}/${team_id}/${season}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.updatedAt.toISOString()
+            updatedAt: league.standing[0].update
         }
 
         switch (league_id) {
@@ -249,7 +249,7 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
             league_id,
             canonical_path: `/wafungaji-bora/${league_id}/${season}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.updatedAt.toISOString()
+            updatedAt: league.standing[0].update
         }
 
         switch (league_id) {
@@ -287,7 +287,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
             league_id,
             canonical_path: `/top-assists/${league_id}/${season}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.updatedAt.toISOString()
+            updatedAt: league.standing[0].update
         }
 
         switch (league_id) {
