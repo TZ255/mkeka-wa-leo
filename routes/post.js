@@ -512,7 +512,7 @@ router.post('/checking/afootballreport', async (req, res) => {
                 // Use filter to remove empty strings
                 let filterdArr = dataArr.filter(d => d !== "" && d != "\t\r")
                 let matchDoc = {
-                    date: `${trh.split('/')[1]}/${trh.split('/')[0]}/2024`,
+                    date: `${trh.split('/')[1]}/${trh.split('/')[0]}/${thisYear}`,
                     time: filterdArr[0].trim(),
                     league: filterdArr[1].trim(),
                     match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
