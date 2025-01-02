@@ -1,0 +1,18 @@
+<script>
+    //Disable Right-Click (Context Menu)
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    });
+
+    //Disable Copying with JavaScript
+    document.addEventListener('copy', function (e) {
+        e.preventDefault();
+    });
+
+    //Block Keyboard Shortcuts (Ctrl+C, Ctrl+X, Ctrl+U, etc.)
+    document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 'x')) {
+            e.preventDefault();
+        }
+    });
+</script>
