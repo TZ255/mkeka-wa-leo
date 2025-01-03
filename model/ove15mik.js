@@ -9,6 +9,8 @@ const slipSchema = new Schema({
     date: {type: String},
     bet: {type: String},
     status: {type: String, default: 'Pending'},
+    weekday: {type: String, default: 'unknown'},
+    jsDate: {type: String, default: 'unknown'},
 }, {strict: false, timestamps: true })
 
 let MikekaDb = mongoose.connection.useDb('mikeka-ya-uhakika')

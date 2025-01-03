@@ -1,0 +1,154 @@
+<style>
+    :root {
+        --betwayColor: #00A826;
+        --bet888Color: #fc6200;
+        --bet888TipColor: #c44e00;
+        --darkBlack: #494747;
+    }
+
+
+    /* ******************************* */
+
+    .cont .header {
+        background-color: black;
+        color: white;
+        font-weight: bold;
+        font-size: 17px;
+        padding: 16px 8px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        text-align: center;
+    }
+
+    .cont .header .star8 {
+        color: #00A826;
+    }
+
+    .cont .list-group li .date {
+        font-size: 12px;
+        color: #595959;
+        display: flex;
+    }
+
+    .left .cont .list-group li .dtime {
+        border-right: 1px solid #d3d3d3;
+        padding-right: 4px;
+    }
+
+    .left .cont .list-group li .ligi {
+        padding-left: 4px;
+    }
+
+    .left .cont .list-group li .match {
+        font-family: 'Trebuchet MS', Arial, sans-serif;
+        color: var(--darkBlack);
+        font-size: 18px;
+    }
+
+    .left .cont .list-group li .bet {
+        color: #00A826;
+        cursor: pointer;
+    }
+
+    .total {
+        width: 98%;
+        margin: 16px auto 12px auto;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 16px 0 34px 0;
+        border-bottom: black solid 2px;
+        border-top: #d3d3d3 solid 2px;
+    }
+
+    .subtotal {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .total .w25 {
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .total .w40 {
+        width: 40%;
+    }
+
+    .total .btm span {
+        display: flex;
+    }
+
+    .total .btm .hdr {
+        font-weight: bold;
+    }
+
+    .total .btm .ct {
+        background-color: black;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border-radius: 3px;
+    }
+
+    .total .tangazo {
+        text-align: center;
+        font-family: monospace;
+        margin-top: 12px;
+        font-weight: lighter;
+        font-size: smaller;
+    }
+
+    .total .sasa {
+        text-align: center;
+        margin: 12px auto 2px auto;
+        width: 100%;
+    }
+
+    .total .sasa button {
+        background-color: var(--betwayColor);
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 12px;
+        font-weight: bold;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .total .sasa button:hover,
+    .total .sasa button:active {
+        border: var(--betwayColor) 1px solid;
+    }
+
+    @media (max-width: 800px) {
+        main .left .cont {
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .left .cont .list-group li .date {
+            font-size: 10px;
+        }
+
+        main .left .total .btm {
+            font-size: 12px;
+        }
+
+        .left .toggle-cont .toggles div {
+            padding: 10px 4px;
+        }
+
+        .left .tble-cont table .match-td {
+            font-size: 13px;
+        }
+
+        .left .betslipCont table .match {
+            font-size: 13px;
+        }
+    }
+</style>

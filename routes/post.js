@@ -11,6 +11,7 @@ const { nanoid, customAlphabet } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 const OpenAI = require('openai');
+const { GetDayFromDateString, GetJsDate } = require('./fns/weekday')
 
 let imp = {
     replyDb: -1001608248942,
@@ -426,14 +427,14 @@ router.post('/checking/one-m/1', async (req, res) => {
                 }
 
                 //search if in database dont push
-                let check_match = await mikekaDb.findOne({ date: matchDoc.date, match: matchDoc.match })
+                let check_match = await mikekaDb.findOne({ date: matchDoc.date, match: matchDoc.match, weekday: GetDayFromDateString(matchDoc.date), jsDate: GetJsDate(matchDoc.date) })
                 if (!check_match) {
                     collection.push(matchDoc)
                 }
                 if (for_over15.includes(matchDoc.bet.toLowerCase())) {
                     //save to over1.5 collection
                     await over15Mik.create({
-                        date: matchDoc.date, league: matchDoc.league, time: matchDoc.time, match: matchDoc.match, bet: 'Over 1.5', odds: matchDoc.odds
+                        date: matchDoc.date, league: matchDoc.league, time: matchDoc.time, match: matchDoc.match, bet: 'Over 1.5', odds: matchDoc.odds, weekday: GetDayFromDateString(matchDoc.date), jsDate: GetJsDate(matchDoc.date)
                     })
                 }
             }

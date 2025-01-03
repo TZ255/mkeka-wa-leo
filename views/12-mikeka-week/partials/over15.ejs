@@ -1,0 +1,36 @@
+<div class="cont">
+    <div class="header" id="mega-za-leo">
+        <div>
+            <i class="fa-solid fa-star star8"></i>
+            Over 1.5 Tips - <%= partials.siku %>
+            <i class="fa-solid fa-star star8"></i>
+        </div>
+        <div style="font-size: 12px; margin-top: 12px;">📅 <%= partials.trh %></div>
+    </div>
+    <ul class="list-group list-group-flush">
+        <% Ov15.mikeka.forEach(el=> { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="ms-2 me-auto">
+                <div class="date">
+                    <div class="dtime">
+                        <%= el.time %>
+                    </div>
+                    <div class="ligi">
+                        <%= el.league %>
+                    </div>
+                </div>
+                <div class="fw-bold">
+                    <div class="match">
+                        <%= el.match.split(' - ')[0] %><br>
+                        <%= el.match.split(' - ')[1] %>
+                    </div>
+                    <div class="bet" onclick="window.open('/betway/register')"><%= el.bet %></div>
+                </div>
+            </div>
+            <span class="badge rounded-pill" onclick="window.open('/betway/register')" style="width: 48px; text-align: center; font-weight: bold; padding: 17px 8px; cursor: pointer; background-color: #00A826; color: white; font-family: serif; font-size: 16px;">
+                <%= String(el.odds).padEnd(4, '0') %>
+            </span>
+        </li>
+        <% }) %>
+    </ul>
+</div>

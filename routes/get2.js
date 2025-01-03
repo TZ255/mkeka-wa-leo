@@ -3,11 +3,13 @@ const router = require('express').Router()
 //times
 const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
-const { WeekDayFn } = require('./fns/weekday')
+const { WeekDayFn, GetDayFromDateString } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
+const Over15MikModel = require('../model/ove15mik')
+const MikekaDBModel = require('../model/mkeka-mega')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
 const { testSp, extractData } = require('./fns/jsjsjjs')
 TimeAgo.addDefaultLocale(en)
@@ -334,10 +336,19 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 //     }
 // })
 
-router.get('/API/testing', (req, res)=> {
-    //testSp()
-    extractData('soccer-predictions/tomorrow/')
-    res.end()
+router.get('/API/testing', async (req, res)=> {
+    try {
+        //await Over15MikModel.deleteMany({ createdAt: { $lt: new Date('2024-12-01') } });
+        const allmega = await Over15MikModel.find()
+        for (let doc of allmega) {
+            let [dd, mm, yyyy] = doc.date.split('/')
+            await doc.updateOne({$set: {jsDate: `${yyyy}-${mm}-${dd}`, weekday: GetDayFromDateString(doc.date)}})
+        }
+        console.log('Done')
+        res.end()
+    } catch (error) {
+        res.send(error.message)
+    }
 })
 
 module.exports = router

@@ -8,13 +8,14 @@ const passion35 = require('../model/pp35')
 const graphModel = require('../model/graph-tips')
 const affModel = require('../model/affiliates-analytics')
 const bttsModel = require('../model/ya-uhakika/btts')
+const over15Mik = require('../model/ove15mik')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
 //times
 const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
-const { WeekDayFn } = require('./fns/weekday')
+const { WeekDayFn, findMikekaByWeekday, SwahiliDayToEnglish } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
@@ -547,6 +548,37 @@ router.get('/mkeka/over-under-35', async (req, res) => {
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
         res.render('10-over35/over35', { stips, ytips, ktips, jtips, trh, jumasiku })
+    } catch (err) {
+        console.error(err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 126
+        }).catch(e => console.log(e.message, e))
+    }
+})
+
+//mikeka ya wiki
+router.get('/mkeka/:weekday', async (req, res, next) => {
+    try {
+        let weekday = req.params.weekday
+        let days = ["jumapili", "jumatatu", "jumanne", "jumatano", "alhamisi", "ijumaa", "jumamosi"]
+        if (!days.includes(weekday)) {
+            next()
+        } else {
+            //mikeka & tarehes
+            let Megas = await findMikekaByWeekday(SwahiliDayToEnglish(weekday), mkekadb)
+            let Ov15 = await findMikekaByWeekday(SwahiliDayToEnglish(weekday), over15Mik)
+
+            let partials = {
+                siku: weekday.charAt(0).toUpperCase() + weekday.slice(1),
+                canonicalPath: `/mkeka/${weekday}`,
+                trh: Megas.trh || Ov15.trh
+            }
+            
+            res.render('12-mikeka-week/weekday', {Megas, Ov15, partials});
+        }
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`

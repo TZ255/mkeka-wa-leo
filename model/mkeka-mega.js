@@ -9,6 +9,8 @@ const megaSchema = new Schema({
     date: {type: String},
     bet: {type: String},
     status: {type: String, default: 'Pending'},
+    weekday: {type: String, default: 'unknown'},
+    jsDate: {type: String, default: 'unknown'},
 }, {strict: false, timestamps: true})
 
 const model = mongoose.model('Accumulator', megaSchema)
