@@ -12,6 +12,7 @@ const helenSourceCodes = require('./bots/helen/bot')
 const zambiaBotsSourceCodes = require('./bots/zambias/bot')
 const { UpdateFixuresFn, UpdateStandingFn } = require('./routes/fns/bongo-ligi')
 const { UpdateOtherStandingFn, UpdateOtherFixuresFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./routes/fns/other-ligi')
+const { default: axios } = require('axios')
 
 const app = express()
 
@@ -109,6 +110,12 @@ setInterval(() => {
                     }, 5000)
                     break;
             }
+        }
+
+        //Build MikekayaUhakika
+        if (hours % 2 === 0 && mins === 0) {
+            axios.post(`https://api.netlify.com/build_hooks/6769da06b09a29e4ecf49b63`)
+                .catch(e => console.log(e?.message))
         }
     }
 }, 1000 * 59)
