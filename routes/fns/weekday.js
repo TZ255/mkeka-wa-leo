@@ -80,7 +80,7 @@ const findMikekaByWeekday = async (weekday, Model) => {
     // Search for past date
     return {
         mikeka: await Model.find({jsDate: prevDate.format('YYYY-MM-DD')}).sort('time'),
-        trh: nextDate.format('DD/MM/YYYY')
+        trh: prevDate.format('DD/MM/YYYY')
     }
     
 }
