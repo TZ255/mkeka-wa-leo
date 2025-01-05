@@ -574,7 +574,10 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
             let partials = {
                 siku: weekday.charAt(0).toUpperCase() + weekday.slice(1),
                 canonicalPath: `/mkeka/${weekday}`,
-                trh: Megas.trh || Ov15.trh
+                trh: {
+                    mega: Megas.trh,
+                    ov15: Ov15.trh
+                }
             }
             
             res.render('12-mikeka-week/weekday', {Megas, Ov15, partials});

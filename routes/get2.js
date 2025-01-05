@@ -89,8 +89,21 @@ router.get('/standings/:league/:season', async (req, res) => {
                     $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
                 },
                 {
+                    $addFields: {
+                        "season_fixtures.league.roundRenamed": {
+                            $switch: {
+                                branches: [
+                                    { case: { $eq: ["$season_fixtures.league.round", "1st Preliminary Round"] }, then: "pre - 0.1" },
+                                    { case: { $eq: ["$season_fixtures.league.round", "2nd Preliminary Round"] }, then: "pre - 0.2" }
+                                ],
+                                default: "$season_fixtures.league.round" // Default case if no match is found
+                            }
+                        }
+                    }
+                },
+                {
                     $group: {
-                        _id: "$season_fixtures.league.round", // Group by the round field
+                        _id: "$season_fixtures.league.roundRenamed", // Group by the renamed round field
                         fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
                     }
                 },
@@ -99,7 +112,7 @@ router.get('/standings/:league/:season', async (req, res) => {
                         round: "$_id", // Rename _id to round
                         fixtures: 1,
                         numericRound: {
-                            $toInt: {
+                            $toDouble: {
                                 $arrayElemAt: [
                                     { $split: ["$_id", " - "] },
                                     1 // Extract numeric part after " - "
@@ -112,12 +125,12 @@ router.get('/standings/:league/:season', async (req, res) => {
                 {
                     $sort: { numericRound: 1 } // Sort by the numeric part of the round
                 }
-            ])
+            ]);
 
             let partials = {
                 season: `${league_season}/${Number(league_season) + 1}`,
                 createdAt: standing.createdAt.toISOString(),
-                updatedAt: standing.standing[0].update,
+                updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
                 ligi: `${standing.country} ${standing.league_name}`,
                 league_id,
                 canonical_path: `/standings/${league_id}/${league_season}`
@@ -130,6 +143,10 @@ router.get('/standings/:league/:season', async (req, res) => {
 
                 case '140':
                     res.render('11-misimamo/24-25/laliga/laliga', { standing, agg, partials })
+                    break;
+
+                case '12':
+                    res.render('11-misimamo/24-25/caf/caf', { standing, agg, partials })
                     break;
 
                 default:
@@ -336,14 +353,9 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 //     }
 // })
 
-router.get('/API/testing', async (req, res)=> {
+router.get('/API/testing', async (req, res) => {
     try {
-        //await Over15MikModel.deleteMany({ createdAt: { $lt: new Date('2024-12-01') } });
-        const allmega = await Over15MikModel.find()
-        for (let doc of allmega) {
-            let [dd, mm, yyyy] = doc.date.split('/')
-            await doc.updateOne({$set: {jsDate: `${yyyy}-${mm}-${dd}`, weekday: GetDayFromDateString(doc.date)}})
-        }
+        UpdateOtherStandingFn(12, 2024)
         console.log('Done')
         res.end()
     } catch (error) {

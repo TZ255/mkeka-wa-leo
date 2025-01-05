@@ -33,7 +33,7 @@ const UpdateOtherStandingFn = async (league_id, season) => {
             let league_name = response?.data?.response[0].league.name
             let country = response?.data?.response[0].league.country
             let league_season = response?.data?.response[0].league.season
-            let standing = response?.data?.response[0].league.standings[0]
+            let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
 
             await OtherLigiKuuModel.findOneAndUpdate({league_id, league_season}, {
                 $set: { standing, league_id, league_name, league_season, country },

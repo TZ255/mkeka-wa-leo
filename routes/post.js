@@ -71,10 +71,12 @@ router.post('/post', async (req, res) => {
     let d = new Date(date).toLocaleDateString('en-GB')
 
     //check if eligible for Over15Mik table
-    if(over15Eligible.includes(bet)) {
-        let ov = await over15Mik.findOneAndUpdate({date: d, match}, {$set: {
-            date: d, match, bet, time, odds: Number(odds), league
-        }}, {upsert: true})
+    if (over15Eligible.includes(bet)) {
+        let ov = await over15Mik.findOneAndUpdate({ date: d, match }, {
+            $set: {
+                date: d, match, bet, time, odds: Number(odds), league
+            }
+        }, { upsert: true })
     }
 
     if (secret == '5654' && match.includes(' - ')) {
@@ -401,7 +403,9 @@ router.post('/checking/one-m/1', async (req, res) => {
                     league: filterdArr[1].trim(),
                     match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
                     bet: filterdArr[4].trim().replace('.5 Goals', '.5'),
-                    odds: Number(filterdArr[5].trim())
+                    odds: Number(filterdArr[5].trim()),
+                    jsDate: '',
+                    weekday: ''
                 }
                 //check if year included
                 if (filterdArr[0].split(' ')[0].trim().length > 7) {
@@ -422,20 +426,28 @@ router.post('/checking/one-m/1', async (req, res) => {
                 }
 
                 //check odds to correct them - check if integer i.e no decimal
-                if(Number.isInteger(matchDoc.odds)) {
+                if (Number.isInteger(matchDoc.odds)) {
                     matchDoc.odds = matchDoc.odds + 0.01
                 }
 
                 //search if in database dont push
                 let check_match = await mikekaDb.findOne({ date: matchDoc.date, match: matchDoc.match, weekday: GetDayFromDateString(matchDoc.date), jsDate: GetJsDate(matchDoc.date) })
                 if (!check_match) {
+                    //update date fields
+                    matchDoc.weekday = GetDayFromDateString(matchDoc.date)
+                    matchDoc.jsDate = GetJsDate(matchDoc.date)
                     collection.push(matchDoc)
                 }
                 if (for_over15.includes(matchDoc.bet.toLowerCase())) {
                     //save to over1.5 collection
-                    await over15Mik.create({
-                        date: matchDoc.date, league: matchDoc.league, time: matchDoc.time, match: matchDoc.match, bet: 'Over 1.5', odds: matchDoc.odds, weekday: GetDayFromDateString(matchDoc.date), jsDate: GetJsDate(matchDoc.date)
-                    })
+                    await over15Mik.findOneAndUpdate(
+                        { date: matchDoc.date, match: matchDoc.match, weekday: matchDoc.weekday },
+                        {
+                            $set: {
+                                league: matchDoc.league, time: matchDoc.time, bet: matchDoc.bet, odds: matchDoc.odds, jsDate: matchDoc.jsDate
+                            }
+                        }, { upsert: true }
+                    )
                 }
             }
             let savedDocs = await mikekaDb.insertMany(collection)
