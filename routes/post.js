@@ -412,6 +412,10 @@ router.post('/checking/one-m/1', async (req, res) => {
                     matchDoc.date = filterdArr[0].split(' ')[0].trim()
                 }
 
+                //update date fields
+                matchDoc.weekday = GetDayFromDateString(matchDoc.date)
+                matchDoc.jsDate = GetJsDate(matchDoc.date)
+
                 //check tips and correct them
                 switch (matchDoc.bet) {
                     case "1":
@@ -433,9 +437,6 @@ router.post('/checking/one-m/1', async (req, res) => {
                 //search if in database dont push
                 let check_match = await mikekaDb.findOne({ date: matchDoc.date, match: matchDoc.match, weekday: GetDayFromDateString(matchDoc.date), jsDate: GetJsDate(matchDoc.date) })
                 if (!check_match) {
-                    //update date fields
-                    matchDoc.weekday = GetDayFromDateString(matchDoc.date)
-                    matchDoc.jsDate = GetJsDate(matchDoc.date)
                     collection.push(matchDoc)
                 }
                 if (for_over15.includes(matchDoc.bet.toLowerCase())) {
@@ -444,7 +445,7 @@ router.post('/checking/one-m/1', async (req, res) => {
                         { date: matchDoc.date, match: matchDoc.match, weekday: matchDoc.weekday },
                         {
                             $set: {
-                                league: matchDoc.league, time: matchDoc.time, bet: matchDoc.bet, odds: matchDoc.odds, jsDate: matchDoc.jsDate
+                                league: matchDoc.league, time: matchDoc.time, bet: 'Over 1.5', odds: matchDoc.odds, jsDate: matchDoc.jsDate
                             }
                         }, { upsert: true }
                     )

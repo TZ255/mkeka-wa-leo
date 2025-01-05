@@ -152,8 +152,6 @@ router.get('/standings/:league/:season', async (req, res) => {
                 default:
                     res.redirect('/')
             }
-
-
         } else {
             res.redirect('/')
         }
@@ -245,8 +243,6 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
             default:
                 res.redirect('/')
         }
-
-
     } catch (error) {
         console.error(error?.message, error)
         res.send(`Kumetokea changamoto. Fungua page hii upya`)
@@ -268,7 +264,7 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
             league_id,
             canonical_path: `/wafungaji-bora/${league_id}/${season}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.standing[0].update
+            updatedAt: league.standing[0]?.update || league.standing[0][0]?.update
         }
 
         switch (league_id) {
@@ -278,6 +274,10 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
 
             case '140':
                 res.render('11-misimamo/24-25/laliga/2-scorer/scorer', { top_scorers, partials })
+                break;
+
+            case '12':
+                res.render('11-misimamo/24-25/caf/2-scorer/scorer', { top_scorers, partials })
                 break;
 
             default:
@@ -306,7 +306,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
             league_id,
             canonical_path: `/top-assists/${league_id}/${season}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.standing[0].update
+            updatedAt: league.standing[0]?.update || league.standing[0][0]?.update
         }
 
         switch (league_id) {
@@ -316,6 +316,10 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
             case '140':
                 res.render('11-misimamo/24-25/laliga/3-assist/assist', { top_assists, partials })
+                break;
+
+            case '12':
+                res.render('11-misimamo/24-25/caf/3-assist/assist', { top_assists, partials })
                 break;
 
             default:

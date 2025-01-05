@@ -9,10 +9,28 @@
         e.preventDefault();
     });
 
-    //Block Keyboard Shortcuts (Ctrl+C, Ctrl+X, Ctrl+U, etc.)
+    //Block Keyboard Shortcuts (Ctrl+C, Ctrl+X, Ctrl+U, etc.) Allow ctr + k
     document.addEventListener('keydown', function (e) {
         if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 'x')) {
             e.preventDefault();
+        }
+
+        //allow ctrl + k
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            // Prevent the default action (if any)
+            e.preventDefault();
+
+            // Get the selected text
+            const selectedText = window.getSelection().toString();
+
+            if (selectedText) {
+                // Copy the selected text to the clipboard
+                navigator.clipboard.writeText(selectedText).catch(function (err) {
+                    console.error('Failed to copy text: ', err);
+                });
+            } else {
+                console.log('No text selected.');
+            }
         }
     });
 </script>
