@@ -93,6 +93,18 @@ setInterval(() => {
             }
         }
 
+        //update unimportant leagues
+        if ([19, 22, 3].includes(hours)) {
+            switch (mins) {
+                case 6: //CAF on every 06 minute
+                    UpdateOtherStandingFn(12, 2024)
+                    setTimeout(() => {
+                        UpdateOtherFixuresFn(12, 2024)
+                    }, 5000)
+                    break;
+            }
+        }
+
         //update assist and goals at 03:31 and at 10:31 
         if ([3, 10, 21].includes(hours)) {
             switch (mins) {
@@ -107,6 +119,13 @@ setInterval(() => {
                     UpdateOtherTopScorerFn(140, 2024)
                     setTimeout(() => {
                         UpdateOtherTopAssistFn(140, 2024)
+                    }, 5000)
+                    break;
+
+                case 35: //CAF top scorer on every 35
+                    UpdateOtherTopScorerFn(12, 2024)
+                    setTimeout(() => {
+                        UpdateOtherTopAssistFn(12, 2024)
                     }, 5000)
                     break;
             }
