@@ -1,220 +1,216 @@
-<div class="toggle-cont" id="supa-za-leo">
-    <div class="toggles">
-        <div class="jtoggle" id="jtoggle">« Juzi</div>
-        <div class="ytoggle" id="ytoggle">Jana</div>
-        <div class="ltoggle active_toggle" id="ltoggle">⁕ Leo ⁕</div>
-        <div class="ktoggle" id="ktoggle">Kesho »</div>
+<section class="keka-mix-sectio">
+    <h2 class="fs-2 text-center fw-bold" id="spn-title">
+        KEKA MiX la LEO
+    </h2>
+    <ul style="list-style: none; padding: 0; text-align: center;">
+        <li class="spn_trh" id="spn_trh_leo"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.leo %>: </b><%= trh.leo %></li>
+        <li class="spn_hide" id="spn_trh_juzi"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.juzi %>: </b><%= trh.juzi %></li>
+        <li class="spn_hide" id="spn_trh_jana"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.jana %>: </b><%= trh.jana %></li>
+        <li class="spn_hide" id="spn_trh_kesho"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.kesho %>: </b><%= trh.kesho %></li>
+    </ul>
+    <div class="toggle-cont" id="supa-za-leo">
+        <div class="toggles">
+            <div class="jtoggle" id="jtoggle">« Juzi</div>
+            <div class="ytoggle" id="ytoggle">Jana</div>
+            <div class="ltoggle active_toggle" id="ltoggle">⁕ Leo ⁕</div>
+            <div class="ktoggle" id="ktoggle">Kesho »</div>
+        </div>
     </div>
-</div>
 
-<!-- juzi -->
-<div class="tble-cont ficha" id="jday" style="display: none;">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐⭐ KEKA MIX la Juzi ⭐⭐</span>
-            <span class="spn_trh"><b><%= jumasiku.juzi %>: </b><%= trh.juzi %></span>
-        </h2>
-    </div>
-    <table class="table table-light table-striped">
-        <thead>
-            <tr class="table-dark">
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tip</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-            <% jtips.forEach(leagueGroup => { %>
+    <!-- today -->
+    <div class="tble-cont" id="lday" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="Keka Mix la Leo: <%= jumasiku.leo %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% stips.forEach(leagueGroup => { %>
                 <tr class="league-row table-dark mt-8">
                     <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
                 </tr>
                 <% leagueGroup.matches.forEach(match => { %>
-                    <tr itemscope itemtype="https://schema.org/SportsEvent">
-                        <td class="time-td">
-                            <time itemprop="startDate" datetime="<%= match.startDate %>">
-                                <%= match.time %> <br> <span><%= match.siku %></span>
-                            </time>
-                        </td>
-                        <td class="match-td">
-                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="endDate" content="<%= match.endDate %>">
-                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
-                            <br>
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                            <br>
-                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
-                        </td>
-                        <th class="tip-td table-success"><%= match.tip %></th>
-                    </tr>
-                <% }); %>
-            <% }); %>
-        </tbody>
-    </table>
-    <% if (jtips.length > 0) { %>
-    <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
-
-<!-- yesterday -->
-<div class="tble-cont ficha" id="yday" style="display: none;">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐⭐ KEKA MIX la Jana ⭐⭐</span>
-            <span class="spn_trh"><b><%= jumasiku.jana %>: </b><%= trh.jana %></span>
-        </h2>
-    </div>
-    <table class="table table-light table-striped">
-        <thead>
-            <tr class="table-dark">
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tip</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-            <% ytips.forEach(leagueGroup => { %>
-                <tr class="league-row table-dark mt-8">
-                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                        <br>
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
                 </tr>
-                <% leagueGroup.matches.forEach(match => { %>
-                    <tr itemscope itemtype="https://schema.org/SportsEvent">
-                        <td class="time-td">
-                            <time itemprop="startDate" datetime="<%= match.startDate %>">
-                                <%= match.time %> <br> <span><%= match.siku %></span>
-                            </time>
-                        </td>
-                        <td class="match-td">
-                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="endDate" content="<%= match.endDate %>">
-                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
-                            <br>
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                            <br>
-                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
-                        </td>
-                        <th class="tip-td table-success"><%= match.tip %></th>
-                    </tr>
                 <% }); %>
-            <% }); %>
-        </tbody>
-    </table>
-    <% if (ytips.length > 0) { %>
-    <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
-
-
-<!-- today -->
-<div class="tble-cont" id="lday">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐⭐ KEKA MIX la Leo ⭐⭐</span>
-            <span class="spn_trh"><b><%= jumasiku.leo %>: </b><%= trh.leo %></span>
-        </h2>
-    </div>
-    <table class="table table-light table-striped">
-        <thead>
-            <tr class="table-dark">
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tip</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-            <% stips.forEach(leagueGroup => { %>
-                <tr class="league-row table-dark mt-8">
-                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
-                </tr>
-                <% leagueGroup.matches.forEach(match => { %>
-                    <tr itemscope itemtype="https://schema.org/SportsEvent">
-                        <td class="time-td">
-                            <time itemprop="startDate" datetime="<%= match.startDate %>">
-                                <%= match.time %> <br> <span><%= match.siku %></span>
-                            </time>
-                        </td>
-                        <td class="match-td">
-                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="endDate" content="<%= match.endDate %>">
-                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
-                            <br>
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                            <br>
-                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
-                        </td>
-                        <th class="tip-td table-success"><%= match.tip %></th>
-                    </tr>
                 <% }); %>
-            <% }); %>
-        </tbody>
-    </table>
-    <% if (stips.length === 0) { %>
+            </tbody>
+        </table>
+        <% if (stips.length === 0) { %>
         <div class="zakesho">
-            * KEKA MIX la <b>Leo: <%= trh.leo %></b> bado liko kwenye maandalizi. Shuka chini kuangalia mikeka mingine iliyotayari.
+            * KEKA MIX la <b>Leo: <%= trh.leo %></b> bado liko kwenye maandalizi. Shuka chini kuangalia mikeka mingine
+            iliyotayari.
         </div>
         <% } %>
-    <% if (stips.length > 0) { %>
-    <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
-
-
-<!-- tomorrow -->
-<div class="tble-cont ficha" id="kday" style="display: none;">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐⭐ KEKA MIX la Kesho ⭐⭐</span>
-            <span class="spn_trh"><b><%= jumasiku.kesho %>: </b><%= trh.kesho %></span>
-        </h2>
+        <% if (stips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
     </div>
-    <table class="table table-light table-striped">
-        <thead>
-            <tr class="table-dark">
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tip</th>
-            </tr>
-        </thead>
-        <tbody class="table-group-divider">
-            <% ktips.forEach(leagueGroup => { %>
+
+    <!-- juzi -->
+    <div class="tble-cont ficha" id="jday" style="display: none;" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="Keka Mix la Juzi: <%= jumasiku.juzi %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% jtips.forEach(leagueGroup => { %>
                 <tr class="league-row table-dark mt-8">
                     <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
                 </tr>
                 <% leagueGroup.matches.forEach(match => { %>
-                    <tr itemscope itemtype="https://schema.org/SportsEvent">
-                        <td class="time-td">
-                            <time itemprop="startDate" datetime="<%= match.startDate %>">
-                                <%= match.time %> <br> <span><%= match.siku %></span>
-                            </time>
-                        </td>
-                        <td class="match-td">
-                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                            <meta itemprop="endDate" content="<%= match.endDate %>">
-                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
-                            <br>
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                            <br>
-                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
-                        </td>
-                        <th class="tip-td table-success"><%= match.tip %></th>
-                    </tr>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                        <br>
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
                 <% }); %>
-            <% }); %>
-        </tbody>
-    </table>
-    <% if (ktips.length === 0) { %>
-    <div class="zakesho">
-        * KEKA MIX la Kesho <b><%= jumasiku.kesho %>: </b> bado halijaandaliwa, rudi baada ya mda kidogo litakuwa tayari.
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (jtips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
     </div>
-    <% } %>
-    <% if (ktips.length > 0) { %>
-    <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
+
+    <!-- yesterday -->
+    <div class="tble-cont ficha" id="yday" style="display: none;" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="Keka Mix la Jana: <%= jumasiku.jana %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% ytips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                        <br>
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (ytips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
+    </div>
+
+
+    <!-- tomorrow -->
+    <div class="tble-cont ficha" id="kday" style="display: none;" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="Keka Mix la Kesho: <%= jumasiku.kesho %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% ktips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                        <br>
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (ktips.length === 0) { %>
+        <div class="zakesho">
+            * KEKA MIX la Kesho <b><%= jumasiku.kesho %>: </b> bado halijaandaliwa, rudi baada ya mda kidogo litakuwa
+            tayari.
+        </div>
+        <% } %>
+        <% if (ktips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
+    </div>
+</section>
