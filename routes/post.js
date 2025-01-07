@@ -386,7 +386,7 @@ router.post('/checking/one-m/1', async (req, res) => {
     try {
         let thisYear = new Date().getFullYear()
         let collection = []
-        let for_over15 = ['over 2.5', 'over 3.5', 'over 1.5', 'btts', 'yes', 'gg']
+        let for_over15 = ['over 2.5', 'over 3.5', 'over 1.5', 'btts', 'yes', 'gg', '1 & Over 1.5', '1 & Over 2.5', '1 & Over 3.5', '2 & Over 1.5', '2 & Over 2.5', '2 & Over 3.5', '1 & GG', '2 & GG', 'X & GG', '1/1', '2/2']
 
         let bulkdata = req.body.data
         let secret = req.body.secret
