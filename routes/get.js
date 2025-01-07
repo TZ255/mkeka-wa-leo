@@ -21,6 +21,7 @@ const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
+const { processSupatips } = require('./fns/supatipsCollection')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -76,49 +77,8 @@ router.get('/', async (req, res) => {
             slipOdds = (slipOdds * od.odd).toFixed(2)
         }
 
-        //supatip zote
-        let allSupa = await supatips.find({ siku: { $in: [d, _d, _s, kesho] } }).sort('time')
-
-        //supatips leo
-        let stips1 = allSupa.filter(doc => doc.siku == d)
-        let stips = []
-
-        //supatip ya jana
-        let ytips = allSupa.filter(doc => doc.siku == _d)
-
-        //supatip ya juzi
-        let jtips = allSupa.filter(doc => doc.siku == _s)
-
-        //supatip ya kesho
-        let ktips1 = allSupa.filter(doc => doc.siku == kesho)
-        let ktips = []
-
-        //loop leo&kesho to create for schemaorg yyy-mmm-dddThh:mm
-        for (let s of stips1) {
-            let sikuData = s.siku.split('/')
-            let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
-            let calcDate = new Date(startDate)
-            calcDate.setHours(calcDate.getHours() + 2)
-            let endDate = calcDate.toISOString().replace(':00.000Z', '')
-            let matchdata = s.match.split(' - ')
-            stips.push({
-                siku: s.siku, time: s.time, tip: s.tip,
-                match: { hm: matchdata[0], aw: matchdata[1] }, matokeo: s.matokeo, league: s.league, startDate, endDate
-            })
-        }
-
-        for (let s of ktips1) {
-            let sikuData = s.siku.split('/')
-            let startDate = `${sikuData[2]}-${sikuData[1]}-${sikuData[0]}T${s.time}`
-            let calcDate = new Date(startDate)
-            calcDate.setHours(calcDate.getHours() + 2)
-            let endDate = calcDate.toISOString().replace(':00.000Z', '')
-            let matchdata = s.match.split(' - ')
-            ktips.push({
-                siku: s.siku, time: s.time, tip: s.tip,
-                match: { hm: matchdata[0], aw: matchdata[1] }, matokeo: s.matokeo, league: s.league, startDate, endDate
-            })
-        }
+        //MyBets.Today >>> Supatips
+        const {stips, ytips, jtips, ktips} = await processSupatips(d, _d, _s, kesho)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
@@ -579,8 +539,8 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
                     ov15: Ov15.trh
                 }
             }
-            
-            res.render('12-mikeka-week/weekday', {Megas, Ov15, partials});
+
+            res.render('12-mikeka-week/weekday', { Megas, Ov15, partials });
         }
     } catch (err) {
         console.error(err)

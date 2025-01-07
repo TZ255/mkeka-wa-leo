@@ -15,27 +15,41 @@
             <span class="spn_trh"><b><%= jumasiku.juzi %>: </b><%= trh.juzi %></span>
         </h2>
     </div>
-    <table class="table table-dark table-striped-columns">
+    <table class="table table-light table-striped">
         <thead>
-            <tr>
+            <tr class="table-dark">
                 <th scope="col">Time</th>
                 <th scope="col">Matches</th>
                 <th class="tips-th" scope="col">Tip</th>
             </tr>
         </thead>
-        <tbody>
-            <% jtips.forEach(el=> { %>
-            <tr>
-                <td class="time-td">
-                    <%= el.time %> <br> <span><%= el.siku %></span>
-                </td>
-                <td class="match-td">
-                    <span class="league"><%= el.league %></span> <br>
-                    <%- el.match.replace(/ - /g, '<br>' ) %>
-                </td>
-                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-            </tr>
-            <% }) %>
+        <tbody class="table-group-divider">
+            <% jtips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                    <tr itemscope itemtype="https://schema.org/SportsEvent">
+                        <td class="time-td">
+                            <time itemprop="startDate" datetime="<%= match.startDate %>">
+                                <%= match.time %> <br> <span><%= match.siku %></span>
+                            </time>
+                        </td>
+                        <td class="match-td">
+                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="endDate" content="<%= match.endDate %>">
+                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                            <br>
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                            <br>
+                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        </td>
+                        <th class="tip-td table-success"><%= match.tip %></th>
+                    </tr>
+                <% }); %>
+            <% }); %>
         </tbody>
     </table>
     <% if (jtips.length > 0) { %>
@@ -51,27 +65,41 @@
             <span class="spn_trh"><b><%= jumasiku.jana %>: </b><%= trh.jana %></span>
         </h2>
     </div>
-    <table class="table table-dark table-striped-columns">
+    <table class="table table-light table-striped">
         <thead>
-            <tr>
+            <tr class="table-dark">
                 <th scope="col">Time</th>
                 <th scope="col">Matches</th>
                 <th class="tips-th" scope="col">Tip</th>
             </tr>
         </thead>
-        <tbody>
-            <% ytips.forEach(el=> { %>
-            <tr>
-                <td class="time-td">
-                    <%= el.time %> <br> <span><%= el.siku %></span>
-                </td>
-                <td class="match-td">
-                    <span class="league"><%= el.league %></span> <br>
-                    <%- el.match.replace(/ - /g, '<br>' ) %>
-                </td>
-                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-            </tr>
-            <% }) %>
+        <tbody class="table-group-divider">
+            <% ytips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                    <tr itemscope itemtype="https://schema.org/SportsEvent">
+                        <td class="time-td">
+                            <time itemprop="startDate" datetime="<%= match.startDate %>">
+                                <%= match.time %> <br> <span><%= match.siku %></span>
+                            </time>
+                        </td>
+                        <td class="match-td">
+                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="endDate" content="<%= match.endDate %>">
+                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                            <br>
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                            <br>
+                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        </td>
+                        <th class="tip-td table-success"><%= match.tip %></th>
+                    </tr>
+                <% }); %>
+            <% }); %>
         </tbody>
     </table>
     <% if (ytips.length > 0) { %>
@@ -88,42 +116,41 @@
             <span class="spn_trh"><b><%= jumasiku.leo %>: </b><%= trh.leo %></span>
         </h2>
     </div>
-    <table class="table table-dark table-striped-columns">
+    <table class="table table-light table-striped">
         <thead>
-            <tr>
+            <tr class="table-dark">
                 <th scope="col">Time</th>
                 <th scope="col">Matches</th>
                 <th class="tips-th" scope="col">Tip</th>
             </tr>
         </thead>
-        <tbody>
-            <% stips.forEach(el=> { %>
-            <tr itemscope itemtype="https://schema.org/SportsEvent">
-                <td class=" time-td">
-                    <time itemprop="startDate" datetime="<%= el.startDate %>">
-                        <%= el.time %> <br> <span><%= el.siku %></span>
-                    </time>
-                </td>
-                <td class="match-td">
-                    <!-- include schemas -->
-                    <meta itemprop="name" content="<%= el.match.hm %> vs <%= el.match.aw %> Tips">
-                    <meta itemprop="description"
-                        content="Utabiri wa leo kati ya <%= el.match.hm %> vs <%= el.match.aw %>">
-                    <meta itemprop="performer" content="<%= el.match.hm %> vs <%= el.match.aw %>">
-                    <meta itemprop="endDate" content="<%= el.endDate %>">
-                    <span class="league" itemprop="location"><%= el.league %></span>
-                    <br>
-                    <span class="home" itemprop="homeTeam">
-                        <%= el.match.hm %>
-                    </span>
-                    <br>
-                    <span class="away" itemprop="awayTeam">
-                        <%= el.match.aw %>
-                    </span>
-                </td>
-                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-            </tr>
-            <% }) %>
+        <tbody class="table-group-divider">
+            <% stips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                    <tr itemscope itemtype="https://schema.org/SportsEvent">
+                        <td class="time-td">
+                            <time itemprop="startDate" datetime="<%= match.startDate %>">
+                                <%= match.time %> <br> <span><%= match.siku %></span>
+                            </time>
+                        </td>
+                        <td class="match-td">
+                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="endDate" content="<%= match.endDate %>">
+                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                            <br>
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                            <br>
+                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        </td>
+                        <th class="tip-td table-success"><%= match.tip %></th>
+                    </tr>
+                <% }); %>
+            <% }); %>
         </tbody>
     </table>
     <% if (stips.length === 0) { %>
@@ -145,42 +172,41 @@
             <span class="spn_trh"><b><%= jumasiku.kesho %>: </b><%= trh.kesho %></span>
         </h2>
     </div>
-    <table class="table table-dark table-striped-columns">
+    <table class="table table-light table-striped">
         <thead>
-            <tr>
+            <tr class="table-dark">
                 <th scope="col">Time</th>
                 <th scope="col">Matches</th>
                 <th class="tips-th" scope="col">Tip</th>
             </tr>
         </thead>
-        <tbody>
-            <% ktips.forEach(el=> { %>
-            <tr itemscope itemtype="https://schema.org/SportsEvent">
-                <td class="time-td">
-                    <time itemprop="startDate" datetime="<%= el.startDate %>">
-                        <%= el.time %> <br> <span><%= el.siku %></span>
-                    </time>
-                </td>
-                <td class="match-td">
-                    <!-- include schemas -->
-                    <meta itemprop="name" content="<%= el.match.hm %> vs <%= el.match.aw %> Tips">
-                    <meta itemprop="description"
-                        content="Utabiri wa leo kati ya <%= el.match.hm %> vs <%= el.match.aw %>">
-                    <meta itemprop="performer" content="<%= el.match.hm %> vs <%= el.match.aw %>">
-                    <meta itemprop="endDate" content="<%= el.endDate %>">
-                    <span class="league" itemprop="location"><%= el.league %></span>
-                    <br>
-                    <span class="home" itemprop="homeTeam">
-                        <%= el.match.hm %>
-                    </span>
-                    <br>
-                    <span class="away" itemprop="awayTeam">
-                        <%= el.match.aw %>
-                    </span>
-                </td>
-                <th class="tip-td" style="color: gold;"><%= el.tip %></th>
-            </tr>
-            <% }) %>
+        <tbody class="table-group-divider">
+            <% ktips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                    <tr itemscope itemtype="https://schema.org/SportsEvent">
+                        <td class="time-td">
+                            <time itemprop="startDate" datetime="<%= match.startDate %>">
+                                <%= match.time %> <br> <span><%= match.siku %></span>
+                            </time>
+                        </td>
+                        <td class="match-td">
+                            <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                            <meta itemprop="description" content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                            <meta itemprop="endDate" content="<%= match.endDate %>">
+                            <span class="league" itemprop="location"><%= leagueGroup._id.league %></span>
+                            <br>
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                            <br>
+                            <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        </td>
+                        <th class="tip-td table-success"><%= match.tip %></th>
+                    </tr>
+                <% }); %>
+            <% }); %>
         </tbody>
     </table>
     <% if (ktips.length === 0) { %>
