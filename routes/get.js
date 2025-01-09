@@ -22,6 +22,9 @@ const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
 const { processSupatips } = require('./fns/supatipsCollection')
+const getPaymentStatus = require('./fns/pesapal/getTxStatus')
+const { makePesaPalAuth } = require('./fns/pesapal/auth')
+const isProduction = require('./fns/pesapal/isProduction')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -746,6 +749,32 @@ router.get('/get/tips/upcoming/:date', async (req, res) => {
     } catch (error) {
         console.log(error.message)
         res.status(501).send({ error: 'There has been an error processing your request. Ensure you provides the correct parameter' })
+    }
+})
+
+//payments
+router.get('/payments/validate', async (req, res)=> {
+    try {
+        let {OrderTrackingId, OrderMerchantReference} = req.query
+
+        if(OrderTrackingId) {
+            console.log(req.query)
+            let {token, expiryDate} = await makePesaPalAuth(true)
+            let thibitisha = await getPaymentStatus(OrderTrackingId, isProduction(), token)
+            switch(thibitisha) {
+                case 1:
+                    res.redirect('/standings/567/2024')
+                    break;
+                    
+                default:
+                    res.send('Muamala wako haukufanikiwa. Ikiwa unapitia changamoto kwenye malipo, wasiliana nasi WhatsApp +254769028387')
+                    break;
+            }
+        } else {
+            res.redirect('/')
+        }
+    } catch (error) {
+        res.send('Changamoto imetokea kuthibitisha malipo yako. Tafadhali tutumie screeshot ya muamala wako kwenye WhatsApp yetu +254769028387')
     }
 })
 

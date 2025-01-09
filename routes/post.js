@@ -15,6 +15,7 @@ const { GetDayFromDateString, GetJsDate } = require('./fns/weekday')
 const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const { createNewOrder } = require('./fns/pesapal/makeorder')
 const { createRefundReq } = require('./fns/pesapal/refundorder')
+const isProduction = require('./fns/pesapal/isProduction')
 
 let imp = {
     replyDb: -1001608248942,
@@ -571,9 +572,6 @@ router.post('/post/mpesa', async (req, res) => {
 
 router.post('/pay/pesapal', async (req, res)=> {
     try {
-        //app mode
-        let isProduction = true
-
         //body
         let phone = req.body.phone
         let email = req.body.email
@@ -582,10 +580,10 @@ router.post('/pay/pesapal', async (req, res)=> {
         let amount = country === 'TZ' ? 2000 : 150
 
         //authentication
-        let {token, expiryDate} = await makePesaPalAuth(isProduction)
+        let {token, expiryDate} = await makePesaPalAuth(isProduction())
 
         //make new order
-        let createdOrder = await createNewOrder(token, phone, email, isProduction, currency, country, amount)
+        let createdOrder = await createNewOrder(token, phone, email, isProduction(), currency, country, amount)
 
         res.redirect(createdOrder.redirect_url)
     } catch (error) {

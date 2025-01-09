@@ -13,6 +13,8 @@ const MikekaDBModel = require('../model/mkeka-mega')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
 const { testSp, extractData } = require('./fns/jsjsjjs')
 const sendEmail = require('./fns/pesapal/sendemail')
+const getPaymentStatus = require('./fns/pesapal/getTxStatus')
+const { makePesaPalAuth } = require('./fns/pesapal/auth')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -360,9 +362,8 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        let subject = "Uthibitisho wa Malipo"
-        let html = `<p>Habari George. Tumekutumia email hii kuthibitisha malipo yako:</p><ul><li>Jina: George Mariki</li><li>Phone: 0754920480</li></ul>`
-        sendEmail('georgehmariki@gmail.com', subject, html)
+        // let {token} = await makePesaPalAuth(true)
+        // getPaymentStatus(`74bc1b3e-4193-4a1f-a9a7-dc4d3d62907f`, true, token)
         res.end()
     } catch (error) {
         res.send(error.message)

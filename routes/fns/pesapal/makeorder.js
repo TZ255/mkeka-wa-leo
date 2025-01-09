@@ -7,15 +7,16 @@ const createNewOrder = async (token, phone, email, isProduction, currency, count
         sandbox: 'bc5e36ee-00a5-4bbf-80ab-dc4c5c209134',
         production: 'a56996b6-debe-4e38-b18c-dc4d62854a26'
     }
-    
+
     try {
         let orderDetails = {
             id: `order-${Date.now()}`, // Unique order ID
             currency,
             amount: parseFloat(amount).toFixed(2),
             description: 'Order for VIP Tips',
-            callback_url: 'https://mkekawaleo.com/standings/567/2024',
-            cancellation_url: 'https://mkekawaleo.com',
+            callback_url: 'https://mkekawaleo.com/payments/validate',
+            cancellation_url: 'https://mkekawaleo.com/mkeka/vip',
+            redirect_mode: 'PARENT_WINDOW',
             notification_id: isProduction ? NOTIFY.production : NOTIFY.sandbox,
             billing_address: {
                 email_address: email,
