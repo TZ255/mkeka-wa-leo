@@ -577,7 +577,7 @@ router.post('/pay/pesapal', async (req, res)=> {
         let email = req.body.email
         let country = req.body.country
         let currency = country === 'TZ' ? 'TZS' : 'KES'
-        let amount = country === 'TZ' ? 2000 : 150
+        let amount = country === 'TZ' ? 2500 : 150
 
         //authentication
         let {token, expiryDate} = await makePesaPalAuth(isProduction())
