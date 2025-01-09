@@ -109,11 +109,36 @@
 </head>
 
 <body>
+    <div class="pesapal one-m cont" style="text-align: center;">
+        <h3>PesaPal</h3>
+        <form action="/pay/pesapal" method="post">
+            <input 
+            type="text" 
+            id="tenDigitNumber" 
+            name="tenDigitNumber" 
+            pattern="\d{10}" 
+            minlength="10" 
+            maxlength="10" 
+            required
+            placeholder="Enter phone eg. 0767545434"
+            title="Please enter exactly 10 digits."
+            >
+            <input type="email" name="email" id="email" placeholder="Enter Email" required>
+            <input type="number" name="amount" id="amount" placeholder="1,000 TZS or 100 KES" readonly>
+            <select name="country" id="country">
+                <option value="TZ">Tanzania</option>
+                <option value="KE">Kenya</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
     <div class="one-m cont" style="text-align: center;">
         <h3>One Million Params</h3>
         <form action="/checking/one-m/1" method="post" target="_blank">
             <div class="one-inpts">
-                <textarea name="data" id="d-data" cols="45" rows="18" placeholder="All data in 4 lines &#10;Date & Time &#10;League &#10;HomeTeam &#10;AwayTeam, Tip & Odd"></textarea> <br>
+                <textarea name="data" id="d-data" cols="45" rows="18"
+                    placeholder="All data in 4 lines &#10;Date & Time &#10;League &#10;HomeTeam &#10;AwayTeam, Tip & Odd"></textarea>
+                <br>
                 <textarea name="secret" id="secret" cols="45" rows="1" placeholder="Secret"></textarea>
             </div>
             <div class="submit">
@@ -126,7 +151,9 @@
         <h3>A Football Report</h3>
         <form action="/checking/afootballreport" method="post" target="_blank">
             <div class="one-inpts">
-                <textarea name="data" id="d-data" cols="45" rows="18" placeholder="All data in 4 lines &#10;Date & Time &#10;League &#10;HomeTeam &#10;AwayTeam, Tip & Odd"></textarea> <br>
+                <textarea name="data" id="d-data" cols="45" rows="18"
+                    placeholder="All data in 4 lines &#10;Date & Time &#10;League &#10;HomeTeam &#10;AwayTeam, Tip & Odd"></textarea>
+                <br>
                 <textarea name="secret" id="secret" cols="45" rows="1" placeholder="Secret"></textarea>
                 <textarea name="trh" id="secret" cols="45" rows="1" placeholder="Trh"></textarea>
             </div>

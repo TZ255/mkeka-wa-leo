@@ -8,10 +8,13 @@ const supatipsModel = require('../model/supatips')
 const tmDB = require('../model/movie-db')
 const vidDB = require('../model/video-db')
 const { nanoid, customAlphabet } = require('nanoid')
-const axios = require('axios').default
+const { default: axios } = require("axios");
 const cheerio = require('cheerio')
 const OpenAI = require('openai');
 const { GetDayFromDateString, GetJsDate } = require('./fns/weekday')
+const { makePesaPalAuth } = require('./fns/pesapal/auth')
+const { createNewOrder } = require('./fns/pesapal/makeorder')
+const { createRefundReq } = require('./fns/pesapal/refundorder')
 
 let imp = {
     replyDb: -1001608248942,
@@ -563,6 +566,43 @@ router.post('/post/mpesa', async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(404).send('Faaiiiled')
+    }
+})
+
+router.post('/pay/pesapal', async (req, res)=> {
+    try {
+        //app mode
+        let isProduction = true
+
+        //body
+        let phone = req.body.phone
+        let email = req.body.email
+        let country = req.body.country
+        let currency = country === 'TZ' ? 'TZS' : 'KES'
+        let amount = country === 'TZ' ? 2000 : 150
+
+        //authentication
+        let {token, expiryDate} = await makePesaPalAuth(isProduction)
+
+        //make new order
+        let createdOrder = await createNewOrder(token, phone, email, isProduction, currency, country, amount)
+
+        res.redirect(createdOrder.redirect_url)
+    } catch (error) {
+        res.send('Samahani. Tumepata hitilafu ya kimtandao tukijaribu kukubali malipo yako. Tafadhali wasiliana na admin wetu ili kupata njia nyingine ya malipo')
+        console.log(error?.message, error)
+    }
+})
+
+router.post(['/pesapal/notifications', '/pesapal/notifications/sandbox'], async (req, res)=> {
+    try {
+        if(req.body) {
+            console.log(req.body)
+        }
+        await axios.get('https://wirepusher.com/send?id=dX77mpGBL&title=PesaPal&message=Transactional&type=mkeka')
+        res.status(200).send('notification received')
+    } catch (error) {
+        console.log(error?.message, error)
     }
 })
 
