@@ -152,6 +152,10 @@ router.get('/standings/:league/:season', async (req, res) => {
                     res.render('11-misimamo/24-25/caf/caf', { standing, agg, partials })
                     break;
 
+                case '20':
+                    res.render('11-misimamo/24-25/conf/conf', { standing, agg, partials })
+                    break;
+
                 default:
                     res.redirect('/')
             }
@@ -283,6 +287,10 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
                 res.render('11-misimamo/24-25/caf/2-scorer/scorer', { top_scorers, partials })
                 break;
 
+            case '20':
+                res.render('11-misimamo/24-25/conf/2-scorer/scorer', { top_scorers, partials })
+                break;
+
             default:
                 res.redirect('/')
         }
@@ -325,6 +333,10 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
                 res.render('11-misimamo/24-25/caf/3-assist/assist', { top_assists, partials })
                 break;
 
+            case '20':
+                res.render('11-misimamo/24-25/conf/3-assist/assist', { top_assists, partials })
+                break;
+
             default:
                 res.redirect('/')
         }
@@ -362,8 +374,10 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        // let {token} = await makePesaPalAuth(true)
-        // getPaymentStatus(`74bc1b3e-4193-4a1f-a9a7-dc4d3d62907f`, true, token)
+        // UpdateOtherTopScorerFn(20, 2024)
+        // setTimeout(() => {
+        //     UpdateOtherTopAssistFn(20, 2024)
+        // }, 5000);
         res.end()
     } catch (error) {
         res.send(error.message)

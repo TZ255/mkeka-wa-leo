@@ -102,6 +102,13 @@ setInterval(() => {
                         UpdateOtherFixuresFn(12, 2024)
                     }, 5000)
                     break;
+
+                case 7: //Confederation on every 07 minute
+                    UpdateOtherStandingFn(20, 2024)
+                    setTimeout(() => {
+                        UpdateOtherFixuresFn(20, 2024)
+                    }, 5000)
+                    break;
             }
         }
 
@@ -126,6 +133,13 @@ setInterval(() => {
                     UpdateOtherTopScorerFn(12, 2024)
                     setTimeout(() => {
                         UpdateOtherTopAssistFn(12, 2024)
+                    }, 5000)
+                    break;
+
+                case 36: //CAF top scorer on every 36
+                    UpdateOtherTopScorerFn(20, 2024)
+                    setTimeout(() => {
+                        UpdateOtherTopAssistFn(20, 2024)
                     }, 5000)
                     break;
             }
