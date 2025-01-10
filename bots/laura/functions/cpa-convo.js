@@ -18,16 +18,7 @@ const makeKECPA = async (bot, ctx, imp) => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
                     from_chat_id: imp.matangazoDB,
-                    message_id: copyId,
-                    reply_markup: {
-                        inline_keyboard: [
-                            [{ text: '🔞 ESCORTS GROUPS', url: cpaGRIP }],
-                            [{ text: '🍑 SUGAR MUMMIES 😍', url: cpaGRIP }],
-                            [{ text: '❤ LOCAL HOT GIRLS ❤', url: cpaGRIP }],
-                            [{ text: '❌ PONO VIDEOS CHANNELS ❌', url: cpaGRIP }],
-                            [{ text: '🔞 SEX CHATTING GROUPS (18+) ❤', url: cpaGRIP }],
-                        ]
-                    }
+                    message_id: copyId
                 }).then(() => {
                     if (i == all.length - 1) {
                         ctx.api.sendMessage(imp.shemdoe, `Nimemaliza Kenya via Editha`)
@@ -66,16 +57,7 @@ const makeUGCPA = async (bot, ctx, imp) => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
                     from_chat_id: imp.matangazoDB,
-                    message_id: copyId,
-                    reply_markup: {
-                        inline_keyboard: [
-                            [{ text: '🔞 ESCORTS GROUPS', url: cpaGRIP }],
-                            [{ text: '🍑 SUGAR MUMMIES 😍', url: cpaGRIP }],
-                            [{ text: '❤ LOCAL HOT GIRLS ❤', url: cpaGRIP }],
-                            [{ text: '❌ PONO VIDEOS CHANNELS ❌', url: cpaGRIP }],
-                            [{ text: '🔞 SEX CHATTING GROUPS (18+) ❤', url: cpaGRIP }],
-                        ]
-                    }
+                    message_id: copyId
                 }).then(() => {
                     if (i == all.length - 1) {
                         ctx.api.sendMessage(imp.shemdoe, `Nimemaliza Uganda via Editha`)
