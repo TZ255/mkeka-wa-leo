@@ -84,7 +84,7 @@ router.post('/post', async (req, res) => {
     }
 
     if (secret == '5654' && match.includes(' - ')) {
-        let mk = await mikekaDb.create({ match, league, odds, time, bet, date: d })
+        let mk = await mikekaDb.create({ match, league, odds, time, bet, date: d, jsDate: GetJsDate(d), weekday: GetDayFromDateString(d)})
         res.send(mk)
     } else if (secret == '55') {
         let mk = await betslip.create({ match, league, odd: odds, tip: bet, date: d })

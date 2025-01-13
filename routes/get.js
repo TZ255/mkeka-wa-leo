@@ -15,7 +15,7 @@ const cheerio = require('cheerio')
 //times
 const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
-const { WeekDayFn, findMikekaByWeekday, SwahiliDayToEnglish } = require('./fns/weekday')
+const { WeekDayFn, findMikekaByWeekday, SwahiliDayToEnglish, DetermineNextPrev } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
@@ -540,7 +540,8 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
                 trh: {
                     mega: Megas.trh,
                     ov15: Ov15.trh
-                }
+                },
+                prevNext: DetermineNextPrev(weekday)
             }
 
             res.render('12-mikeka-week/weekday', { Megas, Ov15, partials });

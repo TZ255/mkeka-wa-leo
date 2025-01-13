@@ -1,5 +1,6 @@
 const moment = require('moment');
 
+//English day to swahili
 const WeekDayFn = (engDay) => {
     switch (engDay) {
         case 'Monday':
@@ -22,6 +23,35 @@ const WeekDayFn = (engDay) => {
 
         case 'Sunday':
             return "Jumapili"
+
+        default:
+            return "Siku"
+    }
+}
+
+//determine the next and prev day
+const DetermineNextPrev = (swahiliWeekday) => {
+    switch (String(swahiliWeekday).toLowerCase()) {
+        case 'jumatatu':
+            return {next: 'jumanne', prev: 'jumapili'}
+
+        case 'jumanne':
+            return {next: 'jumatano', prev: 'jumatatu'}
+
+        case 'jumatano':
+            return {next: 'alhamisi', prev: 'jumanne'}
+
+        case 'alhamisi':
+            return {next: 'ijumaa', prev: 'jumatano'}
+
+        case 'ijumaa':
+            return {next: 'jumamosi', prev: 'alhamisi'}
+
+        case 'jumamosi':
+            return {next: 'jumapili', prev: 'ijumaa'}
+
+        case 'jumapili':
+            return {next: 'jumatatu', prev: 'jumamosi'}
 
         default:
             return "Siku"
@@ -107,5 +137,5 @@ function SwahiliDayToEnglish(day) {
 }
 
 module.exports = {
-    WeekDayFn, GetDayFromDateString, GetJsDate, findMikekaByWeekday, SwahiliDayToEnglish
+    WeekDayFn, GetDayFromDateString, GetJsDate, findMikekaByWeekday, SwahiliDayToEnglish, DetermineNextPrev
 }

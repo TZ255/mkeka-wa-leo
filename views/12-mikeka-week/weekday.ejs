@@ -43,6 +43,21 @@
                 <%- include('./partials/over15.ejs'); %>
             </section>
             <hr class="style-eight">
+            <div class="next-prev d-flex justify-content-between px-4 fs-4 fw-bold mb-4">
+                <div class="prev">
+                    <a href="/mkeka/<%= partials.prevNext.prev %>" class="text-success">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <%= String(partials.prevNext.prev).charAt(0).toUpperCase() + String(partials.prevNext.prev).slice(1) %>
+                    </a>
+                </div>
+                <div class="next">
+                    <a href="/mkeka/<%= partials.prevNext.next %>" class="text-success">
+                        <%= String(partials.prevNext.next).charAt(0).toUpperCase() + String(partials.prevNext.next).slice(1) %>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <hr>
             <%- include('../0-global/banner2.ejs'); %>
             <%- include('../0-global/somapia.ejs'); %>
         </section>
