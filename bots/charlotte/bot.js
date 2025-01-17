@@ -33,7 +33,7 @@ const charlotteFn = async (app) => {
         bberry: 1101685785,
         airt: 1426255234,
         xzone: -1001740624527,
-        ohmyDB: -1001586042518,
+        ohmyDB: '-1001586042518ZZ',
         xbongo: -1001263624837,
         rtgrp: -1001899312985,
         rtprem: -1001946174983,
