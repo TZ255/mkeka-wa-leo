@@ -33,7 +33,7 @@ const charlotteFn = async (app) => {
         bberry: 1101685785,
         airt: 1426255234,
         xzone: -1001740624527,
-        ohmyDB: '-1001586042518ZZ',
+        ohmyDB: -1001586042518,
         xbongo: -1001263624837,
         rtgrp: -1001899312985,
         rtprem: -1001946174983,
@@ -446,7 +446,7 @@ const charlotteFn = async (app) => {
                     }
                 }
             }
-            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.video) {
+            if (ctx.channelPost.chat.id == imp.ohmyDB +10 && ctx.channelPost.video) {
                 let fid = ctx.channelPost.video.file_unique_id
                 let file_id = ctx.channelPost.video.file_id
                 let cap = ctx.channelPost.caption
@@ -475,7 +475,7 @@ const charlotteFn = async (app) => {
                 await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}&dur=${duration}</code>`, { parse_mode: 'HTML' })
             }
 
-            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.document) {
+            if (ctx.channelPost.chat.id == imp.ohmyDB + 10 && ctx.channelPost.document) {
                 let fid = ctx.channelPost.document.file_unique_id
                 let file_id = ctx.channelPost.document.file_id
                 let cap = ctx.channelPost.caption
