@@ -5,6 +5,7 @@ const listModel = require('./database/botlist')
 const mkekaMega = require('./database/mkeka-mega')
 
 const mkekaReq = require('./functions/mikeka')
+const makeConvo = require('./functions/convo')
 
 
 const myBotsFn = async (app) => {
@@ -142,7 +143,7 @@ const myBotsFn = async (app) => {
             })
 
             bot.command('convo', async ctx => {
-                //
+                makeConvo(bot, ctx, imp)
             })
 
             bot.callbackQuery(['money', 'pussy'], async ctx => {
