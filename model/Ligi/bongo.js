@@ -16,6 +16,15 @@ const LigiSchema = new Schema({
     },
     season_fixtures: {
         type: Array
+    },
+    top_scorers: {
+        type: Array
+    },
+    top_assists: {
+        type: Array
+    },
+    update_top_players: {
+        type: String
     }
 }, {timestamps: true, strict: false})
 

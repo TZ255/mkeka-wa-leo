@@ -15,6 +15,7 @@ const { testSp, extractData } = require('./fns/jsjsjjs')
 const sendEmail = require('./fns/pesapal/sendemail')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
 const { makePesaPalAuth } = require('./fns/pesapal/auth')
+const { wafungajiBoraNBC, assistBoraNBC } = require('./fns/ligikuucotz')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -33,7 +34,7 @@ router.get('/standings/567/2024', async (req, res) => {
     let league_season = "2024"
 
     try {
-        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season })
+        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season }).select('-top_scorers -top_assists')
         const agg = await StandingLigiKuuModel.aggregate([
             {
                 $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
@@ -205,7 +206,7 @@ router.get([ratibaRoutes], async (req, res) => {
                 break;
         }
 
-        res.render('11-misimamo/24-25/bongo/ratiba/ratiba', { ratiba, standing, partials })
+        res.render('11-misimamo/24-25/bongo/1-ratiba/ratiba', { ratiba, standing, partials })
     } catch (error) {
         console.error(error?.message, error)
         res.send(`Kumetokea changamoto. Fungua page hii upya`)
@@ -256,7 +257,57 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
     }
 })
 
-//topScorer
+//top scorer bongo
+router.get('/wafungaji-bora/tanzania/2024-2025', async (req, res) => {
+    try {
+        let league_id = 567
+        let season = '2024'
+
+        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let top_scorers = league.top_scorers
+
+        let partials = {
+            path: req.path,
+            season: `${season}/${Number(season) + 1}`,
+            league_id,
+            canonical_path: `/wafungaji-bora/tanzania/2024-2025`,
+            createdAt: league.createdAt.toISOString(),
+            updatedAt: league.update_top_players
+        }
+
+        res.render('11-misimamo/24-25/bongo/2-scorer/scorer', { top_scorers, partials })
+    } catch (error) {
+        console.error(error?.message, error)
+        res.send(`Kumetokea changamoto. Fungua page hii upya`)
+    }
+})
+
+//top assists bongo
+router.get('/top-assists/tanzania/2024-2025', async (req, res) => {
+    try {
+        let league_id = 567
+        let season = '2024'
+
+        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let top_assists = league.top_assists
+
+        let partials = {
+            path: req.path,
+            season: `${season}/${Number(season) + 1}`,
+            league_id,
+            canonical_path: `/top-assists/tanzania/2024-2025`,
+            createdAt: league.createdAt.toISOString(),
+            updatedAt: league.update_top_players
+        }
+
+        res.render('11-misimamo/24-25/bongo/3-assist/assist', { top_assists, partials })
+    } catch (error) {
+        console.error(error?.message, error)
+        res.send(`Kumetokea changamoto. Fungua page hii upya`)
+    }
+})
+
+//topScorer other league
 router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
     try {
         let league_id = req.params.leagueid
@@ -302,7 +353,7 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
     }
 })
 
-//top Assist
+//top Assist other league
 router.get('/top-assists/:leagueid/:season', async (req, res) => {
     try {
         let league_id = req.params.leagueid
@@ -374,10 +425,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        // UpdateOtherTopScorerFn(20, 2024)
-        // setTimeout(() => {
-        //     UpdateOtherTopAssistFn(20, 2024)
-        // }, 5000);
+        // assistBoraNBC()
         res.end()
     } catch (error) {
         res.send(error.message)

@@ -13,6 +13,7 @@ const zambiaBotsSourceCodes = require('./bots/zambias/bot')
 const { UpdateFixuresFn, UpdateStandingFn } = require('./routes/fns/bongo-ligi')
 const { UpdateOtherStandingFn, UpdateOtherFixuresFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./routes/fns/other-ligi')
 const { default: axios } = require('axios')
+const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz')
 
 const app = express()
 
@@ -69,8 +70,10 @@ setInterval(() => {
         //update bongo at 18,19,21,23, and 04:01
         if (([18, 19, 21, 23, 4].includes(hours)) && mins == 1) {
             UpdateFixuresFn()
+            wafungajiBoraNBC() //scrape ligikuu.co.tz
             setTimeout(() => {
                 UpdateStandingFn()
+                assistBoraNBC() //scrape ligikuu.co.tz
             }, 5000)
         }
 
