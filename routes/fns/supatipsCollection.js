@@ -78,12 +78,12 @@ const processSupatips = async (d, _d, _s, kesho) => {
             }
         }},
         
-        // Sort groups by first match time
+        // Sort groups by league names A-Z and by time within groups
         { $sort: {
-            "_id.siku": 1,
+            "_id.league": 1,
             "matches.0.time": 1
         }}
-    ]);
+    ]).cache(600) //10 minutes
 
     // Filter and organize results
     const stips = allMatches.filter(group => group._id.siku === d);

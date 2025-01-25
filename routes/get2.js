@@ -34,7 +34,7 @@ router.get('/standings/567/2024', async (req, res) => {
     let league_season = "2024"
 
     try {
-        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season }).select('-top_scorers -top_assists')
+        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season }).select('-top_scorers -top_assists').cache(600)
         const agg = await StandingLigiKuuModel.aggregate([
             {
                 $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
@@ -63,7 +63,7 @@ router.get('/standings/567/2024', async (req, res) => {
             {
                 $sort: { numericRound: 1 } // Sort by the numeric part of the round
             }
-        ])
+        ]).cache(600)
 
         let partials = {
             mwaka: new Date().getFullYear(),
@@ -83,7 +83,7 @@ router.get('/standings/:league/:season', async (req, res) => {
     let league_id = req.params.league
 
     try {
-        const standing = await OtherStandingLigiKuuModel.findOne({ league_id, league_season })
+        const standing = await OtherStandingLigiKuuModel.findOne({ league_id, league_season }).cache(600)
         if (standing) {
             const agg = await OtherStandingLigiKuuModel.aggregate([
                 {
@@ -129,7 +129,7 @@ router.get('/standings/:league/:season', async (req, res) => {
                 {
                     $sort: { numericRound: 1 } // Sort by the numeric part of the round
                 }
-            ]);
+            ]).cache(600);
 
             let partials = {
                 season: `${league_season}/${Number(league_season) + 1}`,
@@ -180,7 +180,7 @@ router.get([ratibaRoutes], async (req, res) => {
         let team_id = req.params.teamid
         let season = req.params.season
 
-        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season }).cache(600)
         let standing = league.standing
         let fixtures = league.season_fixtures
         let ratiba = fixtures.filter(fix =>
@@ -220,7 +220,7 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
         let team_id = req.params.teamid
         let season = req.params.season
 
-        let league = await OtherStandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let league = await OtherStandingLigiKuuModel.findOne({ league_id, league_season: season }).cache(600)
         let standing = league.standing
         let fixtures = league.season_fixtures
         let ratiba = fixtures.filter(fix =>
@@ -263,7 +263,7 @@ router.get('/wafungaji-bora/tanzania/2024-2025', async (req, res) => {
         let league_id = 567
         let season = '2024'
 
-        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season }).cache(600)
         let top_scorers = league.top_scorers
 
         let partials = {
@@ -288,7 +288,7 @@ router.get('/top-assists/tanzania/2024-2025', async (req, res) => {
         let league_id = 567
         let season = '2024'
 
-        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season })
+        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season }).cache(600)
         let top_assists = league.top_assists
 
         let partials = {

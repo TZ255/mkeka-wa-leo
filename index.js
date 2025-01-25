@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cachegoose = require('recachegoose');
 require('dotenv').config()
 const getRouter = require('./routes/get')
 const getRouter2 = require('./routes/get2')
@@ -23,6 +24,10 @@ mongoose.connect(`mongodb://${process.env.USER}:${process.env.PASS}@nodetuts-sha
     .catch((err) => {
         console.log(err)
     })
+
+cachegoose(mongoose, {
+    engine: 'memory'
+})
 
 const limiter = elimit({
     windowMs: 60 * 1000, // 1 minute
