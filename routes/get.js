@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
         let mikeka = await mkekadb.find({ date: d }).sort('time').cache(600) //10 minutes
 
         //check if there is no any slip
-        let slip = await betslip.find({ date: d }).cache(600) //10 minutes
+        let slip = await betslip.find({ date: d })
         if (slip.length < 1) {
             //find random 3 from mkekadb
             let copies = await mkekadb.aggregate(([
