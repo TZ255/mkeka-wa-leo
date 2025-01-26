@@ -54,21 +54,7 @@ router.get('/', async (req, res) => {
         let mikeka = await mkekadb.find({ date: d }).sort('time').cache(600) //10 minutes
 
         //check if there is no any slip
-        let slip = await betslip.find({ date: d })
-        if (slip.length < 1) {
-            //find random 3 from mkekadb
-            let copies = await mkekadb.aggregate(([
-                { $match: { date: d } }, //not neccessary if you dont need match
-                { $sample: { size: 3 } }
-            ]))
-
-            //add them to betslip database
-            for (let c of copies) {
-                await betslip.create({
-                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs ')
-                })
-            }
-        }
+        let slip = await betslip.find({ date: d }).cache(600)
 
         let megaOdds = 1
         let slipOdds = 1

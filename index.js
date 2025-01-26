@@ -14,7 +14,8 @@ const zambiaBotsSourceCodes = require('./bots/zambias/bot')
 const { UpdateFixuresFn, UpdateStandingFn } = require('./routes/fns/bongo-ligi')
 const { UpdateOtherStandingFn, UpdateOtherFixuresFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./routes/fns/other-ligi')
 const { default: axios } = require('axios')
-const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz')
+const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz');
+const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
 
 const app = express()
 
@@ -66,11 +67,18 @@ if (process.env.local != 'true') {
 //updating ligis
 setInterval(() => {
     if (process.env.local != 'true') {
-        let d = new Date().toLocaleTimeString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let [hh, mm, ss] = d.split(":")
+        let d_date = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let d_time = new Date().toLocaleTimeString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let [hh, mm, ss] = d_time.split(":")
         let time = `${hh}:${mm}`
         let hours = Number(hh)
         let mins = Number(mm)
+
+        //update betslip
+        //angalia kila baada ya dakika 15
+        if(mins % 15 === 0) {
+            checking3MkekaBetslip(d_date)
+        }
 
         //update bongo at 18,19,21,23, and 04:01
         if (([18, 19, 21, 23, 4].includes(hours)) && mins == 1) {

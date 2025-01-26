@@ -3,6 +3,7 @@ const router = require('express').Router()
 //times
 const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
+const betslip = require('../model/betslip')
 const { WeekDayFn, GetDayFromDateString } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
@@ -425,7 +426,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        // assistBoraNBC()
+        await betsli
         res.end()
     } catch (error) {
         res.send(error.message)
