@@ -8,45 +8,50 @@
             </span>
         </h2>
     </div>
-    <table class="table">
-        <thead>
-            <tr class="table-secondary">
-                <th scope="col">Betslip</th>
-                <th scope="col" class="cell-left">Odds</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% for( let mch of slip ) { %>
-                <tr class="table-light">
-                    <td>
-                        <b class="tip">
-                            <%= mch.tip %>
-                        </b> <br>
-                        <span class="match">
-                            <i class="fa-regular fa-futbol"></i>
-                            <%= mch.match %>
-                        </span>
-                    </td>
-                    <td class="cell-left" style="vertical-align: middle;">
-                        <%= mch.odd %>
-                    </td>
+    <% if (slip.length < 1) { %>
+     <p class="text-center zakesho">* Betslip ya Leo (VIP) bado iko kwenye maandalizi</p>
+    <% } %>
+    <% if (slip.length > 1) { %>
+        <table class="table">
+            <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Betslip</th>
+                    <th scope="col" class="cell-left">Odds</th>
                 </tr>
-                <% } %>
-
-                    <tr class="table-secondary">
-                        <th scope="col" style="font-size: 14px;">
-                            Stake: <span class="brown">56,000 TZS</span><br>
-                            Possible Win: <span class="brown" id="slipOdd"></span>
-                        </th>
-                        <th scope="col" class="cell-left" style="font-size: 14px;">
-                            Odds: <span class="brown">
-                                <%= slipOdds %>
-                            </span> <br>
-                            Bonus: <span style="color:green;">+15%</span>
-                        </th>
+            </thead>
+            <tbody>
+                <% for( let mch of slip ) { %>
+                    <tr class="table-light">
+                        <td>
+                            <b class="tip">
+                                <%= mch.tip %>
+                            </b> <br>
+                            <span class="match">
+                                <i class="fa-regular fa-futbol"></i>
+                                <%= mch.match %>
+                            </span>
+                        </td>
+                        <td class="cell-left" style="vertical-align: middle;">
+                            <%= mch.odd %>
+                        </td>
                     </tr>
-        </tbody>
-    </table>
+                    <% } %>
+    
+                        <tr class="table-secondary">
+                            <th scope="col" style="font-size: 14px;">
+                                Stake: <span class="brown">56,000 TZS</span><br>
+                                Possible Win: <span class="brown" id="slipOdd"></span>
+                            </th>
+                            <th scope="col" class="cell-left" style="font-size: 14px;">
+                                Odds: <span class="brown">
+                                    <%= slipOdds %>
+                                </span> <br>
+                                Bonus: <span style="color:green;">+15%</span>
+                            </th>
+                        </tr>
+            </tbody>
+        </table>
+    <% } %>
     <div class="bottomSlip">
         <div>Gal Sport Betting</div>
         <div onclick="jiunge()">
