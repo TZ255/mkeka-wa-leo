@@ -37,6 +37,8 @@ const countryCodeWrapper = (cc) => {
       return 'Senegal';
     case 'som':
       return 'Somalia';
+    case 'swz':
+      return 'Eswatini';
     case 'tan':
       return 'Tanzania';
     case 'tog':
@@ -118,13 +120,13 @@ const wafungajiBoraNBC = async () => {
 
       scrapedResults.push({ country, playerName, club, goals });
     });
-    if(scrapedResults.length < 30) {
+    if (scrapedResults.length < 30) {
       return sendNotification(shemdoe_id, 'wafungaji bora NBC is less than 30')
     }
-    let ligi = await StandingLigiKuuModel.findOne({league_id: 567, league_season: '2024'})
+    let ligi = await StandingLigiKuuModel.findOne({ league_id: 567, league_season: '2024' })
     let topScores = ligi.top_scorers
     //check if web === to topScores
-    if(!isEqual(topScores, scrapedResults)) {
+    if (!isEqual(topScores, scrapedResults)) {
       ligi.top_scorers = scrapedResults
       ligi.update_top_players = new Date().toISOString()
       await ligi.save()
@@ -201,13 +203,13 @@ const assistBoraNBC = async () => {
 
       scrapedResults.push({ country, playerName, club, assists });
     });
-    if(scrapedResults.length < 30) {
+    if (scrapedResults.length < 30) {
       return sendNotification(shemdoe_id, 'top assists bora NBC is less than 30')
     }
-    let ligi = await StandingLigiKuuModel.findOne({league_id: 567, league_season: '2024'})
+    let ligi = await StandingLigiKuuModel.findOne({ league_id: 567, league_season: '2024' })
     let topAssist = ligi.top_assists
     //check if web === to topScores
-    if(!isEqual(topAssist, scrapedResults)) {
+    if (!isEqual(topAssist, scrapedResults)) {
       ligi.top_assists = scrapedResults
       ligi.update_top_players = new Date().toISOString()
       await ligi.save()
