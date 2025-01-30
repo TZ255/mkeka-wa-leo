@@ -342,6 +342,16 @@ const charlotteFn = async (app) => {
         approvingFunction(ctx)
     })
 
+    bot.command('clear_pilau', async ctx=> {
+        try {
+            let all = await reqModel.countDocuments({ chan_id: imp.newRT })
+            await reqModel.deleteMany({ chan_id: imp.newRT })
+            await ctx.reply(`${all.length} requesters cleared successfully from DB`)
+        } catch (error) {
+            await ctx.reply(error.message)
+        }
+    })
+
     bot.command('newchannel', async ctx => {
         try {
             if ([imp.shemdoe, imp.halot, imp.rtmalipo].includes(ctx.chat.id)) {
