@@ -326,9 +326,7 @@ const charlotteFn = async (app) => {
                         user.deleteOne()
                     })
                     .catch(e => {
-                        if (e.message.includes('USER_ALREADY_PARTICIPANT')) {
-                            user.deleteOne()
-                        }
+                        user.deleteOne()
                     })
             }
             let finish = `Finished Approving ${all_pending.length} people`
