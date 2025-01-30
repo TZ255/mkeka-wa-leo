@@ -346,7 +346,7 @@ const charlotteFn = async (app) => {
         try {
             let all = await reqModel.countDocuments({ chan_id: imp.newRT })
             await reqModel.deleteMany({ chan_id: imp.newRT })
-            await ctx.reply(`${all.length} requesters cleared successfully from DB`)
+            await ctx.reply(`${all} requesters cleared successfully from DB`)
         } catch (error) {
             await ctx.reply(error.message)
         }
