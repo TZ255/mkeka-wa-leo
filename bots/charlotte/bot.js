@@ -376,7 +376,6 @@ const charlotteFn = async (app) => {
 
     bot.on('channel_post', async ctx => {
         let chan_id = ctx.channelPost.chat.id
-        console.log(ctx.channelPost)
         try {
             if (ctx.channelPost.chat.id == imp.replyDb) {
                 if (ctx.channelPost.reply_to_message) {
@@ -455,7 +454,7 @@ const charlotteFn = async (app) => {
                     }
                 }
             }
-            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.video && ctx.channelPost.sender_chat.id == imp.halot) {
+            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.video && ctx.channelPost?.author_signature == "Halo T✨") {
                 let fid = ctx.channelPost.video.file_unique_id
                 let file_id = ctx.channelPost.video.file_id
                 let cap = ctx.channelPost.caption
@@ -484,7 +483,7 @@ const charlotteFn = async (app) => {
                 await ctx.reply(`<code>${fid + msgId}&size=${fileMBs}&dur=${duration}</code>`, { parse_mode: 'HTML' })
             }
 
-            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.document && ctx.channelPost.sender_chat.id == imp.halot) {
+            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.document && ctx.channelPost?.author_signature == "Halo T✨") {
                 let fid = ctx.channelPost.document.file_unique_id
                 let file_id = ctx.channelPost.document.file_id
                 let cap = ctx.channelPost.caption
