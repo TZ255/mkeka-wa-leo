@@ -376,6 +376,7 @@ const charlotteFn = async (app) => {
 
     bot.on('channel_post', async ctx => {
         let chan_id = ctx.channelPost.chat.id
+        console.log(ctx.channelPost)
         try {
             if (ctx.channelPost.chat.id == imp.replyDb) {
                 if (ctx.channelPost.reply_to_message) {
