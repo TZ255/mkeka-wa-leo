@@ -76,7 +76,7 @@ setInterval(() => {
 
         //update betslip
         //angalia kila baada ya dakika 15
-        if(mins % 15 === 0) {
+        if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
         }
 
@@ -124,6 +124,13 @@ setInterval(() => {
                     setTimeout(() => {
                         UpdateOtherFixuresFn(20, 2024)
                     }, 5000)
+                    break;
+
+                case 9: //caf wc qulifiers
+                    UpdateOtherStandingFn(29, 2023)
+                    setTimeout(() => {
+                        UpdateOtherFixuresFn(29, 2023)
+                    }, 5000);
                     break;
             }
         }

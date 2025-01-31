@@ -83,87 +83,90 @@ router.get('/standings/:league/:season', async (req, res) => {
     let league_season = req.params.season
     let league_id = req.params.league
 
+    switch (league_season) {
+        case 'wc-2026':
+            league_season = "2023"
+            break;
+    }
+
     try {
         const standing = await OtherStandingLigiKuuModel.findOne({ league_id, league_season }).cache(600)
-        if (standing) {
-            const agg = await OtherStandingLigiKuuModel.aggregate([
-                {
-                    $match: { league_id: Number(league_id), league_season }
-                },
-                {
-                    $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
-                },
-                {
-                    $addFields: {
-                        "season_fixtures.league.roundRenamed": {
-                            $switch: {
-                                branches: [
-                                    { case: { $eq: ["$season_fixtures.league.round", "1st Preliminary Round"] }, then: "pre - 0.1" },
-                                    { case: { $eq: ["$season_fixtures.league.round", "2nd Preliminary Round"] }, then: "pre - 0.2" }
-                                ],
-                                default: "$season_fixtures.league.round" // Default case if no match is found
-                            }
+        if (!standing) return res.redirect('/')
+        const agg = await OtherStandingLigiKuuModel.aggregate([
+            {
+                $match: { league_id: Number(league_id), league_season }
+            },
+            {
+                $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
+            },
+            {
+                $addFields: {
+                    "season_fixtures.league.roundRenamed": {
+                        $switch: {
+                            branches: [
+                                { case: { $eq: ["$season_fixtures.league.round", "1st Preliminary Round"] }, then: "pre - 0.1" },
+                                { case: { $eq: ["$season_fixtures.league.round", "2nd Preliminary Round"] }, then: "pre - 0.2" }
+                            ],
+                            default: "$season_fixtures.league.round" // Default case if no match is found
                         }
                     }
-                },
-                {
-                    $group: {
-                        _id: "$season_fixtures.league.roundRenamed", // Group by the renamed round field
-                        fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
-                    }
-                },
-                {
-                    $project: {
-                        round: "$_id", // Rename _id to round
-                        fixtures: 1,
-                        numericRound: {
-                            $toDouble: {
-                                $arrayElemAt: [
-                                    { $split: ["$_id", " - "] },
-                                    1 // Extract numeric part after " - "
-                                ]
-                            }
-                        },
-                        _id: 0 // Exclude the default _id field
-                    }
-                },
-                {
-                    $sort: { numericRound: 1 } // Sort by the numeric part of the round
                 }
-            ]).cache(600);
-
-            let partials = {
-                season: `${league_season}/${Number(league_season) + 1}`,
-                createdAt: standing.createdAt.toISOString(),
-                updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
-                ligi: `${standing.country} ${standing.league_name}`,
-                league_id,
-                canonical_path: `/standings/${league_id}/${league_season}`
+            },
+            {
+                $group: {
+                    _id: "$season_fixtures.league.roundRenamed", // Group by the renamed round field
+                    fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
+                }
+            },
+            {
+                $project: {
+                    round: "$_id", // Rename _id to round
+                    fixtures: 1,
+                    numericRound: {
+                        $toDouble: {
+                            $arrayElemAt: [
+                                { $split: ["$_id", " - "] },
+                                1 // Extract numeric part after " - "
+                            ]
+                        }
+                    },
+                    _id: 0 // Exclude the default _id field
+                }
+            },
+            {
+                $sort: { numericRound: 1 } // Sort by the numeric part of the round
             }
+        ]).cache(600);
 
-            switch (league_id) {
-                case '39':
-                    res.render('11-misimamo/24-25/epl/epl', { standing, agg, partials })
-                    break;
-
-                case '140':
-                    res.render('11-misimamo/24-25/laliga/laliga', { standing, agg, partials })
-                    break;
-
-                case '12':
-                    res.render('11-misimamo/24-25/caf/caf', { standing, agg, partials })
-                    break;
-
-                case '20':
-                    res.render('11-misimamo/24-25/conf/conf', { standing, agg, partials })
-                    break;
-
-                default:
-                    res.redirect('/')
-            }
-        } else {
-            res.redirect('/')
+        let partials = {
+            season: `${league_season}/${Number(league_season) + 1}`,
+            createdAt: standing.createdAt.toISOString(),
+            updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
+            ligi: `${standing.country} ${standing.league_name}`,
+            league_id,
+            canonical_path: `/standings/${league_id}/${req.params.season}`
         }
+
+        switch (league_id) {
+            case '39':
+                return res.render('11-misimamo/24-25/epl/epl', { standing, agg, partials })
+
+            case '140':
+                return res.render('11-misimamo/24-25/laliga/laliga', { standing, agg, partials })
+
+            case '12':
+                return res.render('11-misimamo/24-25/caf/caf', { standing, agg, partials })
+
+            case '20':
+                return res.render('11-misimamo/24-25/conf/conf', { standing, agg, partials })
+
+            case '29':
+                return res.render('11-misimamo/world/caf-wc26/caf-wc26', { standing, agg, partials })
+
+            default:
+                return res.redirect('/')
+        }
+
     } catch (error) {
         console.log(error?.message)
     }
@@ -426,7 +429,10 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        await betsli
+        // UpdateOtherStandingFn(29, 2023)
+        // setTimeout(() => {
+        //     UpdateOtherFixuresFn(29, 2023)
+        // }, 5000);
         res.end()
     } catch (error) {
         res.send(error.message)
