@@ -430,7 +430,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        let tt = await bttsModel.deleteMany({date: '04/02/2025'})
+        let tt = await bttsModel.deleteMany({date: '04/02/2025'}) //API
         console.log(tt.deletedCount + ' deleted')
         res.end()
     } catch (error) {
