@@ -11,6 +11,7 @@ const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const Over15MikModel = require('../model/ove15mik')
 const MikekaDBModel = require('../model/mkeka-mega')
+const bttsModel = require('../model/ya-uhakika/btts')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
 const { testSp, extractData } = require('./fns/jsjsjjs')
 const sendEmail = require('./fns/pesapal/sendemail')
@@ -429,10 +430,8 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        // UpdateOtherStandingFn(29, 2023)
-        // setTimeout(() => {
-        //     UpdateOtherFixuresFn(29, 2023)
-        // }, 5000);
+        let tt = await bttsModel.deleteMany({date: '04/02/2025'})
+        console.log(tt.deletedCount + ' deleted')
         res.end()
     } catch (error) {
         res.send(error.message)

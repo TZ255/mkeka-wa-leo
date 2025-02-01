@@ -84,7 +84,7 @@ router.post('/post', async (req, res) => {
     }
 
     if (secret == '5654' && match.includes(' - ')) {
-        let mk = await mikekaDb.create({ match, league, odds, time, bet, date: d, jsDate: GetJsDate(d), weekday: GetDayFromDateString(d)})
+        let mk = await mikekaDb.create({ match, league, odds, time, bet, date: d, jsDate: GetJsDate(d), weekday: GetDayFromDateString(d) })
         res.send(mk)
     } else if (secret == '55') {
         let mk = await betslip.create({ match, league, odd: odds, tip: bet, date: d })
@@ -543,6 +543,17 @@ router.post('/checking/afootballreport', async (req, res) => {
                 collection.push(matchDoc)
             }
             let savedDocs = await bttsModel.insertMany(collection)
+            //delete olds - the same number you inserted
+            // Find the oldest 100 documents sorted by `createdAt`
+            let docsToDelete = await bttsModel.find().sort({ createdAt: 1 }).limit(savedDocs.length);
+
+            // Extract their _id values
+            const idsToDelete = docsToDelete.map(doc => doc._id);
+
+            // Delete them
+            const result = await bttsModel.deleteMany({ _id: { $in: idsToDelete } });
+
+            console.log(`${savedDocs.length} btts inserted successfully and old ${result.deletedCount} documents deleted.`);
             res.send(savedDocs)
         } else {
             res.send('Not authorized')
@@ -570,7 +581,7 @@ router.post('/post/mpesa', async (req, res) => {
     }
 })
 
-router.post('/pay/pesapal', async (req, res)=> {
+router.post('/pay/pesapal', async (req, res) => {
     try {
         //body
         let phone = req.body.phone
@@ -580,7 +591,7 @@ router.post('/pay/pesapal', async (req, res)=> {
         let amount = country === 'TZ' ? 2500 : 150
 
         //authentication
-        let {token, expiryDate} = await makePesaPalAuth(isProduction())
+        let { token, expiryDate } = await makePesaPalAuth(isProduction())
 
         //make new order
         let createdOrder = await createNewOrder(token, phone, email, isProduction(), currency, country, amount)
@@ -592,9 +603,9 @@ router.post('/pay/pesapal', async (req, res)=> {
     }
 })
 
-router.post(['/pesapal/notifications', '/pesapal/notifications/sandbox'], async (req, res)=> {
+router.post(['/pesapal/notifications', '/pesapal/notifications/sandbox'], async (req, res) => {
     try {
-        if(req.body) {
+        if (req.body) {
             console.log(req.body)
         }
         await axios.get('https://wirepusher.com/send?id=dX77mpGBL&title=PesaPal&message=Transactional&type=mkeka')
