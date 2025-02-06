@@ -533,13 +533,13 @@ router.get('/mkeka/correct-score', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //MyBets.Today >>> correctscore
-        const { stips, ytips, jtips, ktips } = await processCScoreTips(d, _d, _s, kesho)
+        const { cscoreLeo, scoreJana, scoreJuzi, cscoreKesho } = await processCScoreTips(d, _d, _s, kesho)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
-        res.render('13-cscore/cscore', { stips, ytips, ktips, jtips, trh, jumasiku })
+        res.render('13-cscore/cscore', { cscoreLeo, scoreJana, scoreJuzi, cscoreKesho, trh, jumasiku })
     } catch (error) {
         console.error(error.message)
         sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)

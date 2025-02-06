@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <% stips.forEach(leagueGroup => { %>
+                <% cscoreLeo.forEach(leagueGroup => { %>
                 <tr class="league-row table-dark mt-8">
                     <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
                 </tr>
@@ -57,12 +57,12 @@
                 <% }); %>
             </tbody>
         </table>
-        <% if (stips.length === 0) { %>
+        <% if (cscoreLeo.length === 0) { %>
         <div class="zakesho">
             * CORRECT SCORES za <b>Leo: <%= trh.leo %></b> bado ziko kwenye maandalizi. <a href="/">Angalia hapa mikeka ilyotayari</a>
         </div>
         <% } %>
-        <% if (stips.length > 0) { %>
+        <% if (cscoreLeo.length > 0) { %>
         <%- include('../../0-global/aff.ejs'); %>
         <% } %>
     </div>
@@ -79,7 +79,7 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <% jtips.forEach(leagueGroup => { %>
+                <% scoreJuzi.forEach(leagueGroup => { %>
                 <tr class="league-row table-dark mt-8">
                     <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
                 </tr>
@@ -107,7 +107,7 @@
                 <% }); %>
             </tbody>
         </table>
-        <% if (jtips.length > 0) { %>
+        <% if (scoreJuzi.length > 0) { %>
         <%- include('../../0-global/aff.ejs'); %>
         <% } %>
     </div>
@@ -124,7 +124,7 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <% ytips.forEach(leagueGroup => { %>
+                <% scoreJana.forEach(leagueGroup => { %>
                 <tr class="league-row table-dark mt-8">
                     <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
                 </tr>
@@ -152,7 +152,7 @@
                 <% }); %>
             </tbody>
         </table>
-        <% if (ytips.length > 0) { %>
+        <% if (scoreJana.length > 0) { %>
         <%- include('../../0-global/aff.ejs'); %>
         <% } %>
     </div>
@@ -170,7 +170,7 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <% ktips.forEach(leagueGroup => { %>
+                <% cscoreKesho.forEach(leagueGroup => { %>
                 <tr class="league-row table-dark mt-8">
                     <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
                 </tr>
@@ -198,13 +198,13 @@
                 <% }); %>
             </tbody>
         </table>
-        <% if (ktips.length === 0) { %>
+        <% if (cscoreKesho.length === 0) { %>
         <div class="zakesho">
             * CORRECT SCORES za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo litakuwa
             tayari.
         </div>
         <% } %>
-        <% if (ktips.length > 0) { %>
+        <% if (cscoreKesho.length > 0) { %>
         <%- include('../../0-global/aff.ejs'); %>
         <% } %>
     </div>

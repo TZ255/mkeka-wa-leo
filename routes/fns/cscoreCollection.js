@@ -86,12 +86,12 @@ const processCScoreTips = async (d, _d, _s, kesho) => {
     ]).cache(600) //10 minutes
 
     // Filter and organize results
-    const stips = allMatches.filter(group => group._id.siku === d);
-    const ytips = allMatches.filter(group => group._id.siku === _d);
-    const jtips = allMatches.filter(group => group._id.siku === _s);
-    const ktips = allMatches.filter(group => group._id.siku === kesho);
+    const cscoreLeo = allMatches.filter(group => group._id.siku === d);
+    const scoreJana = allMatches.filter(group => group._id.siku === _d);
+    const scoreJuzi = allMatches.filter(group => group._id.siku === _s);
+    const cscoreKesho = allMatches.filter(group => group._id.siku === kesho);
 
-    return { stips, ytips, jtips, ktips };
+    return { cscoreLeo, scoreJana, scoreJuzi, cscoreKesho };
 };
 
 module.exports = {
