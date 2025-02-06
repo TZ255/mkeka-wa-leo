@@ -1,0 +1,309 @@
+<section class="keka-mix-sectio">
+    <h2 class="fs-2 text-center fw-bold" id="spn-title">
+        CORRECT SCORES za LEO
+    </h2>
+    <ul style="list-style: none; padding: 0; text-align: center;">
+        <li class="spn_trh" id="spn_trh_leo"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.leo %>: </b><%= trh.leo %></li>
+        <li class="spn_hide" id="spn_trh_juzi"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.juzi %>: </b><%= trh.juzi %></li>
+        <li class="spn_hide" id="spn_trh_jana"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.jana %>: </b><%= trh.jana %></li>
+        <li class="spn_hide" id="spn_trh_kesho"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.kesho %>: </b><%= trh.kesho %></li>
+    </ul>
+    <div class="toggle-cont" id="supa-za-leo">
+        <div class="toggles">
+            <div class="jtoggle" id="jtoggle">« Juzi</div>
+            <div class="ytoggle" id="ytoggle">Jana</div>
+            <div class="ltoggle active_toggle" id="ltoggle">⁕ Leo ⁕</div>
+            <div class="ktoggle" id="ktoggle">Kesho »</div>
+        </div>
+    </div>
+
+    <!-- today -->
+    <div class="tble-cont" id="lday" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="CORRECT SCORES za Leo: <%= jumasiku.leo %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% stips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Correct Score Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa correct score kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (stips.length === 0) { %>
+        <div class="zakesho">
+            * CORRECT SCORES za <b>Leo: <%= trh.leo %></b> bado ziko kwenye maandalizi. <a href="/">Angalia hapa mikeka ilyotayari</a>
+        </div>
+        <% } %>
+        <% if (stips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
+    </div>
+
+    <!-- juzi -->
+    <div class="tble-cont ficha" id="jday" style="display: none;" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="CORRECT SCORES za Juzi: <%= jumasiku.juzi %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% jtips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Correct Score Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa correct score kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (jtips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
+    </div>
+
+    <!-- yesterday -->
+    <div class="tble-cont ficha" id="yday" style="display: none;" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="CORRECT SCORES za Jana: <%= jumasiku.jana %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% ytips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Correct Score Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa correct score kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (ytips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
+    </div>
+
+
+    <!-- tomorrow -->
+    <div class="tble-cont ficha" id="kday" style="display: none;" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="CORRECT SCORES za Kesho: <%= jumasiku.kesho %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% ktips.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Correct Score Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa correct score kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (ktips.length === 0) { %>
+        <div class="zakesho">
+            * CORRECT SCORES za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo litakuwa
+            tayari.
+        </div>
+        <% } %>
+        <% if (ktips.length > 0) { %>
+        <%- include('../../0-global/aff.ejs'); %>
+        <% } %>
+    </div>
+</section>
+
+
+<script>
+    //Container tables fot the days
+    let yday_cont = document.getElementById('yday')
+    let lday_cont = document.getElementById('lday')
+    let kday_cont = document.getElementById('kday')
+    let jday_cont = document.getElementById('jday')
+
+    //toggles for the days
+    let jtoggle = document.getElementById('jtoggle')
+    let ytoggle = document.getElementById('ytoggle')
+    let ltoggle = document.getElementById('ltoggle')
+    let ktoggle = document.getElementById('ktoggle')
+
+    //h2 title & date spans for the days
+    let keka_title = document.getElementById('spn-title')
+    let spn_trh_leo = document.getElementById("spn_trh_leo")
+    let spn_trh_juzi = document.getElementById("spn_trh_juzi")
+    let spn_trh_jana = document.getElementById("spn_trh_jana")
+    let spn_trh_kesho = document.getElementById("spn_trh_kesho")
+
+
+    jtoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        jtoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "CORRECT SCORES za JUZI"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_juzi.classList.replace('spn_hide', 'spn_trh')
+
+        jday_cont.style.display = 'block'
+        yday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        lday_cont.style.display = 'none'
+    })
+
+
+    ytoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        ytoggle.classList.add('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "CORRECT SCORES za JANA"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_jana.classList.replace('spn_hide', 'spn_trh')
+
+        //table cont show/hide
+        yday_cont.style.display = 'block'
+        lday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
+    })
+
+    ltoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        ltoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "CORRECT SCORES za LEO"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_leo.classList.replace('spn_hide', 'spn_trh')
+
+        lday_cont.style.display = 'block'
+        yday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
+    })
+
+
+    ktoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        ktoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "CORRECT SCORES za KESHO"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_kesho.classList.replace('spn_hide', 'spn_trh')
+
+        kday_cont.style.display = 'block'
+        lday_cont.style.display = 'none'
+        yday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
+    })
+</script>

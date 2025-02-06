@@ -25,6 +25,8 @@ const { processSupatips } = require('./fns/supatipsCollection')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
 const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const isProduction = require('./fns/pesapal/isProduction')
+const sendNotification = require('./fns/sendTgNotifications')
+const { processCScoreTips } = require('./fns/cscoreCollection')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -67,7 +69,7 @@ router.get('/', async (req, res) => {
         }
 
         //MyBets.Today >>> Supatips
-        const {stips, ytips, jtips, ktips} = await processSupatips(d, _d, _s, kesho)
+        const { stips, ytips, jtips, ktips } = await processSupatips(d, _d, _s, kesho)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
@@ -508,6 +510,43 @@ router.get('/mkeka/over-under-35', async (req, res) => {
     }
 })
 
+router.get('/mkeka/correct-score', async (req, res) => {
+    try {
+        //leo
+        let nd = new Date()
+        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        //jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        //juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        //kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+
+        //MyBets.Today >>> correctscore
+        const { stips, ytips, jtips, ktips } = await processCScoreTips(d, _d, _s, kesho)
+
+        //tarehes
+        let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
+
+        res.render('13-cscore/cscore', { stips, ytips, ktips, jtips, trh, jumasiku })
+    } catch (error) {
+        console.error(error.message)
+        sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)
+        res.send(error.message)
+    }
+})
+
 //mikeka ya wiki
 router.get('/mkeka/:weekday', async (req, res, next) => {
     try {
@@ -740,19 +779,19 @@ router.get('/get/tips/upcoming/:date', async (req, res) => {
 })
 
 //payments
-router.get('/payments/validate', async (req, res)=> {
+router.get('/payments/validate', async (req, res) => {
     try {
-        let {OrderTrackingId, OrderMerchantReference} = req.query
+        let { OrderTrackingId, OrderMerchantReference } = req.query
 
-        if(OrderTrackingId) {
+        if (OrderTrackingId) {
             console.log(req.query)
-            let {token, expiryDate} = await makePesaPalAuth(true)
+            let { token, expiryDate } = await makePesaPalAuth(true)
             let thibitisha = await getPaymentStatus(OrderTrackingId, isProduction(), token)
-            switch(thibitisha) {
+            switch (thibitisha) {
                 case 1:
                     res.redirect('/standings/567/2024')
                     break;
-                    
+
                 default:
                     res.send('Muamala wako haukufanikiwa. Ikiwa unapitia changamoto kwenye malipo, wasiliana nasi WhatsApp +254769028387')
                     break;
