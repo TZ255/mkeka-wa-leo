@@ -4,7 +4,7 @@ const processCScoreTips = async (d, _d, _s, kesho) => {
     // First get the aggregated results
     const allMatches = await correctScoreModel.aggregate([
         // Match documents for specific dates
-        { $match: { siku: { $in: [d, _d, _s, kesho] } } },
+        { $match: { siku: { $in: [_d, d, kesho, _s] } } },
         
         // Add calculated fields for schema
         { $addFields: {
