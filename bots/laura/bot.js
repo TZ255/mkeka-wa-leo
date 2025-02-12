@@ -368,7 +368,7 @@ const lauraMainFn = async (app) => {
             if(param === 'paid') {
                 user.status = 'paid'
                 user.pay_until = until
-                user.payments.push({paidOn: now, endedOn: until})
+                user.payments.unshift({paidOn: now, endedOn: until})
                 await user.save()
                 let text = `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa siku 7 kuanzia *${new Date(now).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'})}* hadi *${new Date(until).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'})}*\n\nFungua mkekawaleo.com/mkeka/vip kila siku kwa mikeka yetu ya VIP`
                 return await ctx.reply(text)
