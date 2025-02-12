@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Blackberry 255">
+  <%- include('../0-global/vip-styles.ejs'); %>
+  <%- include('../0-global/fonts.ejs'); %>
+  <%- include('./partials/style.ejs'); %>
+  <title>Verify OTP - Mkeka wa Leo</title>
+</head>
+
+<body>
+  <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: var(--primary-bg);">
+    <div class="login-form text-light h-auto rounded p-3">
+      <div class="titleform fs-3 text-center mb-5 fw-bold">Confirm <span class="hubColor">OTP</span></div>
+      <%- include('../0-global/messages.ejs'); %>
+      <form action="/user/verify-otp" method="post">
+        <div class="mb-3">
+          <label for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Email:</label>
+          <input type="email" class="form-control" name="email" required title="Ingiza Email sahihi">
+        </div>
+        <div class="mb-3">
+          <label for="newPassword" class="form-label"><i class="fa-solid fa-lock"></i> Password Mpya:</label>
+          <input type="password" class="form-control" name="newPassword" required>
+        </div>
+        <div class="mb-3">
+            <label for="newPassword" class="form-label"><i class="fa-solid fa-key"></i> OTP:</label>
+            <input type="number" class="form-control" name="otp" required>
+            <div class="text-xs hubColor">Weka OTP uliyotumiwa kwenye email yako</div>
+          </div>
+        <div class="text-center my-4">
+          <button type="submit" class="bataniHub text-dark w-50">Thibitisha</button>
+        </div>
+      </form>
+  </div>
+</body>
+</html>

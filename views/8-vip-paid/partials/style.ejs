@@ -1,0 +1,231 @@
+<style>
+    .left .p {
+        padding: 12px;
+    }
+
+    .left .betslipCont {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .left .betslipCont #betslip-ya-leo .slip-siku {
+        font-size: 12px;
+    }
+
+    .left .betslipCont h2 {
+        padding: 12px 8px;
+        font-weight: bold;
+        font-size: 17px;
+        color: white;
+        background-color: black;
+        text-align: center;
+        margin-bottom: 2px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    .left .betslipCont table tr .cell-left {
+        text-align: right;
+    }
+
+    .left .betslipCont table .match,
+    .left .betslipCont table .tip {
+        text-overflow: ellipsis;
+    }
+
+    .left .betslipCont table .match {
+        font-family: serif;
+    }
+
+    .left .betslipCont table .tip {
+        font-size: 13px;
+        font-family: 'Trebuchet MS', sans-serif;
+    }
+
+    .left .betslipCont table .brown {
+        color: brown;
+    }
+
+    .left .betslipCont .bottomSlip {
+        background-color: black;
+        color: white;
+        margin-top: -14px;
+        padding: 12px;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left .betslipCont .bottomSlip div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .left .betslipCont .bottomSlip div:nth-child(1) {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .left .betslipCont .bottomSlip div:nth-child(2) {
+        display: flex;
+        background-color: green;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .left .betslipCont .bottomSlip div:nth-child(2) span {
+        font-size: 16px;
+        font-weight: bold;
+        display: block;
+        margin-right: 12px;
+    }
+
+    .left .betslipCont .bottomSlip div:nth-child(2) i {
+        color: white;
+        font-size: 24px;
+    }
+
+    .left .offa {
+        margin: 24px auto;
+        text-align: center;
+        color: gray;
+    }
+
+    .left .offa button {
+        background-color: green;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 12px 24px;
+        border-radius: 12px;
+        cursor: pointer;
+        border: none;
+    }
+
+    .left .offa button:hover,
+    .left .offa button:active,
+    .left .betslipCont .bottomSlip div:nth-child(2):hover,
+    .left .betslipCont .bottomSlip div:nth-child(2):active {
+        background-color: #a52a2a;
+    }
+
+    .left .maelezo .contents {
+        width: 95%;
+        margin: 12px auto;
+        text-align: justify;
+    }
+
+    .left .maelezo h3 {
+        font-weight: bold;
+        background-color: black;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    .bataniHub {
+        display: block;
+        margin: auto;
+        width: 90%;
+        max-width: 320px;
+        font-weight: bold;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 4px;
+        background-color: #ff9900;
+        border: none;
+        color: #2e2e2e !important;
+    }
+
+    .bataniHub:hover,
+    .bataniHub:active {
+        background-color: #ffffff;
+        border: #ff9900 2px solid;
+        color: #2e2e2e !important;
+    }
+
+    /* Style for malipo instructions */
+    /* Style for malipo instructions */
+    .left .main_cont {
+        width: 98%;
+        margin: 16px auto;
+    }
+
+    .left .main_cont .head {
+        display: flex;
+        width: 100%;
+    }
+
+    .left .main_cont .head h3 {
+        font-size: 16px;
+        background-color: #d3d3d3;
+        color: gray;
+        padding: 12px 2px;
+        width: 25%;
+        text-align: center;
+        font-weight: bold;
+        cursor: pointer;
+        border-right: 1px solid white;
+    }
+
+    .left .main_cont .head h3.active {
+        background-color: brown;
+        color: white;
+    }
+
+    .left .main_cont .kiasi_tag {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .left .main_cont .kiasi_tag b {
+        display: block;
+    }
+
+    .left .main_cont .mitandao_maelezo {
+        padding: 4px 8px;
+    }
+
+    .left .main_cont .mitandao_maelezo h4 {
+        font-size: 16px;
+        border-bottom: 1px #d3d3d3 solid;
+        margin-bottom: 12px;
+        font-weight: bold;
+    }
+
+    .left .main_cont .mitandao_maelezo ul {
+        margin-top: 12px;
+    }
+
+    .left .main_cont .mitandao_maelezo li,  .mitandao_maelezo .malipo {
+        font-size: 15px;
+        font-family: sans-serif;
+    }
+
+    .left .main_cont .mitandao_maelezo .namba {
+        background-color: #d3d3d3; color: black; padding: 2px 4px; border-radius: 3px; font-size: 17px; font-family: 'Courier New', Courier, monospace;
+    }
+    .left .main_cont .mitandao_maelezo .namba2 {
+        padding: 2px 4px; font-size: 14px; color: gray; font-family: monospace;
+    }
+
+    .left .maelezo .contents {
+        width: 95%;
+        margin: 12px auto;
+        text-align: justify;
+    }
+
+    .left .maelezo h3 {
+        font-weight: bold;
+        background-color: black;
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+    }
+</style>

@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_KEY);
 const sendEmail = async (email, subject, html) => {
     try {
         const data = await resend.emails.send({
-            from: 'MKEKAPLUS <info@updates.mkekawaleo.com>',
+            from: 'MKEKAPLUS+ <info@updates.mkekawaleo.com>',
             to: [email],
             subject,
             html

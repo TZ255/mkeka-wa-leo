@@ -2,6 +2,9 @@
 
 //Laura Codes Starting Here
 //Laura Codes Starting Here
+
+const mkekaUsersModel = require('../../model/mkeka-users')
+
 //Laura Codes Starting Here
 const lauraMainFn = async (app) => {
     const axios = require('axios').default
@@ -340,6 +343,39 @@ const lauraMainFn = async (app) => {
         } catch (err) {
             console.log(err, err.message)
             await ctx.reply(err.message)
+        }
+    })
+
+    bot.command('grant', async ctx => {
+        const admins = [imp.rtmalipo, imp.shemdoe]
+        try {
+            if (!ctx.match || !admins.includes(ctx.chat.id)) return await ctx.reply('Wrong command');
+        
+            let [email, param] = ctx.match.split(' ')
+            let now = Date.now()
+            let until = now + (1000 * 60 * 60 * 24 * 7)
+
+            let user = await mkekaUsersModel.findOne({email})
+
+            if(!user) return await ctx.reply(`No user found with email ${email}`);
+
+            if(param === 'unpaid') {
+                user.status = 'unpaid'
+                await user.save()
+                return await ctx.reply(`${email} status payment set unpaid`)
+            }
+
+            if(param === 'paid') {
+                user.status = 'paid'
+                user.pay_until = until
+                user.payments.push({paidOn: now, endedOn: until})
+                await user.save()
+                let text = `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa siku 7 kuanzia *${new Date(now).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'})}* hadi *${new Date(until).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'})}*\n\nFungua mkekawaleo.com/mkeka/vip kila siku kwa mikeka yetu ya VIP`
+                return await ctx.reply(text)
+            }
+            return await ctx.reply('Wrong parameter. Can only be paid or unpaid')
+        } catch (error) {
+            await ctx.reply(error.message)
         }
     })
 

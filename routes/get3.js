@@ -243,9 +243,5 @@ router.get('/astro/ht-15', async (req, res) => {
     }
 })
 
-router.get('*', (req, res) => {
-    res.redirect('/')
-})
-
 
 module.exports = router

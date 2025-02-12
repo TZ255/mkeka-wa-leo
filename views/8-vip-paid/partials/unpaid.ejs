@@ -1,0 +1,100 @@
+<div class="text-center p-2">
+    <p class="text-danger fs-5">Huwezi kuona VIP Slips za leo sababu hujalipia</p>
+    <p>Bonyeza hapa chini <b>kulipia</b> au kuthibitisha malipo. <br> Malipo ni <b>Tsh. 7,500 kwa wiki</b> ambapo utaweza pata mikeka yetu yote ya <b>VIP</b> kila siku kwa wiki nzima</p>
+</div>
+<div class="text-center">
+    <button id="lipa-btn" onclick="fichuaMalipo()" class="bataniHub">
+        <i class="fa-regular fa-credit-card"></i>
+        LIPIA / THIBITISHA MALIPO
+    </button>
+</div>
+
+
+<div class="malipo-cont my-5 d-none" id="malipo-cont">
+    <h3 class="bg-dark p-2 text-light fs-6 fw-bold">Fanya Malipo na Kuthibitisha</h3>
+    <div class="main_cont">
+        <h6><sub>*chagua mtandao wako hapa chini</sub></h6>
+        <div class="head">
+            <h3 id="voda_h3">Voda</h3>
+            <h3 id="tigo_h3">Tigo</h3>
+            <h3 id="airtel_h3">Airtel</h3>
+            <h3 id="halotel_h3">Halotel</h3>
+        </div>
+        <div class="mitandao_maelezo">
+            <div class="voda">
+                <h4>VodaCom M-Pesa 🇹🇿</h4>
+                <div class="kiasi_tag">
+                    <b class="namba2">Jina: MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
+                    <b class="namba2">Malipo: 7,500 TZS / Wiki 1</b>
+                </div>
+                <ul style="list-style: circle;">
+                    <li>Piga *150*00#</li>
+                    <li>Chagua 4. (Lipa kwa MPesa)</li>
+                    <li>Chagua 1. (Lipa kwa Simu)</li>
+                    <li>Chagua 1. (Ingiza Lipa Namba)</li>
+                    <li>Chagua 1. (M-Pesa)</li>
+                    <li>Weka lipa namba <b class="namba">8455234</b></li>
+                </ul>
+            </div>
+            <div class="tigo">
+                <h4>Tigo Pesa 🇹🇿</h4>
+                <div class="kiasi_tag">
+                    <b class="namba2">Jina: MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
+                    <b class="namba2">Malipo: 7,500 TZS / Wiki 1</b>
+                </div>
+                <ul style="list-style: circle;">
+                    <li>Piga *150*01#</li>
+                    <li>Chagua 5. Lipa kwa simu</li>
+                    <li>Chagua Mitandao mingine</li>
+                    <li>Chagua M-Pesa</li>
+                    <li>Weka lipa namba <b class="namba">8455234</b></li>
+                    <li>Weka kiasi na PIN kisha thibitisha</li>
+                </ul>
+            </div>
+            <div class="airtel">
+                <h4>Airtel Money 🇹🇿</h4>
+                <div class="kiasi_tag">
+                    <b class="namba2">Jina: PAULO <i class="fa-solid fa-crown"></i></b>
+                    <b class="namba2">Malipo: 7,500 TZS / Wiki 1</b>
+                </div>
+                <ul style="list-style: circle;">
+                    <li>Piga *150*60#</li>
+                    <li>Chagua 1. Tuma Pesa</li>
+                    <li>Chagua 2. Mitandao Mingine</li>
+                    <li>Chagua 2. M-Pesa</li>
+                    <li>Chagua 1. Namba ya M-Pesa</li>
+                    <li>Weka namba <b class="namba">0757259678 (PAULO)</b></li>
+                </ul>
+            </div>
+            <div class="halotel">
+                <h4>Halopesa 🇹🇿</h4>
+                <div class="kiasi_tag">
+                    <b class="namba2">Jina: PAULO <i class="fa-solid fa-crown"></i></b>
+                    <b class="namba2">Malipo: 7,500 TZS / Wiki 1</b>
+                </div>
+                <ul style="list-style: circle;">
+                    <li>Piga *150*60#</li>
+                    <li>Chagua 1. Tuma Pesa</li>
+                    <li>Chagua 2. Mitandao Mingine</li>
+                    <li>Chagua 2. M-Pesa</li>
+                    <li>Weka namba <b class="namba">0757259678 (PAULO)</b></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="malipo">
+            <p class="" style="font-size: 12px;">
+                Baada ya malipo tafadhali tutumie screenshot ya muamala ukiambatanisha na email yako
+                <b>"<%= user.email %>"</b> ili kuthibitishwa na kupata access ya mikeka yetu ya VIP kwa wiki nzima
+            </p>
+            <div class="social" style="width: 98%; margin: auto;">
+                <h4 style="font-size: 16px; font-weight: bold;">Tutumie:</h4>
+                <div class="tsap">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <b>WhatsApp: <a href="https://wa.me/+254769028387">+254 769 028 387</a></b>
+                </div>
+            </div>
+        </div>
+        <%- include('./payment-form.ejs'); %>
+    </div>
+</div>

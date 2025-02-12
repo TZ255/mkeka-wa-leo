@@ -5,62 +5,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Tanzania Betting Tips | VIP TIP ya Leo | VIP Odds za Leo ndani ya Group la WhatsApp">
-    <title>VIP Tips za Leo</title>
+    <meta name="description" content="VIP Slips za Leo">
+    <title>🥇 VIP SLIPS - MKEKA WA LEO</title>
     <%- include('./partials/style.ejs'); %>
     <%- include('../0-global/style.ejs'); %>
     <%- include('../0-global/google.ejs'); %>
     <%- include('../0-global/fonts.ejs'); %>
     <%- include('../0-global/favicon.ejs') %>
-    <style>
-        .bataniHub {
-            font-weight: bold;
-            padding: 12px;
-            font-size: 18px;
-            border-radius: 4px;
-            background-color: #ff9900;
-            width: 80%;
-            text-align: center;
-            text-decoration: none;
-            color: #2e2e2e;
-        }
-
-        .bataniHub:hover, .bataniHub:active {
-            background-color: white;
-            color: #2e2e2e;
-            border: 2px solid #ff9900;
-        }
-    </style>
 </head>
 
 <body>
     <%- include('../0-global/header.ejs'); %>
+    <div class="p-2" style="font-size: 10px;">
+        <p>Logged in as: <%= user.email %> -- <a class="text-danger fw-bold" href="/user/logout">Log Out</a></p>
+    </div>
     <main>
         <section class="left">
-            <h2 style="text-align: center; margin-bottom: 32px; font-weight: bold;">VIP TiPs za Leo </h2>
-            <p class="p">
-                <b>VIP TiPS:</b> Slips zenye nafasi kubwa kabisa ya ushindi zinapatikana kila siku ndani ya site yetu.
-                Karibu kwenye safari yetu ya kumfilisi
-                Kanjibahi. VIP TiPS ni Betslips zenye odds 3 - 5 zenye fixed matches na mechi za ziada zilizochambuliwa
-                kwa umakini wa hali ya juu. <br><br> Kwenye VIP Tickets tunakuhakikishia faida kubwa kila mwisho wa wiki
-            </p>
-            <br>
-            <h2 style="font-size: 20px;" class="h2">Ingia VIP</h2>
-            <p class="text-center"><b>Login au Jisajili</b> na VIPS zetu hapa chini</p>
-            <div class="reg-btns mt-4">
-                <a href="/user/login" class="bataniHub d-block mx-auto mb-4">
-                    <i class="fa-solid fa-user"></i>
-                    Login VIP
-                </a>
-                <a href="/user/register" class="bataniHub d-block mx-auto">
-                    <i class="fa-solid fa-user"></i>
-                    Register VIP
-                </a>
-            </div>
+            <h2 class="text-center my-5 fw-bold">VIP Slips za Leo</h2>
+            <% if (user.status === 'paid') { %>
+            <%- include('./partials/betslip.ejs'); %>
+            <% } %>
+            <% if (user.status !== 'paid') { %>
+            <%- include('./partials/unpaid.ejs'); %>
+            <% } %>
             <br><br><br><br><br>
             <div itemscope class="maelezo">
-                <h3>Ni Vipi Naweza Kushinda Mikeka Kila Siku?</h3>
+                <h3 class="bg-dark">Maelezo kuhusu VIP Tips</h3>
                 <div class="contents">
                     <p><b>Kwanza,</b> ni muhimu kuelewa na kuitambua michezo unayobetia. Unapaswa kuwa na uelewa mzuri
                         wa sheria za mchezo,
@@ -122,14 +92,15 @@
         </section>
     </main>
 
+    <%- include('./partials/modal.ejs'); %>
     <%- include('../0-global/footer.ejs'); %>
-
-    <%- include('./partials/script.ejs'); %>
+    <%- include('../0-global/script.ejs'); %>
 
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
+    <%- include('./partials/script.ejs'); %>
 </body>
 
 </html>

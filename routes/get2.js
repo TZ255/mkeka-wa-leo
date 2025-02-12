@@ -14,10 +14,11 @@ const MikekaDBModel = require('../model/mkeka-mega')
 const bttsModel = require('../model/ya-uhakika/btts')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
 const { testSp, extractData } = require('./fns/jsjsjjs')
-const sendEmail = require('./fns/pesapal/sendemail')
+const sendEmail = require('./fns/sendemail')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
 const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./fns/ligikuucotz')
+const checking3MkekaBetslip = require('./fns/checking-betslip')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -430,8 +431,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        let tt = await bttsModel.deleteMany({date: '04/02/2025'}) //API
-        console.log(tt.deletedCount + ' deleted')
+        checking3MkekaBetslip('12/02/2025')
         res.end()
     } catch (error) {
         res.send(error.message)

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Blackberry 255">
+  <%- include('../0-global/vip-styles.ejs'); %>
+  <%- include('../0-global/fonts.ejs'); %>
+  <%- include('./partials/style.ejs'); %>
+  <title>Register VIP - Mkeka wa Leo</title>
+</head>
+
+<body>
+  <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: var(--primary-bg);">
+    <div class="login-form text-light h-auto rounded p-3">
+      <div class="titleform fs-3 text-center mb-5 fw-bold">Register to <span class="hubColor">VIP</span></div>
+      <%- include('../0-global/messages.ejs'); %>
+      <form action="/user/register" method="post">
+        <div class="mb-3">
+          <label for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Email</label>
+          <input type="email" class="form-control" name="email" required title="Ingiza Email sahihi" placeholder="Email">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label"><i class="fa-solid fa-key"></i> Password</label>
+          <input type="password" class="form-control" name="password" required>
+        </div>
+        <div class="text-center mt-4">
+          <button type="submit" class="bataniHub text-dark w-50"><i class="fa-solid fa-user"></i> Register</button>
+        </div>
+      </form>
+      <div class="foot text-center mt-3">
+        <p class="mb-5">Tayari una account? <a href="/user/login" class="hubColor">Login</a> hapa</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

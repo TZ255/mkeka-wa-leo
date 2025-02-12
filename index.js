@@ -2,9 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cachegoose = require('recachegoose');
 require('dotenv').config()
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const MongoStore = require('connect-mongo');
 const getRouter = require('./routes/get')
 const getRouter2 = require('./routes/get2')
 const getRouter3 = require('./routes/get3')
+const routeAuth = require('./routes/get4-auth')
+const resetAuth = require('./routes/fns/Auth/reset')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
 const lauraSourceCodes = require('./bots/laura/bot')
@@ -20,7 +26,7 @@ const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
 const app = express()
 
 // database connection
-mongoose.connect(`mongodb://${process.env.USER}:${process.env.PASS}@nodetuts-shard-00-00.ngo9k.mongodb.net:27017,nodetuts-shard-00-01.ngo9k.mongodb.net:27017,nodetuts-shard-00-02.ngo9k.mongodb.net:27017/mkeka-wa-leo?authSource=admin&replicaSet=atlas-pyxyme-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`)
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Connected to Mkeka Database'))
     .catch((err) => {
         console.log(err)
@@ -52,7 +58,6 @@ if (process.env.local != 'true') {
     lauraSourceCodes.bot(app)
 }
 
-
 app.use(limiter)
 app.use(postRouter)
 app.use(getRouter)
@@ -63,6 +68,60 @@ app.use(getRouter3)
 if (process.env.local != 'true') {
     //
 }
+
+
+// ############### PROTECTED ###############
+// ############### PROTECTED ###############
+// ############### PROTECTED ###############
+
+//Passport Config
+require('./config/passport')(passport);
+
+// session
+app.use(
+    session({
+      secret: process.env.PASS,
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI,
+        collectionName: 'mkeka-sessions',
+        // ttl (time-to-live) in seconds: 1 week
+        ttl: 60 * 60 * 24 * 7,
+        autoRemove: 'native', // Remove expired sessions automatically
+      }),
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week (in miliseconds)
+      },
+      rolling: true //the session expiration will reset in every user interaction
+    })
+  );
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Connect Flash
+app.use(flash());
+
+// Global variables for flash messages
+app.use((req, res, next) => {
+    // success messages
+    res.locals.success_msg = req.flash('success_msg');
+    // error messages
+    res.locals.error_msg = req.flash('error_msg');
+    // passport error messages
+    res.locals.error = req.flash('error');
+    next();
+});
+
+app.use(routeAuth)
+app.use(resetAuth)
+
+//wrong url, redirect to home
+app.get('*', (req, res) => {
+    res.redirect('/')
+})
 
 //updating ligis
 setInterval(() => {

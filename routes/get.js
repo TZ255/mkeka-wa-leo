@@ -250,7 +250,6 @@ router.get('/admin/posting', async (req, res) => {
 router.get('/mkeka/betslip-ya-leo', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        await graphModel.findOneAndUpdate({ siku: '23/04/2023' }, { $inc: { loaded: 1 } })
         let slip = await betslip.find({ date: d })
         let slipOdds = 1
         for (let od of slip) {
@@ -452,14 +451,6 @@ router.get('/mkeka/over-05-first-half', async (req, res) => {
             from_chat_id: -1001570087172, //matangazoDB
             message_id: 126
         }).catch(e => console.log(e.message, e))
-    }
-})
-
-router.get('/mkeka/vip', async (req, res) => {
-    try {
-        res.render('8-vip/vip')
-    } catch (err) {
-        console.log(err.message)
     }
 })
 

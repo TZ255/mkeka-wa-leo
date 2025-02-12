@@ -30,5 +30,5 @@ const supatipSchema = new Schema({
     }
 }, {strict: false, timestamps: true })
 
-let model = mongoose.model('supatips', supatipSchema)
-module.exports = model
+let supatipsModel = mongoose.model('supatips', supatipSchema)
+module.exports = supatipsModel
