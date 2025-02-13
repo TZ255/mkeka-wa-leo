@@ -18,15 +18,22 @@
       <%- include('../0-global/messages.ejs'); %>
       <form action="/user/register" method="post">
         <div class="mb-3">
-          <label for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Email</label>
-          <input type="email" class="form-control" name="email" required title="Ingiza Email sahihi" placeholder="Email">
+          <label for="name" class="form-label"><i class="fa-regular fa-user"></i> Full Name:</label>
+          <input type="text" class="form-control py-2" name="name" required title="Ingiza jina sahihi" placeholder="Jina lako">
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label"><i class="fa-solid fa-key"></i> Password</label>
-          <input type="password" class="form-control" name="password" required>
+          <label for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Email:</label>
+          <input type="email" class="form-control py-2" name="email" required title="Ingiza Email sahihi" placeholder="Email">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label"><i class="fa-solid fa-key"></i> Password:</label>
+          <input type="password" class="form-control py-2" name="password" required placeholder="Password">
         </div>
         <div class="text-center mt-4">
-          <button type="submit" class="bataniHub text-dark w-50"><i class="fa-solid fa-user"></i> Register</button>
+          <button type="submit" class="bataniHub text-dark w-75">
+            Register &nbsp; &nbsp;
+            <i class="fa-solid fa-right-long"></i>
+          </button>
         </div>
       </form>
       <div class="foot text-center mt-3">

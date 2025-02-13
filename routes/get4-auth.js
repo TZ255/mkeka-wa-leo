@@ -37,7 +37,7 @@ router.get('/mkeka/vip', async (req, res) => {
 
 // POST: Handle Registration
 router.post('/user/register', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
     let errors = [];
 
     if (!email || !password) {
@@ -59,8 +59,8 @@ router.post('/user/register', async (req, res) => {
             return res.redirect('/user/login');
         }
         //register user
-        await mkekaUsersModel.create({ email, password })
-        let html = `<p>Hello!</p><p>You have successfully registered for <b>Mkeka wa Leo.</b> Use the following details to log in to your account:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul>`;
+        await mkekaUsersModel.create({ email, password, name })
+        let html = `<p>Hello ${name}!</p><p>You have successfully registered for <b>Mkeka wa Leo.</b> Use the following details to log in to your account:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul>`;
         sendEmail(email, 'Welcome to Mkeka wa Leo – Your Account Details Inside', html)
         req.flash('success_msg', 'Account yako imesajiliwa kikamilifu. Login');
         return res.redirect('/user/login')
