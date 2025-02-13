@@ -21,7 +21,7 @@
         <ul style="list-style: circle;">
             <li>Name: <b class="text-success"><%= user?.name %></b></li>
             <li>Email: <b class="text-success"><%= user.email %></b></li>
-            <li>Status: <b class="text-success"><%= user.status %></b></li>
+            <li>Status: <b class="text-success"><%= String(user.status).replace('unpaid', 'Not Paid') %></b></li>
             <% if (user.status === 'paid') { %>
              <li>Paid On: <b class="text-success"><%= new Date(user.payments[0].paidOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
              <li>End On: <b class="text-success"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
