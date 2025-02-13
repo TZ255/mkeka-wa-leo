@@ -16,8 +16,8 @@
 
 <body>
     <%- include('../0-global/header.ejs'); %>
-    <div class="p-2" style="font-size: 10px;">
-        <p class="fs-6 fw-bold">User Info</p>
+    <div class="p-2 shadow rounded mx-auto" style="font-size: 10px; width: 95%;">
+        <p class="fs-6 fw-bold">My Info</p>
         <ul>
             <li>Email: <b class="text-success"><%= user.email %></b></li>
             <li>Status: <b class="text-success"><%= user.status %></b></li>
@@ -26,11 +26,10 @@
              <li>End On: <b class="text-success"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
             <% } %>
         </ul>
-        <hr>
     </div>
     <main>
         <section class="left">
-            <h2 class="text-center my-5 fw-bold">VIP Slips za Leo</h2>
+            <h2 class="h2 my-5 fw-bold bg-dark fs-5">Mikeka ya VIP Leo</h2>
             <% if (user.status === 'paid') { %>
             <%- include('./partials/betslip.ejs'); %>
             <% } %>
