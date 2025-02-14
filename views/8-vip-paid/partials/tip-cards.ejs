@@ -1,25 +1,31 @@
 <div class="container">
     <div class="">
-      <% slips.forEach(match => { %>
-       <div class="mb-5">
-        <div class="card match-card p-3">
-          <div class="d-flex justify-content-between align-items-center mb-3 border-bottom">
-            <span class="league-badge"><i class="fa-solid fa-trophy"></i> <%= match.league %></span>
-            <div class="text-end">
-              <div class="match-time"><i class="fa-solid fa-clock"></i> <%= match.time %></div>
-              <div class="match-date"><%= new Date(String(match.date).split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %></div>
+        <% slips.forEach(match => { %>
+        <div class="mb-5">
+            <div class="card match-card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom">
+                    <span class="league-badge"><i class="fa-solid fa-trophy"></i> <%= match.league %></span>
+                    <div class="text-end">
+                        <div class="match-time"><i class="fa-solid fa-clock"></i> <%= match.time %></div>
+                        <div class="match-date">
+                            <%= new Date(String(match.date).split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-details text-center mb-3">
+                    <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
+                </div>
+
+                <div class="text-center">
+                    <span class="prediction-badge"><%= match.tip %></span>
+                </div>
             </div>
-          </div>
-          
-          <div class="match-details text-center mb-3">
-            <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
-          </div>
-          
-          <div class="text-center">
-            <span class="prediction-badge"><%= match.tip %></span>
-          </div>
         </div>
-      </div>
-      <% }) %>
+        <% }) %>
     </div>
-  </div>
+</div>
+
+<p class="p-3 border-bottom">
+    <b class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Acha tamaa! <%= user?.name %></b> <br> <span class="text-dark">Chagua kati mechi 5 hadi 7 hapo juu. Mechi zetu zote za VIP zimechambuliwa na wataalamu wetu na zina nafasi ya zaidi ya 95% ya ushindi ila kwa kujihakikishia nafasi ya ushindi ya hadi 99%, chagua kati ya mechi 4 hadi 7 (usizidishe).</span>
+</p>
