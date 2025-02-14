@@ -87,14 +87,13 @@ app.use(
             mongoUrl: process.env.MONGO_URI,
             collectionName: 'mkeka-sessions',
             // ttl (time-to-live) in seconds: 1 day
-            ttl: 60 * 60 * 24 * 1,
-            autoRemove: 'interval',
-            autoRemoveInterval: 1 //remove expired every 1 minute
+            ttl: 60 * 60 * 24,
+            autoRemove: 'native' //mongodb auto delete
         }),
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 1, // 1 day (in miliseconds)
+            maxAge: 1000 * 60 * 60 * 24, // 1 day (in miliseconds)
         },
-        rolling: true //the session expiration will reset in every user interaction
+        rolling: false //if TRUE the session expiration will reset in every user interaction
     })
 );
 
