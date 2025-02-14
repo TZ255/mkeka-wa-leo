@@ -98,17 +98,6 @@ app.use(
     })
 );
 
-// AFTER session middleware, but BEFORE passport middleware
-//clear temporary sessions which are not passport
-app.use((req, res, next) => {
-    if (req.session && !req.session.passport) {
-        // For unauthenticated sessions
-        req.session.cookie.maxAge = 1000 * 60 * 5; // 5 minutes
-        req.session.save(); // Force save the modified session
-    }
-    next();
-});
-
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
