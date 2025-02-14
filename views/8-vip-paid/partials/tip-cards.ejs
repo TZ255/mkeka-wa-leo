@@ -3,10 +3,10 @@
       <% slips.forEach(match => { %>
        <div class="mb-4">
         <div class="card match-card p-3">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <span class="league-badge"><%= match.league %></span>
+          <div class="d-flex justify-content-between align-items-center mb-3 border-bottom">
+            <span class="league-badge"><i class="fa-solid fa-trophy"></i> <%= match.league %></span>
             <div class="text-end">
-              <div class="match-time"><%= match.time %></div>
+              <div class="match-time"><i class="fa-solid fa-clock"></i> <%= match.time %></div>
               <div class="match-date"><%= new Date(String(match.date).split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %></div>
             </div>
           </div>

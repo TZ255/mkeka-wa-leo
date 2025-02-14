@@ -16,10 +16,7 @@ router.get('/mkeka/vip', async (req, res) => {
             }
             //find all 4 slips to return
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-            let slips = await paidVipModel.aggregate([
-                { $match: { date: d } },
-                { $sample: { size: 25 } }
-              ]);
+            let slips = await paidVipModel.find({date: d}).sort('time')
 
             return res.render(`8-vip-paid/landing`, { slips, user })
         }
