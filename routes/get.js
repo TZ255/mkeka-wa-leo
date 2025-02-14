@@ -139,6 +139,7 @@ router.get('/:comp/register', async (req, res) => {
         betwinner: `https://bw-prm.com/bonus-100-01/?p=%2Fregistration%2F&lang=en&id=29lf`,
         betway_casino: `https://www.betway.co.tz/lobby/casino/all/?register=1&btag=P94949-PR37903-CM111051-TS2045159`,
         betway_arsenal: `https://www.betway.co.tz/Arsenal-Xclusives?btag=P94949-PR37833-CM109867-TS2034255`,
+        betway_2000: `https://www.betway.co.tz/offers/deposit-wager?btag=P94949-PR38080-CM112923-TS2068965&signupcode=MKEKA&optin=TZPromo`,
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
         betlion_ke: `https://media.888africa.com/C.ashx?btag=a_416b_311c_&affid=356&siteid=416&adid=311&c=`,
         leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1078&anid=`
@@ -164,6 +165,9 @@ router.get('/:comp/register', async (req, res) => {
             case 'betway-arsenal':
                 res.redirect(links.betway_arsenal);
                 await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
+                break;
+            case 'betway-freebet':
+                res.redirect(links.betway_2000);
                 break;
             case 'meridian':
                 res.redirect(links.betway);
