@@ -80,23 +80,34 @@ require('./config/passport')(passport);
 // session
 app.use(
     session({
-      secret: process.env.PASS,
-      resave: false,
-      saveUninitialized: false,
-      store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
-        collectionName: 'mkeka-sessions',
-        // ttl (time-to-live) in seconds: 1 day
-        ttl: 60 * 60 * 24 * 1,
-        autoRemove: 'interval',
-        autoRemoveInterval: 5 //remove expired every 5 minutes
-      }),
-      cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 1, // 1 day (in miliseconds)
-      },
-      rolling: false //if TRUE the session expiration will reset in every user interaction
+        secret: process.env.PASS,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URI,
+            collectionName: 'mkeka-sessions',
+            // ttl (time-to-live) in seconds: 1 day
+            ttl: 60 * 60 * 24 * 1,
+            autoRemove: 'interval',
+            autoRemoveInterval: 1 //remove expired every 1 minute
+        }),
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 1, // 1 day (in miliseconds)
+        },
+        rolling: true //the session expiration will reset in every user interaction
     })
-  );
+);
+
+// AFTER session middleware, but BEFORE passport middleware
+//clear temporary sessions which are not passport
+app.use((req, res, next) => {
+    if (req.session && !req.session.passport) {
+        // For unauthenticated sessions
+        req.session.cookie.maxAge = 1000 * 60 * 5; // 5 minutes
+        req.session.save(); // Force save the modified session
+    }
+    next();
+});
 
 // Passport Middleware
 app.use(passport.initialize());
