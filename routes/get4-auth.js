@@ -16,18 +16,12 @@ router.get('/mkeka/vip', async (req, res) => {
             }
             //find all 4 slips to return
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-            let slips = await paidVipModel.find({ date: d })
+            let slips = await paidVipModel.aggregate([
+                { $match: { date: d } },
+                { $sample: { size: 25 } }
+              ]);
 
-            //sort 1 - 4
-            let slip1 = slips.filter(mk => mk.vip_no === 1)
-            let slip2 = slips.filter(mk => mk.vip_no === 2)
-            let slip3 = slips.filter(mk => mk.vip_no === 3)
-            let slip4 = slips.filter(mk => mk.vip_no === 4)
-            let slipOdds = 1
-            for (let od of slip1) {
-                slipOdds = (slipOdds * od.odd).toFixed(2)
-            }
-            return res.render(`8-vip-paid/landing`, { slip1, slip2, slip3, slip4, slipOdds, user })
+            return res.render(`8-vip-paid/landing`, { slips, user })
         }
         res.render('8-vip/vip')
     } catch (err) {

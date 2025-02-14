@@ -350,27 +350,38 @@ const lauraMainFn = async (app) => {
         const admins = [imp.rtmalipo, imp.shemdoe]
         try {
             if (!ctx.match || !admins.includes(ctx.chat.id)) return await ctx.reply('Wrong command');
-        
+
             let [email, param] = ctx.match.split(' ')
             let now = Date.now()
             let until = now + (1000 * 60 * 60 * 24 * 7)
+            let today = new Date();
+            let nextMonth = new Date(today.setMonth(today.getMonth() + 1)).getTime();
 
-            let user = await mkekaUsersModel.findOne({email})
+            let user = await mkekaUsersModel.findOne({ email })
 
-            if(!user) return await ctx.reply(`No user found with email ${email}`);
+            if (!user) return await ctx.reply(`No user found with email ${email}`);
 
-            if(param === 'unpaid') {
+            if (param === 'unpaid') {
                 user.status = 'unpaid'
                 await user.save()
                 return await ctx.reply(`${email} status payment set unpaid`)
             }
 
-            if(param === 'paid') {
+            if (param === 'wiki') {
                 user.status = 'paid'
                 user.pay_until = until
-                user.payments.unshift({paidOn: now, endedOn: until})
+                user.payments.unshift({ paidOn: now, endedOn: until })
                 await user.save()
-                let text = `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa siku 7 kuanzia *${new Date(now).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'})}* hadi *${new Date(until).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'})}*\n\nFungua mkekawaleo.com/mkeka/vip kila siku kwa mikeka yetu ya VIP`
+                let text = `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa siku 7 kuanzia *${new Date(now).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}* hadi *${new Date(until).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}*\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`
+                return await ctx.reply(text)
+            }
+
+            if (param === 'mwezi') {
+                user.status = 'paid'
+                user.pay_until = nextMonth
+                user.payments.unshift({ paidOn: now, endedOn: nextMonth })
+                await user.save()
+                let text = `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa Mwezi 1 kuanzia *${new Date(now).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}* hadi *${new Date(nextMonth).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}*\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`
                 return await ctx.reply(text)
             }
             return await ctx.reply('Wrong parameter. Can only be paid or unpaid')

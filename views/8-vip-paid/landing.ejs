@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="VIP Slips za Leo">
     <title>🥇 VIP SLIPS - MKEKA WA LEO</title>
-    <%- include('./partials/style.ejs'); %>
     <%- include('../0-global/style.ejs'); %>
     <%- include('../0-global/google.ejs'); %>
     <%- include('../0-global/fonts.ejs'); %>
     <%- include('../0-global/favicon.ejs') %>
+    <%- include('./partials/style.ejs'); %>
+    <%- include('./partials/tip-cards-style.ejs'); %>
 </head>
 
 <body>
@@ -19,20 +20,20 @@
     <div class="p-2 shadow rounded mx-auto" style="font-size: 10px; width: 95%;">
         <p class="fs-6 fw-bold">My Info</p>
         <ul style="list-style: circle;">
-            <li>Name: <b class="text-success"><%= user?.name %></b></li>
-            <li>Email: <b class="text-success"><%= user.email %></b></li>
-            <li>Status: <b class="text-success"><%= String(user.status).replace('unpaid', 'Not Paid') %></b></li>
+            <li>Name: <b class="text-bold"><%= user?.name %></b></li>
+            <li>Email: <b class="text-bold"><%= user.email %></b></li>
+            <li>Status: <b class="text-success text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b></li>
             <% if (user.status === 'paid') { %>
-             <li>Paid On: <b class="text-success"><%= new Date(user.payments[0].paidOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
-             <li>End On: <b class="text-success"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
+             <li>Paid On: <b class="text-bold"><%= new Date(user.payments[0].paidOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
+             <li>End On: <b class="text-bold"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
             <% } %>
         </ul>
     </div>
     <main>
         <section class="left">
-            <h2 class="h2 my-5 fw-bold bg-dark fs-5">Mikeka ya VIP Leo</h2>
+            <h2 class="h2 my-5 fw-bold bg-dark fs-5">VIP Tips za Leo - <%= new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %></h2>
             <% if (user.status === 'paid') { %>
-            <%- include('./partials/betslip.ejs'); %>
+            <%- include('./partials/tip-cards.ejs'); %>
             <% } %>
             <% if (user.status !== 'paid') { %>
             <%- include('./partials/unpaid.ejs'); %>
