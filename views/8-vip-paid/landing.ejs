@@ -17,7 +17,7 @@
 
 <body>
     <%- include('../0-global/header.ejs'); %>
-    <div class="p-2 shadow rounded mx-auto" style="font-size: 10px; width: 95%;">
+    <div class="p-2 shadow rounded mx-auto" style="font-size: 10px; width: 98%;">
         <p class="fs-6 fw-bold">My Info</p>
         <ul style="list-style: circle;">
             <li>Name: <b class="text-bold"><%= user?.name %></b></li>
@@ -30,8 +30,8 @@
         </ul>
     </div>
     <main>
-        <section class="left">
-            <h2 class="h2 my-5 fw-bold bg-dark fs-5">VIP Tips za Leo - <%= new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %></h2>
+        <section class="left mt-5">
+            <h2 class="h2 mb-5 fw-bold bg-dark fs-5">VIP Tips za Leo - <%= new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %></h2>
             <% if (user.status === 'paid') { %>
             <%- include('./partials/tip-cards.ejs'); %>
             <% } %>
