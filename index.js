@@ -37,14 +37,6 @@ cachegoose(mongoose, {
     engine: 'memory'
 })
 
-const limiter = elimit({
-    windowMs: 60 * 1000, // 1 minute
-    max: 20, // Limit each IP to 20 requests per `window` (here, per 1 minute)
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-    message: "To many request, please try again after 3 minutes"
-})
-
 // MIDDLEWARES
 app.set('view engine', 'ejs')
 app.use(express.json())
@@ -59,7 +51,6 @@ if (process.env.local != 'true') {
     lauraSourceCodes.bot(app)
 }
 
-app.use(limiter)
 app.use(postRouter)
 app.use(getRouter)
 app.use(getRouter2)
