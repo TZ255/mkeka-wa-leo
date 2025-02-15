@@ -20,7 +20,7 @@
     <div class="p-2 shadow rounded mx-auto" style="font-size: 10px; width: 98%;">
         <p class="fs-6 fw-bold">My Info</p>
         <ul style="list-style: circle;">
-            <li>Name: <b class="text-bold"><%= user?.name %></b></li>
+            <li>Name: <b class="text-bold text-capitalize"><%= user?.name %></b></li>
             <li>Email: <b class="text-bold"><%= user.email %></b></li>
             <li>Status: <b class="text-success text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b></li>
             <% if (user.status === 'paid') { %>
