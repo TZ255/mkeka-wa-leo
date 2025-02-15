@@ -11,12 +11,12 @@ router.get('/mkeka/vip', async (req, res) => {
             let email = req.user?.email
             let user = await mkekaUsersModel.findOne({ email }).select('-password')
             if (!user) {
-                req.flash('error_msg', 'Jisajili Mkeka wa Leo')
+                res.cookie('error_msg', 'Jisajili Mkeka wa Leo')
                 return res.redirect('/user/register')
             }
             //find all 4 slips to return
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-            let slips = await paidVipModel.find({date: d}).sort('time')
+            let slips = await paidVipModel.find({ date: d }).sort('time')
 
             return res.render(`8-vip-paid/landing`, { slips, user })
         }
@@ -37,7 +37,7 @@ router.post('/user/register', async (req, res) => {
 
     if (errors.length > 0) {
         // If there are errors, show them in flash and redirect
-        req.flash('error_msg', errors.map((err) => err.msg).join(', '));
+        res.cookie('error_msg', errors.map((err) => err.msg).join(', '));
         return res.redirect('/user/jisajili');
     }
 
@@ -46,18 +46,18 @@ router.post('/user/register', async (req, res) => {
         const existingUser = await mkekaUsersModel.findOne({ email });
         //check if registerd
         if (existingUser) {
-            req.flash('error_msg', `Email hii "${email}" tayari ipo. Tafadhali login`);
+            res.cookie('error_msg', `Email hii "${email}" tayari ipo. Tafadhali login`);
             return res.redirect('/user/login');
         }
         //register user
         await mkekaUsersModel.create({ email, password, name })
         let html = `<p>Hello ${name}!</p><p>You have successfully registered for <b>Mkeka wa Leo.</b> Use the following details to log in to your account:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul>`;
         sendEmail(email, 'Welcome to Mkeka wa Leo – Your Account Details Inside', html)
-        req.flash('success_msg', 'Account yako imesajiliwa kikamilifu. Login');
+        res.cookie('success_msg', 'Account yako imesajiliwa kikamilifu. Login');
         return res.redirect('/user/login')
     } catch (err) {
         console.error(err);
-        req.flash('error_msg', 'Something went wrong');
+        res.cookie('error_msg', 'Something went wrong');
         res.redirect('/user/jisajili');
     }
 });
@@ -79,11 +79,18 @@ router.get('/user/login', (req, res) => {
 });
 
 // POST: Handle Login
-router.post('/user/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/mkeka/vip',
-        failureRedirect: '/user/login',
-        failureFlash: true, // This allows flash messages on failure
+router.post("/user/login", (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) return next(err);
+        if (!user) {
+            res.cookie('error_msg', info.message, {maxAge: 10000})
+            return res.redirect(`/user/login`);
+        }
+
+        req.logIn(user, (err) => {
+            if (err) return next(err);
+            return res.redirect("/mkeka/vip");
+        });
     })(req, res, next);
 });
 
@@ -91,7 +98,7 @@ router.post('/user/login', (req, res, next) => {
 router.get('/user/logout', (req, res) => {
     req.logout(() => {
         // In newer versions of Passport, logout can take a callback
-        req.flash('success_msg', 'You are logged out');
+        res.cookie('success_msg', 'You are logged out');
         res.redirect('/user/login');
     });
 });

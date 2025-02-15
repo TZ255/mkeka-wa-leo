@@ -4,6 +4,7 @@ const cachegoose = require('recachegoose');
 require('dotenv').config()
 const session = require('express-session');
 const flash = require('connect-flash');
+const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
 const getRouter = require('./routes/get')
@@ -74,6 +75,9 @@ if (process.env.local != 'true') {
 // ############### PROTECTED ###############
 // ############### PROTECTED ###############
 
+//cookie parser for reading Cookies so that i can access req.cookies
+app.use(cookieParser())
+
 //Passport Config
 require('./config/passport')(passport);
 
@@ -101,17 +105,26 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Connect Flash
-app.use(flash());
-
-// Global variables for flash messages
+//custom flash messages using cookie parser
 app.use((req, res, next) => {
-    // success messages
-    res.locals.success_msg = req.flash('success_msg');
-    // error messages
-    res.locals.error_msg = req.flash('error_msg');
-    // passport error messages
-    res.locals.error = req.flash('error');
+    // Check for success messages in the cookie then pass to res.locals
+    if (req.cookies.success_msg) {
+        res.locals.success_msg = req.cookies.success_msg;
+        res.clearCookie('success_msg'); // Clear the cookie after it has been displayed
+    }
+
+    // Check for error messages in the cookie then pass to res.locals
+    if (req.cookies.error_msg) {
+        res.locals.error_msg = req.cookies.error_msg;
+        res.clearCookie('error_msg'); // Clear the cookie after it has been displayed
+    }
+
+    // Check for passport error messages in the cookie
+    if (req.cookies.error) {
+        res.locals.error = req.cookies.error;
+        res.clearCookie('error'); // Clear the cookie after it has been displayed
+    }
+
     next();
 });
 

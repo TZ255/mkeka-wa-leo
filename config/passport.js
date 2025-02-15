@@ -11,11 +11,11 @@ module.exports = function (passport) {
                     // Check if user exists
                     const user = await mkekaUsersModel.findOne({ email: email });
                     if (!user) {
-                        return done(null, false, { message: `Email hii "${email}" haipo. Kama hukuwahi kujisajili nasi bonyeza "jisajili"` });
+                        return done(null, false, { message: `⚠ No account found. Please Register` });
                     }
                     // Check password (PLAIN TEXT FOR DEMO)
                     if (user.password !== password) {
-                        return done(null, false, { message: 'Incorrect password' });
+                        return done(null, false, { message: '⚠ Incorrect password' });
                     }
                     // If credentials match, return user
                     return done(null, user);

@@ -20,13 +20,13 @@ router.post('/user/forgot-password', async (req, res) => {
         // 1. Find user
         const user = await userModel.findOne({ email });
         if (!user) {
-            req.flash('error_msg', 'Email not found');
+            res.cookie('error_msg', 'Email not found');
             return res.redirect('/user/forgot-password');
         }
 
         //1.1 check if user && OTP not expired
         if(user && user?.otpExpires && user?.otpExpires > Date.now()) {
-            req.flash('error_msg', 'OTP tayari ilitumwa kwenye email yako. Haipo inbox? Angalia ndani ya Spam Folder au subiri baada ya dk 45 kuomba OTP mpya');
+            res.cookie('error_msg', 'OTP tayari ilitumwa kwenye email yako. Haipo inbox? Angalia ndani ya Spam Folder au subiri baada ya dk 45 kuomba OTP mpya');
             return res.redirect('/user/verify-otp');
         }
 
@@ -49,7 +49,7 @@ router.post('/user/forgot-password', async (req, res) => {
         res.redirect('/user/verify-otp')
     } catch (err) {
         console.error(err);
-        req.flash('error_msg', 'Something went wrong');
+        res.cookie('error_msg', 'Something went wrong');
         res.redirect('/user/forgot-password');
     }
 });
@@ -62,19 +62,19 @@ router.post('/user/verify-otp', async (req, res) => {
         // 1. Find user by email
         const user = await userModel.findOne({ email });
         if (!user) {
-            req.flash('error_msg', `Email hii "${email}" haipo. Ingiza Email sahihi`);
+            res.cookie('error_msg', `Email hii "${email}" haipo. Ingiza Email sahihi`);
             return res.redirect('/user/verify-otp');
         }
 
         // 2. Check if OTP is valid
         if (user.resetOTP !== otp) {
-            req.flash('error_msg', 'Umeingiza OTP isiyo sahihi. Ingiza OTP sahihi');
+            res.cookie('error_msg', 'Umeingiza OTP isiyo sahihi. Ingiza OTP sahihi');
             return res.redirect('/user/verify-otp');
         }
 
         // 3. Check if OTP is expired
         if (Date.now() > user.otpExpires) {
-            req.flash('error_msg', 'OTP imekwisha muda wake. Omba OTP mpya');
+            res.cookie('error_msg', 'OTP imekwisha muda wake. Omba OTP mpya');
             return res.redirect('/user/forgot-password');
         }
 
@@ -84,18 +84,18 @@ router.post('/user/verify-otp', async (req, res) => {
         user.resetOTP = '';
         user.otpExpires = null;
         await user.save()
-        req.flash('success_msg', 'Password imebadilishwa kikamilifu. Login kuendelea')
+        res.cookie('success_msg', 'Password imebadilishwa kikamilifu. Login kuendelea')
         return res.redirect('/user/login');
     } catch (err) {
         console.error(err);
-        req.flash('error_msg', 'Something went wrong');
+        res.cookie('error_msg', 'Something went wrong');
         return res.redirect('/user/verify-otp');
     }
 });
 
 router.get('/user/verify-otp', (req, res) => {
     if (!req.isAuthenticated()) {
-        req.flash('success_msg', 'Enter your Email, OTP and new password')
+        res.cookie('success_msg', 'Enter your Email, OTP and new password')
         return res.render('password-reset/reset')
     }
     res.redirect('/mkeka/vip')
