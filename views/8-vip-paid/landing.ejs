@@ -18,16 +18,20 @@
 <body>
     <%- include('../0-global/header.ejs'); %>
     <div class="p-2 shadow rounded mx-auto" style="font-size: 10px; width: 98%;">
-        <p class="fs-6 fw-bold">My Info</p>
+        <p class="fs-6 fw-bold d-flex justify-content-between align-items-center px-3 mb-1">
+            <span class="d-block">My Info</span>
+            <a href="/user/logout" class="d-block text-danger"><i class="fa-solid fa-right-from-bracket"></i></a>
+        </p>
         <ul style="list-style: circle;">
             <li>Name: <b class="text-bold text-capitalize"><%= user?.name %></b></li>
             <li>Email: <b class="text-bold"><%= user.email %></b></li>
-            <li>Status: <b class="text-success text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b></li>
+            <li>Status: <b class="text-info text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b></li>
             <% if (user.status === 'paid') { %>
              <li>Paid On: <b class="text-bold"><%= new Date(user.payments[0].paidOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
              <li>End On: <b class="text-bold"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
             <% } %>
         </ul>
+
     </div>
     <main>
         <section class="left mt-5">
