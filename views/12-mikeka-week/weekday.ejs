@@ -21,20 +21,23 @@
     <main>
         <section class="left">
             <h1 class="h2" style="font-size: 16px;">Mikeka ya <%= partials.siku %></h1>
-            <p class="p">
-                Karibu jamvini kwa mikeka yetu ya bure ya <%= partials.siku %>. Hapa tumekuwekea mkeka wa Mega Odds (Accumulators) wenye odds nyingi zilizochambuliwa kwa umakini mkubwa kukuhakikishia nafasi nzuri ya ushindi.
-            </p>
-            <p class="p">
-                Vile vile kwa <%= partials.siku %> tumekuandalia mkeka wa magoli Over 1.5. Mikeka hii ina wastani wa asilimia 95% za ushindi.
-            </p>
-            <hr class="style-eight">
+            <div class="intro p">
+                <p>
+                    Karibu jamvini kwa mikeka yetu ya bure ya <%= partials.siku %>. Hapa tumekuwekea mkeka wa Mega Odds (Accumulators) wenye odds nyingi zilizochambuliwa kwa umakini mkubwa kukuhakikishia nafasi nzuri ya ushindi.
+                </p>
+                <p>
+                    Vile vile kwa <%= partials.siku %> tumekuandalia mkeka wa magoli Over 1.5. Mikeka hii ina wastani wa asilimia 95% za ushindi.
+                </p>
+            </div>
+            <br><br>
+            <%- include('../0-global/banner.ejs'); %>
+            <br>
             <section class="megaodds" itemscope>
                 <h2 class="fs-2 text-center my-3 text-dark p-1 fw-bold">
                     Mega Odds - Mkeka wa <%= partials.siku %> <%= partials.trh.mega %>
                 </h2>
                 <%- include('./partials/mega.ejs'); %>
             </section> <br>
-            <%- include('../0-global/banner.ejs'); %>
             <hr class="style-eight">
             <section class="over15" itemscope>
                 <h2 class="fs-2 text-center my-3 text-dark p-1 fw-bold">
