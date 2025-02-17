@@ -14,11 +14,23 @@ router.get('/mkeka/vip', async (req, res) => {
                 res.cookie('error_msg', 'Jisajili Mkeka wa Leo')
                 return res.redirect('/user/register')
             }
+
+            //check if her time expired
+            if(user && user.status === 'paid' && Date.now() > user.pay_until) {
+                user.status = 'unpaid'
+                await user.save()
+                return res.redirect('/mkeka/vip')
+            }
+
             //find all 4 slips to return
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+            if(req.query && req.query.date) {
+                d = req.query.date.split('-').reverse().join('/')
+            }
+
             let slips = await paidVipModel.find({ date: d }).sort('time')
 
-            return res.render(`8-vip-paid/landing`, { slips, user })
+            return res.render(`8-vip-paid/landing`, { slips, user, d })
         }
         res.render('8-vip/vip')
     } catch (err) {

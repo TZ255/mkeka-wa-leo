@@ -4,6 +4,7 @@ const mkekadb = require('../../model/mkeka-mega')
 const paidVipModel = require('../../model/paid-vips')
 const supatipsModel = require('../../model/supatips')
 const Over15MikModel = require('../../model/ya-uhakika/over15db')
+const sendNotification = require('./sendTgNotifications')
 
 const checking3MkekaBetslip = async (d) => {
     try {
@@ -25,8 +26,8 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        //checking vip slips
-        // slip 1 (normal betslip - other than free)
+        //CHECKING VIP SLIPS ##############################################################
+        // ###################### slip 1 (normal betslip - other than free) ###############
         let vip1 = await paidVipModel.find({ date: d, vip_no: 1 })
         if (vip1.length < 1) {
             //find random 3 from mkekadb
@@ -44,7 +45,7 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        // slip 2 (over 1.5 ft)
+        //############## slip 2 (over 1.5 ft) #############################
         let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
         if (vip2.length < 1) {
             //find random 3 from over 1.5
@@ -62,7 +63,7 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        // slip 3 (over 0.5 1st half)
+        //############### slip 3 (over 0.5 1st half) ############################
         let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
         if (vip3.length < 1) {
             //find random 3 from over 1.5
@@ -80,13 +81,14 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        // slip 4 (DC - match.today)
+
+        //################ slip 4 (DC - match.today) #########################
         let vip4 = await paidVipModel.find({ date: d, vip_no: 4 })
         if (vip4.length < 1) {
             //find random 3 from over 1.5
             let copies = await supatipsModel.aggregate([
-                { $match: { siku: d, $or: [{ tip: '1' }, { tip: '2' }] } },
-                { $sample: { size: 5 } }
+                { $match: { siku: d, time: { $gte: '10:00' }, $or: [{ tip: '1' }, { tip: '2' }] } },
+                { $sample: { size: 3 } }
             ])
 
             //add them to betslip database
@@ -99,7 +101,8 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        // slip 5 (Over 1.5 from cscore - match.today)
+
+        //######################## slip 5 (Over 1.5 from cscore - match.today)#################
         let vip5 = await paidVipModel.find({ date: d, vip_no: 5 })
 
         if (vip5.length < 1) {
@@ -143,8 +146,47 @@ const checking3MkekaBetslip = async (d) => {
                     date: c.siku, time: c.time, league: c.league, tip: 'Over 1.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
                 })
             }
+
+            //################# slip 6 (Correct score) ###################################
+            let vip6 = await paidVipModel.find({ date: d, vip_no: 6 })
+            if (vip6.length < 1) {
+                let home_win = ['3:0', '4:0', '4:1', '5:0', '5:1', '5:2'];
+                let away_win = ['0:3', '0:4', '1:4', '0:5', '1:5', '2:5'];
+                let under25 = ['0:0'];
+
+                let matches = await correctScoreModel.find({ 
+                    siku: d, time: { $gte: '10:00' },
+                    tip: { $in: [...home_win, ...away_win, ...under25] } // Match all tips in these arrays
+                });
+
+                // Process and save filtered data
+                let transformedData = matches.map(doc => {
+                    let newTip;
+
+                    if (home_win.includes(doc.tip)) {
+                        newTip = "1"; // Home win
+                    } else if (away_win.includes(doc.tip)) {
+                        newTip = "2"; // Away win
+                    } else if (under25.includes(doc.tip)) {
+                        newTip = "Under 2.5"; // Under 2.5 goals
+                    }
+
+                    return {
+                        ...doc.toObject(), // Keep other fields
+                        date: doc.siku,
+                        tip: newTip, // Replace tip with new value
+                        vip_no: 6,
+                        odd: '1'
+                    };
+                });
+
+                // Save to paidVIPTip
+                if (transformedData.length < 1) return
+                await paidVipModel.insertMany(transformedData);
+            }
         }
     } catch (error) {
+        sendNotification(741815228, `❌ Updating VIP Slips \n${error?.message}`)
         console.error(error)
     }
 }

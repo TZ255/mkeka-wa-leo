@@ -22,11 +22,14 @@ const analyticsSchema = new Schema({
         type: Number,
         default: 0
     },
+    vip_revenue: {
+        type: Number
+    },
     pid: {
         type: String,
         default: 'shemdoe'
     },
 }, {strict: false, timestamps: true })
 
-let model = mongoose.model('Affiliate-analytics', analyticsSchema)
-module.exports = model
+let affAnalyticsModel = mongoose.model('Affiliate-analytics', analyticsSchema)
+module.exports = affAnalyticsModel

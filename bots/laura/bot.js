@@ -3,7 +3,10 @@
 //Laura Codes Starting Here
 //Laura Codes Starting Here
 
+const affAnalyticsModel = require('../../model/affiliates-analytics')
 const mkekaUsersModel = require('../../model/mkeka-users')
+const sendEmail = require('../../routes/fns/sendemail')
+const { updateUserSubscription, generateSubscriptionMessage, SUBSCRIPTION_TYPES } = require('./functions/grant-fns')
 
 //Laura Codes Starting Here
 const lauraMainFn = async (app) => {
@@ -346,47 +349,77 @@ const lauraMainFn = async (app) => {
         }
     })
 
-    bot.command('grant', async ctx => {
-        const admins = [imp.rtmalipo, imp.shemdoe]
+    bot.command('grant', async (ctx) => {
+        const admins = [imp.rtmalipo, imp.shemdoe];
+
         try {
-            if (!ctx.match || !admins.includes(ctx.chat.id)) return await ctx.reply('Wrong command');
+            // Validate admin access
+            if (!ctx.match || !admins.includes(ctx.chat.id)) {
+                return await ctx.reply('Unauthorized access or wrong command format');
+            }
 
-            let [email, param] = ctx.match.split(' ')
-            let now = Date.now()
-            let until = now + (1000 * 60 * 60 * 24 * 7)
-            let today = new Date();
-            let nextMonth = new Date(today.setMonth(today.getMonth() + 1)).getTime();
+            // Parse command parameters
+            const [email, param] = ctx.match.split(' ');
+            if (!email || !param) {
+                return await ctx.reply('Please provide both email and subscription type');
+            }
 
-            let user = await mkekaUsersModel.findOne({ email })
+            // Find user
+            const user = await mkekaUsersModel.findOne({ email });
+            if (!user) {
+                return await ctx.reply(`No user found with email ${email}`);
+            }
 
-            if (!user) return await ctx.reply(`No user found with email ${email}`);
+            const now = Date.now();
 
+            // Handle unpaid status
             if (param === 'unpaid') {
-                user.status = 'unpaid'
-                await user.save()
-                return await ctx.reply(`${email} status payment set unpaid`)
+                user.status = 'unpaid';
+                await user.save();
+                return await ctx.reply(`${email} status payment set to unpaid`);
             }
 
-            if (param === 'wiki') {
-                user.status = 'paid'
-                user.pay_until = until
-                user.payments.unshift({ paidOn: now, endedOn: until })
-                await user.save()
-                let text = `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa siku 7 kuanzia *${new Date(now).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}* hadi *${new Date(until).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}*\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`
-                return await ctx.reply(text)
+            // Handle subscriptions
+            if (param === 'wiki' || param === 'mwezi') {
+                const subscriptionType = param === 'wiki' ? SUBSCRIPTION_TYPES.WIKI : SUBSCRIPTION_TYPES.MONTHLY;
+                const endDate = param === 'mwezi'
+                    ? new Date(new Date().setMonth(new Date().getMonth() + 1)).getTime()
+                    : now + (1000 * 60 * 60 * 24 * subscriptionType.days);
+
+                // Update user subscription
+                await updateUserSubscription(user, endDate, now);
+
+                // Generate and send messages
+                const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name);
+
+                // Send email
+                sendEmail(email.toLowerCase(), 'VIP Payments Confirmed', messages.html);
+
+                // Update analytics if user is not admins
+                if (!['georgehmariki@gmail.com', 'janjatzblog@gmail.com', 'shmdgrg@gmail.com'].includes(email.toLowerCase())) {
+                    await affAnalyticsModel.findOneAndUpdate(
+                        { pid: 'shemdoe' },
+                        { $inc: { vip_revenue: subscriptionType.amount } }
+                    );
+                }
+
+                return await ctx.reply(messages.text);
             }
 
-            if (param === 'mwezi') {
-                user.status = 'paid'
-                user.pay_until = nextMonth
-                user.payments.unshift({ paidOn: now, endedOn: nextMonth })
-                await user.save()
-                let text = `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa Mwezi 1 kuanzia *${new Date(now).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}* hadi *${new Date(nextMonth).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}*\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`
-                return await ctx.reply(text)
-            }
-            return await ctx.reply('Wrong parameter. Can only be paid or unpaid')
+            return await ctx.reply('Invalid parameter. Use: wiki, mwezi, or unpaid');
+
         } catch (error) {
-            await ctx.reply(error.message)
+            console.error('Grant command error:', error);
+            await ctx.reply('An error occurred while processing your request. Please try again.');
+        }
+    });
+
+    bot.command('vip_rev', async ctx => {
+        try {
+            let rev = await affAnalyticsModel.findOne({ pid: 'shemdoe' })
+            await ctx.reply(`Tokea tumeanza Feb 12, 2025 tumetengeneza jumla ya Tsh. ${rev.vip_revenue.toLocaleString('en-US')} kwenye subscription za VIP`)
+        } catch (error) {
+            await ctx.reply(error?.message)
         }
     })
 

@@ -1,3 +1,11 @@
+<div class="nyuma p-3">
+    <div class="mb-3">
+        <label for="dateInput" class="form-label text-muted" style="font-size: 10px;">Angalia mikeka ya siku za nyuma</label>
+        <input type="date" id="dateInput" class="form-control" onchange="redirectToDate()" value="<%= d.split('/').reverse().join('-') %>">
+    </div>
+</div>
+
+<% if (slips.length > 0) { %>
 <div class="container">
     <div class="">
         <% slips.forEach(match => { %>
@@ -18,7 +26,8 @@
                 </div>
 
                 <div class="text-center">
-                    <span class="prediction-badge"><%= match.tip %></span>
+                    <span
+                        class="prediction-badge"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
                 </div>
             </div>
         </div>
@@ -27,5 +36,24 @@
 </div>
 
 <p class="p-3 border-bottom">
-    <b class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Acha tamaa! <%= user?.name %></b> <br> <span class="text-dark">Chagua kati mechi 5 hadi 7 hapo juu. Mechi zetu zote za VIP zimechambuliwa na wataalamu wetu na zina nafasi ya zaidi ya 95% ya ushindi ila kwa kujihakikishia nafasi ya ushindi ya hadi 99%, chagua kati ya mechi 4 hadi 7 (usizidishe).</span>
+    <b class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Acha tamaa! <%= user?.name %></b> <br> <span
+        class="text-dark">Chagua kati mechi 5 hadi 7 hapo juu. Mechi zetu zote za VIP zimechambuliwa na wataalamu wetu
+        na zina nafasi ya zaidi ya 95% ya ushindi ila kwa kujihakikishia nafasi ya ushindi ya hadi 99%, chagua kati ya
+        mechi 5 hadi 7 (usizidishe).</span>
 </p>
+<% } %>
+
+<% if (slips.length == 0) { %>
+ <p class="text-danger p">
+    Hakuna mikeka iliyopatikana kwa tarehe <%= d %>
+ </p>
+<% } %>
+
+<script>
+    function redirectToDate() {
+        let selectedDate = document.getElementById("dateInput").value;
+        if (selectedDate) {
+            window.location.href = `/mkeka/vip?date=${selectedDate}`;
+        }
+    }
+</script>
