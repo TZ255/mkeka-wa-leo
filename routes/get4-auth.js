@@ -41,6 +41,7 @@ router.get('/mkeka/vip', async (req, res) => {
 // POST: Handle Registration
 router.post('/user/register', async (req, res) => {
     let { email, password, name } = req.body;
+    email = String(email).toLowerCase()
     let errors = [];
 
     if (!email || !password) {
