@@ -14,7 +14,7 @@ router.get('/user/forgot-password', (req, res) => {
 
 // POST: /user/forgot-password
 router.post('/user/forgot-password', async (req, res) => {
-    const { email } = req.body;
+    let { email } = req.body;
     email = String(email).toLowerCase()
 
     try {
@@ -57,7 +57,7 @@ router.post('/user/forgot-password', async (req, res) => {
 
 //verifying OTP route
 router.post('/user/verify-otp', async (req, res) => {
-    const { email, newPassword, otp } = req.body;
+    let { email, newPassword, otp } = req.body;
     email = String(email).toLowerCase()
 
     try {

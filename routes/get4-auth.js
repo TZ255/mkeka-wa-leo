@@ -40,14 +40,12 @@ router.get('/mkeka/vip', async (req, res) => {
 
 // POST: Handle Registration
 router.post('/user/register', async (req, res) => {
-    const { email, password, name } = req.body;
+    let { email, password, name } = req.body;
     let errors = [];
 
     if (!email || !password) {
         errors.push({ msg: 'Tafadhali jaza taarifa zako zote' });
     }
-
-    email = String(email).toLowerCase()
 
     if (errors.length > 0) {
         // If there are errors, show them in flash and redirect
