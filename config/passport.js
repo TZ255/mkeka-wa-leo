@@ -9,7 +9,7 @@ module.exports = function (passport) {
             async (email, password, done) => {
                 try {
                     // Check if user exists
-                    const user = await mkekaUsersModel.findOne({ email: email });
+                    const user = await mkekaUsersModel.findOne({ email: String(email).toLowerCase() });
                     if (!user) {
                         return done(null, false, { message: `⚠ No account found. Please Register` });
                     }

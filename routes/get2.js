@@ -19,6 +19,7 @@ const getPaymentStatus = require('./fns/pesapal/getTxStatus')
 const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./fns/ligikuucotz')
 const checking3MkekaBetslip = require('./fns/checking-betslip')
+const mkekaUsersModel = require('../model/mkeka-users')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -431,7 +432,11 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        checking3MkekaBetslip('15/02/2025')
+        let result = await mkekaUsersModel.updateMany(
+            {}, // Match all documents
+            [{ $set: { email: { $toLower: "$email" } } }] // Convert email to lowercase
+        );
+        console.log("Updated documents:", result.modifiedCount);
         res.end()
     } catch (error) {
         res.send(error.message)

@@ -8,7 +8,7 @@ const sendEmail = require('./fns/sendemail');
 router.get('/mkeka/vip', async (req, res) => {
     try {
         if (req.isAuthenticated()) {
-            let email = req.user?.email
+            let email = String(req.user?.email).toLowerCase()
             let user = await mkekaUsersModel.findOne({ email }).select('-password')
             if (!user) {
                 res.cookie('error_msg', 'Jisajili Mkeka wa Leo')
@@ -46,6 +46,8 @@ router.post('/user/register', async (req, res) => {
     if (!email || !password) {
         errors.push({ msg: 'Tafadhali jaza taarifa zako zote' });
     }
+
+    email = String(email).toLowerCase()
 
     if (errors.length > 0) {
         // If there are errors, show them in flash and redirect
