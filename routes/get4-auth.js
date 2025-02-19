@@ -16,7 +16,7 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //check if her time expired
-            if(user && user.status === 'paid' && Date.now() > user.pay_until) {
+            if (user && user.status === 'paid' && Date.now() > user.pay_until) {
                 user.status = 'unpaid'
                 await user.save()
                 return res.redirect('/mkeka/vip')
@@ -24,7 +24,7 @@ router.get('/mkeka/vip', async (req, res) => {
 
             //find all 4 slips to return
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-            if(req.query && req.query.date) {
+            if (req.query && req.query.date) {
                 d = req.query.date.split('-').reverse().join('/')
             }
 
@@ -96,7 +96,7 @@ router.post("/user/login", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
         if (err) return next(err);
         if (!user) {
-            res.cookie('error_msg', info.message, {maxAge: 10000})
+            res.cookie('error_msg', info.message, { maxAge: 10000 })
             return res.redirect(`/user/login`);
         }
 
@@ -116,5 +116,33 @@ router.get('/user/logout', (req, res) => {
     });
 });
 
+//updating scores
+router.post('/update/vip/:_id', async (req, res) => {
+    try {
+        let _id = req.params._id;
+        let result = req.body.scores
+        let status = req.body.status
+
+        let match = await paidVipModel.findById(_id);
+        if (!match) {
+            return res.status(404).json({ error: "Match not found" });
+        }
+
+        if(!result.includes('(')) {
+            result = `(${result})`
+        }
+
+        match.status = status
+        match.result = result
+        await match.save()
+
+        //find other 'lose' delete
+        await paidVipModel.findOneAndDelete({date: match.date, match: match.match, status: 'lose', _id: { $ne: match._id }})
+
+        res.send(match)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router

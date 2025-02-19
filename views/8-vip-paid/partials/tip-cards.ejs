@@ -1,7 +1,9 @@
 <div class="nyuma p-3">
     <div class="mb-3">
-        <label for="dateInput" class="form-label text-muted" style="font-size: 10px;">Angalia mikeka ya siku za nyuma</label>
-        <input type="date" id="dateInput" class="form-control" onchange="redirectToDate()" value="<%= d.split('/').reverse().join('-') %>">
+        <label for="dateInput" class="form-label text-muted" style="font-size: 10px;">Angalia mikeka ya siku za
+            nyuma</label>
+        <input type="date" id="dateInput" class="form-control" onchange="redirectToDate()"
+            value="<%= d.split('/').reverse().join('-') %>">
     </div>
 </div>
 
@@ -20,15 +22,34 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="match-details text-center mb-3">
                     <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
                 </div>
-
-                <div class="text-center">
+                <div class="text-center mb-2">
                     <span
                         class="prediction-badge"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
                 </div>
+                <% if (match.status === 'won') { %>
+                <div class="text-center">
+                    <span class="badge bg-success text-light rounded-pill p-2 me-1">
+                        <i class="fa-regular fa-circle-check"></i> WON <%= match.result %>
+                    </span>
+                </div>
+                <% } %>
+                <% if (match.status === 'lose') { %>
+                    <div class="text-center">
+                        <span class="badge bg-danger text-light rounded-pill p-2 me-1">
+                            <i class="fa-regular fa-circle-xmark"></i> LOSE <%= match.result %>
+                        </span>
+                    </div>
+                <% } %>
+                <% if (match.status === 'postponed') { %>
+                    <div class="text-center">
+                        <span class="badge border text-dark rounded-pill p-2 me-1">
+                            Pstp.
+                        </span>
+                    </div>
+                <% } %>
             </div>
         </div>
         <% }) %>
@@ -36,17 +57,22 @@
 </div>
 
 <p class="p-3 border-bottom">
-    <b class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> Acha tamaa! <%= user?.name %></b> <br> <span
-        class="text-dark">Chagua kati mechi 5 hadi 7 hapo juu. Mechi zetu zote za VIP zimechambuliwa na wataalamu wetu
+    <b class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> <%= user?.name %>! Acha tamaa</b> <br> <span
+        class="text-dark">Chagua kati mechi 7 hadi 10 hapo juu. Mechi zetu zote za VIP zimechambuliwa na wataalamu wetu
         na zina nafasi ya zaidi ya 95% ya ushindi ila kwa kujihakikishia nafasi ya ushindi ya hadi 99%, chagua kati ya
-        mechi 5 hadi 7 (usizidishe).</span>
+        mechi 7 hadi 10 (usizidishe).</span>
 </p>
 <% } %>
 
 <% if (slips.length == 0) { %>
- <p class="text-danger p">
+<p class="text-danger p">
     Hakuna mikeka iliyopatikana kwa tarehe <%= d %>
- </p>
+</p>
+<% } %>
+
+<% if (user.role === 'admin') { %>
+<hr>
+<%- include('./admin.ejs'); %>
 <% } %>
 
 <script>
