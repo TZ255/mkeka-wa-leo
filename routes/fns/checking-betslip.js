@@ -63,23 +63,23 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        //############### slip 3 (over 0.5 1st half) ############################
-        // let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
-        // if (vip3.length < 1) {
-        //     //find random 3 from over 1.5
-        //     let copies = await Over15MikModel.aggregate([
-        //         { $match: { date: d } },
-        //         { $sample: { size: 3 } }
-        //     ])
+        //############### slip 3 (Under 3.5 from Cscore 1:0) ############################
+        let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
+        if (vip3.length < 1) {
+            let under35 = ['1:0', '0:1'];
+            let copies = await correctScoreModel.aggregate([
+                { $match: { date: d }, tip: { $in: [...under35] } },
+                { $sample: { size: 3 } }
+            ])
 
-        //     //add them to betslip database
-        //     if (copies.length < 1) { return }
-        //     for (let c of copies) {
-        //         await paidVipModel.create({
-        //             date: c.date, time: c.time, league: c.league, tip: 'HT Over 0.5', odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 3
-        //         })
-        //     }
-        // }
+            //add them to betslip database
+            if (copies.length < 1) { return }
+            for (let c of copies) {
+                await paidVipModel.create({
+                    date: c.date, time: c.time, league: c.league, tip: 'Under 3.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 3
+                })
+            }
+        }
 
 
         //################ slip 4 (DC - match.today) #########################
@@ -153,10 +153,9 @@ const checking3MkekaBetslip = async (d) => {
                 let home_win = ['3:0', '4:0', '4:1', '5:0', '5:1', '5:2'];
                 let away_win = ['0:3', '0:4', '1:4', '0:5', '1:5', '2:5'];
                 let under25 = ['0:0'];
-                let under35 = ['1:0', '0:1'];
 
-                let matches = await correctScoreModel.find({ 
-                    siku: d, tip: { $in: [...home_win, ...away_win, ...under25, ...under35] }
+                let matches = await correctScoreModel.find({
+                    siku: d, tip: { $in: [...home_win, ...away_win, ...under25] }
                 });
 
                 // Process and save filtered data
