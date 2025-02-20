@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Angalia orodha ya wachezaji wanaongoza kwa asisti Bundesliga - Ligi Kuu ya Ujerumani kwa msimu wa <%= partials.season %>. Hawa hapa vinara wa Assist Bundesliga.">
+    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
+    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
+    <%- include('../../../../0-global/favicon.ejs') %>
+    <title>Watoa Assist Bora Bundesliga <%= partials.season %> - Vinara wa Assist Ligi Kuu Ujerumani</title>
+    <%- include('../../../../0-global/style.ejs'); %>
+    <%- include('../../../../0-global/google.ejs'); %>
+    <%- include('../../../../0-global/fonts.ejs'); %>
+    <style>
+        p {
+            text-align: justify !important;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../../../../0-global/header.ejs'); %>
+    <main>
+        <section class="left text-align-justify">
+            <h1 class="fs-4 mx-2 my-4">
+                Watoa Assist Bora Bundesliga <%= partials.season %> - Vinara wa Assist Ligi ya Ujerumani
+            </h1>
+            <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-muted" style="font-size: 12px;">
+                <i class="fa-regular fa-clock"></i> Updated on:
+                <abbr class="date published" title="<%= partials.updatedAt %>">
+                    <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
+                </abbr>
+            </span>
+            <hr>
+            <div class="utangulizi p-2 text-align-justify">
+                <p>
+                    Hadi sasa, <%= top_assists[0].player.name %> wa <%= top_assists[0].statistics[0].team.name %> na
+                    <%= top_assists[1].player.name %> wa <%= top_assists[1].statistics[0].team.name %> wanaongoza kwa
+                    utoaji assist Bundesliga msimu huu.
+                </p>
+            </div>
+            <div class="table-section" itemscope itemtype="https://schema.org/Table">
+                <meta itemprop="about" content="Wachezaji Wanaongoza kwa Asisti Bundesliga Msimu wa <%= partials.season %>">
+                <table class="table table-striped-columns">
+                    <thead style="font-size: 13px !important;">
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col" class="fw-bold">Mchezaji</th>
+                        <th scope="col" class="text-start">Timu</th>
+                        <th scope="col" class="text-center">Asisti</th>
+                        <th scope="col" class="text-center">Michezo</th>
+                    </thead>
+                    <tbody>
+                        <% top_assists.forEach((player, index) => { %>
+                        <tr style="font-size: 12px !important;">
+                            <td class="tdata text-center"><%= index+1 %>.</td>
+                            <td class="tdata"><%= player.player.name %></td>
+                            <td class="tdata"><%= player.statistics[0].team.name %></td>
+                            <td class="tdata text-center"><%= player.statistics[0].goals.assists %></td>
+                            <td class="tdata text-center"><%= player.statistics[0].games.appearences %></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                    <caption class="p-2 fst-italic">
+                        <p>Orodha hii inasasishwa mara kwa mara kulingana na mechi za kila wiki.</p>
+                        <p>Ona pia</p>
+                        <ul class="list-group list-group-flush fw-bold">
+                            <li class="list-group-item"><a href="/wafungaji-bora/78/2024" class="text-success text-decoration-none">Orodha ya Wafungaji Bora Bundesliga 2024/25</a></li>
+                            <li class="list-group-item"><a href="/standings/78/2024" class="text-success text-decoration-none">Msimamo Ligi Kuu ya Ujerumani - Bundesliga 2024/25</a></li>
+                        </ul>
+                    </caption>
+                </table>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <%- include('../../../../0-global/somapia.ejs'); %>
+            <br><br>
+        </section>
+    </main>
+
+    <%- include('../../../../0-global/footer.ejs'); %>
+    <%- include('../../../../0-global/script.ejs'); %>
+    <%- include('../../../../0-global/modal-leon.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

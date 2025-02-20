@@ -154,42 +154,49 @@ setInterval(() => {
         }
 
         //update europe leagues
-        if ([18, 19, 20, 22, 23, 3].includes(hours)) {
+        if ([19, 20, 22, 23, 3].includes(hours)) {
             switch (mins) {
-                case 2: //EPL on every 02 minute
+                case 2: //EPL on every 01 minute
                     UpdateOtherStandingFn(39, 2024)
                     setTimeout(() => {
                         UpdateOtherFixuresFn(39, 2024)
                     }, 5000)
                     break;
 
-                case 5: //LaLiga on every 05 minute
+                case 3: //LaLiga on every 02 minute
                     UpdateOtherStandingFn(140, 2024)
                     setTimeout(() => {
                         UpdateOtherFixuresFn(140, 2024)
+                    }, 5000)
+                    break;
+
+                case 4: //Bundesliga on every 03 minute
+                    UpdateOtherStandingFn(78, 2024)
+                    setTimeout(() => {
+                        UpdateOtherFixuresFn(78, 2024)
                     }, 5000)
                     break;
             }
         }
 
         //update unimportant leagues
-        if ([19, 22, 3].includes(hours)) {
+        if ([22, 3].includes(hours)) {
             switch (mins) {
-                case 6: //CAF on every 06 minute
+                case 1666: //CAF on every 06 minute (not updating 666)
                     UpdateOtherStandingFn(12, 2024)
                     setTimeout(() => {
                         UpdateOtherFixuresFn(12, 2024)
                     }, 5000)
                     break;
 
-                case 7: //Confederation on every 07 minute
+                case 17666: //Confederation on every 07 minute (not updating 666)
                     UpdateOtherStandingFn(20, 2024)
                     setTimeout(() => {
                         UpdateOtherFixuresFn(20, 2024)
                     }, 5000)
                     break;
 
-                case 9: //caf wc qulifiers
+                case 18: //caf wc qulifiers
                     UpdateOtherStandingFn(29, 2023)
                     setTimeout(() => {
                         UpdateOtherFixuresFn(29, 2023)
@@ -198,8 +205,8 @@ setInterval(() => {
             }
         }
 
-        //update assist and goals at 03:31 and at 10:31 
-        if ([3, 10, 21].includes(hours)) {
+        //update assist and goals at 06:31 and at 22:31 
+        if ([6, 22].includes(hours)) {
             switch (mins) {
                 case 31: //EPL top scorer on every 31
                     UpdateOtherTopScorerFn(39, 2024)
@@ -208,24 +215,31 @@ setInterval(() => {
                     }, 5000)
                     break;
 
-                case 33: //LaLiga top scorer on every 33
+                case 32: //LaLiga top scorer on every 33
                     UpdateOtherTopScorerFn(140, 2024)
                     setTimeout(() => {
                         UpdateOtherTopAssistFn(140, 2024)
                     }, 5000)
                     break;
 
-                case 35: //CAF top scorer on every 35
+                case 333: //CAF top scorer on every 35 (not updating 333)
                     UpdateOtherTopScorerFn(12, 2024)
                     setTimeout(() => {
                         UpdateOtherTopAssistFn(12, 2024)
                     }, 5000)
                     break;
 
-                case 36: //CAF top scorer on every 36
+                case 34666: //CAF confederation top scorer on every 34 (not updating 666)
                     UpdateOtherTopScorerFn(20, 2024)
                     setTimeout(() => {
                         UpdateOtherTopAssistFn(20, 2024)
+                    }, 5000)
+                    break;
+
+                case 35: //Bundesliga stats
+                    UpdateOtherTopScorerFn(78, 2024)
+                    setTimeout(() => {
+                        UpdateOtherTopAssistFn(78, 2024)
                     }, 5000)
                     break;
             }

@@ -166,6 +166,9 @@ router.get('/standings/:league/:season', async (req, res) => {
             case '29':
                 return res.render('11-misimamo/world/caf-wc26/caf-wc26', { standing, agg, partials })
 
+            case '78':
+                return res.render('11-misimamo/24-25/bundesliga/bundesliga', { standing, agg, partials })
+
             default:
                 return res.redirect('/')
         }
@@ -253,6 +256,10 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
 
             case '140':
                 res.render('11-misimamo/24-25/laliga/1-ratiba/ratiba', { ratiba, standing, partials })
+                break;
+
+            case '78':
+                res.render('11-misimamo/24-25/bundesliga/1-ratiba/ratiba', { ratiba, standing, partials })
                 break;
 
             default:
@@ -349,6 +356,10 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
                 res.render('11-misimamo/24-25/conf/2-scorer/scorer', { top_scorers, partials })
                 break;
 
+            case '78':
+                res.render('11-misimamo/24-25/bundesliga/2-scorer/scorer', { top_scorers, partials })
+                break;
+
             default:
                 res.redirect('/')
         }
@@ -395,6 +406,10 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
                 res.render('11-misimamo/24-25/conf/3-assist/assist', { top_assists, partials })
                 break;
 
+            case '78':
+                res.render('11-misimamo/24-25/bundesliga/3-assist/assist', { top_assists, partials })
+                break;
+
             default:
                 res.redirect('/')
         }
@@ -432,11 +447,10 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        let result = await mkekaUsersModel.updateMany(
-            {}, // Match all documents
-            [{ $set: { email: { $toLower: "$email" } } }] // Convert email to lowercase
-        );
-        console.log("Updated documents:", result.modifiedCount);
+        UpdateOtherTopScorerFn(78, 2024)
+        setTimeout(() => {
+            UpdateOtherTopAssistFn(78, 2024)
+        }, 3000);
         res.end()
     } catch (error) {
         res.send(error.message)
