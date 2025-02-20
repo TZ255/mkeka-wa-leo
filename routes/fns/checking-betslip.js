@@ -18,7 +18,6 @@ const checking3MkekaBetslip = async (d) => {
             ])
 
             //add them to betslip database
-            if (copies.length < 1) { return }
             for (let c of copies) {
                 await betslip.create({
                     date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs ')
@@ -37,7 +36,6 @@ const checking3MkekaBetslip = async (d) => {
             ])
 
             //add them to betslip database
-            if (copies.length < 1) { return }
             for (let c of copies) {
                 await paidVipModel.create({
                     date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 1
@@ -55,7 +53,6 @@ const checking3MkekaBetslip = async (d) => {
             ])
 
             //add them to betslip database
-            if (copies.length < 1) { return }
             for (let c of copies) {
                 await paidVipModel.create({
                     date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
@@ -68,15 +65,14 @@ const checking3MkekaBetslip = async (d) => {
         if (vip3.length < 1) {
             let under35 = ['1:0', '0:1'];
             let copies = await correctScoreModel.aggregate([
-                { $match: { date: d, tip: { $in: under35 } } },
+                { $match: { siku: d, tip: { $in: [...under35] } } },
                 { $sample: { size: 3 } }
             ])
 
             //add them to betslip database
-            if (copies.length < 1) { return }
             for (let c of copies) {
                 await paidVipModel.create({
-                    date: c.date, time: c.time, league: c.league, tip: 'Under 3.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 3
+                    date: c.siku, time: c.time, league: c.league, tip: 'Under 3.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 3
                 })
             }
         }
@@ -92,7 +88,6 @@ const checking3MkekaBetslip = async (d) => {
             ])
 
             //add them to betslip database
-            if (copies.length < 1) { return }
             for (let c of copies) {
                 let tip = c.tip === '1' ? '1X' : c.tip === '2' ? 'X2' : c.tip;
                 await paidVipModel.create({
@@ -104,7 +99,6 @@ const checking3MkekaBetslip = async (d) => {
 
         //######################## slip 5 (Over 1.5 from cscore - match.today)#################
         let vip5 = await paidVipModel.find({ date: d, vip_no: 5 })
-
         if (vip5.length < 1) {
             //find random 3 from correct score whre total goals is greater than 4
             const copies = await correctScoreModel.aggregate([
@@ -140,47 +134,51 @@ const checking3MkekaBetslip = async (d) => {
             ]);
 
             //add them to betslip database
-            if (copies.length < 1) { return }
             for (let c of copies) {
                 await paidVipModel.create({
                     date: c.siku, time: c.time, league: c.league, tip: 'HT Over 0.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
                 })
             }
+        }
 
-            //################# slip 6 (Correct score) ###################################
-            let vip6 = await paidVipModel.find({ date: d, vip_no: 6 })
-            if (vip6.length < 1) {
-                let home_win = ['3:0', '4:0', '4:1', '5:0', '5:1', '5:2'];
-                let away_win = ['0:3', '0:4', '1:4', '0:5', '1:5', '2:5'];
-                let under25 = ['0:0'];
+        //################# slip 6 (Correct score) ###################################
+        let vip6 = await paidVipModel.find({ date: d, vip_no: 6 });
+        console.log(vip6.length)
+        if (vip6.length < 1) {
+            const home_win = ['3:0', '4:0', '4:1', '5:0', '5:1', '5:2'];
+            const away_win = ['0:3', '0:4', '1:4', '0:5', '1:5', '2:5'];
+            const under25 = ['0:0'];
 
-                let matches = await correctScoreModel.find({
-                    siku: d, tip: { $in: [...home_win, ...away_win, ...under25] }
-                });
-
-                // Process and save filtered data
-                let transformedData = matches.map(doc => {
-                    let newTip;
-
-                    if (home_win.includes(doc.tip)) {
-                        newTip = "1"; // Home win
-                    } else if (away_win.includes(doc.tip)) {
-                        newTip = "2"; // Away win
-                    } else if (under25.includes(doc.tip)) {
-                        newTip = "Under 2.5"; // Under 2.5 goals
+            const matches = await correctScoreModel.aggregate([
+                {
+                    $match: {
+                        siku: d, time: { $gte: '10:00' },
+                        tip: { $in: [...home_win, ...away_win, ...under25] }
                     }
+                },
+                { $sample: { size: 4 } }
+            ]);
 
-                    return {
-                        ...doc.toObject(), // Keep other fields
-                        date: doc.siku,
-                        tip: newTip, // Replace tip with new value
-                        vip_no: 6,
-                        odd: '1'
-                    };
-                });
+            const transformedData = matches.map(doc => {
+                let newTip;
+                if (home_win.includes(doc.tip)) {
+                    newTip = "1";
+                } else if (away_win.includes(doc.tip)) {
+                    newTip = "2";
+                } else if (under25.includes(doc.tip)) {
+                    newTip = "Under 2.5";
+                }
 
-                // Save to paidVIPTip
-                if (transformedData.length < 1) return
+                return {
+                    ...doc,
+                    date: doc.siku,
+                    tip: newTip,
+                    vip_no: 6,
+                    odd: '1'
+                };
+            });
+
+            if (transformedData.length > 0) {
                 await paidVipModel.insertMany(transformedData);
             }
         }
