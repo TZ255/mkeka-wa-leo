@@ -33,7 +33,7 @@ const checking3MkekaBetslip = async (d) => {
             //find random 3 from mkekadb
             let copies = await mkekadb.aggregate([
                 { $match: { date: d } },
-                { $sample: { size: 3 } }
+                { $sample: { size: 2 } }
             ])
 
             //add them to betslip database
@@ -51,7 +51,7 @@ const checking3MkekaBetslip = async (d) => {
             //find random 3 from over 1.5
             let copies = await Over15MikModel.aggregate([
                 { $match: { date: d } },
-                { $sample: { size: 2 } }
+                { $sample: { size: 3 } }
             ])
 
             //add them to betslip database
@@ -64,28 +64,28 @@ const checking3MkekaBetslip = async (d) => {
         }
 
         //############### slip 3 (over 0.5 1st half) ############################
-        let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
-        if (vip3.length < 1) {
-            //find random 3 from over 1.5
-            let copies = await Over15MikModel.aggregate([
-                { $match: { date: d } },
-                { $sample: { size: 3 } }
-            ])
+        // let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
+        // if (vip3.length < 1) {
+        //     //find random 3 from over 1.5
+        //     let copies = await Over15MikModel.aggregate([
+        //         { $match: { date: d } },
+        //         { $sample: { size: 3 } }
+        //     ])
 
-            //add them to betslip database
-            if (copies.length < 1) { return }
-            for (let c of copies) {
-                await paidVipModel.create({
-                    date: c.date, time: c.time, league: c.league, tip: 'HT Over 0.5', odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 3
-                })
-            }
-        }
+        //     //add them to betslip database
+        //     if (copies.length < 1) { return }
+        //     for (let c of copies) {
+        //         await paidVipModel.create({
+        //             date: c.date, time: c.time, league: c.league, tip: 'HT Over 0.5', odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 3
+        //         })
+        //     }
+        // }
 
 
         //################ slip 4 (DC - match.today) #########################
         let vip4 = await paidVipModel.find({ date: d, vip_no: 4 })
         if (vip4.length < 1) {
-            //find random 3 from over 1.5
+            //find random 3 from match.today
             let copies = await supatipsModel.aggregate([
                 { $match: { siku: d, time: { $gte: '10:00' }, $or: [{ tip: '1' }, { tip: '2' }] } },
                 { $sample: { size: 3 } }
@@ -135,7 +135,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 3 }
+                    $sample: { size: 4 }
                 }
             ]);
 
@@ -143,7 +143,7 @@ const checking3MkekaBetslip = async (d) => {
             if (copies.length < 1) { return }
             for (let c of copies) {
                 await paidVipModel.create({
-                    date: c.siku, time: c.time, league: c.league, tip: 'Over 1.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
+                    date: c.siku, time: c.time, league: c.league, tip: 'HT Over 0.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
                 })
             }
 
@@ -153,10 +153,10 @@ const checking3MkekaBetslip = async (d) => {
                 let home_win = ['3:0', '4:0', '4:1', '5:0', '5:1', '5:2'];
                 let away_win = ['0:3', '0:4', '1:4', '0:5', '1:5', '2:5'];
                 let under25 = ['0:0'];
+                let under35 = ['1:0', '0:1'];
 
                 let matches = await correctScoreModel.find({ 
-                    siku: d, time: { $gte: '10:00' },
-                    tip: { $in: [...home_win, ...away_win, ...under25] } // Match all tips in these arrays
+                    siku: d, tip: { $in: [...home_win, ...away_win, ...under25, ...under35] }
                 });
 
                 // Process and save filtered data
@@ -169,6 +169,8 @@ const checking3MkekaBetslip = async (d) => {
                         newTip = "2"; // Away win
                     } else if (under25.includes(doc.tip)) {
                         newTip = "Under 2.5"; // Under 2.5 goals
+                    } else if (under35.includes(doc.tip)) {
+                        newTip = "Under 3.5"; // Under 2.5 goals
                     }
 
                     return {
