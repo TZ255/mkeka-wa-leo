@@ -13,7 +13,7 @@
                             <li class="list-group-item" id="<%= match._id %>">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="fw-bold"><%= match.match %></span>
-                                    <span class="badge <%= match.status === 'won' ? 'bg-primary' : (match.status === 'lose' ? 'bg-danger' : 'bg-light') %> rounded-pill">
+                                    <span class="badge <%= match.status === 'won' ? 'bg-success' : (match.status === 'lose' ? 'bg-danger' : 'bg-light') %> rounded-pill">
                                         <%= match.status %>
                                         <%= match.result %>
                                     </span>

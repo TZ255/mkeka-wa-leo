@@ -26,8 +26,8 @@
                     <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
                 </div>
                 <div class="text-center mb-2">
-                    <span
-                        class="prediction-badge"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
+                    <span class="prediction-badge"
+                        onclick="OpenAff('gsb')"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
                 </div>
                 <% if (match.status === 'won') { %>
                 <div class="text-center">
@@ -37,30 +37,47 @@
                 </div>
                 <% } %>
                 <% if (match.status === 'lose') { %>
-                    <div class="text-center">
-                        <span class="badge bg-danger text-light rounded-pill p-2 me-1">
-                            <i class="fa-regular fa-circle-xmark"></i> LOSE <%= match.result %>
-                        </span>
-                    </div>
+                <div class="text-center">
+                    <span class="badge bg-danger text-light rounded-pill p-2 me-1">
+                        <i class="fa-regular fa-circle-xmark"></i> LOSE <%= match.result %>
+                    </span>
+                </div>
                 <% } %>
                 <% if (match.status === 'postponed') { %>
-                    <div class="text-center">
-                        <span class="badge border text-dark rounded-pill p-2 me-1">
-                            Pstp.
-                        </span>
-                    </div>
+                <div class="text-center">
+                    <span class="badge border text-dark rounded-pill p-2 me-1">
+                        Pstp.
+                    </span>
+                </div>
                 <% } %>
             </div>
         </div>
         <% }) %>
     </div>
 </div>
-
-<p class="p-3 border-bottom">
+<hr class="text-muted">
+<p class="p-3 border bg-light text-dark rounded mb-4 mt-5">
     <b class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> <%= user?.name %>! Acha tamaa</b> <br> <span
-        class="text-dark">Chagua kati mechi 7 hadi 10 hapo juu. Mechi zetu zote za VIP zimechambuliwa na wataalamu wetu
+        class="text-dark">Chagua kati mechi 5 hadi 7 hapo juu kwa mkeka mmoja. Mechi zetu zote za VIP zimechambuliwa na
+        wataalamu wetu
         na zina nafasi ya zaidi ya 95% ya ushindi ila kwa kujihakikishia nafasi ya ushindi ya hadi 99%, chagua kati ya
-        mechi 7 hadi 10 (usizidishe).</span>
+        mechi 5 hadi 7 kwa mkeka mmoja (usizidishe).</span>
+</p>
+<p class="p-3 border bg-light text-dark rounded mb-4">
+    <b>Mechi Kujirudia Mara Mbili au Zaidi?</b> <br>
+    Tunaweza tukaweka mechi moja mara mbili kwa machaguo tofauti, mfano <b>1</b> na <b>Over 2.5</b>. Hii ina maana ya
+    kwamba machaguo yote yana nafasi kubwa ya ushindi hivyo tutarajie mechi husika kutupa ushindi kwenye machaguo yote.
+</p>
+<p class="p-3 border bg-light text-dark rounded mb-4">
+    <b>Upi Ushauri Wenu wa Kitaalamu?</b> <br>
+    Kwa tips zetu za VIP tunashauri usizidishe mechi zaidi ya 7 kwa mkeka mmoja. Ni vyema kugawanya tips hizi katika
+    mafungu matatu hivyo utapata mikeka mitatu na hakikisha stake yako pia inakuwa kubwa
+</p>
+<p class="p-3 border bg-light text-dark rounded mb-4">
+    <b>Ipi Kampuni Nzuri ya Kubetia Mikeka Hii?</b> <br>
+    Tunashauri utumie kampuni zifuatazo: <br>
+    <b class="d-block my-1 ms-1">👉 <a class="text-decoration-none text-success" href="/gsb/register" target="_blank">Gal Sport Betting</a></b>
+    <b class="d-block ms-1">👉 <a class="text-decoration-none text-success" href="/betway/register" target="_blank">Betway Tanzania</a></b>
 </p>
 <% } %>
 
@@ -81,5 +98,9 @@
         if (selectedDate) {
             window.location.href = `/mkeka/vip?date=${selectedDate}`;
         }
+    }
+
+    function OpenAff(brand) {
+        window.open(`/${brand}/register`)
     }
 </script>
