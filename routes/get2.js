@@ -447,10 +447,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        UpdateOtherTopScorerFn(78, 2024)
-        setTimeout(() => {
-            UpdateOtherTopAssistFn(78, 2024)
-        }, 3000);
+        checking3MkekaBetslip('21/02/2025')
         res.end()
     } catch (error) {
         res.send(error.message)

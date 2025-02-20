@@ -68,7 +68,7 @@ const checking3MkekaBetslip = async (d) => {
         if (vip3.length < 1) {
             let under35 = ['1:0', '0:1'];
             let copies = await correctScoreModel.aggregate([
-                { $match: { date: d }, tip: { $in: [...under35] } },
+                { $match: { date: d, tip: { $in: under35 } } },
                 { $sample: { size: 3 } }
             ])
 
