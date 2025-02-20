@@ -5,11 +5,30 @@
         --bet888TipColor: #c44e00;
         --darkBlack: #494747;
     }
-    
-    .vip {
+
+    .vip-btn {
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+        font-family: sans-serif;
+        background: linear-gradient(45deg, #B8860B, #DAA520);
+        color: white !important;
+        font-size: 14px;
+        border: 2px solid #FFD700;
+        box-shadow: 0 4px 15px rgba(218, 165, 32, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .vip-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(218, 165, 32, 0.6) !important;
+        background: linear-gradient(45deg, #DAA520, #B8860B) !important;
+    }
+
+    .tsap-btn {
         display: block;
         background-color: #2BB741;
-        color: white;
+        color: white !important;
         width: fit-content;
         text-decoration: none;
         padding: 16px 36px;
@@ -22,8 +41,8 @@
         margin: 12px auto 24px auto;
     }
 
-    .vip:active,
-    .vip:hover {
+    .tsap-btn:active,
+    .tsap-btn:hover {
         background-color: #2BB741;
         color: white;
     }
