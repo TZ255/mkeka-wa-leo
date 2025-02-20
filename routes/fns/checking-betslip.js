@@ -168,8 +168,6 @@ const checking3MkekaBetslip = async (d) => {
                         newTip = "2"; // Away win
                     } else if (under25.includes(doc.tip)) {
                         newTip = "Under 2.5"; // Under 2.5 goals
-                    } else if (under35.includes(doc.tip)) {
-                        newTip = "Under 3.5"; // Under 2.5 goals
                     }
 
                     return {
