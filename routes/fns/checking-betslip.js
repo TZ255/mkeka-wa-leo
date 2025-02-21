@@ -32,7 +32,7 @@ const checking3MkekaBetslip = async (d) => {
             //find random 3 from mkekadb
             let copies = await mkekadb.aggregate([
                 { $match: { date: d } },
-                { $sample: { size: 2 } }
+                { $sample: { size: 1 } }
             ])
 
             //add them to betslip database
@@ -49,7 +49,7 @@ const checking3MkekaBetslip = async (d) => {
             //find random 3 from over 1.5
             let copies = await Over15MikModel.aggregate([
                 { $match: { date: d } },
-                { $sample: { size: 3 } }
+                { $sample: { size: 2 } }
             ])
 
             //add them to betslip database
@@ -66,7 +66,7 @@ const checking3MkekaBetslip = async (d) => {
             let under35 = ['1:0', '0:1'];
             let copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, tip: { $in: [...under35] } } },
-                { $sample: { size: 3 } }
+                { $sample: { size: 2 } }
             ])
 
             //add them to betslip database
@@ -91,7 +91,7 @@ const checking3MkekaBetslip = async (d) => {
                         tip: { $in: [...home_win, ...away_win] }
                     }
                 },
-                { $sample: { size: 4 } }
+                { $sample: { size: 2 } }
             ]);
 
             let transformedData = matches.map(doc => {
@@ -117,12 +117,11 @@ const checking3MkekaBetslip = async (d) => {
         }
 
 
-        //######################## slip 5 (Over 1.5 from cscore - match.today)#################
+        //######################## slip 5 (Over 0.5 HT from cscore - match.today)#################
         let vip5 = await paidVipModel.find({ date: d, vip_no: 5 })
         if (vip5.length < 1) {
-            //find random 3 from correct score whre total goals is greater than 4
             const copies = await correctScoreModel.aggregate([
-                { $match: { siku: d } },
+                { $match: { siku: d, time: {$gte: '10:00'} } },
                 // Add a field that splits the tip string and calculates total goals
                 {
                     $addFields: {
@@ -149,7 +148,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 4 }
+                    $sample: { size: 2 }
                 }
             ]);
 
@@ -175,7 +174,7 @@ const checking3MkekaBetslip = async (d) => {
                         tip: { $in: [...home_win, ...away_win, ...under25] }
                     }
                 },
-                { $sample: { size: 4 } }
+                { $sample: { size: 2 } }
             ]);
 
             const transformedData = matches.map(doc => {
