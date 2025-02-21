@@ -79,20 +79,40 @@ const checking3MkekaBetslip = async (d) => {
 
 
         //################ slip 4 (DC - match.today) #########################
-        let vip4 = await paidVipModel.find({ date: d, vip_no: 4 })
+        let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
         if (vip4.length < 1) {
-            //find random 3 from match.today
-            let copies = await supatipsModel.aggregate([
-                { $match: { siku: d, time: { $gte: '10:00' }, $or: [{ tip: '1' }, { tip: '2' }] } },
-                { $sample: { size: 3 } }
-            ])
+            let home_win = ['2:0', '3:0', '3:1'];
+            let away_win = ['0:2', '0:3', '1:3'];
 
-            //add them to betslip database
-            for (let c of copies) {
-                let tip = c.tip === '1' ? '1X' : c.tip === '2' ? 'X2' : c.tip;
-                await paidVipModel.create({
-                    date: c.siku, time: c.time, league: c.league, tip, odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 4
-                })
+            let matches = await correctScoreModel.aggregate([
+                {
+                    $match: {
+                        siku: d, time: { $gte: '10:00' },
+                        tip: { $in: [...home_win, ...away_win] }
+                    }
+                },
+                { $sample: { size: 4 } }
+            ]);
+
+            let transformedData = matches.map(doc => {
+                let newTip;
+                if (home_win.includes(doc.tip)) {
+                    newTip = "1X";
+                } else if (away_win.includes(doc.tip)) {
+                    newTip = "X2";
+                }
+
+                return {
+                    ...doc,
+                    date: doc.siku,
+                    tip: newTip,
+                    vip_no: 4,
+                    odd: '1'
+                };
+            });
+
+            if (transformedData.length > 0) {
+                await paidVipModel.insertMany(transformedData);
             }
         }
 
@@ -143,7 +163,6 @@ const checking3MkekaBetslip = async (d) => {
 
         //################# slip 6 (Correct score) ###################################
         let vip6 = await paidVipModel.find({ date: d, vip_no: 6 });
-        console.log(vip6.length)
         if (vip6.length < 1) {
             const home_win = ['3:0', '4:0', '4:1', '5:0', '5:1', '5:2'];
             const away_win = ['0:3', '0:4', '1:4', '0:5', '1:5', '2:5'];
