@@ -173,7 +173,7 @@ const checking3MkekaBetslip = async (d) => {
 
             const transformedData = matches.map(doc => {
                 return {
-                    date: doc.siku, time: doc.time, league: doc.league, vip_no: 6, odd: '1', tip: doc.tip
+                    date: doc.siku, time: doc.time, match: doc.match, league: doc.league, vip_no: 6, odd: '1', tip: doc.tip
                 };
             });
 
