@@ -3,6 +3,7 @@ const correctScoreModel = require('../../model/cscore')
 const mkekadb = require('../../model/mkeka-mega')
 const paidVipModel = require('../../model/paid-vips')
 const supatipsModel = require('../../model/supatips')
+const fameTipsModel = require('../../model/ya-uhakika/fametips')
 const Over15MikModel = require('../../model/ya-uhakika/over15db')
 const sendNotification = require('./sendTgNotifications')
 
@@ -63,10 +64,10 @@ const checking3MkekaBetslip = async (d) => {
         //############### slip 3 (Under 3.5 from Cscore 1:0) ############################
         let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
         if (vip3.length < 1) {
-            let under35 = ['1:0', '0:1'];
+            let under35 = ['0:0'];
             let copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, tip: { $in: [...under35] } } },
-                { $sample: { size: 2 } }
+                { $sample: { size: 3 } }
             ])
 
             //add them to betslip database
@@ -81,8 +82,8 @@ const checking3MkekaBetslip = async (d) => {
         //################ slip 4 (DC - match.today) #########################
         let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
         if (vip4.length < 1) {
-            let home_win = ['2:0', '3:0', '3:1'];
-            let away_win = ['0:2', '0:3', '1:3'];
+            let home_win = ['2:0', '3:0'];
+            let away_win = ['0:2', '0:3'];
 
             let matches = await correctScoreModel.aggregate([
                 {
@@ -143,7 +144,7 @@ const checking3MkekaBetslip = async (d) => {
                 // Filter for matches with 4 or more total goals
                 {
                     $match: {
-                        totalGoals: { $gte: 4 }
+                        totalGoals: { $gte: 5 }
                     }
                 },
                 // Get random documents using sample
@@ -163,36 +164,16 @@ const checking3MkekaBetslip = async (d) => {
         //################# slip 6 (Correct score) ###################################
         let vip6 = await paidVipModel.find({ date: d, vip_no: 6 });
         if (vip6.length < 1) {
-            const home_win = ['3:0', '4:0', '4:1', '5:0', '5:1', '5:2'];
-            const away_win = ['0:3', '0:4', '1:4', '0:5', '1:5', '2:5'];
-            const under25 = ['0:0'];
-
-            const matches = await correctScoreModel.aggregate([
+            const matches = await fameTipsModel.aggregate([
                 {
-                    $match: {
-                        siku: d, time: { $gte: '10:00' },
-                        tip: { $in: [...home_win, ...away_win, ...under25] }
-                    }
+                    $match: {siku: d}
                 },
                 { $sample: { size: 2 } }
             ]);
 
             const transformedData = matches.map(doc => {
-                let newTip;
-                if (home_win.includes(doc.tip)) {
-                    newTip = "1";
-                } else if (away_win.includes(doc.tip)) {
-                    newTip = "2";
-                } else if (under25.includes(doc.tip)) {
-                    newTip = "Under 2.5";
-                }
-
                 return {
-                    ...doc,
-                    date: doc.siku,
-                    tip: newTip,
-                    vip_no: 6,
-                    odd: '1'
+                    date: doc.siku, time: doc.time, league: doc.league, vip_no: 6, odd: '1', tip: doc.tip
                 };
             });
 

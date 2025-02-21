@@ -37,5 +37,5 @@ const supatipSchema = new Schema({
 }, {strict: false, timestamps: true })
 
 let mikDB = mongoose.connection.useDb('mikeka-ya-uhakika')
-let model = mikDB.model('fametips', supatipSchema)
-module.exports = model
+let fameTipsModel = mikDB.model('fametips', supatipSchema)
+module.exports = fameTipsModel
