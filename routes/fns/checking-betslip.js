@@ -82,8 +82,8 @@ const checking3MkekaBetslip = async (d) => {
         //################ slip 4 (DC - match.today) #########################
         let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
         if (vip4.length < 1) {
-            let home_win = ['2:0', '3:0'];
-            let away_win = ['0:2', '0:3'];
+            let home_win = ['2:0'];
+            let away_win = ['0:2'];
 
             let matches = await correctScoreModel.aggregate([
                 {
