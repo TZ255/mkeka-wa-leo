@@ -149,13 +149,14 @@ router.post('/update/vip/:_id', async (req, res) => {
 router.post('/update/vip/match-data/:_id', async (req, res) => {
     try {
         let _id = req.params._id;
-        let {league, game, tip} = req.body
+        let {time, league, game, tip} = req.body
 
         let match = await paidVipModel.findById(_id);
         if (!match) {
             return res.status(404).json({ error: "Match not found" });
         }
 
+        if(match.time !== time) match.time = time;
         if(match.league !== league) match.league = league;
         if(match.match !== game) match.match = game;
         if(match.tip !== tip) match.tip = tip;
