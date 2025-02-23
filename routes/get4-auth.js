@@ -155,6 +155,10 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
         if (!match) {
             return res.status(404).json({ error: "Match not found" });
         }
+        if (String(tip).toLowerCase() === 'delete') {
+            await match.deleteOne()
+            return res.status(200).json({ ok: "✅ Match Deleted" });
+        }
 
         if(match.time !== time) match.time = time;
         if(match.league !== league) match.league = league;
