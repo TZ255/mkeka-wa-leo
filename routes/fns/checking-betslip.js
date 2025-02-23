@@ -156,7 +156,7 @@ const checking3MkekaBetslip = async (d) => {
             //add them to betslip database
             for (let c of copies) {
                 await paidVipModel.create({
-                    date: c.siku, time: c.time, league: c.league, tip: 'HT Over 0.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
+                    date: c.siku, time: c.time, league: c.league, tip: '1st Half. Over 0.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
                 })
             }
         }

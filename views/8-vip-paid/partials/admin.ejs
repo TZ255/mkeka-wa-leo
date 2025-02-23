@@ -51,7 +51,10 @@
                                     <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
                                 </div>
                                 <form class="d-flex flex-column mt-2" method="post" action="/update/vip/match-data/<%= match._id %>" target="_blank">
-                                    <input type="text" name="league" class="form-control form-control-sm" required value="<%= match.league %>">
+                                    <div class="d-flex">
+                                        <input type="text" name="time" class="form-control form-control-sm" required value="<%= match.time %>">
+                                        <input type="text" name="league" class="form-control form-control-sm" required value="<%= match.league %>">
+                                    </div>
 
                                     <input type="text" name="game" class="form-control form-control-sm" required value="<%= match.match %>">
 
