@@ -20,6 +20,7 @@ const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./fns/ligikuucotz')
 const checking3MkekaBetslip = require('./fns/checking-betslip')
 const mkekaUsersModel = require('../model/mkeka-users')
+const sendMailErooMails = require('./fns/sendMaileroo')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -447,7 +448,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        checking3MkekaBetslip('21/02/2025')
+        //sendMailErooMails()
         res.end()
     } catch (error) {
         res.send(error.message)
