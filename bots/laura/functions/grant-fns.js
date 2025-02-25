@@ -17,7 +17,7 @@ const formatDate = (date) => {
 
 const generateSubscriptionMessage = (startDate, endDate, type) => {
     return {
-        text: `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa ${type} kuanzia ${formatDate(startDate)} hadi ${formatDate(endDate)}\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`,
+        text: `Hongera 🎉 \nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa ${type} kuanzia *${formatDate(startDate)}* hadi *${formatDate(endDate)}*\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`,
         html: `<p>Hongera 🎉 <br> Malipo ya VIP MIKEKA yamethibitishwa kwa muda wa ${type} kuanzia <b>${formatDate(startDate)}</b> hadi <b>${formatDate(endDate)}</b></p>`
     };
 };

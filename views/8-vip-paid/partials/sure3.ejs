@@ -38,8 +38,8 @@
                         <i class="fa-regular fa-futbol"></i>
                         <%= String(mch.match).replace(' vs ', ' - ') %>
                     </span> <br>
-                    <b class="tip fw-bold d-inline-block badge rounded-pill p-2"
-                        style="border: 1px solid #d2691e; background-color: #ffffff; color: #d2691e; width: 220px; font-size: 14px;">
+                    <b class="tip fw-bold d-inline-block badge rounded-pill p-2 border border-dark text-dark"
+                        style="background-color: #ffffff; width: 220px; font-size: 14px;">
                         <%= String(mch.tip).replace('Home Win', '1').replace('Away Win', '2') %>
                     </b> <br>
 
@@ -83,11 +83,11 @@
             <% }) %>
 
             <tr class="table-secondary">
-                <th scope="col" style="font-size: 15px;">
+                <th scope="col" style="font-size: 14px;">
                     Total Odds: <br>
-                    Stake: <span class="brown">75,000 TZS</span><br>
-                    Bonus: <span style="color:green;">+15%</span> <br>
-                    Possible Win: <span class="brown"
+                    Stake: <span class="text-success">75,000 TZS</span><br>
+                    Bonus: <span class="text-success">+15%</span> <br>
+                    Possible Win: <span class="text-success"
                         id="slipOdd"><%= Number((slipOdds * 75000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
                 </th>
                 <th scope="col" class="text-center align-top text-success" style="font-size: 16px; border-left: 1px solid #d3d3d3;">

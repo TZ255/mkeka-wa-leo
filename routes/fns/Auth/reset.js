@@ -3,7 +3,6 @@ const router = express.Router();
 const otpGenerator = require('otp-generator');
 const userModel = require('../../../model/mkeka-users');
 const sendEmail = require('../sendemail');
-const sendMailErooMails = require('../sendMaileroo');
 
 //get rest page
 router.get('/user/forgot-password', (req, res) => {
@@ -47,8 +46,7 @@ router.post('/user/forgot-password', async (req, res) => {
 
         // 4. Send Email with OTP
         let html = `<p>Your OTP code to reset password is: <b>${OTP}</b>.</p><p>The code is valid for 45 minutes</p>`
-        //sendEmail(email, 'Password Reset OTP', html)
-        sendMailErooMails(email, 'Password OTP', html)
+        sendEmail(email, 'Password Reset OTP', html)
         res.redirect('/user/verify-otp')
     } catch (err) {
         console.error(err);
