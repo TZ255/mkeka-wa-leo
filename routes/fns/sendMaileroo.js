@@ -8,7 +8,7 @@ const sendMailErooMails = async (recipient, subject, html) => {
         let data = new FormData();
 
         data.append('from', 'MKEKAPLUS+ <info@updates2.mkekawaleo.com>');
-        data.append('to', `George ${recipient}`);
+        data.append('to', `George <${recipient}>`);
         data.append('subject', subject);
         data.append('html', html);
 
@@ -27,7 +27,7 @@ const sendMailErooMails = async (recipient, subject, html) => {
                 console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error?.message);
             });
     } catch (error) {
         console.log(error?.message)
