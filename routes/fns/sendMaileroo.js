@@ -8,7 +8,7 @@ const sendMailErooMails = async (recipient, subject, html) => {
         let data = new FormData();
 
         data.append('from', 'MKEKAPLUS+ <info@updates2.mkekawaleo.com>');
-        data.append('to', `User <${recipient}>`);
+        data.append('to', `<${recipient}>`);
         data.append('subject', subject);
         data.append('html', html);
 
