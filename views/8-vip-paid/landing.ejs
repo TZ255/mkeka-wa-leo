@@ -8,6 +8,7 @@
     <meta name="description" content="VIP Slips za Leo">
     <title>🥇 VIP SLIPS - MKEKA WA LEO</title>
     <%- include('../0-global/style.ejs'); %>
+    <%- include('../0-global/sure3-styles.ejs'); %>
     <%- include('../0-global/google.ejs'); %>
     <%- include('../0-global/fonts.ejs'); %>
     <%- include('../0-global/favicon.ejs') %>
@@ -36,12 +37,20 @@
     <main>
         <section class="left mt-5">
             <h2 class="h2 mb-3 fw-bold bg-dark fs-5">VIP Tips za Leo - <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %></h2>
+
+            <!-- if user paid -->
             <% if (user.status === 'paid') { %>
+            <%- include('./partials/za-nyuma.ejs'); %>
+            <%- include('./partials/sure3.ejs'); %>
+            <hr class="style-eight">
             <%- include('./partials/tip-cards.ejs'); %>
             <% } %>
+
+            <!-- if user unpaid -->
             <% if (user.status !== 'paid') { %>
             <%- include('./partials/unpaid.ejs'); %>
             <% } %>
+
             <br><br><br><br><br>
         </section>
     </main>

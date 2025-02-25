@@ -1,0 +1,99 @@
+<h2 class="text-center mt-5">Sure 3 za LEO</h2>
+
+<% if (sure3.length < 1) { %>
+    <p class="text-center zakesho">* Betslip ya Leo (Sure 3) bado iko kwenye maandalizi</p>
+    <% } %>
+    
+    <% if (sure3.length > 0) { %>
+    <div class="betslipCont mb-3" id="betslipCont">
+        <div class="cap">
+            <h2 id="betslip-ya-leo">
+                ⭐⭐⭐ Betslip ya Leo (Sure 3) ⭐⭐⭐ <br>
+                <span class="slip-siku">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>
+                        <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
+                    </span>
+                </span>
+            </h2>
+        </div>
+    
+        <table class="table">
+            <thead>
+                <tr class="table-secondary">
+                    <th scope="col">Betslip</th>
+                    <th scope="col" class="cell-left">Odds</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% sure3.forEach(mch => { %>
+                <tr class="table-light">
+                    <td class="py-3">
+                        <span class="d-inline-block border-bottom" style="font-size: 10px;">
+                            🕤 <%= mch.time %> |
+                            <i class="fa-solid fa-trophy"></i> <%= mch.league %>
+                        </span> <br>
+
+                        <span class="match fw-bold fs-6">
+                            <i class="fa-regular fa-futbol"></i>
+                            <%= String(mch.match).replace(' vs ', ' - ') %>
+                        </span> <br>
+                        <b class="tip fw-bold fs-6 d-inline-block badge rounded-pill p-2" style="border: 1px solid #d2691e; background-color: #ffffff; color: #d2691e; width: 260px;">
+                            <%= String(mch.tip).replace('Home Win', '1').replace('Away Win', '2') %>
+                        </b> <br>
+
+                        <% if (mch.status === 'won') { %>
+                            <div class="fs-6">
+                                <span class="badge bg-light text-success p-2 me-1">
+                                    <i class="fa-regular fa-circle-check"></i> WON <%= mch.result %>
+                                </span>
+                            </div>
+                            <% } %>
+                            <% if (mch.status === 'lose') { %>
+                            <div class="fs-6">
+                                <span class="badge bg-light text-danger p-2 me-1">
+                                    <i class="fa-regular fa-circle-xmark"></i> LOSE <%= mch.result %>
+                                </span>
+                            </div>
+                            <% } %>
+                    </td>
+                    <td class="cell-left py-3 table-warning" style="vertical-align: middle;">
+                        <span class="">
+                            <%= String(mch.odd).padEnd(4,0) %>
+                        </span>
+                    </td>
+                </tr>
+                <% }) %>
+    
+                <tr class="table-secondary">
+                    <th scope="col" style="font-size: 15px;">
+                        Total Odds:  <br>
+                        Stake: <span class="brown">75,000 TZS</span><br>
+                        Bonus: <span style="color:green;">+15%</span> <br>
+                        Possible Win: <span class="brown"
+                            id="slipOdd"><%= Number((slipOdds * 75000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
+                    </th>
+                    <th scope="col" class="cell-left text-success" style="font-size: 16px;">
+                        <span class="fw-bold"><%= slipOdds %></span>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    
+        <div class="bottomSlip">
+            <div class="fs-5 w-50" style="color: white !important;">
+                Gal Sport Betting
+            </div>
+            <div onclick="OpenAff('gsb')" style="background: #228b22 !important; color: white;">
+                <span>BETI SASA!</span>
+                <i class="fa-solid fa-up-right-from-square"></i>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    
+    <script>
+        function OpenAff(brand) {
+            window.open(`/${brand}/register`)
+        }
+    </script>

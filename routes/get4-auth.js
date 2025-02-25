@@ -4,6 +4,8 @@ const isAuth = require('./fns/Auth/isAuth');
 const mkekaUsersModel = require('../model/mkeka-users');
 const paidVipModel = require('../model/paid-vips');
 const sendEmail = require('./fns/sendemail');
+const betslip = require('../model/betslip')
+const { WeekDayFn } = require('./fns/weekday');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -22,15 +24,27 @@ router.get('/mkeka/vip', async (req, res) => {
                 return res.redirect('/mkeka/vip')
             }
 
-            //find all 4 slips to return
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+
+
+            //find all 4 slips to return
             if (req.query && req.query.date) {
                 d = req.query.date.split('-').reverse().join('/')
             }
 
+            //find sure3 betslip
+            let sure3 = await betslip.find({ date: d }).sort('time')
+
+            let slipOdds = 1
+
+            for (let od of sure3) {
+                slipOdds = (slipOdds * od.odd).toFixed(2)
+            }
+
+            //find VIP Slips
             let slips = await paidVipModel.find({ date: d }).sort('time')
 
-            return res.render(`8-vip-paid/landing`, { slips, user, d })
+            return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d })
         }
         res.render('8-vip/vip')
     } catch (err) {
@@ -116,7 +130,7 @@ router.get('/user/logout', (req, res) => {
     });
 });
 
-//updating scores
+//updating scores of VIP
 router.post('/update/vip/:_id', async (req, res) => {
     try {
         let _id = req.params._id;
@@ -128,7 +142,7 @@ router.post('/update/vip/:_id', async (req, res) => {
             return res.status(404).json({ error: "Match not found" });
         }
 
-        if(!result.includes('(')) {
+        if (!result.includes('(')) {
             result = `(${result})`
         }
 
@@ -136,8 +150,31 @@ router.post('/update/vip/:_id', async (req, res) => {
         match.result = result
         await match.save()
 
-        //find other 'lose' delete
-        await paidVipModel.findOneAndDelete({date: match.date, match: match.match, status: 'lose', _id: { $ne: match._id }})
+        res.send(match)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//updating SURE 3
+router.post('/update/sure3/:_id', async (req, res) => {
+    try {
+        let _id = req.params._id;
+        let result = req.body.scores
+        let status = req.body.status
+
+        let match = await betslip.findById(_id);
+        if (!match) {
+            return res.status(404).json({ error: "Match not found" });
+        }
+
+        if (!result.includes('(')) {
+            result = `(${result})`
+        }
+
+        match.status = status
+        match.result = result
+        await match.save()
 
         res.send(match)
     } catch (error) {
@@ -149,7 +186,7 @@ router.post('/update/vip/:_id', async (req, res) => {
 router.post('/update/vip/match-data/:_id', async (req, res) => {
     try {
         let _id = req.params._id;
-        let {time, league, game, tip} = req.body
+        let { time, league, game, tip } = req.body
 
         let match = await paidVipModel.findById(_id);
         if (!match) {
@@ -160,10 +197,10 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
             return res.status(200).json({ ok: "✅ Match Deleted" });
         }
 
-        if(match.time !== time) match.time = time;
-        if(match.league !== league) match.league = league;
-        if(match.match !== game) match.match = game;
-        if(match.tip !== tip) match.tip = tip;
+        if (match.time !== time) match.time = time;
+        if (match.league !== league) match.league = league;
+        if (match.match !== game) match.match = game;
+        if (match.tip !== tip) match.tip = tip;
         await match.save()
 
         res.send(match)

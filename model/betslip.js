@@ -21,6 +21,8 @@ const slipSchema = new Schema({
     odd: {
         type: String,
     },
+    result: {type: String},
+    status: {type: String, default: 'pending'}
 }, {strict: false, timestamps: true })
 
 let model = mongoose.model('betslip', slipSchema)
