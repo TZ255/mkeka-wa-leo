@@ -6,6 +6,7 @@ const paidVipModel = require('../model/paid-vips');
 const sendEmail = require('./fns/sendemail');
 const betslip = require('../model/betslip')
 const { WeekDayFn } = require('./fns/weekday');
+const sendMailErooMails = require('./fns/sendMaileroo');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -79,7 +80,8 @@ router.post('/user/register', async (req, res) => {
         //register user
         await mkekaUsersModel.create({ email, password, name })
         let html = `<p>Hello ${name}!</p><p>You have successfully registered for <b>Mkeka wa Leo.</b> Use the following details to log in to your account:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul>`;
-        sendEmail(email, 'Welcome to Mkeka wa Leo – Your Account Details Inside', html)
+        //sendEmail(email, 'Welcome to Mkeka wa Leo – Your Account Details Inside', html)
+        sendMailErooMails(email, 'Welcome to Mkeka wa Leo – Your Account Details Inside', html)
         res.cookie('success_msg', 'Account yako imesajiliwa kikamilifu. Login');
         return res.redirect('/user/login')
     } catch (err) {
