@@ -359,10 +359,13 @@ const lauraMainFn = async (app) => {
             }
 
             // Parse command parameters
-            const [email, param] = ctx.match.split(' ');
+            let [email, param] = ctx.match.split(' ');
+
             if (!email || !param) {
                 return await ctx.reply('Please provide both email and subscription type');
             }
+
+            email = String(email).toLowerCase()
 
             // Find user
             const user = await mkekaUsersModel.findOne({ email });
