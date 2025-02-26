@@ -6,6 +6,7 @@ const paidVipModel = require('../model/paid-vips');
 const sendEmail = require('./fns/sendemail');
 const betslip = require('../model/betslip')
 const { WeekDayFn } = require('./fns/weekday');
+const checking3MkekaBetslip = require('./fns/checking-betslip');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -42,7 +43,7 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //find VIP Slips
-            let slips = await paidVipModel.find({ date: d }).sort('time')
+            let slips = await paidVipModel.find({ date: d, status: {$ne: 'deleted'} }).sort('time')
 
             return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d })
         }
@@ -193,9 +194,10 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
         if (!match) {
             return res.status(404).json({ error: "Match not found" });
         }
-        if (String(tip).toLowerCase() === 'delete') {
-            await match.deleteOne()
-            return res.status(200).json({ ok: "✅ Match Deleted" });
+        if (String(tip).toLowerCase() === 'deleted') {
+            match.status = 'deleted'
+            await match.save()
+            return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
         if (match.time !== time) match.time = time;
@@ -209,5 +211,28 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+//spinning sure 3
+router.post('/spinning/sure3', async (req, res)=> {
+    try {
+        if(!req.isAuthenticated()) {
+            res.cookie('error_msg', 'Not authenticated')
+            return res.redirect('/user/login')
+        }
+        let user = req.user
+        if(user.role !== 'admin') {
+            return res.send('Not authorized')
+        }
+
+        let siku = req.body.siku
+        let date = String(siku).split('-').reverse().join('/')
+        
+        await betslip.deleteMany({date})
+        await checking3MkekaBetslip(date).catch(e=> console.log(e?.message))
+        res.redirect('/mkeka/vip')
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
 
 module.exports = router
