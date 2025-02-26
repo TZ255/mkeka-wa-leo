@@ -80,7 +80,7 @@ router.post('/user/register', async (req, res) => {
         await mkekaUsersModel.create({ email, password, name })
         let html = `<p>Habari ${name}!</p><p>Umejisajili kikamilifu <b>Mkeka wa Leo.</b> Kumbuka kutumia taarifa hizi kulogin kwenye account yako:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul><p>Asante!</p>`;
 
-        sendEmail(email, 'Karibu Mkeka wa Leo', html)
+        sendEmail(email, 'Karibu Mkeka wa Leo - Account yako imesajiliwa kikamilifu', html)
         res.cookie('success_msg', `Account yako imesajiliwa kikamilifu. Login ili kuendelea <br> 📧 Email: <b>${email}</b> <br> 🔑 Password: <b>${password}</b>`);
         return res.redirect('/user/login')
     } catch (err) {

@@ -390,10 +390,10 @@ const lauraMainFn = async (app) => {
                 await updateUserSubscription(user, endDate, now);
 
                 // Generate and send messages
-                const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name);
+                const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name, user);
 
                 // Send email
-                sendEmail(email.toLowerCase(), 'VIP Payments Confirmed', messages.html);
+                sendEmail(email.toLowerCase(), 'Malipo yako yamethibitishwa 🎉', messages.html);
 
                 // Update analytics if user is not admins
                 if (!['georgehmariki@gmail.com', 'janjatzblog@gmail.com', 'shmdgrg@gmail.com'].includes(email.toLowerCase())) {
