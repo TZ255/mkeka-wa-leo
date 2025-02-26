@@ -11,7 +11,7 @@ module.exports = function (passport) {
                     // Check if user exists
                     const user = await mkekaUsersModel.findOne({ email: String(email).toLowerCase() });
                     if (!user) {
-                        return done(null, false, { message: `⚠ No account found. Please Register` });
+                        return done(null, false, { message: `⚠ Umeingiza Email isiyo sahihi. Tafadhali jisajili ikiwa huna account` });
                     }
                     // Check password (PLAIN TEXT FOR DEMO)
                     if (user.password !== password) {

@@ -78,10 +78,10 @@ router.post('/user/register', async (req, res) => {
         }
         //register user
         await mkekaUsersModel.create({ email, password, name })
-        let html = `<p>Hello ${name}!</p><p>You have successfully registered for <b>Mkeka wa Leo.</b> Use the following details to log in to your account:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul>`;
+        let html = `<p>Habari ${name}!</p><p>Umejisajili kikamilifu <b>Mkeka wa Leo.</b> Kumbuka kutumia taarifa hizi kulogin kwenye account yako:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul><p>Asante!</p>`;
 
-        sendEmail(email, 'Welcome to Mkeka wa Leo – Your Account Details Inside', html)
-        res.cookie('success_msg', 'Account yako imesajiliwa kikamilifu. Login');
+        sendEmail(email, 'Karibu Mkeka wa Leo', html)
+        res.cookie('success_msg', `Account yako imesajiliwa kikamilifu. Login ili kuendelea <br> 📧 Email: <b>${email}</b> <br> 🔑 Password: <b>${password}</b>`);
         return res.redirect('/user/login')
     } catch (err) {
         console.error(err);

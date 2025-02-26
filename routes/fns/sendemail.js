@@ -28,8 +28,9 @@ const sendMailErooMails = async (recipient, subject, html) => {
 
         let data = new FormData();
 
-        data.append('from', 'MKEKAPLUS+ <info@updates2.mkekawaleo.com>');
+        data.append('from', 'MIKEKA VIP <info@vip.mkekawaleo.com>');
         data.append('to', `<${recipient}>`);
+        data.append('reply_to', '<admin@mkekawaleo.com>')
         data.append('subject', subject);
         data.append('html', html);
 
@@ -59,7 +60,7 @@ const sendMailErooMails = async (recipient, subject, html) => {
 const sendEmail = (email, subject, html) => {
     let minutes = new Date().getMinutes()
     if (minutes % 2 === 0) {
-        sendWithResend(email, subject, html)
+        sendMailErooMails(email, subject, html)
     } else {
         sendMailErooMails(email, subject, html)
     }
