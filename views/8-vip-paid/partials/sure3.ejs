@@ -1,4 +1,9 @@
-<h2 class="text-center mt-5">Sure 3 za LEO</h2>
+<div class="mb-4">
+    <h2 class="text-center mt-5 fs-1">Sure 3: VIP #1</h2>
+    <h4 class="text-center mx-auto px-2 fw-bold"
+        style="color: #8B6508; font-family: serif; width: fit-content;">3 SurePicks
+    </h4>
+</div>
 
 <% if (sure3.length < 1) { %>
 <p class="text-center zakesho">* Betslip ya Leo (Sure 3) bado iko kwenye maandalizi</p>
@@ -58,31 +63,31 @@
                     </div>
                     <% } %>
                 </td>
-                <td class="text-center align-middle py-3 table-warning fw-bold
+                <td class="text-center text-muted align-middle py-3 table-default fw-bold
                  <%= mch.status === 'won' ? 'text-success' : (mch.status === 'lose' ? 'text-danger' : 'text-dark') %>"
-                    style="vertical-align: middle;">
+                    style="vertical-align: middle; border-left: 1px solid #d3d3d3;">
                     <span>
                         <%= String(mch.odd).padEnd(4, '0') %>
                         <% if (mch.status === 'won') { %>
-                            <div class="fs-6">
-                                <span class="text-success">
-                                    <i class="fa-regular fa-circle-check"></i>
-                                </span>
-                            </div>
-                            <% } %>
-                            <% if (mch.status === 'lose') { %>
-                            <div class="fs-6">
-                                <span class="text-danger">
-                                    <i class="fa-regular fa-circle-xmark"></i>
-                                </span>
-                            </div>
-                            <% } %>
+                        <div class="fs-6">
+                            <span class="text-success">
+                                <i class="fa-regular fa-circle-check"></i>
+                            </span>
+                        </div>
+                        <% } %>
+                        <% if (mch.status === 'lose') { %>
+                        <div class="fs-6">
+                            <span class="text-danger">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </span>
+                        </div>
+                        <% } %>
                     </span>
                 </td>
             </tr>
             <% }) %>
 
-            <tr class="table-secondary">
+            <tr class="table-secondary text-muted">
                 <th scope="col" style="font-size: 14px;">
                     Total Odds: <br>
                     Stake: <span class="text-success">75,000 TZS</span><br>
@@ -90,7 +95,8 @@
                     Possible Win: <span class="text-success"
                         id="slipOdd"><%= Number((slipOdds * 75000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
                 </th>
-                <th scope="col" class="text-center align-top text-success" style="font-size: 16px; border-left: 1px solid #d3d3d3;">
+                <th scope="col" class="text-center align-top text-success"
+                    style="font-size: 16px; border-left: 1px solid #d3d3d3;">
                     <span class="fw-bold"><%= slipOdds %></span>
                 </th>
             </tr>
@@ -98,7 +104,7 @@
     </table>
 
     <div class="bottomSlip">
-        <div class="fs-6 w-50" style="color: white !important;">
+        <div class="w-50" style="color: white !important; font-size: 18px;">
             Gal Sport Betting
         </div>
         <div onclick="OpenAff('gsb')" style="background: #228b22 !important; color: white;">
