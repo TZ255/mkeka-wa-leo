@@ -44,8 +44,9 @@ router.get('/mkeka/vip', async (req, res) => {
 
             //find VIP Slips
             let slips = await paidVipModel.find({ date: d, status: {$ne: 'deleted'} }).sort('time')
+            let won_slips = await paidVipModel.find({status: 'won'}).sort('-createdAt').limit(20).cache(3600)
 
-            return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d })
+            return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d, won_slips })
         }
         res.render('8-vip/vip')
     } catch (err) {

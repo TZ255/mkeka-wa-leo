@@ -1,4 +1,4 @@
-<div class="card-body text-center p-2 shadow mx-auto" style="width: 95%;">
+<div class="card-body text-center p-2 shadow mx-auto" style="width: 95%;" id="lipia_maelezo">
     <div class="alert-warning-custom">
         <p class="text-danger m-0 fs-3 fw-bold">
             <i class="fa-solid fa-circle-exclamation fs-1"></i> <br>
@@ -31,7 +31,7 @@
 <div class="malipo-cont my-5 d-none" id="malipo-cont">
     <h3 class="bg-dark p-2 text-light fs-5 fw-bold">Fanya Malipo na Kuthibitisha</h3>
     <div class="main_cont">
-        <h6 class="text-danger"><sub>*chagua mtandao wako hapa chini</sub></h6>
+        <h6 class="text-danger" id=""><sub>*chagua mtandao wako hapa chini</sub></h6>
         <div class="head">
             <h3 id="voda_h3">Voda</h3>
             <h3 id="tigo_h3">Tigo</h3>
@@ -129,4 +129,12 @@
         </div>
         <%- include('./payment-form.ejs'); %>
     </div>
+</div>
+
+<br><br><br>
+<hr class="style-eight">
+
+<div class="shindi_zanyuma bg-light py-5">
+    <h2 class="text-dark text-center">Angalia Shindi Zetu za Nyuma</h2>
+    <%- include('./shindi-za-nyuma.ejs'); %>
 </div>
