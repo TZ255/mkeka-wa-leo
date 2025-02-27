@@ -43,8 +43,8 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //find VIP Slips
-            let slips = await paidVipModel.find({ date: d, status: {$ne: 'deleted'} }).sort('time')
-            let won_slips = await paidVipModel.find({status: 'won'}).sort('-createdAt').limit(20).cache(3600)
+            let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time')
+            let won_slips = await paidVipModel.find({ status: 'won' }).sort('-createdAt').limit(20).cache(3600)
 
             return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d, won_slips })
         }
@@ -140,7 +140,14 @@ router.post('/update/vip/:_id', async (req, res) => {
         let result = req.body.scores
         let status = req.body.status
 
-        let match = await paidVipModel.findById(_id);
+        // Find match in either collection
+        const [vipMatch, sure3Match] = await Promise.all([
+            paidVipModel.findById(_id),
+            betslip.findById(_id),
+        ]);
+
+        let match = vipMatch || sure3Match;
+
         if (!match) {
             return res.status(404).json({ error: "Match not found" });
         }
@@ -159,42 +166,25 @@ router.post('/update/vip/:_id', async (req, res) => {
     }
 });
 
-//updating SURE 3
-router.post('/update/sure3/:_id', async (req, res) => {
-    try {
-        let _id = req.params._id;
-        let result = req.body.scores
-        let status = req.body.status
 
-        let match = await betslip.findById(_id);
-        if (!match) {
-            return res.status(404).json({ error: "Match not found" });
-        }
-
-        if (!result.includes('(')) {
-            result = `(${result})`
-        }
-
-        match.status = status
-        match.result = result
-        await match.save()
-
-        res.send(match)
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-//updating match data
+//updating VIP match data
 router.post('/update/vip/match-data/:_id', async (req, res) => {
     try {
         let _id = req.params._id;
-        let { time, league, game, tip } = req.body
+        let { time, league, game, tip, odd } = req.body
 
-        let match = await paidVipModel.findById(_id);
+        // Find match in either collection
+        const [vipMatch, sure3Match] = await Promise.all([
+            paidVipModel.findById(_id),
+            betslip.findById(_id),
+        ]);
+
+        let match = vipMatch || sure3Match;
+
         if (!match) {
-            return res.status(404).json({ error: "Match not found" });
+            return res.status(404).json({ error: "Match not found on both vip and sure 3" });
         }
+
         if (String(tip).toLowerCase() === 'deleted') {
             match.status = 'deleted'
             await match.save()
@@ -205,6 +195,7 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
         if (match.league !== league) match.league = league;
         if (match.match !== game) match.match = game;
         if (match.tip !== tip) match.tip = tip;
+        if (odd !== undefined && odd !== null && odd !== "") match.odd = odd;
         await match.save()
 
         res.send(match)
@@ -214,22 +205,22 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
 });
 
 //spinning sure 3
-router.post('/spinning/sure3', async (req, res)=> {
+router.post('/spinning/sure3', async (req, res) => {
     try {
-        if(!req.isAuthenticated()) {
+        if (!req.isAuthenticated()) {
             res.cookie('error_msg', 'Not authenticated')
             return res.redirect('/user/login')
         }
         let user = req.user
-        if(user.role !== 'admin') {
+        if (user.role !== 'admin') {
             return res.send('Not authorized')
         }
 
         let siku = req.body.siku
         let date = String(siku).split('-').reverse().join('/')
-        
-        await betslip.deleteMany({date})
-        await checking3MkekaBetslip(date).catch(e=> console.log(e?.message))
+
+        await betslip.deleteMany({ date })
+        await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
         res.redirect('/mkeka/vip')
     } catch (error) {
         res.status(500).json({ error: error.message });

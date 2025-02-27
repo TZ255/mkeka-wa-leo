@@ -1,72 +1,80 @@
-<div class="mb-5">
-    <h2 class="text-center mt-5 fs-1">VIP TiPS: VIP #2</h2>
-    <h4 class="text-center mx-auto px-2 fw-bold" style="color: #8B6508; font-family: serif; width: fit-content; border-bottom: 1px solid #8B6508;">5 ProfitPicks</h4>
-</div>
-<% if (slips.length > 0) { %>
-<div class="container">
-    <div class="p-2 text-success fs-6 fw-bold mb-2">
-        <i class="fa-solid fa-thumbs-up"></i>
-        Chagua mechi 5 pekee!
+<section class="rounded-top pt-3 bg-light"
+    style="border-top: 32px solid #8B6508; border-left: #8B6508 1px solid; border-right: #8B6508 1px solid;">
+    <div class="mb-5">
+        <h2 class="text-center mt-5 fs-1">Golden TiPS: VIP #2</h2>
+        <h4 class="text-center mx-auto px-2 fw-bold"
+            style="color: #8B6508; font-family: serif; width: fit-content; border-bottom: 1px solid #8B6508;">5
+            GoldenPicks</h4>
     </div>
-    <div class="">
-        <% slips.forEach(match => { %>
-        <div class="mb-5">
-            <div class="card match-card p-3 shadow rounded-3 border-0">
-                <div class="d-flex justify-content-between align-items-center mb-3 top-title">
-                    <span class="league-badge"><i class="fa-solid fa-trophy"></i> <%= match.league %></span>
-                    <div class="text-end">
-                        <div class="match-time"><i class="fa-solid fa-clock"></i> <%= match.time %></div>
-                        <div class="match-date">
-                            <%= new Date(String(match.date).split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+    <% if (slips.length > 0) { %>
+    <div class="container">
+        <div class="p-2 fs-6 fw-bold mb-3" style="color: #8B6508;">
+            <i class="fa-solid fa-thumbs-up"></i>
+            Chagua mechi 5 pekee!
+        </div>
+        <div class="">
+            <% slips.forEach(match => { %>
+            <div class="mb-5">
+                <div class="card match-card p-3 shadow rounded-3 border-0">
+                    <div class="d-flex justify-content-between align-items-center mb-3 top-title">
+                        <span class="league-badge"><i class="fa-solid fa-trophy"></i> <%= match.league %></span>
+                        <div class="text-end">
+                            <div class="match-time"><i class="fa-solid fa-clock"></i> <%= match.time %></div>
+                            <div class="match-date">
+                                <%= new Date(String(match.date).split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                            </div>
                         </div>
                     </div>
+                    <div class="match-details text-center mb-3">
+                        <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
+                    </div>
+                    <div class="text-center mb-2">
+                        <span class="prediction-badge"
+                            onclick="OpenAff('gsb')"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
+                    </div>
+                    <% if (match.status === 'won') { %>
+                    <div class="text-center">
+                        <span class="badge bg-success text-light rounded-pill p-2 me-1">
+                            <i class="fa-regular fa-circle-check"></i> WON <%= match.result %>
+                        </span>
+                    </div>
+                    <% } %>
+                    <% if (match.status === 'lose') { %>
+                    <div class="text-center">
+                        <span class="badge bg-danger text-light rounded-pill p-2 me-1">
+                            <i class="fa-regular fa-circle-xmark"></i> LOSE <%= match.result %>
+                        </span>
+                    </div>
+                    <% } %>
+                    <% if (match.status === 'postponed') { %>
+                    <div class="text-center">
+                        <span class="badge border text-dark rounded-pill p-2 me-1">
+                            Pstp.
+                        </span>
+                    </div>
+                    <% } %>
                 </div>
-                <div class="match-details text-center mb-3">
-                    <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
-                </div>
-                <div class="text-center mb-2">
-                    <span class="prediction-badge"
-                        onclick="OpenAff('gsb')"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
-                </div>
-                <% if (match.status === 'won') { %>
-                <div class="text-center">
-                    <span class="badge bg-success text-light rounded-pill p-2 me-1">
-                        <i class="fa-regular fa-circle-check"></i> WON <%= match.result %>
-                    </span>
-                </div>
-                <% } %>
-                <% if (match.status === 'lose') { %>
-                <div class="text-center">
-                    <span class="badge bg-danger text-light rounded-pill p-2 me-1">
-                        <i class="fa-regular fa-circle-xmark"></i> LOSE <%= match.result %>
-                    </span>
-                </div>
-                <% } %>
-                <% if (match.status === 'postponed') { %>
-                <div class="text-center">
-                    <span class="badge border text-dark rounded-pill p-2 me-1">
-                        Pstp.
-                    </span>
-                </div>
-                <% } %>
             </div>
+            <% }) %>
         </div>
-        <% }) %>
+        <h4 class="text-success p-2 fw-bold fs-6" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>
+            Kila la Kheri! <i class="fa-solid fa-champagne-glasses"></i>
+        </h4>
     </div>
-    <h4 class="text-success p-2 fw-bold fs-6">Kila la Kheri! <i class="fa-solid fa-champagne-glasses"></i></h4>
-</div>
-<hr class="style-eight">
-<% } %>
+    <hr class="style-eight">
+    <% } %>
 
-<% if (slips.length == 0) { %>
-<p class="text-danger p">
-    Hakuna mikeka iliyopatikana kwa tarehe <%= d %>
-</p>
-<% } %>
+    <% if (slips.length == 0) { %>
+    <p class="text-danger p">
+        Hakuna mikeka iliyopatikana kwa tarehe <%= d %>
+    </p>
+    <% } %>
+</section>
 
 <% if (user.role === 'admin') { %>
-<hr>
-<%- include('./admin.ejs'); %>
+<section id="adminSection" class="d-none">
+    <%- include('./admin.ejs'); %>
+</section>
 <% } %>
 
 <script>
@@ -79,5 +87,10 @@
 
     function OpenAff(brand) {
         window.open(`/${brand}/register`)
+    }
+
+    function adminUpdates(){
+        let adminSection = document.getElementById('adminSection')
+        adminSection.classList.toggle('d-none')
     }
 </script>
