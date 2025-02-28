@@ -70,6 +70,7 @@
     </p>
     <% } %>
 </section>
+<%- include('./form-prev.ejs'); %>
 
 <% if (user.role === 'admin') { %>
 <section id="adminSection" class="d-none">
@@ -78,13 +79,6 @@
 <% } %>
 
 <script>
-    function redirectToDate() {
-        let selectedDate = document.getElementById("dateInput").value;
-        if (selectedDate) {
-            window.location.href = `/mkeka/vip?date=${selectedDate}`;
-        }
-    }
-
     function OpenAff(brand) {
         window.open(`/${brand}/register`)
     }

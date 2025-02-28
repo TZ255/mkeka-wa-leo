@@ -1,8 +1,16 @@
-<div class="nyuma p-2 border-bottom">
+<div class="nyuma p-2 mb-5">
     <div class="mb-3">
-        <label for="dateInput" class="form-label text-muted" style="font-size: 10px;">Angalia mikeka ya siku za
-            nyuma</label>
+        <label for="dateInput" class="form-label" style="font-size: 14px; color: #8B6508;"><i class="fa-solid fa-calendar-days"></i> Mikeka ya Nyuma</label>
         <input type="date" id="dateInput" class="form-control" onchange="redirectToDate()"
-            value="<%= d.split('/').reverse().join('-') %>">
+            value="<%= d.split('/').reverse().join('-') %>" style="color: #8B6508;">
     </div>
 </div>
+
+<script>
+    function redirectToDate() {
+        let selectedDate = document.getElementById("dateInput").value;
+        if (selectedDate) {
+            window.location.href = `/mkeka/vip?date=${selectedDate}`;
+        }
+    }
+</script>
