@@ -36,7 +36,7 @@
     </div>
     <main>
         <section class="left mt-5">
-            <h2 class="h2 mb-3 fw-bold bg-dark fs-5">VIP Tips za Leo - <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %></h2>
+            <h2 class="h2 mb-3 fw-bold bg-dark fs-5">VIP TiPS za Siku - <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %></h2>
 
             <!-- if user paid -->
             <% if (user.status === 'paid') { %>
