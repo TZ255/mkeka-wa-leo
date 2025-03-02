@@ -28,9 +28,20 @@ router.get('/mkeka/vip', async (req, res) => {
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
 
 
-            //find all 4 slips to return
+            //check query if has date
             if (req.query && req.query.date) {
-                d = req.query.date.split('-').reverse().join('/')
+                let selectedDate = req.query.date
+                if(new Date() > new Date(selectedDate)) {
+                    d = selectedDate.split('-').reverse().join('/')
+                } else {
+                    if(user.role !== 'admin') {
+                        return res.redirect('/mkeka/vip') //redirect to vip home if not admin
+                    }
+                    //call checking betslips
+                    let kesho = selectedDate.split('-').reverse().join('/')
+                    d = kesho
+                    await checking3MkekaBetslip(kesho)
+                }
             }
 
             //find sure3 betslip
