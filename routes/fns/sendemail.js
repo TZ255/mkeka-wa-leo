@@ -10,9 +10,9 @@ const sendWithResend = async (recipient, subject, html) => {
     const resend = new Resend(process.env.RESEND_KEY);
     try {
         const data = await resend.emails.send({
-            from: 'MKEKAPLUS+ <info@updates.mkekawaleo.com>',
+            from: 'MIKEKA VIP <info@updates.mkekawaleo.com>',
             to: [recipient],
-            reply_to: '<admin@mkekawaleo.com>',
+            reply_to: 'Admin <admin@mkekawaleo.com>',
             subject,
             html
         });
