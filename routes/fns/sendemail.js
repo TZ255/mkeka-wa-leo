@@ -12,7 +12,7 @@ const sendWithResend = async (recipient, subject, html) => {
         const data = await resend.emails.send({
             from: 'MIKEKA VIP <info@updates.mkekawaleo.com>',
             to: [recipient],
-            reply_to: 'Admin <admin@mkekawaleo.com>',
+            replyTo: 'admin@mkekawaleo.com',
             subject,
             html
         });
