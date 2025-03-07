@@ -23,6 +23,8 @@ const { UpdateOtherStandingFn, UpdateOtherFixuresFn, UpdateOtherTopScorerFn, Upd
 const { default: axios } = require('axios')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz');
 const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
+const affAnalyticsModel = require('./model/affiliates-analytics');
+const sendNotification = require('./routes/fns/sendTgNotifications');
 
 const app = express()
 
@@ -137,10 +139,16 @@ setInterval(() => {
         let hours = Number(hh)
         let mins = Number(mm)
 
-        //update betslip
-        //angalia kila baada ya dakika 15
+        //angalia betslip kila baada ya dakika 15
         if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
+        }
+
+        //reset resend email count at 03:00
+        if (hours === 3 && mins < 2) {
+            affAnalyticsModel.findOneAndUpdate({ pid: 'shemdoe' }, { $set: { email_count: 0 } })
+                .then(() => sendNotification(741815228, '✅ Email count set to 0'))
+                .catch(e => sendNotification(741815228, e?.message))
         }
 
         //update bongo at 18,19,21,23, and 04:01

@@ -1,16 +1,18 @@
 const { Resend } = require("resend");
 const axios = require('axios');
 const FormData = require('form-data');
+const affAnalyticsModel = require("../../model/affiliates-analytics");
 
 
 //SEND USING RESEND
-const sendWithResend = async (email, subject, html) => {
+const sendWithResend = async (recipient, subject, html) => {
     // Initialize Resend
     const resend = new Resend(process.env.RESEND_KEY);
     try {
         const data = await resend.emails.send({
             from: 'MKEKAPLUS+ <info@updates.mkekawaleo.com>',
-            to: [email],
+            to: [recipient],
+            reply_to: '<admin@mkekawaleo.com>',
             subject,
             html
         });
@@ -57,12 +59,20 @@ const sendMailErooMails = async (recipient, subject, html) => {
 }
 
 //SENDING EMAIL BY ROTATING MAILEROO AND RESEND
-const sendEmail = (email, subject, html) => {
-    let minutes = new Date().getMinutes()
-    if (minutes % 2 === 0) {
-        sendMailErooMails(email, subject, html)
-    } else {
-        sendMailErooMails(email, subject, html)
+const sendEmail = async (email, subject, html) => {
+    try {
+        let stats = await affAnalyticsModel.findOne({ pid: 'shemdoe' })
+        if (stats?.email_count < 100) {
+            //send mail
+            sendWithResend(email, subject, html)
+            //update count
+            stats.email_count = stats.email_count + 1
+            await stats.save()
+        } else {
+            sendMailErooMails(email, subject, html)
+        }
+    } catch (error) {
+        console.log('Error sending email ' + error?.message)
     }
 }
 

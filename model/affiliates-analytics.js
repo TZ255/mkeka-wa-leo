@@ -25,6 +25,9 @@ const analyticsSchema = new Schema({
     vip_revenue: {
         type: Number
     },
+    email_count: {
+        type: Number
+    },
     pid: {
         type: String,
         default: 'shemdoe'
