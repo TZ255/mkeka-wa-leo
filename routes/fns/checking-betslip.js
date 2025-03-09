@@ -61,7 +61,7 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        //############### slip 3 (Under 3.5 from Cscore 1:0) ############################
+        //############### slip 3 (Under 3.5 from Cscore 0:0) ############################
         let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
         if (vip3.length < 1) {
             let under35 = ['0:0'];
@@ -94,7 +94,7 @@ const checking3MkekaBetslip = async (d) => {
                         tip: { $in: [...home_win, ...away_win, ...direct_away, ...direct_home] }
                     }
                 },
-                { $sample: { size: 3 } }
+                { $sample: { size: 5 } }
             ]);
 
             let transformedData = matches.map(doc => {
@@ -168,25 +168,25 @@ const checking3MkekaBetslip = async (d) => {
         }
 
         //################# slip 6 (Correct score) ###################################
-        let vip6 = await paidVipModel.find({ date: d, vip_no: 6 });
-        if (vip6.length < 1) {
-            const matches = await fameTipsModel.aggregate([
-                {
-                    $match: {siku: d}
-                },
-                { $sample: { size: 2 } }
-            ]);
+        // let vip6 = await paidVipModel.find({ date: d, vip_no: 6 });
+        // if (vip6.length < 1) {
+        //     const matches = await fameTipsModel.aggregate([
+        //         {
+        //             $match: {siku: d}
+        //         },
+        //         { $sample: { size: 2 } }
+        //     ]);
 
-            const transformedData = matches.map(doc => {
-                return {
-                    date: doc.siku, time: doc.time, match: doc.match, league: doc.league, vip_no: 6, odd: '1', tip: doc.tip
-                };
-            });
+        //     const transformedData = matches.map(doc => {
+        //         return {
+        //             date: doc.siku, time: doc.time, match: doc.match, league: doc.league, vip_no: 6, odd: '1', tip: doc.tip
+        //         };
+        //     });
 
-            if (transformedData.length > 0) {
-                await paidVipModel.insertMany(transformedData);
-            }
-        }
+        //     if (transformedData.length > 0) {
+        //         await paidVipModel.insertMany(transformedData);
+        //     }
+        // }
     } catch (error) {
         sendNotification(741815228, `❌ Updating VIP Slips \n${error?.message}`)
         console.error(error)
