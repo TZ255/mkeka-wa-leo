@@ -8,10 +8,12 @@
     </div>
     <% if (slips.length > 0) { %>
     <div class="container">
-        <div class="p-2 fs-6 fw-bold mb-3" style="color: #8B6508;">
-            <i class="fa-solid fa-thumbs-up"></i>
-            Chagua mechi 5 pekee!
-        </div>
+        <% if (slips.length > 5) { %>
+            <div class="p-2 fs-6 fw-bold mb-3" style="color: #8B6508;">
+                <i class="fa-solid fa-thumbs-up"></i>
+                Chagua mechi 5 pekee!
+            </div>
+        <% } %>
         <div class="">
             <% slips.forEach(match => { %>
             <div class="mb-5">
