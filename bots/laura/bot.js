@@ -376,6 +376,7 @@ const lauraMainFn = async (app) => {
             // Handle unpaid status
             if (param === 'unpaid') {
                 user.status = 'unpaid';
+                user.plan = '0 plan'
                 await user.save();
                 return await ctx.reply(`${email} status payment set to unpaid`);
             }

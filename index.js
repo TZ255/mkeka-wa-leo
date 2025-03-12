@@ -263,10 +263,6 @@ setInterval(() => {
     }
 }, 1000 * 59)
 
-mkekaUsersModel.updateMany({ status: 'paid' }, { $set: { plan: "Gold Plan" } })
-    .then(() => console.log('Users Plans Updated'))
-    .catch(e => console.log(e.message))
-
 app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))
 
 process.on('unhandledRejection', (reason, promise) => {
