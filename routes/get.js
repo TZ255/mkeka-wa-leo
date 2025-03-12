@@ -56,10 +56,10 @@ router.get('/', async (req, res) => {
         let mikeka = await mkekadb.find({ date: d }).sort('time').cache(600) //10 minutes
 
         //check if there is no any slip
-        let slip = await betslip.find({ date: d }).cache(600)
+        let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
 
         let megaOdds = 1
-        let slipOdds = 1
+        let slipOdds = 3 //starting with 3 because of sure5
 
         for (let m of mikeka) {
             megaOdds = (megaOdds * m.odds).toFixed(2)
@@ -254,8 +254,8 @@ router.get('/admin/posting', async (req, res) => {
 router.get('/mkeka/betslip-ya-leo', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let slip = await betslip.find({ date: d })
-        let slipOdds = 1
+        let slip = await betslip.find({ date: d, vip_no: 1 })
+        let slipOdds = 3 //starting with 3 because of sure 5
         for (let od of slip) {
             slipOdds = (slipOdds * od.odd).toFixed(2)
         }

@@ -26,7 +26,7 @@
         <ul style="list-style: circle;">
             <li>Name: <b class="text-bold text-capitalize"><%= user?.name %></b></li>
             <li>Email: <b class="text-bold"><%= user.email %></b></li>
-            <li>Status: <b class="text-info text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b></li>
+            <li>Status: <b class="text-info text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b> (<%= user?.plan %>)</li>
             <% if (user.status === 'paid') { %>
              <li>Paid On: <b class="text-bold"><%= new Date(user.payments[0].paidOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
              <li>End On: <b class="text-bold"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
@@ -41,6 +41,8 @@
             <!-- if user paid -->
             <% if (user.status === 'paid') { %>
             <%- include('./partials/sure3.ejs'); %>
+            <hr class="style-eight">
+            <%- include('./partials/sure5.ejs'); %>
             <hr class="style-eight">
             <%- include('./partials/tip-cards.ejs'); %>
             <% } %>

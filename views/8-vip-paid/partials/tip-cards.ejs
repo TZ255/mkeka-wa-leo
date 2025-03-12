@@ -1,18 +1,18 @@
 <section class="rounded-top pt-3 bg-light"
     style="border-top: 32px solid #8B6508; border-left: #8B6508 1px solid; border-right: #8B6508 1px solid;">
     <div class="mb-5">
-        <h2 class="text-center mt-5 fs-1">Golden TiPS: VIP #2</h2>
+        <h2 class="text-center mt-5 fs-1">GoldenPicks: VIP #3</h2>
         <h4 class="text-center mx-auto px-2 fw-bold"
-            style="color: #8B6508; font-family: serif; width: fit-content; border-bottom: 1px solid #8B6508;">5
-            GoldenPicks</h4>
+            style="color: #8B6508; font-family: serif; width: fit-content; border-bottom: 1px solid #8B6508;">7 VIP TiPS</h4>
     </div>
     <% if (slips.length > 0) { %>
+    <% if (user.plan.toLowerCase() == 'gold plan') { %>
     <div class="container">
         <% if (slips.length > 5) { %>
-            <div class="p-2 fs-6 fw-bold mb-3" style="color: #8B6508;">
-                <i class="fa-solid fa-thumbs-up"></i>
-                Chagua mechi 5 pekee!
-            </div>
+        <div class="p-2 fs-6 fw-bold mb-3" style="color: #8B6508;">
+            <i class="fa-solid fa-thumbs-up"></i>
+            Chagua mechi 5 pekee!
+        </div>
         <% } %>
         <div class="">
             <% slips.forEach(match => { %>
@@ -63,11 +63,15 @@
             Kila la Kheri! <i class="fa-solid fa-champagne-glasses"></i>
         </h4>
     </div>
+    <% } %>
+    <% if (user.plan.toLowerCase() == 'silver plan') { %>
+     <%- include('./must-pay-gold.ejs'); %>
+    <% } %>
     <hr class="style-eight">
     <% } %>
 
     <% if (slips.length == 0) { %>
-        <p class="text-center zakesho">* Hakuna mikeka ya VIP iliyopatikana kwa tarehe <%= d %></p>
+    <p class="text-center zakesho">* Hakuna mikeka ya VIP iliyopatikana kwa tarehe <%= d %></p>
     <% } %>
 </section>
 <%- include('./form-prev.ejs'); %>
@@ -83,7 +87,7 @@
         window.open(`/${brand}/register`)
     }
 
-    function adminUpdates(){
+    function adminUpdates() {
         let adminSection = document.getElementById('adminSection')
         adminSection.classList.toggle('d-none')
     }

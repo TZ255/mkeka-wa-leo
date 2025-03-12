@@ -22,8 +22,9 @@ const slipSchema = new Schema({
         type: String,
     },
     result: {type: String, default: '-:-'},
-    status: {type: String, default: 'pending'}
+    status: {type: String, default: 'pending'},
+    vip_no: {type: Number, default: 2}
 }, {strict: false, timestamps: true })
 
-let model = mongoose.model('betslip', slipSchema)
-module.exports = model
+let BetslipModel = mongoose.model('betslip', slipSchema)
+module.exports = BetslipModel

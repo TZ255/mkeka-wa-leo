@@ -45,19 +45,25 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //find sure3 betslip
-            let sure3 = await betslip.find({ date: d }).sort('time')
+            let sure3 = await betslip.find({ date: d, vip_no: 1 }).sort('time')
+            let sure5 = await betslip.find({ date: d, vip_no: 2, status: { $ne: 'deleted' } }).sort('time')
 
             let slipOdds = 1
+            let slip5Odds = 1
 
             for (let od of sure3) {
                 slipOdds = (slipOdds * od.odd).toFixed(2)
+            }
+
+            for (let od of sure5) {
+                slip5Odds = (slip5Odds * od.odd).toFixed(2)
             }
 
             //find VIP Slips
             let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time')
             let won_slips = await paidVipModel.find({ status: 'won' }).sort('-createdAt').limit(20).cache(3600)
 
-            return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d, won_slips })
+            return res.render(`8-vip-paid/landing`, { sure3, sure5, slip5Odds, slipOdds, slips, user, d, won_slips })
         }
         res.render('8-vip/vip')
     } catch (err) {
@@ -211,6 +217,36 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
 
         res.send(match)
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//Posting Betslip VIP #2
+router.post('/posting/betslip-vip2', async (req, res) => {
+    try {
+        if(!req.user || req.user?.role !== 'admin') {
+            return res.send('Not authorized')
+        }
+
+        // Extract form data
+        const { date, time, league, match, tip, odd } = req.body;
+        
+        // Create new betslip entry
+        const newBetslip = new betslip({
+            time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: 2
+        });
+        
+        // Save to database
+        const savedBetslip = await newBetslip.save();
+        
+        // Return success response with saved data
+        res.status(201).json({
+            message: "Betslip created successfully",
+            betslip: savedBetslip
+        });
+        
+    } catch (error) {
+        console.error("Error saving betslip:", error);
         res.status(500).json({ error: error.message });
     }
 });

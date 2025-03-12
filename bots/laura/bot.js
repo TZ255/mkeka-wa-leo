@@ -373,8 +373,6 @@ const lauraMainFn = async (app) => {
                 return await ctx.reply(`No user found with email ${email}`);
             }
 
-            const now = Date.now();
-
             // Handle unpaid status
             if (param === 'unpaid') {
                 user.status = 'unpaid';
@@ -383,17 +381,23 @@ const lauraMainFn = async (app) => {
             }
 
             // Handle subscriptions
-            if (param === 'wiki' || param === 'mwezi') {
-                const subscriptionType = param === 'wiki' ? SUBSCRIPTION_TYPES.WIKI : SUBSCRIPTION_TYPES.MONTHLY;
-                const endDate = param === 'mwezi'
-                    ? new Date(new Date().setMonth(new Date().getMonth() + 1)).getTime()
-                    : now + (1000 * 60 * 60 * 24 * subscriptionType.days);
+            if (['silver', 'gold', 'gold2'].includes(param)) {
+
+                const subscriptionMap = {
+                    'silver': SUBSCRIPTION_TYPES.SILVER,
+                    'gold': SUBSCRIPTION_TYPES.GOLD,
+                };
+
+                const subscriptionType = subscriptionMap[param];
+
+                const now = Date.now();
+                let endDate = now + (1000 * 60 * 60 * 24 * subscriptionType.days);
 
                 // Update user subscription
-                await updateUserSubscription(user, endDate, now);
+                await updateUserSubscription(user, endDate, now, subscriptionType.plan);
 
                 // Generate and send messages
-                const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name, user);
+                const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name, user, subscriptionType.plan);
 
                 // Send email
                 sendEmail(email.toLowerCase(), 'Malipo yako yamethibitishwa 🎉', messages.html);
@@ -409,7 +413,7 @@ const lauraMainFn = async (app) => {
                 return await ctx.reply(messages.text);
             }
 
-            return await ctx.reply('Invalid parameter. Use: wiki, mwezi, or unpaid');
+            return await ctx.reply('Invalid parameter. Use: silver, gold, or unpaid');
 
         } catch (error) {
             console.error('Grant command error:', error);

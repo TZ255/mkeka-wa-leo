@@ -7,9 +7,28 @@
                     <h4 class="mb-0">Admin - Updating Results</h4>
                 </div>
                 <div class="card-body">
-                    <!-- Updating Sure 3 results -->
+                    <!-- Updating Sure 3 & 5 results -->
                     <ul class="list-group bg-warning py-3 mb-2">
                         <% sure3.forEach(match => { %>
+                            <li class="list-group-item" id="<%= match._id %>">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold"><%= match.match %></span>
+                                    <span class="badge <%= match.status === 'won' ? 'bg-success' : (match.status === 'lose' ? 'bg-danger' : 'bg-light') %> rounded-pill">
+                                        <%= match.status %>
+                                        <%= match.result %>
+                                    </span>
+                                </div>
+                                <p class="mb-2">Tip: <b><%= match.tip %></b></p>
+                                <form class="d-flex gap-2 mt-2" method="post" action="/update/vip/<%= match._id %>" target="_blank">
+                                    <input type="text" name="scores" class="form-control form-control-sm" placeholder="Scores" required>
+                                    <input type="text" name="status" class="form-control form-control-sm" placeholder="won, lose, postponed" required>
+                                    <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+                                </form>
+                            </li>
+                        <% }) %>
+                        <!-- -------VIP 2 Sure------------ -->
+                         <hr>
+                        <% sure5.forEach(match => { %>
                             <li class="list-group-item" id="<%= match._id %>">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="fw-bold"><%= match.match %></span>
@@ -88,6 +107,31 @@
                                 </form>
                             </li>
                         <% }) %>
+                        <!-- ----------sure5----------- -->
+                         <hr>
+                        <% sure5.forEach(match => { %>
+                            <li class="list-group-item" id="<%= match._id %>">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
+                                </div>
+                                <form class="d-flex flex-column mt-2" method="post" action="/update/vip/match-data/<%= match._id %>" target="_blank">
+                                    <div class="d-flex">
+                                        <input type="text" name="time" class="form-control form-control-sm" required value="<%= match.time %>">
+                                        <input type="text" name="league" class="form-control form-control-sm" required value="<%= match.league %>">
+                                    </div>
+
+                                    <input type="text" name="game" class="form-control form-control-sm" required value="<%= match.match %>">
+
+                                    <div class="d-flex">
+                                        <input type="text" name="tip" class="form-control form-control-sm" required value="<%= match.tip %>">
+
+                                        <input type="text" name="odd" class="form-control form-control-sm" required value="<%= match.odd %>">
+                                    </div>
+
+                                    <button class="btn btn-sm btn-primary d-block" type="submit">Submit</button>
+                                </form>
+                            </li>
+                        <% }) %>
                     </ul>
                     <!-- List of items with individual forms -->
                     <ul class="list-group">
@@ -111,6 +155,62 @@
                             </li>
                         <% }) %>
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="my-5">
+<h2 class="text-center">Posting Betlsip VIP 2</h2>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Betslip VIP #2 Form</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/posting/betslip-vip2" target="_blank">
+                        <!-- Date and Time using flexbox -->
+                        <div class="d-flex mb-3 gap-3">
+                            <div class="flex-grow-1">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control" name="date" required>
+                            </div>
+                            <div class="flex-grow-1">
+                                <label for="time" class="form-label">Time</label>
+                                <input type="time" class="form-control" name="time" required>
+                            </div>
+                        </div>
+                        
+                        <!-- League and Match in separate rows -->
+                        <div class="mb-3">
+                            <label for="league_name" class="form-label">League Name</label>
+                            <input type="text" class="form-control" name="league" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="match" class="form-label">Match</label>
+                            <input type="text" class="form-control" name="match" required>
+                        </div>
+                        
+                        <!-- Prediction and Odds using flexbox -->
+                        <div class="d-flex mb-4 gap-3">
+                            <div class="flex-grow-1">
+                                <label for="prediction" class="form-label">Tip</label>
+                                <input type="text" class="form-control" name="tip" required>
+                            </div>
+                            <div class="flex-grow-1">
+                                <label for="odds" class="form-label">Odds</label>
+                                <input type="text" class="form-control" name="odd" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit button - success, light text, rounded, centered -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success btn-lg rounded px-5">POST TIP</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

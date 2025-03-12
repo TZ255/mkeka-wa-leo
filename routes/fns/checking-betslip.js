@@ -10,7 +10,7 @@ const sendNotification = require('./sendTgNotifications')
 const checking3MkekaBetslip = async (d) => {
     try {
         //checking super 3 betslip
-        let slip = await betslip.find({ date: d })
+        let slip = await betslip.find({ date: d, vip_no: 1 })
         if (slip.length < 1) {
             //find random 3 from mkekadb
             let copies = await mkekadb.aggregate([
@@ -21,7 +21,7 @@ const checking3MkekaBetslip = async (d) => {
             //add them to betslip database
             for (let c of copies) {
                 await betslip.create({
-                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs ')
+                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 1
                 })
             }
         }

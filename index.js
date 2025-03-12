@@ -25,6 +25,8 @@ const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz');
 const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
 const affAnalyticsModel = require('./model/affiliates-analytics');
 const sendNotification = require('./routes/fns/sendTgNotifications');
+const mkekaUsersModel = require('./model/mkeka-users');
+const BetslipModel = require('./model/betslip');
 
 const app = express()
 
@@ -260,6 +262,10 @@ setInterval(() => {
         }
     }
 }, 1000 * 59)
+
+mkekaUsersModel.updateMany({ status: 'paid' }, { $set: { plan: "Gold Plan" } })
+    .then(() => console.log('Users Plans Updated'))
+    .catch(e => console.log(e.message))
 
 app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))
 

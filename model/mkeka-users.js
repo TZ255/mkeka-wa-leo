@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema(
     payments: { type: Array },
     role: { type: String, default: 'user' },
     status: { type: String, default: 'unpaid' },
+    plan: { type: String, default: '0 plan' },
     pay_until: { type: Date, default: null },
     resetOTP: { type: String, default: '' },
     otpExpires: { type: Date }
