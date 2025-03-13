@@ -387,12 +387,17 @@ const lauraMainFn = async (app) => {
                 const subscriptionMap = {
                     'silver': SUBSCRIPTION_TYPES.SILVER,
                     'gold': SUBSCRIPTION_TYPES.GOLD,
+                    'gold2': SUBSCRIPTION_TYPES.GOLD2,
                 };
 
                 const subscriptionType = subscriptionMap[param];
 
                 const now = Date.now();
                 let endDate = now + (1000 * 60 * 60 * 24 * subscriptionType.days);
+
+                if (param === 'gold2') {
+                    endDate = new Date(new Date(Date.now()).setMonth(new Date(Date.now()).getMonth() + 1)).getTime();
+                }
 
                 // Update user subscription
                 await updateUserSubscription(user, endDate, now, subscriptionType.plan);

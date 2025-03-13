@@ -10,6 +10,12 @@ const SUBSCRIPTION_TYPES = {
         plan: 'Gold Plan',
         amount: 12500,
         name: 'Siku 7'
+    },
+    GOLD2: {
+        days: 30,
+        plan: 'Gold Plan',
+        amount: 25000,
+        name: 'Mwezi 1'
     }
 };
 
