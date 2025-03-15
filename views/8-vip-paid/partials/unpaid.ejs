@@ -1,39 +1,80 @@
 <div class="card-body text-center p-2 shadow mx-auto" style="width: 95%;" id="lipia_maelezo">
-    <div class="alert-warning-custom">
-        <p class="text-danger m-0 fs-3 fw-bold">
-            <i class="fa-solid fa-circle-exclamation fs-1"></i> <br>
-            Huwezi ona VIP Tips za leo
+    <div class="alert alert-warning p-4 rounded-3 text-center shadow-sm border-start border-danger border-4">
+        <div class="d-flex flex-column align-items-center">
+            <i class="fa-solid fa-circle-exclamation text-danger mb-2" style="font-size: 2.5rem;"></i>
+            <h4 class="text-danger fw-bold mb-3">Huwezi ona VIP Tips za leo</h4>
+        </div>
+        <p class="mt-2 mb-0 fs-6">
+            Ili kuona mikeka yetu ya VIP,
+            bonyeza <strong>"LIPIA VIP"</strong> kufanya malipo yako.
         </p>
     </div>
 
-    <p class="mt-3 text-muted">Ili kuona mikeka yetu ya VIP, bonyeza <strong>LIPIA VIP</strong> kufanya malipo yako.</p>
-
-    <div class="bg-white shadow p-3 rounded border">
-        <p class="fw-bold mb-1">📌 Gharama (Silver Plan 🥈)</p>
-        <p class="fs-5 text-success fw-bold my-2">Tsh. 7,500/= kwa Wiki</p>
-        <p class="text-muted mb-0">Unapata <span class="fw-bold">Mikeka Miwili ya VIP</span> yenye jumla ya mechi 8 kila siku kwa wiki nzima.</p>
+    <!-- Standard plan -->
+    <div class="bg-white shadow p-4 rounded border border-secondary my-5">
+        <div class="text-center mb-3">
+            <span class="badge bg-dark px-3 py-2 fs-6 rounded-pill">
+                📌 Gharama - Silver Plan 🥈
+            </span>
+        </div>
+        <p class="display-6 text-dark fw-bold text-center my-3">
+            Tsh. 7,500/=
+            <span class="fs-6 text-muted d-block mt-1">kwa Wiki</span>
+        </p>
+        <div class="border-top border-dark pt-3">
+            <p class="text-dark mb-0">
+                Unapata <span class="fw-bold">Mikeka Miwili ya VIP</span>
+                yenye jumla ya mechi <b class="fs-5">8</b>
+                kila siku kwa wiki nzima.
+            </p>
+        </div>
     </div>
 
-    <!-- gold plan -->
-    <div class="bg-white shadow p-3 rounded border mt-4">
-        <p class="fw-bold mb-1">📌 Gharama (Gold Plan 🥇)</p>
-        <p class="fs-5 text-success fw-bold my-2">Tsh. 12,500/= kwa Wiki</p>
-        <p class="text-muted mb-0">Unapata <span class="fw-bold">Mikeka Mitatu ya VIP</span> yenye jumla ya mechi 15 kila siku kwa wiki nzima.</p>
+    <!-- Gold plan -->
+    <div class="bg-white shadow p-4 rounded border border-warning position-relative">
+        <!-- Repositioned popular badge to sit on the border line in the corner -->
+        <div class="position-absolute top-0 end-0 translate-middle-y me-2">
+            <span class="badge bg-warning text-dark px-2 py-1 fs-7 rounded-pill">
+                Popular
+            </span>
+        </div>
+        <div class="text-center mb-3">
+            <span class="badge bg-dark px-3 py-2 fs-6 rounded-pill">
+                📌 Gharama - Gold Plan 🥇
+            </span>
+        </div>
+        <p class="display-6 text-dark fw-bold text-center my-3">
+            Tsh. 12,500/=
+            <span class="fs-6 text-muted d-block mt-1">kwa Wiki</span>
+        </p>
+        <div class="border-top border-dark pt-3 mt-2">
+            <p class="text-dark fs-6 mb-0">
+                Unapata <span class="fw-bold">Mikeka Mitatu ya VIP</span>
+                yenye jumla ya mechi <b class="fs-5">15</b>
+                kila siku kwa wiki nzima.
+            </p>
+        </div>
     </div>
 
-    <div class="text-center mt-5 mb-4">
-        <button id="lipa-btn" onclick="fichuaMalipo()" class="bataniHub">
-            <i class="fa-regular fa-credit-card"></i>
-            LIPIA VIP
+    <div class="text-center my-5">
+        <button id="lipa-btn" onclick="fichuaMalipo()"
+            class="btn btn-warning btn-lg shadow-sm rounded-pill px-5 py-3 fw-bold text-uppercase position-relative overflow-hidden">
+            <span class="d-flex align-items-center justify-content-center">
+                <i class="fa-regular fa-credit-card me-2"></i>
+                LIPIA VIP SASA
+                <i class="fa-solid fa-arrow-right ms-2"></i>
+            </span>
         </button>
     </div>
 </div>
 
 
 <div class="malipo-cont my-5 d-none" id="malipo-cont">
-    <h3 class="bg-dark p-2 text-light fs-5 fw-bold">Fanya Malipo na Kuthibitisha</h3>
     <div class="main_cont">
-        <h6 class="text-danger" id=""><sub>*chagua mtandao wako hapa chini</sub></h6>
+        <div class="alert alert-light border-start border-warning border-4" role="alert">
+            <small class="text-danger fw-bold"><i class="fa-solid fa-circle-info me-1"></i> Chagua mtandao wako hapa
+                chini</small>
+        </div>
         <div class="head">
             <h3 id="voda_h3">Voda</h3>
             <h3 id="tigo_h3">Tigo</h3>
@@ -43,89 +84,117 @@
         <div class="mitandao_maelezo shadow rounded mx-auto">
             <div class="voda">
                 <h4>VodaCom M-Pesa 🇹🇿</h4>
-                <div class="kiasi_tag">
-                    <b class="namba2">Jina: PAULO - MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
-                    <div class="d-flex fs-6">
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2 me-2" style="font-size: 12px;">7,500/= (Silver Plan)</span>
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2" style="font-size: 12px;">12,500/= (Gold Plan)</span>
+                <div class="card mb-3 bg-light">
+                    <div class="card-body py-2">
+                        <small class="text-muted">Lipa kwa jina:</small>
+                        <h6 class="mb-0">PAULO - MIKEKA VIP <i class="fa-solid fa-crown text-warning"></i></h6>
                     </div>
                 </div>
-                <ul style="list-style: circle;">
-                    <li>Piga *150*00#</li>
-                    <li>Chagua 4. (Lipa kwa MPesa)</li>
-                    <li>Chagua 1. (Lipa kwa Simu)</li>
-                    <li>Chagua 1. (Ingiza Lipa Namba)</li>
-                    <li>Chagua 1. (M-Pesa)</li>
-                    <li>Weka lipa namba <b class="namba">8538178</b></li>
-                    <li>Weka kiasi na PIN kisha thibitisha</li>
+                <ul class="list-group ps-0">
+                    <li class="list-group-item border-0 bg-transparent">➜ Piga <strong>*150*00#</strong></li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>4.</strong> (Lipa kwa MPesa)</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>1.</strong> (Lipa kwa Simu)</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>1.</strong> (Ingiza Lipa Namba)
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>1.</strong> (M-Pesa)</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ 
+                        Weka lipa namba
+                        <span class="badge bg-dark fw-bold fs-6 px-3 py-2 ms-2 d-inline-block">8538178</span>
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Weka kiasi na PIN kisha thibitisha</li>
                 </ul>
             </div>
+
+            <!-- Tigo -->
             <div class="tigo">
                 <h4>Tigo Pesa 🇹🇿</h4>
-                <div class="kiasi_tag">
-                    <b class="namba2">Jina: PAULO - MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
-                    <div class="d-flex fs-6">
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2 me-2" style="font-size: 12px;">7,500/= (Silver Plan)</span>
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2" style="font-size: 12px;">12,500/= (Gold Plan)</span>
+                <div class="card mb-3 bg-light">
+                    <div class="card-body py-2">
+                        <small class="text-muted">Lipa kwa jina:</small>
+                        <h6 class="mb-0">PAULO - MIKEKA VIP <i class="fa-solid fa-crown text-warning"></i></h6>
                     </div>
                 </div>
-                <ul style="list-style: circle;">
-                    <li>Piga *150*01#</li>
-                    <li>Chagua 5. Lipa kwa simu</li>
-                    <li>Chagua Mitandao mingine</li>
-                    <li>Chagua M-Pesa</li>
-                    <li>Weka lipa namba <b class="namba">8538178</b></li>
-                    <li>Weka kiasi na PIN kisha thibitisha</li>
+                <ul class="list-group ps-0">
+                    <li class="list-group-item border-0 bg-transparent">➜ Piga <strong>*150*01#</strong></li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>5.</strong> Lipa kwa simu</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua Mitandao mingine</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua M-Pesa</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ 
+                        Weka lipa namba 
+                        <span class="badge bg-dark fw-bold fs-6 px-3 py-2 ms-2 d-inline-block">8538178</span>
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Weka kiasi na PIN kisha thibitisha</li>
                 </ul>
             </div>
+
             <div class="airtel">
                 <h4>Airtel Money 🇹🇿</h4>
-                <div class="kiasi_tag">
-                    <b class="namba2">Jina: PAULO - MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
-                    <div class="d-flex fs-6">
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2 me-2" style="font-size: 12px;">7,500/= (Silver Plan)</span>
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2" style="font-size: 12px;">12,500/= (Gold Plan)</span>
+                <div class="card mb-3 bg-light">
+                    <div class="card-body py-2">
+                        <small class="text-muted">Lipa kwa jina:</small>
+                        <h6 class="mb-0">PAULO - MIKEKA VIP <i class="fa-solid fa-crown text-warning"></i></h6>
                     </div>
                 </div>
-                <ul style="list-style: circle;">
-                    <li>Piga *150*60#</li>
-                    <li>Chagua 5. Lipia Bili</li>
-                    <li>Chagua 1. Lipa kwa Simu</li>
-                    <li>Chagua 3. M-Pesa</li>
-                    <li>Chagua 1. M-Pesa Lipa Namba</li>
-                    <li>Weka lipa namba <b class="namba">8538178</b></li>
-                    <li>Weka kiasi na PIN kisha thibitisha</li>
+                <ul class="list-group ps-0">
+                    <li class="list-group-item border-0 bg-transparent">➜ Piga <strong>*150*60#</strong></li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>5.</strong> Lipia Bili</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>1.</strong> Lipa kwa Simu</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>3.</strong> M-Pesa</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>1.</strong> M-Pesa Lipa Namba</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ 
+                        Weka lipa namba 
+                        <span class="badge bg-dark fw-bold fs-6 px-3 py-2 ms-2 d-inline-block">8538178</span>
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Weka kiasi na PIN kisha thibitisha</li>
                 </ul>
             </div>
             <div class="halotel">
                 <h4>Halopesa 🇹🇿</h4>
-                <div class="kiasi_tag">
-                    <b class="namba2">Jina: PAULO - MIKEKA VIP <i class="fa-solid fa-crown"></i></b>
-                    <div class="d-flex fs-6">
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2 me-2" style="font-size: 12px;">7,500/= (Silver Plan)</span>
-                        <span class="bg-light border text-muted d-block rounded py-1 px-2" style="font-size: 12px;">12,500/= (Gold Plan)</span>
+                <div class="card mb-3 bg-light">
+                    <div class="card-body py-2">
+                        <small class="text-muted">Lipa kwa jina:</small>
+                        <h6 class="mb-0">PAULO - MIKEKA VIP <i class="fa-solid fa-crown text-warning"></i></h6>
                     </div>
                 </div>
-                <ul style="list-style: circle;">
-                    <li>Piga *150*88#</li>
-                    <li>Chagua 5. Lipia Bidhaa</li>
-                    <li>Chagua 5. M-Pesa Lipa</li>
-                    <li>Weka namba <b class="namba">8538178</b></li>
-                    <li>Weka kiasi na PIN kisha thibitisha</li>
+                <ul class="list-group ps-0">
+                    <li class="list-group-item border-0 bg-transparent">➜ Piga <strong>*150*88#</strong></li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>5.</strong> Lipia Bidhaa</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Chagua <strong>5.</strong> M-Pesa Lipa</li>
+                    <li class="list-group-item border-0 bg-transparent">➜ 
+                        Weka namba 
+                        <span class="badge bg-dark fw-bold fs-6 px-3 py-2 ms-2 d-inline-block">8538178</span>
+                    </li>
+                    <li class="list-group-item border-0 bg-transparent">➜ Weka kiasi na PIN kisha thibitisha</li>
                 </ul>
             </div>
         </div>
         <br>
-        <div class="malipo shadow rounded p-3">
-            <p class="text-muted" style="font-size: 13px;">
-                Baada ya malipo tafadhali tutumie screenshot ya muamala pamoja na email yako
-                <b>"<%= user.email %>"</b> ili kuthibitishwa na kupata access ya mikeka yetu ya VIP
-            </p>
-            <div class="social" style="width: 98%; margin: auto;">
-                <h4 style="font-size: 16px; font-weight: bold;">Tutumie:</h4>
-                <div class="tsap">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    <b>WhatsApp: <a href="https://wa.me/+254769028387">+254 769 028 387</a></b>
+        <!-- Confirmation Instructions -->
+        <div class="card mx-auto mb-4 bg-light border-start border-info border-4">
+            <div class="card-body">
+                <h5 class="card-title fs-6 fw-bold mb-3">
+                    <i class="fa-solid fa-circle-check me-2 text-info"></i>
+                    Uthibitisho wa Malipo
+                </h5>
+                <p class="card-text text-muted mb-3" style="font-size: 14px;">
+                    Baada ya malipo tafadhali tutumie screenshot ya muamala pamoja na email yako
+                    <span class="fw-bold text-dark"><%= user.email %></span> ili kuthibitishwa na kupata access ya
+                    mikeka yetu ya VIP
+                </p>
+
+                <div class="d-flex align-items-center mt-3">
+                    <div class="me-3">
+                        <span class="text-muted small">Tutumie hapa 👇👇</span>
+                        <h6 class="mb-0 mt-1">
+                            <a href="https://wa.me/+254769028387" class="btn btn-success rounded px-2">
+                                <i class="fa-brands fa-whatsapp me-1"></i>
+                                WhatsApp: <b>+254 769 028 387</b>
+                            </a>
+                        </h6>
+                        <span class="text-danger" style="font-size: 10px;">
+                            Bonyeza kwenda WhatsApp moja kwa moja
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,6 +206,6 @@
 <hr class="style-eight">
 
 <div class="shindi_zanyuma bg-light py-5">
-    <h2 class="text-dark text-center">Angalia Shindi Zetu za Nyuma</h2>
+    <h2 class="text-dark text-center">Angalia Shindi Zetu za Jana</h2>
     <%- include('./shindi-za-nyuma.ejs'); %>
 </div>

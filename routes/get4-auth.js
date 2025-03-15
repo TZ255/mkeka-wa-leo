@@ -7,6 +7,7 @@ const sendEmail = require('./fns/sendemail');
 const betslip = require('../model/betslip')
 const { WeekDayFn } = require('./fns/weekday');
 const checking3MkekaBetslip = require('./fns/checking-betslip');
+const BetslipModel = require('../model/betslip');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -26,6 +27,7 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+            let jana = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
 
 
             //check query if has date
@@ -61,7 +63,11 @@ router.get('/mkeka/vip', async (req, res) => {
 
             //find VIP Slips
             let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time')
-            let won_slips = await paidVipModel.find({ status: 'won' }).sort('-createdAt').limit(20).cache(3600)
+
+            //find yesterday won
+            let gold_won = await paidVipModel.find({ status: 'won', date: jana }).cache(3600)
+            let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(3600)
+            let won_slips = [...gold_won, ...supa_won]
 
             return res.render(`8-vip-paid/landing`, { sure3, sure5, slip5Odds, slipOdds, slips, user, d, won_slips })
         }
