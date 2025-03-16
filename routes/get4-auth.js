@@ -22,6 +22,7 @@ router.get('/mkeka/vip', async (req, res) => {
             //check if her time expired
             if (user && user.status === 'paid' && Date.now() > user.pay_until) {
                 user.status = 'unpaid'
+                user.plan = '0 plan'
                 await user.save()
                 return res.redirect('/mkeka/vip')
             }
@@ -274,7 +275,7 @@ router.post('/spinning/sure3', async (req, res) => {
 
         await betslip.deleteMany({ date })
         await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
-        res.redirect('/mkeka/vip')
+        res.redirect(`/mkeka/vip?date=${siku}`)
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
