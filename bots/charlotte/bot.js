@@ -322,12 +322,10 @@ const charlotteFn = async (app) => {
             let st = await ctx.reply(`Starting Approving ${all_pending.length} people`)
             for (let user of all_pending) {
                 await ctx.api.approveChatJoinRequest(user?.chan_id, user?.chatid)
-                    .then(() => {
-                        user.deleteOne()
-                    })
                     .catch(e => {
-                        user.deleteOne()
+                        console.log(e?.message)
                     })
+                await user.deleteOne()
             }
             let finish = `Finished Approving ${all_pending.length} people`
             await ctx.api.editMessageText(ctx.chat.id, st.message_id, finish)
@@ -340,7 +338,7 @@ const charlotteFn = async (app) => {
         approvingFunction(ctx)
     })
 
-    bot.command('clear_pilau', async ctx=> {
+    bot.command('clear_pilau', async ctx => {
         try {
             let all = await reqModel.countDocuments({ chan_id: imp.newRT })
             await reqModel.deleteMany({ chan_id: imp.newRT })
@@ -530,7 +528,7 @@ const charlotteFn = async (app) => {
                 //text will either be Pata-1 or Pata+1
                 let idadi = ctx.channelPost.text.split(`Pata`)[1]
                 let url = ''
-                if(ctx.channelPost.reply_to_message?.reply_markup) {
+                if (ctx.channelPost.reply_to_message?.reply_markup) {
                     url = ctx.channelPost.reply_to_message.reply_markup.inline_keyboard[0][1].url
                 } else {
                     url = ctx.channelPost?.reply_to_message?.text
