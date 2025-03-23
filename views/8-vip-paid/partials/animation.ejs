@@ -1,0 +1,129 @@
+<script>
+    // Wait for DOM to be fully loaded before initializing particles
+    document.addEventListener('DOMContentLoaded', function() {
+      // Configuration
+      const colors = ['#ffde59', '#ff914d', '#ff66c4', '#5ce1e6', '#7ed957', '#c797eb'];
+      const maxParticles = 150;
+      const particles = [];
+      
+      // Create and inject particles container
+      function initParticles() {
+        // Create container
+        const container = document.createElement('div');
+        container.id = 'celebration-particles-container';
+        
+        // Style container to overlay the entire page without affecting layout
+        container.style.position = 'fixed';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.pointerEvents = 'none';
+        container.style.zIndex = '999999';
+        container.style.opacity = '0.7';
+        
+        // Add to document body
+        document.body.appendChild(container);
+        
+        return container;
+      }
+      
+      // Create container
+      const container = initParticles();
+      
+      // Particle class
+      class Particle {
+        constructor() {
+          this.element = document.createElement('div');
+          
+          // Style the particle
+          this.element.style.position = 'absolute';
+          this.element.style.borderRadius = '50%';
+          this.element.style.pointerEvents = 'none';
+          
+          container.appendChild(this.element);
+          
+          // Random properties
+          this.size = Math.random() * 6 + 4; // 4-10px
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.x = Math.random() * window.innerWidth;
+          this.y = -this.size;
+          this.speedY = Math.random() * 1 + 0.5; // Slow falling speed (0.5-1.5)
+          this.speedX = Math.random() * 0.4 - 0.2; // Small horizontal movement (-0.2-0.2)
+          this.rotation = Math.random() * 360;
+          this.rotationSpeed = Math.random() * 2 - 1; // -1 to 1 degrees per frame
+          this.opacity = Math.random() * 0.5 + 0.3; // 0.3-0.8 opacity
+          
+          // Apply initial styles
+          this.update();
+        }
+        
+        update() {
+          // Update position
+          this.y += this.speedY;
+          this.x += this.speedX;
+          this.rotation += this.rotationSpeed;
+          
+          // Apply styles
+          this.element.style.width = this.size + 'px';
+          this.element.style.height = this.size + 'px';
+          this.element.style.backgroundColor = this.color;
+          this.element.style.left = this.x + 'px';
+          this.element.style.top = this.y + 'px';
+          this.element.style.opacity = this.opacity.toString();
+          this.element.style.transform = `rotate(${this.rotation}deg)`;
+          
+          // Check if particle is out of screen
+          if (this.y > window.innerHeight) {
+            return true; // Should be removed
+          }
+          return false;
+        }
+        
+        remove() {
+          this.element.remove();
+        }
+      }
+      
+      // Create initial particles
+      for (let i = 0; i < maxParticles / 2; i++) {
+        const particle = new Particle();
+        // Distribute initial particles throughout the screen
+        particle.y = Math.random() * window.innerHeight;
+        particles.push(particle);
+      }
+      
+      // Animation loop
+      function animate() {
+        // Update existing particles
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const shouldRemove = particles[i].update();
+          if (shouldRemove) {
+            particles[i].remove();
+            particles.splice(i, 1);
+          }
+        }
+        
+        // Add new particles if below maximum
+        if (particles.length < maxParticles && Math.random() < 0.1) {
+          particles.push(new Particle());
+        }
+        
+        requestAnimationFrame(animate);
+      }
+      
+      // Start animation
+      animate();
+      
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        // Remove particles that are now outside the window
+        for (let i = particles.length - 1; i >= 0; i--) {
+          if (particles[i].x > window.innerWidth) {
+            particles[i].remove();
+            particles.splice(i, 1);
+          }
+        }
+      });
+    });
+  </script>
