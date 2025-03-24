@@ -89,13 +89,11 @@
 
             <tr class="table-secondary text-muted">
                 <th scope="col" style="font-size: 14px;">
-                    Total Odds: <br>
-                    Stake: <span class="text-success">75,000 TZS</span><br>
-                    Bonus: <span class="text-success">+15%</span> <br>
-                    Possible Win: <span class="text-success"
-                        id="slipOdd"><%= Number((slipOdds * 75000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
+                    <u>Booking Code:</u>
+                    <h6 class="ps-2"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= codes.slip1 %></b></h6>
+                    <span class="fw-light" style="font-size: 12px;">Huna account Gal Sport?. <a href="/gsb/register" target="_blank" class="fw-bold text-success" style="font-size: 14px;">Jisajili Hapa!</a></span>
                 </th>
-                <th scope="col" class="text-center align-top text-success"
+                <th scope="col" class="text-center align-top text-muted"
                     style="font-size: 16px; border-left: 1px solid #d3d3d3;">
                     <span class="fw-bold"><%= slipOdds %></span>
                 </th>

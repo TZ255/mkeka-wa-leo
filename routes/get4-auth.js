@@ -8,6 +8,7 @@ const betslip = require('../model/betslip')
 const { WeekDayFn } = require('./fns/weekday');
 const checking3MkekaBetslip = require('./fns/checking-betslip');
 const BetslipModel = require('../model/betslip');
+const BookingCodesModel = require('../model/booking_code');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -34,10 +35,10 @@ router.get('/mkeka/vip', async (req, res) => {
             //check query if has date
             if (req.query && req.query.date) {
                 let selectedDate = req.query.date
-                if(new Date() > new Date(selectedDate)) {
+                if (new Date() > new Date(selectedDate)) {
                     d = selectedDate.split('-').reverse().join('/')
                 } else {
-                    if(user.role !== 'admin') {
+                    if (user.role !== 'admin') {
                         return res.redirect('/mkeka/vip') //redirect to vip home if not admin
                     }
                     //call checking betslips
@@ -70,7 +71,15 @@ router.get('/mkeka/vip', async (req, res) => {
             let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(3600)
             let won_slips = [...gold_won, ...supa_won]
 
-            return res.render(`8-vip-paid/landing`, { sure3, sure5, slip5Odds, slipOdds, slips, user, d, won_slips })
+            //Booking Codes
+            let today_codes = await BookingCodesModel.find({ date: d });
+
+            let slip1 = today_codes.find((slip) => slip.slip_no === 1)?.code || '---';
+            let slip2 = today_codes.find((slip) => slip.slip_no === 2)?.code || '---';
+
+            let codes = { slip1, slip2 };
+
+            return res.render(`8-vip-paid/landing`, { sure3, sure5, slip5Odds, slipOdds, slips, user, d, won_slips, codes })
         }
         res.render('8-vip/vip')
     } catch (err) {
@@ -231,27 +240,27 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
 //Posting Betslip VIP #2
 router.post('/posting/betslip-vip2', async (req, res) => {
     try {
-        if(!req.user || req.user?.role !== 'admin') {
+        if (!req.user || req.user?.role !== 'admin') {
             return res.send('Not authorized')
         }
 
         // Extract form data
         const { date, time, league, match, tip, odd } = req.body;
-        
+
         // Create new betslip entry
         const newBetslip = new betslip({
             time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: 2
         });
-        
+
         // Save to database
         const savedBetslip = await newBetslip.save();
-        
+
         // Return success response with saved data
         res.status(201).json({
             message: "Betslip created successfully",
             betslip: savedBetslip
         });
-        
+
     } catch (error) {
         console.error("Error saving betslip:", error);
         res.status(500).json({ error: error.message });
@@ -280,5 +289,37 @@ router.post('/spinning/sure3', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 })
+
+//Posting Booking Code
+router.post('/post/vip/code', async (req, res) => {
+    try {
+        if (!req.user || req.user?.role !== 'admin') {
+            return res.send('Not authorized')
+        }
+
+        // Extract form data
+        const { date, code, slip_no } = req.body;
+
+        // Create new betslip entry
+        const newBooking = await BookingCodesModel.findOneAndUpdate(
+            { date: String(date).split('-').reverse().join('/'), slip_no },
+            { $set: { code, slip_no: Number(slip_no) } },
+            { upsert: true, new: true }
+        );
+
+        // Save to database
+        const savedBooking = await newBooking.save();
+
+        // Return success response with saved data
+        res.status(201).json({
+            message: "✅ BookingCode created successfully",
+            Booking: savedBooking
+        });
+
+    } catch (error) {
+        console.error("Error saving betslip:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router
