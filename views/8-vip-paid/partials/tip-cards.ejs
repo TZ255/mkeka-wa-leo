@@ -3,17 +3,14 @@
     <div class="mb-5">
         <h2 class="text-center mt-5 fs-1 text-dark">GoldenPicks: VIP #3</h2>
         <h4 class="text-center mx-auto px-2 fw-bold"
-            style="color: #8B6508; font-family: serif; width: fit-content; border-bottom: 1px solid #8B6508;">7 GoldenPicks</h4>
+            style="color: #8B6508; font-family: serif; width: fit-content;">
+            <i class="fa-solid fa-thumbs-up"></i>
+            Mkeka wa Magoli
+        </h4>
     </div>
     <% if (slips.length > 0) { %>
     <% if (user.plan.toLowerCase() == 'gold plan') { %>
     <div class="container">
-        <% if (slips.length > 5) { %>
-        <div class="p-2 fs-6 fw-bold mb-3" style="color: #8B6508;">
-            <i class="fa-solid fa-thumbs-up"></i>
-            Chagua mechi 5 pekee!
-        </div>
-        <% } %>
         <div class="">
             <% slips.forEach(match => { %>
             <div class="mb-5">

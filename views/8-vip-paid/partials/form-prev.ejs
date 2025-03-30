@@ -1,10 +1,13 @@
+<% if (user?.role === 'admin') { %>
 <div class="nyuma p-2 mb-5">
     <div class="mb-3">
-        <label for="dateInput" class="form-label" style="font-size: 14px; color: #8B6508;"><i class="fa-solid fa-calendar-days"></i> Mikeka ya Nyuma</label>
+        <label for="dateInput" class="form-label" style="font-size: 14px; color: #8B6508;"><i
+                class="fa-solid fa-calendar-days"></i> Mikeka ya Nyuma</label>
         <input type="date" id="dateInput" class="form-control" onchange="redirectToDate()"
             value="<%= d.split('/').reverse().join('-') %>" style="color: #8B6508;">
     </div>
 </div>
+<% } %>
 
 <script>
     function redirectToDate() {

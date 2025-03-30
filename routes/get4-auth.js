@@ -245,11 +245,25 @@ router.post('/posting/betslip-vip2', async (req, res) => {
         }
 
         // Extract form data
-        const { date, time, league, match, tip, odd } = req.body;
+        const { date, time, league, match, tip, odd, vip_no } = req.body;
 
-        // Create new betslip entry
+        // Create new betslip entry if its VIP #3
+        if(Number(vip_no === 3)) {
+            let newPaidVip = new paidVipModel({
+                time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, vip_no
+            })
+            let savedPaidSlip = await newPaidVip.save()
+
+            //end req with return
+            return res.status(201).json({
+                message: "Betslip created successfully",
+                betslip: savedPaidSlip
+            });
+        }
+
+        // Create new betslip entry if its VIP #2 or #1
         const newBetslip = new betslip({
-            time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: 2
+            time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: Number(vip_no)
         });
 
         // Save to database

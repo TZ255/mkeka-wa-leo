@@ -61,8 +61,9 @@ const sendMailErooMails = async (recipient, subject, html) => {
 //SENDING EMAIL BY ROTATING MAILEROO AND RESEND
 const sendEmail = async (email, subject, html) => {
     try {
+        //send 50 emails in resend and all other with maileroo
         let stats = await affAnalyticsModel.findOne({ pid: 'shemdoe' })
-        if (stats?.email_count < 100) {
+        if (stats?.email_count <= 50) {
             //send mail
             sendWithResend(email, subject, html)
             //update count
