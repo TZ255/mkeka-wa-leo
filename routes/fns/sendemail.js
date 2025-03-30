@@ -4,6 +4,20 @@ const FormData = require('form-data');
 const affAnalyticsModel = require("../../model/affiliates-analytics");
 
 
+//VERIFYING EMAIL BEFORE SENDING
+const verifyEmail = async (email) => {
+    try {
+        let response = await axios.post('https://verify.maileroo.net/check', {
+            api_key: process.env.MAILEROO_VERIFY_KEY,
+            email_address: email
+        })
+        return response?.data
+    } catch (error) {
+        console.log(error?.message)
+        return { success: false, message: 'Error kwenye kuverify' }
+    }
+}
+
 //SEND USING RESEND
 const sendWithResend = async (recipient, subject, html) => {
     // Initialize Resend
@@ -61,16 +75,22 @@ const sendMailErooMails = async (recipient, subject, html) => {
 //SENDING EMAIL BY ROTATING MAILEROO AND RESEND
 const sendEmail = async (email, subject, html) => {
     try {
-        //send 50 emails in resend and all other with maileroo
-        let stats = await affAnalyticsModel.findOne({ pid: 'shemdoe' })
-        if (stats?.email_count <= 50) {
-            //send mail
-            sendWithResend(email, subject, html)
-            //update count
-            stats.email_count = stats.email_count + 1
-            await stats.save()
+        //verify email
+        let checkEmail = await verifyEmail(email)
+        if (checkEmail?.success === true && checkEmail.data?.mx_found === true && checkEmail.data.format_valid === true) {
+            console.log(`✅ ${checkEmail.data.email}`)
+            let stats = await affAnalyticsModel.findOne({ pid: 'shemdoe' })
+            if (stats?.email_count <= 50) {
+                //send mail
+                sendWithResend(email, subject, html)
+                //update count
+                stats.email_count = stats.email_count + 1
+                await stats.save()
+            } else {
+                sendMailErooMails(email, subject, html)
+            }
         } else {
-            sendMailErooMails(email, subject, html)
+            console.log(`❌ ${checkEmail.data.email}.... We didnt bother to mail`)
         }
     } catch (error) {
         console.log('Error sending email ' + error?.message)
