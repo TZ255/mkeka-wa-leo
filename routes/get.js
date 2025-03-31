@@ -56,17 +56,18 @@ router.get('/', async (req, res) => {
         let mikeka = await mkekadb.find({ date: d }).sort('time').cache(600) //10 minutes
 
         //check if there is no any slip
-        let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
+        //find random 3
+        let slip = await betslip.aggregate([
+            { $match: { date: d, vip_no: 1 } },
+            { $sample: { size: 3 } }
+        ]).cache(600)
 
-        let megaOdds = 1
-        let slipOdds = 3 //starting with 3 because of sure5
+        //multiply all odds of MegaOdds
+        const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
-        for (let m of mikeka) {
-            megaOdds = (megaOdds * m.odds).toFixed(2)
-        }
-        for (let od of slip) {
-            slipOdds = (slipOdds * od.odd).toFixed(2)
-        }
+        //multiply all odds of betslip
+        const slip_docs = await betslip.find({ date: d, status: {$ne: 'deleted'} }).cache(600);
+        const slipOdds = slip_docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //MyBets.Today >>> Supatips
         const { stips, ytips, jtips, ktips } = await processSupatips(d, _d, _s, kesho)
@@ -254,11 +255,17 @@ router.get('/admin/posting', async (req, res) => {
 router.get('/mkeka/betslip-ya-leo', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let slip = await betslip.find({ date: d, vip_no: 1 })
-        let slipOdds = 3 //starting with 3 because of sure 5
-        for (let od of slip) {
-            slipOdds = (slipOdds * od.odd).toFixed(2)
-        }
+
+        //find random 3
+        let slip = await betslip.aggregate([
+            { $match: { date: d, vip_no: 1 } },
+            { $sample: { size: 3 } }
+        ]);
+
+        //multiply all odds
+        const docs = await betslip.find({ date: d, status: {$ne: 'deleted'} });
+        const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+
         res.render('3-landing/landing', { slip, slipOdds })
     } catch (err) {
         console.log(err.message)
