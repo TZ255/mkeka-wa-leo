@@ -57,10 +57,7 @@ router.get('/', async (req, res) => {
 
         //check if there is no any slip
         //find random 3
-        let slip = await betslip.aggregate([
-            { $match: { date: d, vip_no: 1 } },
-            { $sample: { size: 3 } }
-        ]).cache(600)
+        let slip = await betslip.find({date: d, vip_no: 1}).sort('-odd').limit(3).cache(600)
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -257,10 +254,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
 
         //find random 3
-        let slip = await betslip.aggregate([
-            { $match: { date: d, vip_no: 1 } },
-            { $sample: { size: 3 } }
-        ]);
+        let slip = await betslip.find({date: d, vip_no: 1}).sort('-odd').limit(3)
 
         //multiply all odds
         const docs = await betslip.find({ date: d, status: {$ne: 'deleted'} });
