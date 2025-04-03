@@ -4,14 +4,18 @@
         <h2 class="text-center mt-5 fs-1 text-dark">GoldenPicks: VIP #3</h2>
         <h4 class="text-center mx-auto px-2 fw-bold"
             style="color: #8B6508; font-family: serif; width: fit-content;">
-            <i class="fa-solid fa-thumbs-up"></i>
-            Mkeka wa Magoli
+            <i class="fa-solid fa-crown"></i>
+            Golden Tips
         </h4>
     </div>
     <% if (slips.length > 0) { %>
     <% if (user.plan.toLowerCase() == 'gold plan') { %>
     <div class="container">
         <div class="">
+            <div class="tamaa p-2 mb-2 text-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Acha tamaa! Chukua 5 Tu!
+            </div>
             <% slips.forEach(match => { %>
             <div class="mb-5">
                 <div class="card match-card p-3 shadow rounded-3 border-0">
@@ -28,7 +32,7 @@
                         <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
                     </div>
                     <div class="text-center mb-2">
-                        <span class="prediction-badge"
+                        <span class="prediction-badge prediction-badge-gold"
                             onclick="OpenAff('gsb')"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
                     </div>
                     <% if (match.status === 'won') { %>
@@ -56,9 +60,6 @@
             </div>
             <% }) %>
         </div>
-        <h4 class="text-success p-2 fw-bold fs-6" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>
-            Kila la Kheri! <i class="fa-solid fa-champagne-glasses"></i>
-        </h4>
     </div>
     <% } %>
     <% if (user.plan.toLowerCase() == 'silver plan') { %>
@@ -81,10 +82,5 @@
 <script>
     function OpenAff(brand) {
         window.open(`/${brand}/register`)
-    }
-
-    function adminUpdates() {
-        let adminSection = document.getElementById('adminSection')
-        adminSection.classList.toggle('d-none')
     }
 </script>

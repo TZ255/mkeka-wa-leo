@@ -59,10 +59,6 @@ router.get('/mkeka/vip', async (req, res) => {
                 slipOdds = (slipOdds * od.odd).toFixed(2)
             }
 
-            for (let od of sure5) {
-                slip5Odds = (slip5Odds * od.odd).toFixed(2)
-            }
-
             //find VIP Slips
             let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time')
 

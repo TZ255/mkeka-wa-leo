@@ -63,8 +63,7 @@ router.get('/', async (req, res) => {
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         //multiply all odds of betslip
-        const slip_docs = await betslip.find({ date: d, status: {$ne: 'deleted'} }).cache(600);
-        const slipOdds = slip_docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        const slipOdds = (slip.reduce((product, doc) => product * doc.odd, 1) * 4).toFixed(2)
 
         //MyBets.Today >>> Supatips
         const { stips, ytips, jtips, ktips } = await processSupatips(d, _d, _s, kesho)
@@ -258,7 +257,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
 
         //multiply all odds
         const docs = await betslip.find({ date: d, status: {$ne: 'deleted'} });
-        const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        const slipOdds = (docs.reduce((product, doc) => product * doc.odd, 1) * 4).toFixed(2)
 
         res.render('3-landing/landing', { slip, slipOdds })
     } catch (err) {

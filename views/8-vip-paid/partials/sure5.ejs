@@ -1,108 +1,68 @@
-<div class="mb-4">
-    <h2 class="text-center mt-5 fs-1 text-dark">BTTSPicks: VIP #2</h2>
-    <h4 class="text-center mx-auto px-2 fw-bold"
-        style="color: #8B6508; font-family: serif; width: fit-content;">GG Special
-    </h4>
-</div>
-
-<% if (sure5.length < 1) { %>
-<p class="text-center zakesho">* Betslip ya Siku kwa tarehe <%= d %> haipo</p>
-<% } %>
-
-<% if (sure5.length > 0) { %>
-<div class="betslipCont mb-3" id="betslipCont">
-    <div class="cap">
-        <h2 id="betslip-ya-leo">
-            ⭐⭐ Betslip ya Siku ⭐⭐ <br>
-            <span class="slip-siku">
-                <i class="fa-solid fa-calendar-days"></i>
-                <span>
-                    <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
-                </span>
-            </span>
-        </h2>
+<section class="rounded-top pt-3 bg-light"
+    style="border-top: 32px solid #C0C0C0; border-left: #C0C0C0 1px solid; border-right: #C0C0C0 1px solid;">
+    <div class="mb-5">
+        <h2 class="text-center mt-5 fs-1 text-dark">SliverPicks: VIP #2</h2>
+        <h4 class="text-center mx-auto px-2 fw-bold text-secondary"
+            style="font-family: serif; width: fit-content;">
+            <i class="fa-solid fa-coins"></i>
+            Silver Tips
+        </h4>
     </div>
-
-    <table class="table">
-        <thead>
-            <tr class="table-secondary">
-                <th scope="col">Matches</th>
-                <th scope="col" class="text-center align-middle" style="border-left: 1px solid #d3d3d3;">Odds</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% sure5.forEach(mch => { %>
-            <tr class="table-light">
-                <td class="py-3">
-                    <span class="d-inline-block border-bottom" style="font-size: 10px;">
-                        🕤 <%= mch.time %> |
-                        <i class="fa-solid fa-trophy"></i> <%= mch.league %>
-                    </span> <br>
-
-                    <span class="match fw-bold fs-6">
-                        <i class="fa-regular fa-futbol"></i>
-                        <%= String(mch.match).replace(' vs ', ' - ') %>
-                    </span> <br>
-                    <b class="tip fw-bold d-inline-block badge rounded-pill p-2 border border-dark text-dark"
-                        style="background-color: #ffffff; width: 220px; font-size: 14px;">
-                        <%= String(mch.tip).replace('Home Win', '1').replace('Away Win', '2') %>
-                    </b> <br>
-
-                    <% if (mch.status === 'won') { %>
-                    <div class="fs-6">
-                        <span class="badge bg-light text-success p-2 me-1">
-                            <i class="fa-regular fa-circle-check"></i> WON <%= mch.result %>
+    <% if (sure5.length > 0) { %>
+    <div class="container">
+        <div class="">
+            <div class="tamaa p-2 mb-2 text-danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Acha tamaa! Chukua 5 Tu!
+            </div>
+            <% sure5.forEach(match => { %>
+            <div class="mb-5">
+                <div class="card match-card p-3 shadow rounded-3 border-0">
+                    <div class="d-flex justify-content-between align-items-center mb-3 top-silver-title">
+                        <span class="league-badge"><i class="fa-solid fa-trophy"></i> <%= match.league %></span>
+                        <div class="text-end">
+                            <div class="match-time" style="color: #808080 !important;"><i class="fa-solid fa-clock"></i> <%= match.time %></div>
+                            <div class="match-date">
+                                <%= new Date(String(match.date).split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-details text-center mb-3">
+                        <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
+                    </div>
+                    <div class="text-center mb-2">
+                        <span class="prediction-badge prediction-badge-silver"
+                            onclick="OpenAff('gsb')"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
+                    </div>
+                    <% if (match.status === 'won') { %>
+                    <div class="text-center">
+                        <span class="badge bg-success text-light rounded-pill p-2 me-1">
+                            <i class="fa-regular fa-circle-check"></i> WON <%= match.result %>
                         </span>
                     </div>
                     <% } %>
-                    <% if (mch.status === 'lose') { %>
-                    <div class="fs-6">
-                        <span class="badge bg-light text-danger p-2 me-1">
-                            <i class="fa-regular fa-circle-xmark"></i> LOSE <%= mch.result %>
+                    <% if (match.status === 'lose') { %>
+                    <div class="text-center">
+                        <span class="badge bg-danger text-light rounded-pill p-2 me-1">
+                            <i class="fa-regular fa-circle-xmark"></i> LOSE <%= match.result %>
                         </span>
                     </div>
                     <% } %>
-                </td>
-                <td class="text-center text-muted align-middle py-3 table-default fw-bold
-                 <%= mch.status === 'won' ? 'text-success' : (mch.status === 'lose' ? 'text-danger' : 'text-dark') %>"
-                    style="vertical-align: middle; border-left: 1px solid #d3d3d3;">
-                    <span>
-                        <%= String(mch.odd).padEnd(4, '0') %>
-                        <% if (mch.status === 'won') { %>
-                        <div class="fs-6">
-                            <span class="text-success">
-                                <i class="fa-regular fa-circle-check"></i>
-                            </span>
-                        </div>
-                        <% } %>
-                        <% if (mch.status === 'lose') { %>
-                        <div class="fs-6">
-                            <span class="text-danger">
-                                <i class="fa-regular fa-circle-xmark"></i>
-                            </span>
-                        </div>
-                        <% } %>
-                    </span>
-                </td>
-            </tr>
+                    <% if (match.status === 'postponed') { %>
+                    <div class="text-center">
+                        <span class="badge border text-dark rounded-pill p-2 me-1">
+                            Pstp.
+                        </span>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
             <% }) %>
+        </div>
+    </div>
+    <% } %>
 
-            <tr class="table-secondary text-muted">
-                <th scope="col" style="font-size: 14px;">
-                    <h6 class="fw-light" style="font-size: 14px;">Stake: 75,000 TZS</h6>
-                    <h6 class="fw-light" style="font-size: 14px;">Win:
-                            <%= Number(Number(slip5Odds)*75000).toLocaleString('en-US') %> TZS
-                    </h6>
-                    <u>Booking Code:</u>
-                    <h6 class="ps-2"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= codes.slip2 %></b></h6>
-                    <span class="fw-light" style="font-size: 12px;">Huna account Gal Sport?. <a href="/gsb/register" target="_blank" class="fw-bold text-success" style="font-size: 14px;">Jisajili Hapa!</a></span>
-                </th>
-                <th scope="col" class="text-center align-top text-muted"
-                    style="font-size: 16px; border-left: 1px solid #d3d3d3;">
-                    <span class="fw-bold"><%= slip5Odds %></span>
-                </th>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<% } %>
+    <% if (sure5.length == 0) { %>
+    <p class="text-center zakesho">* Hakuna mikeka ya VIP iliyopatikana kwa tarehe <%= d %></p>
+    <% } %>
+</section>
