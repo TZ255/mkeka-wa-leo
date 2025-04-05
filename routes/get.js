@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
-        let mikeka = await mkekadb.find({ date: d }).sort('time').cache(600) //10 minutes
+        let mikeka = await mkekadb.find({ date: d, status: {$ne: 'vip'} }).sort('time').cache(600) //10 minutes
 
         //check if there is no any slip
         //find random 3
@@ -384,7 +384,7 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        let Alltips = await mkekadb.find({ date: { $in: [d, _d, juziD, kesho] } }).sort('time').select('time league date match bet odds')
+        let Alltips = await mkekadb.find({ date: { $in: [d, _d, juziD, kesho] }, status: {$ne: 'vip'} }).sort('time').select('time league date match bet odds')
 
         let ktips = Alltips.filter(tip => tip.date === kesho)
         let stips = Alltips.filter(tip => tip.date === d)

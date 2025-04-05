@@ -13,5 +13,5 @@ const megaSchema = new Schema({
     jsDate: {type: String, default: 'unknown'},
 }, {strict: false, timestamps: true})
 
-const model = mongoose.model('Accumulator', megaSchema)
-module.exports = model
+const mkekaDB = mongoose.model('Accumulator', megaSchema)
+module.exports = mkekaDB

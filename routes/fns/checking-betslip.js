@@ -23,6 +23,9 @@ const checking3MkekaBetslip = async (d) => {
                 await betslip.create({
                     date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 1
                 })
+
+                //update the status of mega odds
+                await mkekadb.findByIdAndUpdate(c._id, {$set: {status: 'vip'}})
             }
         }
 
