@@ -11,10 +11,12 @@
     <% if (sure5.length > 0) { %>
     <div class="container">
         <div class="">
-            <div class="tamaa p-2 mb-2 text-danger">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                Acha tamaa! Chukua 5 Tu!
-            </div>
+            <% if (sure5.length > 5) { %>
+                <div class="tamaa p-2 mb-2 text-danger">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Acha tamaa! Chukua 5 Tu!
+                </div>
+            <% } %>
             <% sure5.forEach(match => { %>
             <div class="mb-5">
                 <div class="card match-card p-3 shadow rounded-3 border-0">
