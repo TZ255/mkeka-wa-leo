@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         //multiply all odds of betslip
-        const slipOdds = (slip.reduce((product, doc) => product * doc.odd, 1) * 4).toFixed(2)
+        const slipOdds = slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //MyBets.Today >>> Supatips
         const { stips, ytips, jtips, ktips } = await processSupatips(d, _d, _s, kesho)
