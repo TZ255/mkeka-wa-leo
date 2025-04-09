@@ -7,7 +7,11 @@
         <button type="button" class="btn <%= siku === 'leo' ? 'btn-warning' : 'btn-light' %> border border-warning"
             onclick="window.location.href='/mkeka/vip?date=leo'">Leo</button>
     </div>
-    <h2 class="text-dark text-center mt-1 fs-4 p-2 mx-auto text-muted" style="width: fit-content; border-bottom: 1px solid #d3d3d3;">
-        <i class="fa-solid fa-calendar-day"></i> <%= d %>
-    </h2>
+    <div class="d-flex align-items-center justify-content-center mb-3 p-2">
+        <hr class="flex-grow-1 border-2 text-muted">
+        <span class="badge bg-secondary text-white mx-3 py-2 px-3 fs-6">
+            <i class="fa-solid fa-calendar-day"></i> <%= d %>
+        </span>
+        <hr class="flex-grow-1 border-2 text-muted">
+    </div>
 </section>
