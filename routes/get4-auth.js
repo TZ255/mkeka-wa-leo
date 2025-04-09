@@ -32,11 +32,31 @@ router.get('/mkeka/vip', async (req, res) => {
 
             let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
             let jana = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+            let siku = 'leo'
 
 
             //check query if has date
             if (req.query && req.query.date) {
                 let selectedDate = req.query.date
+
+                //check if date is valid
+                if (selectedDate.length !== 10 && selectedDate.split('-').length !== 3 && !['juzi', 'jana', 'leo'].includes(selectedDate)) {
+                    return res.redirect('/mkeka/vip')
+                }
+
+                if (selectedDate === 'juzi') {
+                    selectedDate = new Date(new Date().setDate(new Date().getDate() - 2)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+                    siku = 'juzi'
+                }
+                if (selectedDate === 'jana') {
+                    selectedDate = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+                    siku = 'jana'
+                }
+
+                if (selectedDate === 'leo') {
+                    return res.redirect('/mkeka/vip')
+                }
+
                 if (new Date() > new Date(selectedDate)) {
                     d = selectedDate.split('-').reverse().join('/')
                 } else {
@@ -77,7 +97,7 @@ router.get('/mkeka/vip', async (req, res) => {
 
             let codes = { slip1, slip2 };
 
-            return res.render(`8-vip-paid/landing`, { sure3, sure5, slip5Odds, slipOdds, slips, user, d, won_slips, codes })
+            return res.render(`8-vip-paid/landing`, { sure3, sure5, slip5Odds, slipOdds, slips, user, d, won_slips, codes, siku })
         }
         res.render('8-vip/vip')
     } catch (err) {
