@@ -45,11 +45,11 @@ router.get('/mkeka/vip', async (req, res) => {
                 }
 
                 if (selectedDate === 'juzi') {
-                    selectedDate = new Date(new Date().setDate(new Date().getDate() - 2)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+                    selectedDate = new Date(new Date().setDate(new Date().getDate() - 2)).toLocaleDateString('en-CA', { timeZone: 'Africa/Nairobi' })
                     siku = 'juzi'
                 }
                 if (selectedDate === 'jana') {
-                    selectedDate = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+                    selectedDate = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('en-CA', { timeZone: 'Africa/Nairobi' })
                     siku = 'jana'
                 }
 

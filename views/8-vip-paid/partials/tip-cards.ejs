@@ -9,7 +9,7 @@
         </h4>
     </div>
     <% if (slips.length > 0) { %>
-    <% if (user.plan.toLowerCase() == 'gold plan') { %>
+    <% if (user.plan.toLowerCase() == 'gold plan' || ['juzi', 'jana'].includes(siku)) { %>
     <div class="container">
         <div class="">
             <% if (slips.length > 5) { %>
@@ -64,7 +64,7 @@
         </div>
     </div>
     <% } %>
-    <% if (user.plan.toLowerCase() == 'silver plan') { %>
+    <% if (user.plan.toLowerCase() == 'silver plan' && siku == 'leo') { %>
      <%- include('./must-pay-gold.ejs'); %>
     <% } %>
     <% } %>
