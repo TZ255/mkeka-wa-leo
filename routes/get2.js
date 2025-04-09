@@ -447,7 +447,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        sendEmail('shemdoetz@imaili.com', 'Registration Verify Code', '<p>Code: 876544</p>')
+        UpdateOtherTopScorerFn(20, 2024)
         res.end()
     } catch (error) {
         res.send(error.message)

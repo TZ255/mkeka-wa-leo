@@ -97,11 +97,11 @@
             </section>
             <br><br><br>
             <div class="ratiba-section" itemscope>
-                <h2 class="p-2 fs-3">Matokeo na Ratiba ya CAF Confederation Cup <%= partials.season %></h2>
+                <h2 class="p-2 fs-3">Matokeo na Ratiba ya CAF Confederation Cup - Robo Fainali, Nusu Fainali na Fainali 2025</h2>
                 <% agg.forEach(round => { %>
                 <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
                     <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
-                        <%= round.round.replace('Regular Season -', 'Mzunguko wa').replace('pre - 0.1', 'Hatua ya Mtoano - 1').replace('pre - 0.2', 'Hatua ya Mtoano - 2').replace('Group Stage -', 'Hatua ya Makundi -') %>
+                        <%= round.round.replace('Regular Season -', 'Mzunguko wa').replace('pre - 0.1', 'Hatua ya Mtoano - 1').replace('pre - 0.2', 'Hatua ya Mtoano - 2').replace('Group Stage -', 'Hatua ya Makundi -').replace('Quarter-finals', 'Robo Fainali').replace('Semi-finals', 'Nusu Fainali') %>
                     </h3>
                     <table class="table table-striped">
                         <thead>

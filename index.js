@@ -192,14 +192,14 @@ setInterval(() => {
         //update unimportant leagues
         if ([22, 3].includes(hours)) {
             switch (mins) {
-                case 1666: //CAF on every 06 minute (not updating 666)
+                case 6: //CAF on every 06 minute (not updating 666)
                     UpdateOtherStandingFn(12, 2024)
                     setTimeout(() => {
                         UpdateOtherFixuresFn(12, 2024)
                     }, 5000)
                     break;
 
-                case 17666: //Confederation on every 07 minute (not updating 666)
+                case 7: //Confederation on every 07 minute (not updating 666)
                     UpdateOtherStandingFn(20, 2024)
                     setTimeout(() => {
                         UpdateOtherFixuresFn(20, 2024)
@@ -232,14 +232,14 @@ setInterval(() => {
                     }, 5000)
                     break;
 
-                case 333: //CAF top scorer on every 35 (not updating 333)
+                case 33: //CAF top scorer on every 35 (not updating 333)
                     UpdateOtherTopScorerFn(12, 2024)
                     setTimeout(() => {
                         UpdateOtherTopAssistFn(12, 2024)
                     }, 5000)
                     break;
 
-                case 34666: //CAF confederation top scorer on every 34 (not updating 666)
+                case 34: //CAF confederation top scorer on every 34 (not updating 666)
                     UpdateOtherTopScorerFn(20, 2024)
                     setTimeout(() => {
                         UpdateOtherTopAssistFn(20, 2024)
