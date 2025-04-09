@@ -49,6 +49,12 @@
             <hr class="style-eight">
             <%- include('./partials/tip-cards.ejs'); %>
             <%- include('./partials/the-end.ejs'); %>
+            <% if (user.role === 'admin') { %>
+                <%- include('./partials/form-prev.ejs'); %>
+                <section id="adminSection" class="d-none">
+                    <%- include('./partials/admin.ejs'); %>
+                </section>
+                <% } %>
             <% } %>
 
             <!-- if user unpaid -->

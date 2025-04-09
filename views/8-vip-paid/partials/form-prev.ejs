@@ -1,4 +1,3 @@
-<% if (user?.role === 'admin') { %>
 <div class="nyuma p-2 mb-5 d-none" id="prevSection">
     <div class="mb-3">
         <label for="dateInput" class="form-label" style="font-size: 14px; color: #8B6508;"><i
@@ -7,7 +6,6 @@
             value="<%= d.split('/').reverse().join('-') %>" style="color: #8B6508;">
     </div>
 </div>
-<% } %>
 
 <script>
     function redirectToDate() {

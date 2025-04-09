@@ -73,13 +73,7 @@
     <p class="text-center zakesho">* Hakuna mikeka ya VIP iliyopatikana kwa tarehe <%= d %></p>
     <% } %>
 </section>
-<%- include('./form-prev.ejs'); %>
 
-<% if (user.role === 'admin') { %>
-<section id="adminSection" class="d-none">
-    <%- include('./admin.ejs'); %>
-</section>
-<% } %>
 
 <script>
     function OpenAff(brand) {
