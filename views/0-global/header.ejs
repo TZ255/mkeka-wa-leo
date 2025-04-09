@@ -1,38 +1,53 @@
 <header>
-  <nav class="navbar navbar-dark navbar-expand-lg">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">
-        MKEKA wa LEO
-        <span>Tanzania football predictions & tips</span>
-    </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <div class="brand-text">
+          MKEKA wa LEO
+          <span>Tanzania football predictions & tips</span>
+        </div>
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+              aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+      
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="/mkeka">Mikeka ya Bure</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/mkeka" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Mikeka ya Leo
+            <a class="nav-link" href="/mkeka">
+              <i class="fa-solid fa-futbol nav-icon"></i> Mikeka ya Bure
             </a>
-            <ul class="dropdown-menu bg-dark">
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/mkeka" role="button" 
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-list-check nav-icon"></i> Mikeka ya Leo
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="/mkeka/mega-odds-leo">⚽ Mega Odds za Leo</a></li>
               <li><a class="dropdown-item" href="/mkeka/betslip-ya-leo">⚽ Sure 3 | Betslip ya Siku</a></li>
+              <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="/mkeka/over-15">⚽ Over 1.5 Tips</a></li>
               <li><a class="dropdown-item" href="/mkeka/over-25">⚽ Over 2.5 Tips</a></li>
               <li><a class="dropdown-item" href="/mkeka/over-under-35">⚽ Over/Under 3.5 Tips</a></li>
               <li><a class="dropdown-item" href="/mkeka/over-05-first-half">⚽ Over 0.5 1st Half Tips</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/mkeka/correct-score">⚽ Correct Score Tips</a></li>
               <li><a class="dropdown-item" href="/mkeka/vip">⚽ VIP Tips</a></li>
               <li><a class="dropdown-item" href="/#supa-za-leo">⚽ KEKA MIX la Leo</a></li>
             </ul>
           </li>
+          
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/mkeka#wiki-nzima" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Mikeka ya Wiki
+            <a class="nav-link dropdown-toggle" href="/mkeka#wiki-nzima" role="button" 
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-calendar-week nav-icon"></i> Mikeka ya Wiki
             </a>
-            <ul class="dropdown-menu bg-dark">
+            <ul class="dropdown-menu dropdown-menu-dark">
               <li><a class="dropdown-item" href="/mkeka/jumatatu">📅 Mkeka wa Jumatatu</a></li>
               <li><a class="dropdown-item" href="/mkeka/jumanne">📅 Mkeka wa Jumanne</a></li>
               <li><a class="dropdown-item" href="/mkeka/jumatano">📅 Mkeka wa Jumatano</a></li>
@@ -42,14 +57,17 @@
               <li><a class="dropdown-item" href="/mkeka/jumapili">📅 Mkeka wa Jumapili</a></li>
             </ul>
           </li>
+          
           <li class="nav-item">
-            <a class="nav-link" href="/standings">Misimamo ya Ligi</a>
+            <a class="nav-link" href="/standings">
+              <i class="fa-solid fa-ranking-star nav-icon"></i> Misimamo ya Ligi
+            </a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-
+  
   <script>
     function opening(e) {
       if(e == 'pmatch') {
