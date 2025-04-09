@@ -11,7 +11,7 @@
     <meta property="article:published_time" content="<%= partials.createdAt %>">
     <meta property="article:modified_time" content="<%= partials.updatedAt %>">
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
-    <title>Msimamo Ligi ya Mabingwa Africa / <%= partials.ligi %> <%= partials.season %> - Ratiba na Matokeo</title>
+    <title>Msimamo Ligi ya Mabingwa Africa / <%= partials.ligi %> 2025 - Ratiba na Matokeo, Robo Fainali, Nusu Fainali na Fainali</title>
     <%- include('../../../0-global/style.ejs'); %>
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
@@ -101,7 +101,7 @@
                 <% agg.forEach(round => { %>
                 <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
                     <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
-                        <%= round.round.replace('Regular Season -', 'Mzunguko wa').replace('pre - 0.1', 'Hatua ya Mtoano - 1').replace('pre - 0.2', 'Hatua ya Mtoano - 2').replace('Group Stage -', 'Hatua ya Makundi -') %>
+                        <%= round.round.replace('Regular Season -', 'Mzunguko wa').replace('pre - 0.1', 'Hatua ya Mtoano - 1').replace('pre - 0.2', 'Hatua ya Mtoano - 2').replace('Group Stage -', 'Hatua ya Makundi -').replace('Quarter-finals', 'Robo Fainali').replace('Semi-finals', 'Nusu Fainali') %>
                     </h3>
                     <table class="table table-striped">
                         <thead>
