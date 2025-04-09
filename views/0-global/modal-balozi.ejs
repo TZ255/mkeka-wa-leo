@@ -1,0 +1,60 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b style="font-size: 16px;">CHUKUA UBALOZI MWANA 😎🔥</b></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="text-align: justify;">
+        <b class="text-success">#BetwayBalozi</b> NI RAHISI! Weka mkeka, share code na wana kisha upate <b>asilimia 4%</b> kwa kila dau watakaloweka bila kujalisha matokeo ya mkeka 🔥🤑 <br>
+        <div style="width: 100%; height: fit-content;">
+          <img src="/imgs/betway-balozi.webp" alt="BetWay Balozi - Ingiza Pesa kwa Kushare Mikeka" style="width: 100%;" onclick="window.open('/betway/register')">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="betBtn" class="btn btn-primary d-block w-75 mx-auto" style="background-color: green; border: green; padding: 8px 12px"><b>JIUNGE SASA!</b></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let modalInstance;
+  let modalShowInterval;
+
+  // Function to show the modal
+  function showModal() {
+    if (!modalInstance) {
+      modalInstance = new bootstrap.Modal(document.getElementById('exampleModal'));
+    }
+    modalInstance.show();
+  }
+
+  // Function to start the interval timer
+  function startModalInterval() {
+    showModal(); // Show immediately first time
+    modalShowInterval = setInterval(showModal, 30000); // Then every 20 seconds
+  }
+
+  // Function to handle modal hide event
+  function handleModalHide() {
+    // Clear existing interval if any
+    if (modalShowInterval) {
+      clearInterval(modalShowInterval);
+    }
+    // Start new interval
+    modalShowInterval = setInterval(showModal, 30000);
+  }
+
+  // Add event listener for when modal is hidden
+  document.getElementById('exampleModal').addEventListener('hidden.bs.modal', handleModalHide);
+
+  // Add event listener to the bet button
+  document.getElementById('betBtn').addEventListener('click', function () {
+    window.open('/betway/register');
+  });
+
+  // Start the initial timer
+  setTimeout(startModalInterval, 15000);
+</script>
