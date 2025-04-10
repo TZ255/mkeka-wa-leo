@@ -203,6 +203,11 @@ router.post('/update/vip/:_id', async (req, res) => {
             return res.status(404).json({ error: "Match not found" });
         }
 
+        if (String(match).toLowerCase() === 'deleted') {
+            let deleteStts = await (match.constructor).deleteOne({ _id: match._id });
+            return res.status(200).json({ ok: "✅ Match Status Deleted", deleteStts });
+        }
+
         if (!result.includes('(')) {
             result = `(${result})`
         }
@@ -237,9 +242,16 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
         }
 
         if (String(tip).toLowerCase() === 'deleted') {
-            match.status = 'deleted'
-            await match.save()
-            return res.status(200).json({ ok: "✅ Match Status Deleted" });
+            let deleteStts = await (match.constructor).deleteOne({ _id: match._id });
+            return res.status(200).json({ ok: "✅ Match Status Deleted", deleteStts });
+        }
+
+        if (String(tip).toLowerCase() === 'shift-1') {
+            await betslip.create({
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 1
+            })
+            await match.constructor.deleteOne({ _id: match._id });
+            return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
         }
 
         if (match.time !== time) match.time = time;

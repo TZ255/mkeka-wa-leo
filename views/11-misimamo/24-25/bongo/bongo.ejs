@@ -149,7 +149,12 @@
                                     <% } %>
                                 </td>
                                 <td class="<%= fixture.fixture.status.short %>">
-                                    <%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United') %> <br> <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United') %>
+                                    <span class="<%= fixture.teams.home.winner === true ? 'text-success' : '' %>">
+                                        <%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United') %>
+                                    </span> <br> 
+                                    <span class="<%= fixture.teams.away.winner === true ? 'text-success' : '' %>">
+                                        <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United') %>
+                                    </span>
                                 </td>
                                 <td class="text-center fw-bold">
                                     <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>

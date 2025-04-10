@@ -140,7 +140,12 @@
                                     <% } %>
                                 </td>
                                 <td class="<%= fixture.fixture.status.short %>">
-                                    <%= fixture.teams.home.name %> <br> <%= fixture.teams.away.name %>
+                                    <span class="<%= fixture.teams.home.winner === true ? 'text-success' : '' %>">
+                                        <%= fixture.teams.home.name %>
+                                    </span> <br> 
+                                    <span class="<%= fixture.teams.away.winner === true ? 'text-success' : '' %>">
+                                        <%= fixture.teams.away.name %>
+                                    </span>
                                 </td>
                                 <td class="text-center fw-bold">
                                     <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>

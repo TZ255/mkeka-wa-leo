@@ -25,7 +25,7 @@ const checking3MkekaBetslip = async (d) => {
                 })
 
                 //update the status of mega odds
-                await mkekadb.findByIdAndUpdate(c._id, {$set: {status: 'vip'}})
+                await mkekadb.findByIdAndUpdate(c._id, {$set: {status: 'testing'}})
             }
         }
 
