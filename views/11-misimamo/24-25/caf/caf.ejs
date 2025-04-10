@@ -134,7 +134,8 @@
                                     </span>
                                 </td>
                                 <td class="text-center fw-bold">
-                                    <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>
+                                    <%= fixture.goals.home ?? '-' %> <%= fixture.score.penalty.home !== null ? `(${fixture.score.penalty.home})` : '' %> <br> 
+                                    <%= fixture.goals.away ?? '-' %> <%= fixture.score.penalty.away !== null ? `(${fixture.score.penalty.away})` : '' %>
                                 </td>
                             </tr>
                             <% }) %>
