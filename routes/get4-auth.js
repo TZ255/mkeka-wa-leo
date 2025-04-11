@@ -72,10 +72,8 @@ router.get('/mkeka/vip', async (req, res) => {
 
             //find sure3 betslip
             let sure3 = await betslip.find({ date: d, vip_no: 1 }).sort('time')
-            let sure5 = await betslip.find({ date: d, vip_no: 2, status: { $ne: 'deleted' } }).sort('time')
 
             let slipOdds = 1
-            let slip5Odds = 1
 
             for (let od of sure3) {
                 slipOdds = (slipOdds * od.odd).toFixed(2)
@@ -97,7 +95,7 @@ router.get('/mkeka/vip', async (req, res) => {
 
             let codes = { slip1, slip2 };
 
-            return res.render(`8-vip-paid/landing`, { sure3, sure5, slip5Odds, slipOdds, slips, user, d, won_slips, codes, siku })
+            return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d, won_slips, codes, siku })
         }
         res.render('8-vip/vip')
     } catch (err) {
@@ -279,8 +277,8 @@ router.post('/posting/betslip-vip2', async (req, res) => {
         // Extract form data
         const { date, time, league, match, tip, odd, vip_no } = req.body;
 
-        // Create new betslip entry if its VIP #3
-        if(Number(vip_no) === 3) {
+        // Create new betslip entry if its VIP #2 Gold
+        if(Number(vip_no) === 2) {
             let newPaidVip = new paidVipModel({
                 time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, vip_no
             })
@@ -293,7 +291,7 @@ router.post('/posting/betslip-vip2', async (req, res) => {
             });
         }
 
-        // Create new betslip entry if its VIP #2 or #1
+        // Create new betslip entry if its VIP #1
         const newBetslip = new betslip({
             time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: Number(vip_no)
         });

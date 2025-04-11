@@ -1,23 +1,20 @@
 <section class="rounded-top pt-3 bg-light"
     style="border-top: 32px solid #8B6508; border-left: #8B6508 1px solid; border-right: #8B6508 1px solid;">
     <div class="mb-5">
-        <h2 class="text-center mt-5 fs-1 text-dark">GoldenPicks: VIP #3</h2>
-        <h4 class="text-center mx-auto px-2 fw-bold"
-            style="color: #8B6508; font-family: serif; width: fit-content;">
+        <h2 class="text-center mt-5 fs-1 text-dark">GoldenPicks: VIP #2</h2>
+        <h5 class="text-center mx-auto px-2 fw-bold fs-5" style="color: #8B6508; font-family: serif; width: fit-content;">
             <i class="fa-solid fa-crown"></i>
-            Golden Tips
-        </h4>
+            Tips 5 za Nyongeza
+        </h5>
     </div>
     <% if (slips.length > 0) { %>
     <% if (user.plan.toLowerCase() == 'gold plan' || ['juzi', 'jana'].includes(siku)) { %>
     <div class="container">
         <div class="">
-            <% if (slips.length > 5) { %>
-                <div class="tamaa p-2 mb-2 text-danger">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    Acha tamaa! Chukua 5 Tu!
-                </div>
-            <% } %>
+            <div class="tamaa p-2 mb-3 text-dark" style="font-size: 13px;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span class="fw-bold">Michezo ya nyongeza:</span> <br> Ikiwa mtaji wako ni mdogo, tafadhali chukua kati ya mechi 2 au 3 hapa chini kuongeza wingi wa odds
+            </div>
             <% slips.forEach(match => { %>
             <div class="mb-5">
                 <div class="card match-card p-3 shadow rounded-3 border-0">
@@ -65,7 +62,7 @@
     </div>
     <% } %>
     <% if (user.plan.toLowerCase() == 'silver plan' && siku == 'leo') { %>
-     <%- include('./must-pay-gold.ejs'); %>
+    <%- include('./must-pay-gold.ejs'); %>
     <% } %>
     <% } %>
 

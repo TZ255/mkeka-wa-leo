@@ -83,49 +83,49 @@ const checking3MkekaBetslip = async (d) => {
 
 
         //################ slip 4 (Direct win - match.today) #########################
-        let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
-        if (vip4.length < 1) {
-            let direct_home = ['3:0', '4:0', '4:1', '5:0', '5:1']
-            let direct_away = ['0:3', '0:4', '1:4', '0:5', '1:5']
+        // let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
+        // if (vip4.length < 1) {
+        //     let direct_home = ['3:0', '4:0', '4:1', '5:0', '5:1']
+        //     let direct_away = ['0:3', '0:4', '1:4', '0:5', '1:5']
 
-            let matches = await correctScoreModel.aggregate([
-                {
-                    $match: {
-                        siku: d, time: { $gte: '10:00' },
-                        tip: { $in: [...direct_away, ...direct_home] }
-                    }
-                },
-                { $sample: { size: 3 } }
-            ]);
+        //     let matches = await correctScoreModel.aggregate([
+        //         {
+        //             $match: {
+        //                 siku: d, time: { $gte: '10:00' },
+        //                 tip: { $in: [...direct_away, ...direct_home] }
+        //             }
+        //         },
+        //         { $sample: { size: 3 } }
+        //     ]);
 
-            let transformedData = matches.map(doc => {
-                let newTip;
-                if (direct_home.includes(doc.tip)) {
-                    newTip = 'Home Win'
-                } else if (direct_away.includes(doc.tip)) {
-                    newTip = 'Away Win'
-                }
+        //     let transformedData = matches.map(doc => {
+        //         let newTip;
+        //         if (direct_home.includes(doc.tip)) {
+        //             newTip = 'Home Win'
+        //         } else if (direct_away.includes(doc.tip)) {
+        //             newTip = 'Away Win'
+        //         }
 
-                return {
-                    ...doc,
-                    date: doc.siku,
-                    tip: newTip,
-                    vip_no: 4,
-                    odd: '1'
-                };
-            });
+        //         return {
+        //             ...doc,
+        //             date: doc.siku,
+        //             tip: newTip,
+        //             vip_no: 4,
+        //             odd: '1'
+        //         };
+        //     });
 
-            if (transformedData.length > 0) {
-                await paidVipModel.insertMany(transformedData);
-            }
-        }
+        //     if (transformedData.length > 0) {
+        //         await paidVipModel.insertMany(transformedData);
+        //     }
+        // }
 
 
         //######################## slip 5 (Over 2.5 from cscore - match.today)#################
         let vip5 = await paidVipModel.find({ date: d, vip_no: 5 })
         if (vip5.length < 1) {
             const copies = await correctScoreModel.aggregate([
-                { $match: { siku: d, time: { $gte: '10:00' } } },
+                { $match: { siku: d, time: { $gte: '12:00' } } },
                 // Add a field that splits the tip string and calculates total goals
                 {
                     $addFields: {
@@ -165,42 +165,42 @@ const checking3MkekaBetslip = async (d) => {
         }
 
         //################# slip 6 (Correct score double cha) ###################################
-        let vip6 = await paidVipModel.find({ date: d, vip_no: 6 });
-        if (vip6.length < 1) {
-            let home_win = ['2:0'];
-            let away_win = ['0:2'];
+        // let vip6 = await paidVipModel.find({ date: d, vip_no: 6 });
+        // if (vip6.length < 1) {
+        //     let home_win = ['2:0'];
+        //     let away_win = ['0:2'];
 
-            let matches = await correctScoreModel.aggregate([
-                {
-                    $match: {
-                        siku: d, time: { $gte: '10:00' },
-                        tip: { $in: [...home_win, ...away_win] }
-                    }
-                },
-                { $sample: { size: 3 } }
-            ]);
+        //     let matches = await correctScoreModel.aggregate([
+        //         {
+        //             $match: {
+        //                 siku: d, time: { $gte: '10:00' },
+        //                 tip: { $in: [...home_win, ...away_win] }
+        //             }
+        //         },
+        //         { $sample: { size: 3 } }
+        //     ]);
 
-            let transformedData = matches.map(doc => {
-                let newTip;
-                if (home_win.includes(doc.tip)) {
-                    newTip = "1X";
-                } else if (away_win.includes(doc.tip)) {
-                    newTip = "X2";
-                }
+        //     let transformedData = matches.map(doc => {
+        //         let newTip;
+        //         if (home_win.includes(doc.tip)) {
+        //             newTip = "1X";
+        //         } else if (away_win.includes(doc.tip)) {
+        //             newTip = "X2";
+        //         }
 
-                return {
-                    ...doc,
-                    date: doc.siku,
-                    tip: newTip,
-                    vip_no: 6,
-                    odd: '1'
-                };
-            });
+        //         return {
+        //             ...doc,
+        //             date: doc.siku,
+        //             tip: newTip,
+        //             vip_no: 6,
+        //             odd: '1'
+        //         };
+        //     });
 
-            if (transformedData.length > 0) {
-                await paidVipModel.insertMany(transformedData);
-            }
-        }
+        //     if (transformedData.length > 0) {
+        //         await paidVipModel.insertMany(transformedData);
+        //     }
+        // }
     } catch (error) {
         sendNotification(741815228, `❌ Updating VIP Slips \n${error?.message}`)
         console.error(error)
