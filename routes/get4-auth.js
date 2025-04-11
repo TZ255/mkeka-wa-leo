@@ -204,8 +204,9 @@ router.post('/update/vip/:_id', async (req, res) => {
         }
 
         if (String(match).toLowerCase() === 'deleted') {
-            let deleteStts = await (match.constructor).deleteOne({ _id: match._id });
-            return res.status(200).json({ ok: "✅ Match Status Deleted", deleteStts });
+            match.status = 'deleted'
+            await match.save()
+            return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
         if (!result.includes('(')) {
@@ -242,8 +243,9 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
         }
 
         if (String(tip).toLowerCase() === 'deleted') {
-            let deleteStts = await (match.constructor).deleteOne({ _id: match._id });
-            return res.status(200).json({ ok: "✅ Match Status Deleted", deleteStts });
+            match.status = 'deleted'
+            await match.save()
+            return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
         if (String(tip).toLowerCase() === 'shift-1') {
