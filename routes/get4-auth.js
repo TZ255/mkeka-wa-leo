@@ -327,7 +327,7 @@ router.post('/spinning/sure3', async (req, res) => {
         let date = String(siku).split('-').reverse().join('/')
 
         await betslip.deleteMany({ date, vip_no: 1 })
-        await mkekaDB.updateMany({date, status: 'vip'}, {$set: {status: 'Pending'}})
+        await mkekaDB.updateMany({date, status: 'testing'}, {$set: {status: 'Pending'}})
         await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
         res.redirect(`/mkeka/vip?date=${siku}`)
     } catch (error) {
