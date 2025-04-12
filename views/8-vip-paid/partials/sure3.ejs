@@ -5,11 +5,7 @@
     </h4>
 </div> -->
 
-<% if (sure3.length < 1) { %>
-<p class="text-center zakesho">* Betslip ya Siku (SUPA 3) kwa tarehe <%= d %> haipo</p>
-<% } %>
 
-<% if (sure3.length > 0) { %>
 <div class="betslipCont mb-3 mt-5" id="betslipCont">
     <div class="cap">
         <h2 id="betslip-ya-leo">
@@ -30,6 +26,7 @@
                 <th scope="col" class="text-center align-middle" style="border-left: 1px solid #d3d3d3;">Odds</th>
             </tr>
         </thead>
+        <% if (sure3.length > 0) { %>
         <tbody>
             <% sure3.forEach(mch => { %>
             <tr class="table-light">
@@ -91,11 +88,14 @@
                 <th scope="col" style="font-size: 14px;">
                     <h6 class="fw-light" style="font-size: 14px;">Stake: 35,000 TZS</h6>
                     <h6 class="fw-light" style="font-size: 14px;">Win:
-                            <%= Number(Number(slipOdds)*35000).toLocaleString('en-US') %> TZS
+                        <%= Number(Number(slipOdds)*35000).toLocaleString('en-US') %> TZS
                     </h6>
                     <u>Booking Code:</u>
-                    <h6 class="ps-2"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= codes.slip1 %></b></h6>
-                    <span class="fw-light" style="font-size: 12px;">Huna account Gal Sport?. <a href="/gsb/register" target="_blank" class="fw-bold text-success" style="font-size: 14px;">Jisajili Hapa!</a></span>
+                    <h6 class="ps-2"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= codes.slip1 %></b>
+                    </h6>
+                    <span class="fw-light" style="font-size: 12px;">Huna account Gal Sport?. <a href="/gsb/register"
+                            target="_blank" class="fw-bold text-success" style="font-size: 14px;">Jisajili
+                            Hapa!</a></span>
                 </th>
                 <th scope="col" class="text-center align-top text-muted"
                     style="font-size: 16px; border-left: 1px solid #d3d3d3;">
@@ -103,6 +103,9 @@
                 </th>
             </tr>
         </tbody>
+        <% } %>
     </table>
+    <% if (sure3.length < 1) { %>
+    <p class="text-center zakesho">* Betslip ya Siku (SUPA 3) kwa tarehe <%= d %> haipo</p>
+    <% } %>
 </div>
-<% } %>

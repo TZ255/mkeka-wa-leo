@@ -61,7 +61,7 @@
         </div>
     </div>
     <% } %>
-    <% if (user.plan.toLowerCase() == 'silver plan') { %>
+    <% if (user.plan.toLowerCase() == 'silver plan' && siku == 'leo') { %>
     <%- include('./must-pay-gold.ejs'); %>
     <% } %>
     <% } %>

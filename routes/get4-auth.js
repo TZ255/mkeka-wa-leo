@@ -71,13 +71,12 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //find sure3 betslip
-            let sure3 = await betslip.find({ date: d, vip_no: 1 }).sort('time')
+            let sure3 = await betslip.find({ date: d, vip_no: 1, status: { $ne: 'deleted' } }).sort('time')
+            let sure5 = await betslip.find({ date: d, vip_no: 2, status: { $ne: 'deleted' } }).sort('time')
 
-            let slipOdds = 1
+            let slipOdds = sure3.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+            let sure5Odds = sure5.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
-            for (let od of sure3) {
-                slipOdds = (slipOdds * od.odd).toFixed(2)
-            }
 
             //find VIP Slips
             let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time')
@@ -95,7 +94,7 @@ router.get('/mkeka/vip', async (req, res) => {
 
             let codes = { slip1, slip2 };
 
-            return res.render(`8-vip-paid/landing`, { sure3, slipOdds, slips, user, d, won_slips, codes, siku })
+            return res.render(`8-vip-paid/landing`, { sure3, sure5, slipOdds, sure5Odds, slips, user, d, won_slips, codes, siku })
         }
         res.render('8-vip/vip')
     } catch (err) {
@@ -246,9 +245,9 @@ router.post('/update/vip/match-data/:_id', async (req, res) => {
             return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
-        if (String(tip).toLowerCase() === 'shift-1') {
+        if (String(tip).toLowerCase() === 'shift-2') {
             await betslip.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 1
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 2
             })
             await match.constructor.deleteOne({ _id: match._id });
             return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
