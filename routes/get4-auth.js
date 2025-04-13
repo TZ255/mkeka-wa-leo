@@ -281,7 +281,7 @@ router.post('/posting/betslip-vip2', async (req, res) => {
         const { date, time, league, match, tip, odd, vip_no } = req.body;
 
         // Create new betslip entry if its VIP #2 Gold
-        if(Number(vip_no) === 2) {
+        if(Number(vip_no) === 3) {
             let newPaidVip = new paidVipModel({
                 time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, vip_no, expl: matchExplanation(tip)
             })
