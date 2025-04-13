@@ -28,6 +28,12 @@ const matchExplanation = (tip) => {
         case 'HT Multigoals: 1 - 3':
             return 'Kati ya goli 1 hadi 3 kufungwa katika kipindi cha kwanza.';
 
+        case 'HT Double Chance: 12':
+        case 'HT DC: 12':
+        case '1st Half. DC: 12':
+        case '1st Half DC: 12':
+            return 'Timu yoyote ishinde kipindi cha kwanza.';
+
         default:
             return ''
     }
