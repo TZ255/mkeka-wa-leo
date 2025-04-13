@@ -25,6 +25,12 @@
                     <span class="prediction-badge prediction-badge-gold"
                         onclick="OpenAff('gsb')"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
                 </div>
+                <% if (match?.expl && match.expl.length > 5) { %>
+                <div class="text-dark text-center p-1" style="font-size: 10px;">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <%= match.expl %>
+                </div>
+                <% } %>
                 <% if (match.status === 'won') { %>
                 <div class="text-center">
                     <span class="badge bg-success text-light rounded-pill p-2 me-1">
@@ -36,7 +42,8 @@
         </div>
         <% }) %>
     </div>
-    <a href="#lipia_maelezo" class="text-decoration-none text-white d-block rounded-3 my-3 p-3 fw-bold fs-5 text-center bg-success">
+    <a href="#lipia_maelezo"
+        class="text-decoration-none text-white d-block rounded-3 my-3 p-3 fw-bold fs-5 text-center bg-success">
         <i class="fa-solid fa-crown me-2"></i> LIPIA VIP <i class="fa-solid fa-arrow-up ms-2"></i>
     </a>
 </div>

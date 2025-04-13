@@ -44,7 +44,11 @@
                         style="background-color: #ffffff; width: 220px; font-size: 14px;">
                         <%= String(mch.tip).replace('Home Win', '1').replace('Away Win', '2') %>
                     </b> <br>
-
+                    <% if (mch?.expl && mch.expl.length > 5) { %>
+                    <div class="text-dark p-1" style="font-size: 10px;">
+                        <%= mch.expl %>
+                    </div>
+                    <% } %>
                     <% if (mch.status === 'won') { %>
                     <div class="fs-6">
                         <span class="badge bg-light text-success p-2 me-1">
@@ -109,3 +113,6 @@
     <p class="text-center zakesho">* Betslip ya Siku (Multigoals) kwa tarehe <%= d %> haipo</p>
     <% } %>
 </div>
+
+<div class="border-bottom border-secondary p-2 w-75 text-muted">Total VIP Odds (#1 x #2): <span
+        class="fw-bold"><%= (sure5Odds * slipOdds).toFixed(2) %></span></div>

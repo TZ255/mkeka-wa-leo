@@ -21,6 +21,9 @@ const slipSchema = new Schema({
     odd: {
         type: String,
     },
+    expl: {
+        type: String,
+    },
     status: {
         type: String,
         default: 'pending'
