@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { processSupatips } = require('./supatipsCollection');
 
 //English day to swahili
 const WeekDayFn = (engDay) => {
@@ -93,9 +94,7 @@ const findMikekaByWeekday = async (weekday, Model) => {
     }
 
     // Search for future date
-    const futureResult = await Model.find({
-        jsDate: nextDate.format('YYYY-MM-DD')
-    }).sort('time');
+    const futureResult = await processSupatips(nextDate.format('YYYY-MM-DD'));
 
     if (futureResult.length > 0) {
         return {mikeka: futureResult, trh: nextDate.format('DD/MM/YYYY')}
@@ -109,7 +108,7 @@ const findMikekaByWeekday = async (weekday, Model) => {
 
     // Search for past date
     return {
-        mikeka: await Model.find({jsDate: prevDate.format('YYYY-MM-DD')}).sort('time'),
+        mikeka: await processSupatips(prevDate.format('YYYY-MM-DD')),
         trh: prevDate.format('DD/MM/YYYY')
     }
     

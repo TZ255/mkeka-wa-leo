@@ -1,0 +1,57 @@
+<section class="keka-mix-sectio">
+    <h2 class="fs-2 text-center fw-bold" id="spn-title">
+        Utabiri wa Mechi za LEO
+    </h2>
+    <ul style="list-style: none; padding: 0; text-align: center;">
+        <li class="spn_trh" id="spn_trh_leo">
+            <b><i class="fa-solid fa-calendar-days"></i> <%= partials.siku %>: <%= partials.trh.mega %></b>
+        </li>
+    </ul>
+
+    <div class="tble-cont" id="lday" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="Mechi za Leo: <%= partials.siku %>">
+        <table class="table table-light table-striped">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col">Time</th>
+                    <th scope="col">Matches</th>
+                    <th class="tips-th" scope="col">Tip</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% matchDays.mikeka.forEach(leagueGroup => { %>
+                <tr class="league-row table-dark mt-8">
+                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
+                </tr>
+                <% leagueGroup.matches.forEach(match => { %>
+                <tr itemscope itemtype="https://schema.org/SportsEvent">
+                    <td class="time-td">
+                        <time itemprop="startDate" datetime="<%= match.startDate %>">
+                            <%= match.time %> <br> <span><%= match.siku %></span>
+                        </time>
+                    </td>
+                    <td class="match-td">
+                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
+                        <meta itemprop="description"
+                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
+                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
+                        <meta itemprop="endDate" content="<%= match.endDate %>">
+                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        <br>
+                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                    </td>
+                    <th class="tip-td table-success"><%= match.tip %></th>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (matchDays.mikeka.length === 0) { %>
+        <div class="zakesho">
+            * Utabiri mechi za leo: <%= trh.leo %></b> bado upo kwenye maandalizi. Shuka chini kuangalia mikeka mingine
+            iliyotayari.
+        </div>
+        <% } %>
+    </div>
+</section>

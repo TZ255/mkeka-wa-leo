@@ -15,18 +15,19 @@ const cheerio = require('cheerio')
 //times
 const TimeAgo = require('javascript-time-ago')
 const en = require('javascript-time-ago/locale/en')
-const { WeekDayFn, findMikekaByWeekday, SwahiliDayToEnglish, DetermineNextPrev } = require('./fns/weekday')
+const { WeekDayFn, findMikekaByWeekday, SwahiliDayToEnglish, DetermineNextPrev, GetJsDate, GetDayFromDateString } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateStandingFn, UpdateFixuresFn } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherFixuresFn, UpdateOtherStandingFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./fns/other-ligi')
-const { processSupatips } = require('./fns/supatipsCollection')
+const { processSupatips, processOver15 } = require('./fns/supatipsCollection')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
 const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const isProduction = require('./fns/pesapal/isProduction')
 const sendNotification = require('./fns/sendTgNotifications')
 const { processCScoreTips } = require('./fns/cscoreCollection')
+const supatipsModel = require('../model/supatips')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -66,8 +67,8 @@ router.get('/', async (req, res) => {
         let slipOdds = await betslip.find({ date: d, status: {$ne: 'deleted'} }).cache(600)
         slipOdds = slipOdds.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
-        //MyBets.Today >>> Supatips
-        const { stips, ytips, jtips, ktips } = await processSupatips(d, _d, _s, kesho)
+        //Over 1.5 SUPA Tips
+        const { stips, ytips, jtips, ktips } = await processOver15(d, _d, _s, kesho)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
@@ -552,23 +553,21 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
             next()
         } else {
             //mikeka & tarehes
-            let Megas = await findMikekaByWeekday(SwahiliDayToEnglish(weekday), mkekadb)
-            let Ov15 = await findMikekaByWeekday(SwahiliDayToEnglish(weekday), over15Mik)
+            let matchDays = await findMikekaByWeekday(SwahiliDayToEnglish(weekday), supatipsModel)
 
             let partials = {
                 siku: weekday.charAt(0).toUpperCase() + weekday.slice(1),
                 canonicalPath: `/mkeka/${weekday}`,
                 trh: {
-                    mega: Megas.trh,
-                    ov15: Ov15.trh
+                    mega: matchDays.trh,
                 },
                 prevNext: DetermineNextPrev(weekday)
             }
 
-            res.render('12-mikeka-week/weekday', { Megas, Ov15, partials });
+            res.render('12-mikeka-week/weekday', { matchDays, partials });
         }
     } catch (err) {
-        console.error(err)
+        console.error(err.message)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,

@@ -20,32 +20,18 @@
     <%- include('../0-global/header.ejs'); %>
     <main>
         <section class="left">
-            <h1 class="h2" style="font-size: 16px;">Mikeka ya <%= partials.siku %></h1>
+            <h1 class="h2" style="font-size: 16px;">Mikeka ya <%= partials.siku %>: <%= partials.trh.mega %></h1>
             <div class="intro p">
                 <p>
-                    Karibu jamvini kwa mikeka yetu ya bure ya <%= partials.siku %>. Hapa tumekuwekea mkeka wa Mega Odds (Accumulators) wenye odds nyingi zilizochambuliwa kwa umakini mkubwa kukuhakikishia nafasi nzuri ya ushindi.
-                </p>
-                <p>
-                    Vile vile kwa <%= partials.siku %> tumekuandalia mkeka wa magoli Over 1.5. Mikeka hii ina wastani wa asilimia 95% za ushindi.
+                    Karibu jamvini kwa mikeka yetu ya bure ya <%= partials.siku %>. Hapa tumekuwekea utabiri wa mechi za leo zote. Tabiri zetu zimechambuliwa kwa umakini mkubwa ili kukuhakikishia wewe mdau wetu nafasi nzuri ya ushindi.
                 </p>
             </div>
             <br><br>
             <%- include('../0-global/banner.ejs'); %>
             <br>
             <section class="megaodds" itemscope>
-                <h2 class="fs-2 text-center my-3 text-dark p-1 fw-bold">
-                    Mega Odds - Mkeka wa <%= partials.siku %> <%= partials.trh.mega %>
-                </h2>
-                <%- include('./partials/mega.ejs'); %>
+                <%- include('./partials/supatips.ejs'); %>
             </section> <br>
-            <hr class="style-eight">
-            <section class="over15" itemscope>
-                <h2 class="fs-2 text-center my-3 text-dark p-1 fw-bold">
-                    Mkeka wa Over 1.5 - <%= partials.siku %> <%= partials.trh.ov15 %>
-                </h2>
-                <%- include('./partials/over15.ejs'); %>
-            </section>
-            <hr class="style-eight">
             <div class="next-prev d-flex justify-content-between px-4 fs-4 fw-bold mb-4">
                 <div class="prev">
                     <a href="/mkeka/<%= partials.prevNext.prev %>" class="text-success">

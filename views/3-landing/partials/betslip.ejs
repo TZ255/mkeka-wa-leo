@@ -1,7 +1,8 @@
-<% if (slip.length < 1) { %>
+<section class="shadow rounded py-3">
+    <% if (slip.length < 1) { %>
     <p class="text-center zakesho">* Betslip ya Leo (Sure 3) bado iko kwenye maandalizi</p>
     <% } %>
-    
+
     <% if (slip.length > 0) { %>
     <div class="betslipCont" id="betslipCont">
         <div class="cap">
@@ -13,7 +14,7 @@
                 </span>
             </h2>
         </div>
-    
+
         <table class="table">
             <thead>
                 <tr class="table-secondary">
@@ -46,7 +47,7 @@
                     </td>
                 </tr>
                 <% }) %>
-    
+
                 <tr class="table-secondary">
                     <th scope="col" style="font-size: 14px;">
                         Stake: <span class="brown">75,000 TZS</span><br>
@@ -60,7 +61,7 @@
                 </tr>
             </tbody>
         </table>
-    
+
         <div class="bottomSlip">
             <div>
             </div>
@@ -69,20 +70,22 @@
                 <i class="fa-solid fa-crown"></i>
             </div>
         </div>
-    
+
         <div class="scratch-instruction text-danger bg-light py-3" onclick="jiunge()"><i
                 class="fa-solid fa-circle-exclamation"></i> <br>
             Jisajili na VIP
             kuona SURE 3 za leo</div>
     </div>
-    <div class="alert alert-light border-start border-warning border-4 mx-auto mt-2 text-danger" role="alert" style="font-size: 14px; width: 98%;">
+    <div class="alert alert-light border-start border-warning border-4 mx-auto mt-2 text-danger" role="alert"
+        style="font-size: 14px; width: 98%;">
         <i class="fa-solid fa-circle-exclamation"></i>
         Sure 3 ni kwa wateja wa VIP pekee.
     </div>
     <% } %>
-    
-    <script>
-        function jiunge() {
-            window.location.href = '/mkeka/vip'
-        }
-    </script>
+</section>
+
+<script>
+    function jiunge() {
+        window.location.href = '/mkeka/vip'
+    }
+</script>

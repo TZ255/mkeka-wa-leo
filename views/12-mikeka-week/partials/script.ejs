@@ -1,0 +1,96 @@
+<script>
+    //Container tables fot the days
+    let yday_cont = document.getElementById('yday')
+    let lday_cont = document.getElementById('lday')
+    let kday_cont = document.getElementById('kday')
+    let jday_cont = document.getElementById('jday')
+
+    //toggles for the days
+    let jtoggle = document.getElementById('jtoggle')
+    let ytoggle = document.getElementById('ytoggle')
+    let ltoggle = document.getElementById('ltoggle')
+    let ktoggle = document.getElementById('ktoggle')
+
+    //h2 title & date spans for the days
+    let keka_title = document.getElementById('spn-title')
+    let spn_trh_leo = document.getElementById("spn_trh_leo")
+    let spn_trh_juzi = document.getElementById("spn_trh_juzi")
+    let spn_trh_jana = document.getElementById("spn_trh_jana")
+    let spn_trh_kesho = document.getElementById("spn_trh_kesho")
+
+
+    jtoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        jtoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "Utabiri Mechi za Juzi"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_juzi.classList.replace('spn_hide', 'spn_trh')
+
+        jday_cont.style.display = 'block'
+        yday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        lday_cont.style.display = 'none'
+    })
+
+
+    ytoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        ytoggle.classList.add('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "Utabiri Mechi za Jana"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_jana.classList.replace('spn_hide', 'spn_trh')
+
+        //table cont show/hide
+        yday_cont.style.display = 'block'
+        lday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
+    })
+
+    ltoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        ltoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ktoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "Utabiri Mechi za Leo"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_leo.classList.replace('spn_hide', 'spn_trh')
+
+        lday_cont.style.display = 'block'
+        yday_cont.style.display = 'none'
+        kday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
+    })
+
+
+    ktoggle.addEventListener('click', () => {
+        //toggles activeness -- brown
+        ktoggle.classList.add('active_toggle')
+        ytoggle.classList.remove('active_toggle')
+        ltoggle.classList.remove('active_toggle')
+        jtoggle.classList.remove('active_toggle')
+
+        //change keka title & hide all other trh spans
+        keka_title.textContent = "Utabiri Mechi za Kesho"
+        document.querySelectorAll('.spn_trh').forEach(spn=> {spn.classList.replace('spn_trh', 'spn_hide')})
+        spn_trh_kesho.classList.replace('spn_hide', 'spn_trh')
+
+        kday_cont.style.display = 'block'
+        lday_cont.style.display = 'none'
+        yday_cont.style.display = 'none'
+        jday_cont.style.display = 'none'
+    })
+</script>

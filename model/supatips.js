@@ -24,6 +24,14 @@ const supatipSchema = new Schema({
         type: String,
         default: '-:-'
     },
+    jsDate: {
+        type: String,
+        default: 'unknown'
+    },
+    weekday: {
+        type: String,
+        default: 'unknown'
+    },
     status: {
         type: String,
         default: 'pending'

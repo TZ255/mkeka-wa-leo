@@ -1,6 +1,6 @@
-<section class="keka-mix-sectio">
+<section class="keka-mix-sectio shadow rounded mb-5">
     <h2 class="fs-2 text-center fw-bold" id="spn-title">
-        Utabiri Mechi za Leo
+        Over 1.5 SUPA za Leo
     </h2>
     <ul style="list-style: none; padding: 0; text-align: center;">
         <li class="spn_trh" id="spn_trh_leo"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.leo %>: </b><%= trh.leo %></li>
@@ -37,7 +37,7 @@
                 <tr itemscope itemtype="https://schema.org/SportsEvent">
                     <td class="time-td">
                         <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.siku %></span>
+                            <%= match.time %> <br> <span><%= match.date %></span>
                         </time>
                     </td>
                     <td class="match-td">
@@ -51,7 +51,7 @@
                         <br>
                         <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
                     </td>
-                    <th class="tip-td table-success"><%= match.tip %></th>
+                    <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
                 <% }); %>
                 <% }); %>
@@ -59,7 +59,7 @@
         </table>
         <% if (stips.length === 0) { %>
         <div class="zakesho">
-            * Utabiri mechi za leo: <%= trh.leo %></b> bado upo kwenye maandalizi. Shuka chini kuangalia mikeka mingine
+            * Over 1.5 SUPA za leo: <%= trh.leo %></b> bado upo kwenye maandalizi. Shuka chini kuangalia mikeka mingine
             iliyotayari.
         </div>
         <% } %>
@@ -70,7 +70,7 @@
 
     <!-- juzi -->
     <div class="tble-cont ficha" id="jday" style="display: none;" itemscope itemtype="https://schema.org/Table">
-        <meta itemprop="about" content="Utabiri Mechi za Juzi: <%= jumasiku.juzi %>">
+        <meta itemprop="about" content="Over 1.5 SUPA za Juzi: <%= jumasiku.juzi %>">
         <table class="table table-light table-striped">
             <thead>
                 <tr class="table-dark">
@@ -88,7 +88,7 @@
                 <tr itemscope itemtype="https://schema.org/SportsEvent">
                     <td class="time-td">
                         <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.siku %></span>
+                            <%= match.time %> <br> <span><%= match.date %></span>
                         </time>
                     </td>
                     <td class="match-td">
@@ -102,7 +102,7 @@
                         <br>
                         <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
                     </td>
-                    <th class="tip-td table-success"><%= match.tip %></th>
+                    <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
                 <% }); %>
                 <% }); %>
@@ -115,7 +115,7 @@
 
     <!-- yesterday -->
     <div class="tble-cont ficha" id="yday" style="display: none;" itemscope itemtype="https://schema.org/Table">
-        <meta itemprop="about" content="Utabiri Mechi za Jana: <%= jumasiku.jana %>">
+        <meta itemprop="about" content="Over 1.5 SUPA za Jana: <%= jumasiku.jana %>">
         <table class="table table-light table-striped">
             <thead>
                 <tr class="table-dark">
@@ -133,7 +133,7 @@
                 <tr itemscope itemtype="https://schema.org/SportsEvent">
                     <td class="time-td">
                         <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.siku %></span>
+                            <%= match.time %> <br> <span><%= match.date %></span>
                         </time>
                     </td>
                     <td class="match-td">
@@ -147,7 +147,7 @@
                         <br>
                         <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
                     </td>
-                    <th class="tip-td table-success"><%= match.tip %></th>
+                    <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
                 <% }); %>
                 <% }); %>
@@ -161,7 +161,7 @@
 
     <!-- tomorrow -->
     <div class="tble-cont ficha" id="kday" style="display: none;" itemscope itemtype="https://schema.org/Table">
-        <meta itemprop="about" content="Utabiri Mechi za Kesho: <%= jumasiku.kesho %>">
+        <meta itemprop="about" content="Over 1.5 SUPA za Kesho: <%= jumasiku.kesho %>">
         <table class="table table-light table-striped">
             <thead>
                 <tr class="table-dark">
@@ -179,7 +179,7 @@
                 <tr itemscope itemtype="https://schema.org/SportsEvent">
                     <td class="time-td">
                         <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.siku %></span>
+                            <%= match.time %> <br> <span><%= match.date %></span>
                         </time>
                     </td>
                     <td class="match-td">
@@ -193,7 +193,7 @@
                         <br>
                         <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
                     </td>
-                    <th class="tip-td table-success"><%= match.tip %></th>
+                    <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
                 <% }); %>
                 <% }); %>
@@ -201,7 +201,7 @@
         </table>
         <% if (ktips.length === 0) { %>
         <div class="zakesho">
-            * Utabiri Mechi za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo litakuwa
+            * Over 1.5 SUPA za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo litakuwa
             tayari.
         </div>
         <% } %>
