@@ -83,8 +83,8 @@ router.get('/mkeka/vip', async (req, res) => {
             let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time')
 
             //find yesterday won
-            let gold_won = await paidVipModel.find({ status: 'won', date: jana }).cache(3600)
-            let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(3600)
+            let gold_won = await paidVipModel.find({ status: 'won', date: jana }).cache(600)
+            let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(600)
             let won_slips = [...gold_won, ...supa_won]
 
             //Booking Codes
