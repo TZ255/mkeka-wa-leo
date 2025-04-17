@@ -42,6 +42,7 @@
              <% } %>
             <!-- if user paid -->
             <% if (user.status === 'paid') { %>
+            <%- include('./partials/status.ejs'); %>
             <%- include('./partials/buttons-date.ejs'); %>
             <%- include('./partials/sure3.ejs'); %>
             <hr class="my-5 text-light">
