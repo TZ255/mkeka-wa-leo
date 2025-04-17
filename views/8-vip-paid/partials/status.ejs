@@ -1,8 +1,9 @@
-<div class="alert alert-warning border-start border-danger border-4 d-flex align-items-center mx-auto mt-3 shadow-sm" role="alert" style="max-width: 800px; width: 95%;">
+<div class="alert alert-warning border-start border-danger border-4 align-items-center mx-auto mt-3 shadow-sm" role="alert" style="max-width: 800px; width: 95%;">
+    <div class="mt-0 mb-1" style="font-size: 12px;">Tumebadili number yetu ya WhatsApp</div>
     <div class="d-flex align-items-center gap-2">
         <i class="fa-solid fa-bell text-danger"></i>
-        <span class="text-danger">New WhatsApp: </span>
-        <a href="https://wa.me/+255711935460?text=Hello%2C%20VIP%20user%20here" class="btn btn-success btn-sm d-inline-flex align-items-center gap-1" target="_blank">
+        <span class="text-danger">New WhatsApp:</span>
+        <a href="https://wa.me/+255711935460?text=<%= encodeURIComponent(`Hello,\nMteja mwenye email ${user?.email}. \nMalipo yangu yanaisha ${new Date(user?.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'})}\n\nAsante kwa kunijulisha namba yenu mpya.`) %>" class="btn btn-success btn-sm d-inline-flex align-items-center gap-1" target="_blank">
             <i class="fa-brands fa-whatsapp"></i>
             <strong>+255 711 935 460</strong>
         </a>
