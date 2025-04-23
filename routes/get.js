@@ -141,7 +141,8 @@ router.get('/:comp/register', async (req, res) => {
         betway_2000: `https://www.betway.co.tz/offers/deposit-wager?btag=P94949-PR38080-CM112923-TS2068965&signupcode=MKEKA&optin=TZPromo`,
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
         betlion_ke: `https://media.888africa.com/C.ashx?btag=a_416b_311c_&affid=356&siteid=416&adid=311&c=`,
-        leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1078&anid=`
+        leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1078&anid=`,
+        jpcity: 'https://en.jackpotcitycasino.co.tz/?register=1&btag=P110231-PR38119-CM113317-TS2071433'
     }
     try {
         switch (comp) {
@@ -185,6 +186,10 @@ router.get('/:comp/register', async (req, res) => {
                 break;
             case 'leonbet':
                 res.redirect(links.leonbet);
+                break;
+
+            case 'jpcity':
+                res.redirect(links.jpcity);
                 break;
 
             //bots redirects
