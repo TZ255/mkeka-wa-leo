@@ -34,6 +34,11 @@ const matchExplanation = (tip) => {
         case '1st Half DC: 12':
             return 'Timu yoyote ishinde kipindi cha kwanza.';
 
+        case 'Total Goals Rangess: 2 - 4':
+        case 'Multigoals: 2 - 4':
+        case 'Goal Bounds: 2 -4':
+            return 'Mechi kuisha na jumla ya kati ya magoli mawili hadi manne.'
+
         default:
             return ''
     }
