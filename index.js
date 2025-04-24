@@ -32,7 +32,7 @@ const app = express()
 
 // database connection
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Connected to Mkeka Database'))
+    .then(() => console.log('✔ Connected to Mkeka Database'))
     .catch((err) => {
         console.log(err)
     })
