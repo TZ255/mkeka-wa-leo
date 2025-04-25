@@ -200,6 +200,7 @@ const checking3MkekaBetslip = async (d) => {
 
                 return {
                     ...doc,
+                    _id: doc._id + vip2,
                     date: doc.siku,
                     tip: newTip,
                     expl,
