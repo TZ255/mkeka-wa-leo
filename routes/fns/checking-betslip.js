@@ -199,13 +199,15 @@ const checking3MkekaBetslip = async (d) => {
                 }
 
                 return {
-                    ...doc,
-                    _id: doc._id + vip2,
                     date: doc.siku,
                     tip: newTip,
                     expl,
                     vip_no: 2,
-                    odd
+                    odd,
+                    status: 'pending',
+                    time: doc.time,
+                    league: doc.league,
+                    match: doc.match
                 };
             });
 

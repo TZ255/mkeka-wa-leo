@@ -14,14 +14,14 @@ const ErrorFn = async (message) => {
     }
 }
 
-const UpdateStandingFn = async () => {
+const UpdateBongoLeagueData = async (league_id, season) => {
     try {
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/standings',
             params: {
-                league: `${bongo_league}`,
-                season: '2024'
+                league: `${league_id}`,
+                season: `${season}`
             },
             headers: {
                 'x-rapidapi-key': process.env.RAPID_API_KEY,
@@ -37,9 +37,15 @@ const UpdateStandingFn = async () => {
             let standing = response?.data?.response[0].league.standings[0]
 
             await StandingLigiKuuModel.findOneAndUpdate({league_id, league_season}, {
-                $set: { standing, league_id, league_name, league_season }
+                $set: { standing, league_name }
             })
             console.log(`${league_name} updated`)
+
+            //update fixture for the same league
+            await UpdateFixuresFn(league_id, league_season).catch(e => console.log(e?.message))
+            console.log(`${league_name} fixtures updated`)
+            await UpdateCurrentFixture(league_id, league_season).catch(e => console.log(e?.message))
+            console.log(`${league_name} current fixtures updated`)
         } else {
             ErrorFn(`Error fetching Ligi Kuu Standing`)
         }
@@ -51,43 +57,30 @@ const UpdateStandingFn = async () => {
 }
 
 //fixtures
-const UpdateFixuresFn = async () => {
-    //for next month
-    let next_month = new Date()
-    next_month.setMonth(next_month.getMonth() + 1)
-
-    //for last month
-    let last_month = new Date()
-    last_month.setMonth(last_month.getMonth() - 1)
-
-    //from and to - date
-    let from_date = last_month.toLocaleDateString('en-CA') //yyyy-mm-dd
-    let to_date = next_month.toLocaleDateString('en-CA') //yyyy-mm-dd
-
+const UpdateFixuresFn = async (league_id, season) => {
     try {
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
             params: {
-              league: `${bongo_league}`,
-              season: '2024',
+              league: `${league_id}`,
+              season: `${season}`,
               timezone: 'Africa/Nairobi'
             },
             headers: {
-              'x-rapidapi-key': '398faf75f2msh8bbb5b674c3cb18p13ba9bjsn1963cdd00529',
+              'x-rapidapi-key': process.env.RAPID_API_KEY,
               'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
           };
 
         const response = await axios.request(options);
-        if(response.status === 200 && response?.data?.results > 100) {
+        if(response.status === 200 && response?.data?.results > 1) {
             let league_id = response?.data?.parameters.league
             let league_season = response?.data?.parameters.season
             let fixtures = response?.data?.response
             await StandingLigiKuuModel.findOneAndUpdate({league_id, league_season}, {
                 $set: { season_fixtures: fixtures }
             })
-            console.log(`Ligi Kuu Fixtures updated`)
         } else {
             ErrorFn(`Error fetching Ligi Kuu Fixtures`)
         }
@@ -98,7 +91,78 @@ const UpdateFixuresFn = async () => {
     }
 }
 
+const UpdateCurrentFixture = async (league_id, season) => {
+    try {
+        //get current round
+        const current_round = await GetCurrentRound(league_id, season)
+        if (current_round === null) return
+
+        const options = {
+            method: 'GET',
+            url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
+            params: {
+              league: `${league_id}`,
+              season: `${season}`,
+              round: current_round,
+              timezone: 'Africa/Nairobi'
+            },
+            headers: {
+              'x-rapidapi-key': process.env.RAPID_API_KEY,
+              'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+            }
+          };
+
+        const response = await axios.request(options);
+        if(response.status === 200 && response?.data?.results > 0) {
+            let league_id = response?.data?.parameters.league
+            let league_season = response?.data?.parameters.season
+            let fixtures = response?.data?.response
+            await StandingLigiKuuModel.findOneAndUpdate({league_id, league_season}, {
+                $set: { current_round_fixtures: fixtures }
+            })
+        } else {
+            ErrorFn(`Error fetching ${league_id} current fixtures`)
+        }
+    } catch (error) {
+        console.log(error?.message, error)
+        let message = `Error Updating ${league_id} Fixtures: ${error?.message}`
+        ErrorFn(message)
+    }
+}
+
+const GetCurrentRound = async (league_id, season) => {
+    try {
+        const options = {
+            method: 'GET',
+            url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures/rounds',
+            params: {
+              league: `${league_id}`,
+              season: `${season}`,
+              current: 'true'
+            },
+            headers: {
+                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+            }
+        };
+
+        const response = await axios.request(options);
+        if(response.status === 200 && response?.data?.response.length > 0) {
+            let current_round = response.data.response[0]
+            return current_round;
+        } else {
+            ErrorFn(`Error fetching ${league_id} current round`)
+            return null
+        }
+    } catch (error) {
+        console.log(error?.message, error)
+        let message = `Error Updating ${league_id} Current Round: ${error?.message}`
+        ErrorFn(message)
+        return null
+    }
+}
+
 module.exports = {
-    UpdateStandingFn, UpdateFixuresFn
+    UpdateBongoLeagueData
 }
 

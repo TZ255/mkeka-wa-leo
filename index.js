@@ -18,8 +18,8 @@ const lauraSourceCodes = require('./bots/laura/bot')
 const CharlloteSourceCodes = require('./bots/charlotte/bot')
 const helenSourceCodes = require('./bots/helen/bot')
 const zambiaBotsSourceCodes = require('./bots/zambias/bot')
-const { UpdateFixuresFn, UpdateStandingFn } = require('./routes/fns/bongo-ligi')
-const { UpdateOtherStandingFn, UpdateOtherFixuresFn, UpdateOtherTopScorerFn, UpdateOtherTopAssistFn } = require('./routes/fns/other-ligi')
+const { UpdateBongoLeagueData } = require('./routes/fns/bongo-ligi')
+const { UpdateOtherLeagueData } = require('./routes/fns/other-ligi')
 const { default: axios } = require('axios')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz');
 const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
@@ -27,6 +27,7 @@ const affAnalyticsModel = require('./model/affiliates-analytics');
 const sendNotification = require('./routes/fns/sendTgNotifications');
 const mkekaUsersModel = require('./model/mkeka-users');
 const BetslipModel = require('./model/betslip');
+const { identity } = require('lodash');
 
 const app = express()
 
@@ -153,106 +154,33 @@ setInterval(() => {
                 .catch(e => sendNotification(741815228, e?.message))
         }
 
-        //update bongo at 18,19,21,23, and 04:01
-        if (([18, 19, 21, 23, 4].includes(hours)) && mins == 1) {
-            UpdateFixuresFn()
+        //update bongo Every 15 minutes
+        if (mins % 15 === 0) {
+            UpdateBongoLeagueData(567, 2024)
             wafungajiBoraNBC() //scrape ligikuu.co.tz
             setTimeout(() => {
-                UpdateStandingFn()
                 assistBoraNBC() //scrape ligikuu.co.tz
             }, 5000)
         }
 
-        //update europe leagues
-        if ([19, 20, 22, 23, 3].includes(hours)) {
-            switch (mins) {
-                case 2: //EPL on every 01 minute
-                    UpdateOtherStandingFn(39, 2024)
-                    setTimeout(() => {
-                        UpdateOtherFixuresFn(39, 2024)
-                    }, 5000)
-                    break;
+        //Other leagues data
+        let OtherLeagues = [
+            { id: 39, season: 2024 }, //EPL
+            { id: 140, season: 2024 }, //LaLiga
+            { id: 12, season: 2024 }, //CAF
+            { id: 78, season: 2024 }, //Bundesliga
+            { id: 20, season: 2024 }, //CAF Confederation
+            { id: 12, season: 2024 }, //CAF Champions
+            { id: 29, season: 2023 }, //CAF WC Qualifiers
+        ]
 
-                case 3: //LaLiga on every 02 minute
-                    UpdateOtherStandingFn(140, 2024)
-                    setTimeout(() => {
-                        UpdateOtherFixuresFn(140, 2024)
-                    }, 5000)
-                    break;
-
-                case 4: //Bundesliga on every 03 minute
-                    UpdateOtherStandingFn(78, 2024)
-                    setTimeout(() => {
-                        UpdateOtherFixuresFn(78, 2024)
-                    }, 5000)
-                    break;
-            }
-        }
-
-        //update unimportant leagues
-        if ([22, 3].includes(hours)) {
-            switch (mins) {
-                case 6: //CAF on every 06 minute (not updating 666)
-                    UpdateOtherStandingFn(12, 2024)
-                    setTimeout(() => {
-                        UpdateOtherFixuresFn(12, 2024)
-                    }, 5000)
-                    break;
-
-                case 7: //Confederation on every 07 minute (not updating 666)
-                    UpdateOtherStandingFn(20, 2024)
-                    setTimeout(() => {
-                        UpdateOtherFixuresFn(20, 2024)
-                    }, 5000)
-                    break;
-
-                case 18: //caf wc qulifiers
-                    UpdateOtherStandingFn(29, 2023)
-                    setTimeout(() => {
-                        UpdateOtherFixuresFn(29, 2023)
-                    }, 5000);
-                    break;
-            }
-        }
-
-        //update assist and goals at 06:31 and at 22:31 
-        if ([6, 22].includes(hours)) {
-            switch (mins) {
-                case 31: //EPL top scorer on every 31
-                    UpdateOtherTopScorerFn(39, 2024)
-                    setTimeout(() => {
-                        UpdateOtherTopAssistFn(39, 2024)
-                    }, 5000)
-                    break;
-
-                case 32: //LaLiga top scorer on every 33
-                    UpdateOtherTopScorerFn(140, 2024)
-                    setTimeout(() => {
-                        UpdateOtherTopAssistFn(140, 2024)
-                    }, 5000)
-                    break;
-
-                case 33: //CAF top scorer on every 35 (not updating 333)
-                    UpdateOtherTopScorerFn(12, 2024)
-                    setTimeout(() => {
-                        UpdateOtherTopAssistFn(12, 2024)
-                    }, 5000)
-                    break;
-
-                case 34: //CAF confederation top scorer on every 34 (not updating 666)
-                    UpdateOtherTopScorerFn(20, 2024)
-                    setTimeout(() => {
-                        UpdateOtherTopAssistFn(20, 2024)
-                    }, 5000)
-                    break;
-
-                case 35: //Bundesliga stats
-                    UpdateOtherTopScorerFn(78, 2024)
-                    setTimeout(() => {
-                        UpdateOtherTopAssistFn(78, 2024)
-                    }, 5000)
-                    break;
-            }
+        //update other leagues every 13 minutes
+        if (mins % 13 === 0) {
+            OtherLeagues.forEach((league, index) => {
+                setTimeout(() => {
+                    UpdateOtherLeagueData(league.id, league.season)
+                }, index * 7000)
+            })
         }
 
         //Build MikekayaUhakika

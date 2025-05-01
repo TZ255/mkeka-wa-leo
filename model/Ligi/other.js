@@ -8,6 +8,9 @@ const LigiSchema = new Schema({
     league_name: {
         type: String
     },
+    ligi: {
+        type: String,
+    },
     country: {
         type: String
     },
@@ -18,6 +21,9 @@ const LigiSchema = new Schema({
         type: Array
     },
     season_fixtures: {
+        type: Array
+    },
+    current_round_fixtures: {
         type: Array
     },
     top_scorers: {

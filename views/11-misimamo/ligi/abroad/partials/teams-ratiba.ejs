@@ -1,0 +1,21 @@
+<div class="ratiba-timu">
+    <h2 class="h2 fs-6">
+        Ratiba na Matokeo za Timu Zote <%= partials.ligi %>
+        <%= partials.season_long %>
+    </h2>
+    <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
+        <% standing.standing.forEach(team=> { %>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
+            class="list-group-item">
+            <a itemprop="item"
+                href="/ratiba/<%= partials.league_id %>/<%= team.team.id %>/<%= partials.season %>"
+                class="text-success text-decoration-none">
+                <span itemprop="name">
+                    Ratiba na Matokeo ya Mechi za <%= team.team.name %>
+                </span>
+            </a>
+            <meta itemprop="position" content="<%= team.rank %>">
+        </li>
+        <% }) %>
+    </ul>
+</div>

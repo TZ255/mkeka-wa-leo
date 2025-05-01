@@ -1,0 +1,45 @@
+<div class="table-section" itemscope itemtype="https://schema.org/Table">
+    <h2 class="h2 fs-6" itemprop="about">Msimamo wa Ligi Kuu Tanzania Bara <%= partials.season_long %></h2>
+    <table class="table table-striped">
+        <thead style="font-size: 13px !important;">
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="fw-bold">Team</th>
+            <th scope="col" class="text-center">MP</th>
+            <th scope="col" class="text-center">W</th>
+            <th scope="col" class="text-center">D</th>
+            <th scope="col" class="text-center">L</th>
+            <th scope="col" class="text-center">GD</th>
+            <th scope="col" class="text-center">Pts</th>
+        </thead>
+        <tbody>
+            <% standing.standing.forEach(team => { %>
+            <tr>
+                <td class="tdata text-center champ<%= team.rank %>"><%= team.rank %>.</td>
+                <td class="tdata"><%= team.team.name.replace('Kitayosce', 'Tabora United') %></td>
+                <td class="tdata text-center"><%= team.all.played %></td>
+                <td class="tdata text-center"><%= team.all.win %></td>
+                <td class="tdata text-center"><%= team.all.draw %></td>
+                <td class="tdata text-center"><%= team.all.lose %></td>
+                <td class="tdata text-center"><%= team.goalsDiff %></td>
+                <td class="text-success tdata text-center fw-bold"><%= team.points %></td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <div class="desc d-flex align-middle p-2">
+        <span class="spanchamp d-block" style="background-color: green;"></span>
+        <span class="d-block ps-2">Champions League</span>
+    </div>
+    <div class="desc d-flex align-middle p-2">
+        <span class="spanchamp d-block" style="background-color: #1e90ff;"></span>
+        <span class="d-block ps-2">CAF Confederation Cup</span>
+    </div>
+    <div class="desc d-flex align-middle p-2">
+        <span class="spanchamp d-block" style="background-color: #a52a2a;"></span>
+        <span class="d-block ps-2">Relegation Play-Off</span>
+    </div>
+    <div class="desc d-flex align-middle p-2">
+        <span class="spanchamp d-block" style="background-color: red;"></span>
+        <span class="d-block ps-2">Relegation</span>
+    </div>
+</div>

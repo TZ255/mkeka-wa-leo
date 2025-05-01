@@ -1,0 +1,42 @@
+<table class="table table-striped-columns">
+    <thead style="font-size: 13px !important;">
+        <th scope="col" class="text-center">#</th>
+        <th scope="col" class="fw-bold">Team</th>
+        <th scope="col" class="text-center">MP</th>
+        <th scope="col" class="text-center">W</th>
+        <th scope="col" class="text-center">D</th>
+        <th scope="col" class="text-center">L</th>
+        <th scope="col" class="text-center">GD</th>
+        <th scope="col" class="text-center">Pts</th>
+    </thead>
+    <tbody>
+        <% standing.standing.forEach(team=> { %>
+        <tr>
+            <td class="tdata text-center td_desc" title="<%= team?.description %>" data-league_id="<%= partials.league_id %>">
+                <%= team.rank %>.
+            </td>
+            <td class="tdata">
+                <%= team.team.name %>
+            </td>
+            <td class="tdata text-center">
+                <%= team.all.played %>
+            </td>
+            <td class="tdata text-center">
+                <%= team.all.win %>
+            </td>
+            <td class="tdata text-center">
+                <%= team.all.draw %>
+            </td>
+            <td class="tdata text-center">
+                <%= team.all.lose %>
+            </td>
+            <td class="tdata text-center">
+                <%= team.goalsDiff %>
+            </td>
+            <td class="text-success tdata text-center fw-bold">
+                <%= team.points %>
+            </td>
+        </tr>
+        <% }) %>
+    </tbody>
+</table>

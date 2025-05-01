@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Angalia orodha ya wachezaji wanaongoza kwa asisti NBC - Tanzania Bara kwa msimu wa <%= partials.season_long %>. Hawa hapa vinara wa Assist NBC.">
+    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
+    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
+    <%- include('../../../../0-global/favicon.ejs') %>
+    <title>Watoa Assist Bora NBC <%= partials.season_long %> - Vinara wa Assist Ligi Kuu Tanzania Bara</title>
+    <%- include('../../../../0-global/style.ejs'); %>
+    <%- include('../../../../0-global/google.ejs'); %>
+    <%- include('../../../../0-global/fonts.ejs'); %>
+    <style>
+        p {
+            text-align: justify !important;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('../../../../0-global/header.ejs'); %>
+    <main>
+        <section class="left text-align-justify">
+            <h1 class="fs-4 mx-2 my-4">
+                Wachezaji Wanaongoza kwa Asisti NBC <%= partials.season_long %>
+            </h1>
+            <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-muted" style="font-size: 12px;">
+                <i class="fa-regular fa-clock"></i> Updated on:
+                <abbr class="date published" title="<%= partials.updatedAt %>">
+                    <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
+                </abbr>
+            </span>
+            <div>
+                <%- include(`./partials/${partials.season}/intro.ejs`); %>
+
+                <div class="table-section" itemscope itemtype="https://schema.org/Table">
+                    <h2 class="h2 fs-6 mb-3" itemprop="about"> 
+                        Wachezaji Wanaongoza kwa Asisti NBC <%= partials.season_short %>
+                    </h2>
+                    <p class="p-2">
+                        Hadi kufikia sasa, wachezaji 30 walio na idadi kubwa ya asisti ni hawa wafuatao:
+                    </p>
+                    <table class="table table-striped-columns">
+                        <thead style="font-size: 13px !important;">
+                            <th scope="col" class="text-center">#</th>
+                            <th scope="col" class="fw-bold">Mchezaji</th>
+                            <th scope="col" class="text-start">Timu</th>
+                            <th scope="col" class="text-start">Utaifa</th>
+                            <th scope="col" class="text-center">Asisti</th>
+                        </thead>
+                        <tbody>
+                            <% top_assists.forEach((player, index) => { %>
+                                <tr style="font-size: 12px !important;">
+                                    <td class="tdata text-center"><%= index+1 %>.</td>
+                                    <td class="tdata"><%= player.playerName %></td>
+                                    <td class="tdata"><%= player.club %></td>
+                                    <td class="tdata"><%= player.country %></td>
+                                    <td class="tdata text-center"><%= player.assists %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                        <caption class="p-2 fst-italic">
+                            <p>Orodha hii inasasishwa mara kwa mara kulingana na mechi za kila wiki.</p>
+                            <p>Ona pia</p>
+                            <ul class="list-group list-group-flush fw-bold">
+                                <li class="list-group-item"><a href="/wafungaji-bora/tanzania/<%= partials.season_vidokezo %>" class="text-success text-decoration-none">Orodha ya Wafungaji Bora wa NBC <%= partials.season_short %></a></li>
+                                <li class="list-group-item"><a href="/standings/567/<%= partials.season %>" class="text-success text-decoration-none">Msimamo Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %></a></li>
+                            </ul>
+                        </caption>
+                    </table>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <%- include(`./partials/${partials.season}/conclusion.ejs`); %>
+                <br>
+                <%- include('../../../../0-global/somapia.ejs'); %>
+            </div>
+            <br><br>
+        </section>
+    </main>
+
+    <%- include('../../../../0-global/footer.ejs'); %>
+    <%- include('../../../../0-global/script.ejs'); %>
+    <%- include('../../../../0-global/modal-gsb.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

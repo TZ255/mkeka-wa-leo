@@ -1,0 +1,44 @@
+<div class="table-section" itemscope itemtype="https://schema.org/Table">
+    <h2 class="h2 fs-6" itemprop="about">Msimamo wa <%= partials.league_name %> - <%= partials.ligi %>
+        <%= partials.season_long %>
+    </h2>
+    <% if (Array.isArray(standing.standing) && standing.standing.length > 0) { %>
+    <% if (Array.isArray(standing.standing[0])) { %>
+    <%- include('./groups-league.ejs') %>
+    <% } %>
+    <% if (typeof standing.standing[0] === 'object' && standing.standing[0] !== null && !Array.isArray(standing.standing[0])) { %>
+    <%- include('./leagues.ejs') %>
+    <% } %>
+    <% } %>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get all table cells with class td_desc
+        const tableCells = document.querySelectorAll('td.td_desc');
+
+        // Loop through each cell
+        tableCells.forEach(cell => {
+            const description = cell.getAttribute('title')?.toLowerCase() || '';
+            const league_id = cell.getAttribute('data-league_id')?.toLowerCase() || '';
+
+            // Add appropriate classes based on description content
+            let second_ligs = ['caf confederation cup']
+            if (description.includes('europa') || second_ligs.some(lig => description.includes(lig)) || (description == "playoffs" && league_id == "20")) {
+                cell.classList.add('europa');
+            }
+
+            if (description.includes('champions league')) {
+                cell.classList.add('champions');
+            }
+
+            if (description.includes('relegation')) {
+                cell.classList.add('relegation');
+            }
+
+            if (description.includes('conference')) {
+                cell.classList.add('conference');
+            }
+        });
+    });
+</script>

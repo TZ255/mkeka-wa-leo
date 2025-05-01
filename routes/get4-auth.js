@@ -183,27 +183,29 @@ router.get('/user/logout', (req, res) => {
 });
 
 //updating scores of VIP
-router.post('/update/vip/:_id', async (req, res) => {
+router.post('/update/vip/:id', async (req, res) => {
     try {
-        let _id = req.params._id;
-        let result = req.body.scores
-        let status = req.body.status
+        let id = req.params.id;
+        let result = req.body.scores;
+        let status = req.body.status;
 
         // Find match in either collection
         const [vipMatch, sure3Match] = await Promise.all([
-            paidVipModel.findById(_id),
-            betslip.findById(_id),
+            paidVipModel.findById(id),
+            betslip.findById(id)
         ]);
 
+        // Use the first non-null match found
         let match = vipMatch || sure3Match;
 
         if (!match) {
             return res.status(404).json({ error: "Match not found" });
         }
 
-        if (String(match).toLowerCase() === 'deleted') {
-            match.status = 'deleted'
-            await match.save()
+        // Check if status is 'deleted'
+        if (status && status.toLowerCase() === 'deleted') {
+            match.status = 'deleted';
+            await match.save();
             return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
@@ -223,15 +225,15 @@ router.post('/update/vip/:_id', async (req, res) => {
 
 
 //updating VIP match data
-router.post('/update/vip/match-data/:_id', async (req, res) => {
+router.post('/update/vip/match-data/:id', async (req, res) => {
     try {
-        let _id = req.params._id;
+        let id = req.params.id;
         let { time, league, game, tip, odd } = req.body
 
         // Find match in either collection
         const [vipMatch, sure3Match] = await Promise.all([
-            paidVipModel.findById(_id),
-            betslip.findById(_id),
+            paidVipModel.findById(id),
+            betslip.findById(id),
         ]);
 
         let match = vipMatch || sure3Match;
@@ -279,7 +281,7 @@ router.post('/posting/betslip-vip2', async (req, res) => {
         const { date, time, league, match, tip, odd, vip_no } = req.body;
 
         // Create new betslip entry if its VIP #2 Gold
-        if(Number(vip_no) === 3) {
+        if (Number(vip_no) === 3) {
             let newPaidVip = new paidVipModel({
                 time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, vip_no, expl: matchExplanation(tip)
             })
@@ -328,7 +330,7 @@ router.post('/spinning/sure3', async (req, res) => {
         let date = String(siku).split('-').reverse().join('/')
 
         await betslip.deleteMany({ date, vip_no: 1 })
-        await mkekaDB.updateMany({date, status: 'vip'}, {$set: {status: 'Pending'}})
+        await mkekaDB.updateMany({ date, status: 'vip' }, { $set: { status: 'Pending' } })
         await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
         res.redirect(`/mkeka/vip?date=${siku}`)
     } catch (error) {
