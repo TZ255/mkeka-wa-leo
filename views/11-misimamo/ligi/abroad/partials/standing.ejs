@@ -10,10 +10,12 @@
     <%- include('./leagues.ejs') %>
     <% } %>
     <% } %>
+    <div id="explanations"></div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        let status_expl = []
         // Get all table cells with class td_desc
         const tableCells = document.querySelectorAll('td.td_desc');
 
@@ -26,19 +28,70 @@
             let second_ligs = ['caf confederation cup']
             if (description.includes('europa') || second_ligs.some(lig => description.includes(lig)) || (description == "playoffs" && league_id == "20")) {
                 cell.classList.add('europa');
+                status_expl.push({ description: cell.getAttribute('title'), class: 'europa' });
             }
 
             if (description.includes('champions league')) {
                 cell.classList.add('champions');
+                status_expl.push({ description: cell.getAttribute('title'), class: 'champions' });
             }
 
             if (description.includes('relegation')) {
                 cell.classList.add('relegation');
+                status_expl.push({ description: cell.getAttribute('title'), class: 'relegation' });
             }
 
             if (description.includes('conference')) {
                 cell.classList.add('conference');
+                status_expl.push({ description: cell.getAttribute('title'), class: 'conference' });
             }
         });
+
+        //remove duplicates from status_expl array
+        status_expl = status_expl.filter((value, index, self) =>
+            index === self.findIndex((t) => (
+                t.description === value.description && t.class === value.class
+            ))
+        );
+
+        //get #explanations div then create a new flex div for each status_expl item inside it, inside the flex div create two spans, one for the class and one for the description, the class span should have width: 20px and height: 20px and the description span should have margin-left: 5px, all spans should be display: inline-block
+        const explanationsDiv = document.getElementById('explanations');
+
+        for (let status of status_expl) {
+            const className = status.class;
+            const descriptionText = status.description;
+
+            // Create a new flex div for each status
+            const flexDiv = document.createElement('div');
+            flexDiv.style.display = 'flex';
+            flexDiv.style.flexWrap = 'wrap';
+            flexDiv.style.marginBottom = '10px';
+            flexDiv.style.alignItems = 'center';
+            flexDiv.style.justifyContent = 'flex-start';
+            flexDiv.style.gap = '10px';
+            flexDiv.style.fontSize = '12px';
+            flexDiv.style.fontFamily = 'Arial, sans-serif';
+
+            // Create a span for the class
+            const classSpan = document.createElement('span');
+            classSpan.className = className;
+            classSpan.classList.add('rounded')
+            classSpan.style.width = '16px';
+            classSpan.style.height = '16px';
+            classSpan.style.display = 'inline-block';
+
+            // Create a span for the description
+            const descriptionSpan = document.createElement('span');
+            descriptionSpan.textContent = descriptionText;
+            descriptionSpan.style.marginLeft = '1px';
+            descriptionSpan.style.display = 'inline-block';
+
+            // Append spans to the flex div
+            flexDiv.appendChild(classSpan);
+            flexDiv.appendChild(descriptionSpan);
+
+            // Append the flex div to the explanations div
+            explanationsDiv.appendChild(flexDiv);
+        }
     });
 </script>

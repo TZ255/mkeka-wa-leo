@@ -169,6 +169,13 @@ setInterval(() => {
             { id: 140, season: 2024 }, //LaLiga
             { id: 12, season: 2024 }, //CAF
             { id: 78, season: 2024 }, //Bundesliga
+            { id: 94, season: 2024 }, //Portugal
+            { id: 186, season: 2024 }, //Algeria
+            { id: 288, season: 2024 }, //South Africa
+            { id: 203, season: 2024 }, //Turkey
+            { id: 88, season: 2024 }, //Netherlands
+            { id: 135, season: 2024 }, //Italy
+            { id: 61, season: 2024 }, //France
             { id: 20, season: 2024 }, //CAF Confederation
             { id: 12, season: 2024 }, //CAF Champions
             { id: 29, season: 2023 }, //CAF WC Qualifiers
