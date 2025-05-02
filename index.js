@@ -154,8 +154,8 @@ setInterval(() => {
                 .catch(e => sendNotification(741815228, e?.message))
         }
 
-        //update bongo Every 15 minutes
-        if (mins % 15 === 0) {
+        //update bongo Every 35 and 5 minutes
+        if ((mins === 35 || mins == 5) && (hours >= 14 || hours < 5)) {
             UpdateBongoLeagueData(567, 2024)
             wafungajiBoraNBC() //scrape ligikuu.co.tz
             setTimeout(() => {
@@ -181,8 +181,8 @@ setInterval(() => {
             { id: 29, season: 2023 }, //CAF WC Qualifiers
         ]
 
-        //update other leagues every 13 minutes
-        if (mins % 13 === 0) {
+        //update other leagues every 30 minutes between 14:00 and 04:00
+        if (mins % 30 === 0 && (hours >= 14 || hours < 5)) {
             OtherLeagues.forEach((league, index) => {
                 setTimeout(() => {
                     UpdateOtherLeagueData(league.id, league.season)
