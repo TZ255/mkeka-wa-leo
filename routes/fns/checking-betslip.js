@@ -13,20 +13,43 @@ const checking3MkekaBetslip = async (d) => {
         //checking super 3 betslip
         let slip = await betslip.find({ date: d, vip_no: 1 })
         if (slip.length < 1) {
-            //find random 3 from mkekadb
-            let copies = await mkekadb.aggregate([
-                { $match: { date: d } },
-                { $sample: { size: 3 } }
-            ])
+            const copies = await correctScoreModel.aggregate([
+                { $match: { siku: d, time: { $gte: '14:00' } } },
+                // Add a field that splits the tip string and calculates total goals
+                {
+                    $addFields: {
+                        totalGoals: {
+                            $let: {
+                                vars: {
+                                    scores: { $split: ["$tip", ":"] }
+                                },
+                                in: {
+                                    $add: [
+                                        { $toInt: { $arrayElemAt: ["$$scores", 0] } },
+                                        { $toInt: { $arrayElemAt: ["$$scores", 1] } }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                // Filter for matches with 5 or more total goals
+                {
+                    $match: {
+                        totalGoals: { $gte: 5 }
+                    }
+                },
+                // Get random documents using sample
+                {
+                    $sample: { size: 3 }
+                }
+            ]);
 
             //add them to betslip database
             for (let c of copies) {
                 await betslip.create({
-                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 1
+                    date: c.siku, time: c.time, league: c.league, tip: 'Over 2.5', odd: '1.52', match: c.match.replace(/ - /g, ' vs '), vip_no: 1
                 })
-
-                //update the status of mega odds
-                await mkekadb.findByIdAndUpdate(c._id, {$set: {status: 'vip'}})
             }
         }
 
@@ -153,15 +176,19 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 5 }
+                    $sample: { size: 10 }
                 }
             ]);
 
             //add them to betslip database
             for (let c of copies) {
-                await paidVipModel.create({
-                    date: c.siku, time: c.time, league: c.league, tip: 'Over 2.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
-                })
+                //check if the match already exists in betslip vip 1
+                let matchExists = await betslip.findOne({ date: c.siku, match: c.match.replace(/ - /g, ' vs '), vip_no: 1 });
+                if (!matchExists) {
+                    await paidVipModel.create({
+                        date: c.siku, time: c.time, league: c.league, tip: 'Over 2.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
+                    })
+                }
             }
         }
 

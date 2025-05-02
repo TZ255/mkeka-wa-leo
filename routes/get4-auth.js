@@ -256,6 +256,14 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
             return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
         }
 
+        if (String(tip).toLowerCase() === 'shift-3') {
+            await paidVipModel.create({
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 3, expl: match.expl
+            })
+            await match.constructor.deleteOne({ _id: match._id });
+            return res.status(200).json({ ok: "✅ Match Status Shifted to PaidVIP", match });
+        }
+
         if (match.time !== time) match.time = time;
         if (match.league !== league) match.league = league;
         if (match.match !== game) match.match = game;
@@ -330,7 +338,6 @@ router.post('/spinning/sure3', async (req, res) => {
         let date = String(siku).split('-').reverse().join('/')
 
         await betslip.deleteMany({ date, vip_no: 1 })
-        await mkekaDB.updateMany({ date, status: 'vip' }, { $set: { status: 'Pending' } })
         await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
         res.redirect(`/mkeka/vip?date=${siku}`)
     } catch (error) {
