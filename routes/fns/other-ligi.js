@@ -4,6 +4,8 @@ const OtherLigiKuuModel = require('../../model/Ligi/other')
 
 const ErrorFn = async (message) => {
     try {
+        if (process.env.local == 'true') return console.log(message)
+        //send error message to telegram bot
         const ErrorTG_API = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}`
         await axios.post(`${ErrorTG_API}/sendMessage`, { chat_id: 741815228, text: message })
             .catch(e => console.log(e?.message))
@@ -232,6 +234,71 @@ const GetCurrentRound = async (league_id, season) => {
     }
 }
 
+//check if there is any match today then update the matchday field as true
+const CheckMatchDay = async (date, league_id, season) => {
+    try {
+        const options = {
+            method: 'GET',
+            url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
+            params: {
+              date: date,
+              league: String(league_id),
+              season: String(season),
+              timezone: 'Africa/Nairobi'
+            },
+            headers: {
+                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+            }
+        };
+
+        const response = await axios.request(options);
+        if (response.status !== 200) {
+            ErrorFn(`Error fetching ${league_id} fixtures`)
+            return false
+        }
+
+        if (response.status === 200 && response?.data?.response.length > 0) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error) {
+        console.log(error?.message, error)
+    }
+}
+
+//get all leagues, loop with for.. of.. loop, for each league call the CheckMatchDay function to check if there is any match today, if true update the matchday field to true else false
+const UpdateOtherLeagueMatchDay = async (date) => {
+    try {
+        const leagues = await OtherLigiKuuModel.find({active: true}).select('league_id league_season').lean()
+        for (const league of leagues) {
+            const { league_id, league_season } = league
+            const matchday = await CheckMatchDay(date, league_id, league_season)
+            await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season }, { $set: { matchday } })
+            ErrorFn(`Matchday updated for ${league_id} - ${league_season} to ${matchday}`)
+        }
+    } catch (error) {
+        ErrorFn(`Error updating matchday: ${error?.message}`)
+        console.log(error?.message, error)
+    }
+}
+
+
+//get all leagues with matchday true and active true, loop with for...of...loop, for each call UpdateOtherLeagueData function to update the league data fixtures, standing, scores etc
+const UpdateMatchDayLeagueData = async () => {
+    try {
+        const leagues = await OtherLigiKuuModel.find({ matchday: true, active: true }).select('league_id league_season').lean()
+        for (const league of leagues) {
+            const { league_id, league_season } = league
+            await UpdateOtherLeagueData(league_id, league_season)
+        }
+    } catch (error) {
+        ErrorFn(`Error updating matchday data: ${error?.message}`)
+        console.log(error?.message, error)
+    }
+}
+
 
 // UPDATE ENGLISH LEAGUE TO SWAHILI SEO TITLES
 const LeagueNameToSwahili = (country, league_name) => {
@@ -270,6 +337,8 @@ const LeagueNameToSwahili = (country, league_name) => {
 
 module.exports = {
     UpdateOtherLeagueData,
-    LeagueNameToSwahili
+    LeagueNameToSwahili,
+    UpdateOtherLeagueMatchDay,
+    UpdateMatchDayLeagueData,
 }
 

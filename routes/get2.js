@@ -12,7 +12,7 @@ const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const Over15MikModel = require('../model/ove15mik')
 const MikekaDBModel = require('../model/mkeka-mega')
 const bttsModel = require('../model/ya-uhakika/btts')
-const { UpdateOtherLeagueData, LeagueNameToSwahili } = require('./fns/other-ligi')
+const { UpdateOtherLeagueData, LeagueNameToSwahili, UpdateOtherLeagueMatchDay } = require('./fns/other-ligi')
 const { testSp, extractData } = require('./fns/jsjsjjs')
 const sendEmail = require('./fns/sendemail')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
@@ -20,6 +20,7 @@ const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./fns/ligikuucotz')
 const checking3MkekaBetslip = require('./fns/checking-betslip')
 const mkekaUsersModel = require('../model/mkeka-users')
+const { getAllFixtures, getFixturePredictions } = require('./fns/fixtures')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -456,12 +457,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        // let all = await OtherStandingLigiKuuModel.find()
-        // for (let le of all) {
-        //     le.ligi = LeagueNameToSwahili(le.country, le.league_name)
-        //     await le.save()
-        // }
-        await UpdateOtherLeagueData(94, 2024)
+        getFixturePredictions('1329513')
         res.end()
     } catch (error) {
         res.send(error.message)

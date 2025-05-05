@@ -1,0 +1,36 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><b style="font-size: 16px;">MECHI MOJA IMECHANA? USIWAZE! 🎉</b></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="text-align: justify;">
+        Huku tunakurudishia hadi mara 50 ya dau lako iwapo mkeka umechanwa na mechi moja. <br><br> Yaani! <b>BetWay</b> tumekuletea <b>Betsaver</b> , Mechi moja ikichana ni kama tumeshinda tu! 🤑 <br>
+        <div style="width: 100%; height: fit-content;">
+          <img src="/imgs/betsaver.webp" alt="BetWay, Betsaver Refund. Rudishiwa hadi mara 50 ya dau lako" style="width: 100%;" onclick="window.open('/betway/register')">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="betBtn" class="btn btn-primary" style="background-color: green; border: green;"><b>BASHIRI SASA!</b></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to show the modal after 30 seconds
+  function showDelayedModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    myModal.show();
+  }
+
+  // Set a timeout to call the function after 20 seconds
+  setTimeout(showDelayedModal, 20000);
+
+  // Add event listener to the button for opening an external link
+  document.getElementById('betBtn').addEventListener('click', function() {
+    window.open('/betway/register');
+  });
+</script>

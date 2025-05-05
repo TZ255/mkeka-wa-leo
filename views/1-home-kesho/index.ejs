@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../0-global/fonts.ejs'); %>
+    <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
+    <meta name="description"
+        content="Utabiri wa mechi na mikeka ya kesho ukiwa na tips za 1X2, Over/Under 2.5, BTTS, Correct Score na nyingine. Pata ushauri wa kubeti kwa mafanikio na uongeze nafasi zako za ushindi!">
+    <meta name="keywords"
+        content="Mikeka ya kesho, utabiri wa mechi, tips za 1X2, Over/Under 2.5, Both Teams to Score, Correct Score, ushauri wa kubeti, betting tips Tanzania, utabiri wa soka">
+
+    <title>Mkeka wa Kesho - <%= jumasiku.kesho %>, <%= trh.kesho %></title>
+    <link rel="canonical" href="https://mkekawaKesho.com/mkeka/kesho">
+    <%- include('./partials/style.ejs'); %>
+    <%- include('../0-global/style.ejs'); %>
+    <%- include('../0-global/google.ejs'); %>
+    <%- include('../0-global/favicon.ejs') %>
+</head>
+
+<body>
+    <%- include('../0-global/header.ejs'); %>
+    <main>
+        <section class="left">
+            <h1 class="h2" style="font-size: 16px;">Mikeka ya Kesho - <%= trh.kesho %></h1>
+            <div class="introduction p">
+                <p>
+                    Karibu mahali ambapo ushindi wako unathaminika!
+                    Pata utabiri wa mechi za kesho na uchambuzi bora wa mikeka ya kubeti ili kuongeza nafasi zako za ushindi.
+                </p>
+                <p>
+                    Tunatoa aina mbalimbali za bashiri, ikiwemo:
+                </p>
+                <ul>
+                    <li><strong>1X2</strong> (Bashiri za ushindi wa moja kwa moja)</li>
+                    <li>Bashiri za <strong>Over 1.5 Goals</strong></li>
+                    <li>Bashiri za <strong>Over/Under 2.5 Goals</strong></li>
+                    <li>Bashiri za <strong>Over/Under 3.5 Goals</strong></li>
+                    <li>Bashiri za <strong>Both Teams To Score (BTTS)</strong></li>
+                    <li>Bashiri za <strong>Correct Score</strong></li>
+                    <li>Bashiri za <strong>Double Chance</strong></li>
+                </ul>
+                <p>
+                    Mikeka yetu imeandaliwa kwa kutumia takwimu sahihi na uchambuzi wa kina wa mechi za mpira wa miguu,
+                    ili kukuhakikishia nafasi kubwa zaidi ya ushindi kila siku. Jiunge nasi Kesho na ugeuze maarifa yako
+                    ya
+                    mpira kuwa mafanikio makubwa katika ulimwengu wa kubeti!
+                </p>
+            </div>
+            <%- include('../0-global/banner.ejs'); %>
+            <hr class="my-3 text-light">
+            <%- include('./partials/mega.ejs'); %>
+            <hr class="my-5 text-light">
+            <%- include('./partials/vip.ejs'); %>
+            <hr class="style-eight">
+            <%- include('./partials/supa-over15.ejs'); %>
+            <%- include('../0-global/banner2.ejs'); %>
+            <%- include('../0-global/banner3.ejs'); %>
+            <%- include('./partials/whatsapp.ejs'); %>
+            <%- include('../0-global/somapia.ejs'); %>
+            <%- include('./partials/maana.ejs'); %>
+        </section>
+        <%- include('../0-global/right.ejs'); %>
+    </main>
+
+    <%- include('../0-global/footer.ejs'); %>
+
+    <%- include('./partials/script.ejs'); %>
+    <%- include('../0-global/script.ejs'); %>
+    <%- include('../0-global/modal.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

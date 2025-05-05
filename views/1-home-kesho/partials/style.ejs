@@ -1,0 +1,225 @@
+<style>
+    :root {
+        --betwayColor: #00A826;
+        --bet888Color: #fc6200;
+        --bet888TipColor: #c44e00;
+        --darkBlack: #212529;
+    }
+
+    .vip-btn {
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+        font-family: sans-serif;
+        background: linear-gradient(45deg, #B8860B, #DAA520);
+        color: white !important;
+        font-size: 14px;
+        border: 2px solid #FFD700;
+        box-shadow: 0 4px 15px rgba(218, 165, 32, 0.4);
+        transition: all 0.3s ease;
+    }
+
+    .vip-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(218, 165, 32, 0.6) !important;
+        background: linear-gradient(45deg, #DAA520, #B8860B) !important;
+    }
+
+    .tsap-btn {
+        display: block;
+        background-color: #2BB741;
+        color: white !important;
+        width: fit-content;
+        text-decoration: none;
+        padding: 16px 36px;
+        font-size: large;
+        font-weight: bold;
+        border: white solid 1px;
+        border-radius: 24px;
+        font-family: sans-serif !important;
+        font-style: normal !important;
+        margin: 12px auto 24px auto;
+    }
+
+    .tsap-btn:active,
+    .tsap-btn:hover {
+        background-color: #2BB741;
+        color: white;
+    }
+
+
+    /* ***************************** */
+    /* check .betslipCont styles on global */
+    /* ******************************* */
+
+    .cont .header {
+        background-color: #212529;
+        color: white;
+        font-weight: bold;
+        font-size: 17px;
+        padding: 16px 8px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        text-align: center;
+    }
+
+    .cont .header .star8 {
+        color: #00A826;
+    }
+
+    .cont .list-group li .date {
+        font-size: 12px;
+        color: #595959;
+        display: flex;
+    }
+
+    .left .cont .list-group li .dtime {
+        border-right: 1px solid #d3d3d3;
+        padding-right: 4px;
+    }
+
+    .left .cont .list-group li .ligi {
+        padding-left: 4px;
+    }
+
+    .left .cont .list-group li .match {
+        font-family: 'Trebuchet MS', Arial, sans-serif;
+        color: var(--darkBlack);
+        font-size: 18px;
+    }
+
+    .left .cont .list-group li .bet {
+        color: #00A826;
+        cursor: pointer;
+    }
+
+    .total {
+        width: 98%;
+        margin: 16px auto 12px auto;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 16px 0 34px 0;
+        border-top: #d3d3d3 solid 2px;
+    }
+
+    .subtotal {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .total .w25 {
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .total .w40 {
+        width: 40%;
+    }
+
+    .total .btm span {
+        display: flex;
+    }
+
+    .total .btm .hdr {
+        font-weight: bold;
+    }
+
+    .total .btm .ct {
+        background-color: #212529;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border-radius: 3px;
+    }
+
+    .total .tangazo {
+        text-align: center;
+        font-family: monospace;
+        margin-top: 12px;
+        font-weight: lighter;
+        font-size: smaller;
+    }
+
+    .total .sasa {
+        text-align: center;
+        margin: 12px auto 2px auto;
+        width: 100%;
+    }
+
+    .total .sasa button {
+        background-color: var(--betwayColor);
+        color: white;
+        border: none;
+        cursor: pointer;
+        padding: 12px;
+        font-weight: bold;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .total .sasa button:hover,
+    .total .sasa button:active {
+        border: var(--betwayColor) 1px solid;
+    }
+
+    /* mechi zingine kesho */
+    /* mechi zingine kesho */
+    .hover-effect {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hover-effect:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .transition-link {
+        transition: color 0.2s ease;
+    }
+
+    .transition-link:hover {
+        color: #0d8b30 !important;
+    }
+
+    .arrow-transition {
+        transition: transform 0.2s ease;
+    }
+
+    .transition-link:hover .arrow-transition {
+        transform: translateX(4px);
+    }
+
+
+
+    @media (max-width: 800px) {
+        main .left .cont {
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .left .cont .list-group li .date {
+            font-size: 10px;
+        }
+
+        main .left .total .btm {
+            font-size: 12px;
+        }
+
+        .left .toggle-cont .toggles div {
+            padding: 10px 4px;
+        }
+
+        .left .tble-cont table .match-td {
+            font-size: 13px;
+        }
+
+        .left .betslipCont table .match {
+            font-size: 13px;
+        }
+    }
+</style>

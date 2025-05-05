@@ -19,7 +19,7 @@ const CharlloteSourceCodes = require('./bots/charlotte/bot')
 const helenSourceCodes = require('./bots/helen/bot')
 const zambiaBotsSourceCodes = require('./bots/zambias/bot')
 const { UpdateBongoLeagueData } = require('./routes/fns/bongo-ligi')
-const { UpdateOtherLeagueData } = require('./routes/fns/other-ligi')
+const { UpdateOtherLeagueData, UpdateOtherLeagueMatchDay, UpdateMatchDayLeagueData } = require('./routes/fns/other-ligi')
 const { default: axios } = require('axios')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz');
 const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
@@ -147,11 +147,14 @@ setInterval(() => {
             checking3MkekaBetslip(d_date)
         }
 
-        //reset resend email count at 03:00
-        if (hours === 3 && mins < 2) {
+        //reset resend email count at 03:05 -- check matchdays
+        if (hours === 3 && mins === 5) {
             affAnalyticsModel.findOneAndUpdate({ pid: 'shemdoe' }, { $set: { email_count: 0 } })
                 .then(() => sendNotification(741815228, '✅ Email count set to 0'))
                 .catch(e => sendNotification(741815228, e?.message))
+
+            //check matchdays -- date format is YYYY-MM-DD
+            UpdateOtherLeagueMatchDay(d_date.split('/').reverse().join('-'))
         }
 
         //update bongo Every 35 and 5 minutes
@@ -163,31 +166,9 @@ setInterval(() => {
             }, 5000)
         }
 
-        //Other leagues data
-        let OtherLeagues = [
-            { id: 39, season: 2024 }, //EPL
-            { id: 140, season: 2024 }, //LaLiga
-            { id: 12, season: 2024 }, //CAF
-            { id: 78, season: 2024 }, //Bundesliga
-            { id: 94, season: 2024 }, //Portugal
-            { id: 186, season: 2024 }, //Algeria
-            { id: 288, season: 2024 }, //South Africa
-            { id: 203, season: 2024 }, //Turkey
-            { id: 88, season: 2024 }, //Netherlands
-            { id: 135, season: 2024 }, //Italy
-            { id: 61, season: 2024 }, //France
-            { id: 20, season: 2024 }, //CAF Confederation
-            { id: 12, season: 2024 }, //CAF Champions
-            { id: 29, season: 2023 }, //CAF WC Qualifiers
-        ]
-
         //update other leagues every 30 minutes between 14:00 and 04:00
         if (mins % 30 === 0 && (hours >= 14 || hours < 5)) {
-            OtherLeagues.forEach((league, index) => {
-                setTimeout(() => {
-                    UpdateOtherLeagueData(league.id, league.season)
-                }, index * 7000)
-            })
+            UpdateMatchDayLeagueData();
         }
 
         //Build MikekayaUhakika

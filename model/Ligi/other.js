@@ -32,6 +32,14 @@ const LigiSchema = new Schema({
     top_assists: {
         type: Array
     },
+    active: {
+        type: Boolean,
+        default: true
+    },
+    matchday: {
+        type: Boolean,
+        default: false
+    }
 }, {timestamps: true, strict: false})
 
 const OtherLeagueModel = mongoose.model('Other League', LigiSchema)

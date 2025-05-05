@@ -88,21 +88,37 @@ router.get('/', async (req, res) => {
 
 })
 
-router.get('/kesho', async (req, res) => {
+router.get('/mkeka/kesho', async (req, res) => {
     try {
-        let d = new Date()
-        d.setDate(d.getDate() + 1)
-        let ksh = d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let mikeka = await mkekadb.find({ date: ksh })
-        let megaOdds = 1
+        //kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        for (let m of mikeka) {
-            megaOdds = (megaOdds * m.odds).toFixed(2)
-        }
-        res.render('1-home/home', { megaOdds, mikeka })
+        //mikeka mega
+        let mikeka = await mkekadb.find({ date: kesho, status: {$ne: 'vip'} }).sort('time').cache(600) //10 minutes
+
+        //multiply all odds of MegaOdds
+        const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
+
+        //Over 1.5 SUPA Tips
+        const { ktips } = await processOver15('no leo', 'no jana', 'no juzi', kesho)
+
+        //tarehes
+        let trh = { kesho }
+        let jumasiku = { kesho: WeekDayFn(k_juma) }
+
+
+        res.render('1-home-kesho/index', { megaOdds, mikeka, ktips, trh, jumasiku })
     } catch (err) {
-        console.log(err)
-        console.log(err.message)
+        console.log(err.message, err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1001570087172, //matangazoDB
+            message_id: 43
+        }).catch(e => console.log(e.message, e))
     }
 
 })
