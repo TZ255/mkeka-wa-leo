@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Angalia matokeo ya mechi zote za siku ya jana <%= jumasiku.jana %>, <%= trh.jana %>">
+    <link rel="canonical" href="https://mkekawaleo.com/mechi/jana">
+    <title>Matokeo ya Mechi Zote za Jana | <%= jumasiku.jana %>, <%= trh.jana %></title>
+    <%- include('./partials/style.ejs'); %>
+    <%- include('../0-global/style.ejs'); %>
+    <%- include('../0-global/google.ejs'); %>
+    <%- include('../0-global/fonts.ejs'); %>
+    <%- include('../0-global/favicon.ejs') %>
+</head>
+
+<body>
+    <%- include('../0-global/header.ejs'); %>
+    <main>
+        <section class="left">
+            <div class="container py-4 position-relative">
+                <div class="header-container text-center">
+                    <h1 class="fw-bold fs-2">
+                        Matokeo ya Mechi Zote za Jana
+                        <span class="d-block fs-6 mt-2 text-secondary"><%= jumasiku.jana %>: <%= trh.jana %></span>
+                    </h1>
+
+                    <div class="date-navigation d-flex justify-content-center gap-3">
+                        <a href="/mechi/jana" title="Matokeo ya mechi zote za jana <%= jumasiku.jana %>, <%= trh.jana %>" class="date-link text-success active">Jana</a>
+
+                        <a href="/mechi/leo" title="Matokeo na Ratiba ya mechi zote za Leo <%= jumasiku.leo %>, <%= trh.leo %>" class="date-link text-success">Leo</a>
+
+                        <a href="/mechi/kesho" title="Ratiba ya mechi zote za kesho <%= jumasiku.kesho %>, <%= trh.kesho %>" class="date-link text-success">Kesho</a>
+                    </div>
+                </div>
+                <%- include('./partials/fixture-table.ejs'); %>
+                <br>
+                <hr> <br>
+                <%- include('../0-global/banner.ejs'); %>
+                <br>
+                <%- include('../0-global/somapia.ejs'); %>
+        </section>
+    </main>
+
+    <%- include('../0-global/footer.ejs'); %>
+    <%- include('./partials/script.ejs'); %>
+    <%- include('../0-global/script.ejs'); %>
+    <%- include('../0-global/modal.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+</html>

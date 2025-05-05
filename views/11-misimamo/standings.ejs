@@ -32,10 +32,10 @@
     <%- include('../0-global/header.ejs'); %>
     <main>
         <section class="leftside">
-            <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
                             aria-controls="panelsStayOpen-collapseOne">
                             MISIMAMO YA LIGI KUU 2024/2025
@@ -45,19 +45,54 @@
                         aria-labelledby="panelsStayOpen-headingOne">
                         <div class="accordion-body">
                             <div class="container mt-4">
-                                <ul class="list-group">
+                                <ul class="list-group list-group-flush">
                                     <li class="list-group-item fw-bold">
-                                        <a href="/standings/567/2024" title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025" class="text-decoration-none">
+                                        <a href="/standings/567/2024" title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025" class="text-decoration-none link-success">
                                             Tanzania - NBC Premier League 2024/2025
                                         </a>
                                     </li>
                                     <% leagues_2024.forEach(league => { %>
                                     <li class="list-group-item fw-bold">
-                                        <a href="/standings/<%= league.league_id %>/<%= league.league_season %>" title="Msimamo wa <%= league.ligi %> - <%= league.name %> kwa msimu wa <%= league.season_long %>" class="text-decoration-none">
+                                        <a href="/standings/<%= league.league_id %>/<%= league.league_season %>" title="Msimamo wa <%= league.ligi %> - <%= league.name %> kwa msimu wa <%= league.season_long %>" class="text-decoration-none link-success">
                                             <%= league.country %> - <%= league.ligi %> <%= league.season_long %>
                                         </a>
                                     </li>
                                     <% }) %>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Accordion -->
+                <div class="accordion-item mt-5">
+                    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                        <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
+                            aria-controls="panelsStayOpen-collapseTwo">
+                            RATIBA NA MATOKEO YA MECHI
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+                        aria-labelledby="panelsStayOpen-headingTwo">
+                        <div class="accordion-body">
+                            <div class="container mt-4">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item fw-bold">
+                                        <a href="/mechi/jana" title="Ratiba na Matokeo ya Mechi Zote za Jana" class="text-decoration-none link-success">
+                                            Matokeo ya Mechi za Jana
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item fw-bold">
+                                        <a href="/mechi/leo" title="Ratiba na Matokeo ya Mechi Zote za Leo" class="text-decoration-none link-success">
+                                            Ratiba na Matokeo ya Mechi za Leo
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item fw-bold">
+                                        <a href="/mechi/kesho" title="Ratiba na Matokeo ya Mechi Zote za Kesho" class="text-decoration-none link-success">
+                                            Ratiba ya Mechi za Kesho
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

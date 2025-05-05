@@ -21,6 +21,7 @@ const { wafungajiBoraNBC, assistBoraNBC } = require('./fns/ligikuucotz')
 const checking3MkekaBetslip = require('./fns/checking-betslip')
 const mkekaUsersModel = require('../model/mkeka-users')
 const { getAllFixtures, getFixturePredictions } = require('./fns/fixtures')
+const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -454,10 +455,52 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
     }
 })
 
+//FIXTURES - matokeo na ratiba ya mechi zote
+router.get('/mechi/:siku', async (req, res) => {
+    const siku = String(req.params.siku).toLowerCase()
+    if(!['jana', 'leo', 'kesho'].includes(siku)) return res.status(400).send('Invalid date parameter')
+    try {
+        //leo
+        let nd = new Date()
+        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        //jana
+        let _nd = new Date()
+        _nd.setDate(_nd.getDate() - 1)
+        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        //juzi
+        let _jd = new Date()
+        _jd.setDate(_jd.getDate() - 2)
+        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        //kesho
+        let new_d = new Date()
+        new_d.setDate(new_d.getDate() + 1)
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+
+        //get fixtures from db
+        const {allMatches} = await processRatibaMatokeo(siku)
+
+        //tarehes
+        let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
+    
+        let day = siku.charAt(0).toUpperCase() + siku.slice(1)
+
+        res.render(`14-fixtures/${siku}`, { allMatches, trh, jumasiku, day })
+    } catch (error) {
+        console.error(error.message)
+        sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)
+        res.status(500).send('Internal Server Error')
+    }
+})
+
 
 router.get('/API/testing', async (req, res) => {
     try {
-        getFixturePredictions('1329513')
+        getAllFixtures()
         res.end()
     } catch (error) {
         res.send(error.message)

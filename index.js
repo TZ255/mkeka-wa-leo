@@ -28,6 +28,7 @@ const sendNotification = require('./routes/fns/sendTgNotifications');
 const mkekaUsersModel = require('./model/mkeka-users');
 const BetslipModel = require('./model/betslip');
 const { identity } = require('lodash');
+const { getAllFixtures } = require('./routes/fns/fixtures');
 
 const app = express()
 
@@ -142,9 +143,10 @@ setInterval(() => {
         let hours = Number(hh)
         let mins = Number(mm)
 
-        //angalia betslip kila baada ya dakika 15
+        //angalia betslip, getAllFixtures kila baada ya dakika 15
         if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
+            getAllFixtures()
         }
 
         //reset resend email count at 03:05 -- check matchdays
@@ -153,7 +155,7 @@ setInterval(() => {
                 .then(() => sendNotification(741815228, '✅ Email count set to 0'))
                 .catch(e => sendNotification(741815228, e?.message))
 
-            //check matchdays -- date format is YYYY-MM-DD
+            //check matchdays active true or false -- date format is YYYY-MM-DD
             UpdateOtherLeagueMatchDay(d_date.split('/').reverse().join('-'))
         }
 

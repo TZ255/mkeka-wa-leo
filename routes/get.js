@@ -561,7 +561,7 @@ router.get('/mkeka/correct-score', async (req, res) => {
     } catch (error) {
         console.error(error.message)
         sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)
-        res.send(error.message)
+        res.status(500).send('Internal Server Error')
     }
 })
 

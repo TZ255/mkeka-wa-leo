@@ -1,0 +1,62 @@
+<section class="keka-mix-sectio shadow rounded mb-5">
+    <!-- tomorrow -->
+    <div class="tble-cont" id="kday" itemscope itemtype="https://schema.org/Table">
+        <meta itemprop="about" content="Ratiba na matokeo ya mechi zote za siku ya <%= day.toLowerCase() %>">
+        <table class="table table-default">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col" class="text-center">Muda</th>
+                    <th scope="col">Mechi</th>
+                    <th class="tips-th" scope="col">Matokeo <span class="d-block m-0 fw-normal">(FT)</span></th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% allMatches.forEach(league => { %>
+                <tr class="league-row table-secondary mt-8">
+                    <td colspan="3" class="league-name text-muted"><%= league.league %></td>
+                </tr>
+                <% league.fixtures.forEach(match => { %>
+                <tr class="tdata">
+                    <td class="text-muted text-center align-middle" style="font-size: 10px !important;">
+                        <span class="time d-block <%= match.status %>">
+                            <%= match.time %>
+                        </span>
+                        <span class="date d-block <%= match.status %>">
+                            <%= match.jsDate.split('-').reverse().join('/') %>
+                        </span>
+                        <% if (match.status === "PST") { %>
+                        <span class="date d-block text-danger">
+                            postponed
+                        </span>
+                        <% } %>
+                        <% if (match.status === "CANC") { %>
+                        <span class="date d-block text-danger">
+                            cancelled
+                        </span>
+                        <% } %>
+                    </td>
+                    <td class="<%= match.status %>">
+                        <span class="<%= match.match.home.winner === true ? 'text-success' : '' %>">
+                            <%= match.match.home.name %>
+                        </span> <br>
+                        <span class="<%= match.match.away.winner === true ? 'text-success' : '' %>">
+                            <%= match.match.away.name %>
+                        </span>
+                    </td>
+                    <td class="text-center fw-bold">
+                        <span class="<%= match.match.home.winner === true ? 'text-success' : '' %>"><%= match.matokeo.fulltime.home ?? '-' %></span> 
+                        <br> 
+                        <span class="<%= match.match.away.winner === true ? 'text-success' : '' %>"><%= match.matokeo.fulltime.away ?? '-' %></span>
+                    </td>
+                </tr>
+                <% }); %>
+                <% }); %>
+            </tbody>
+        </table>
+        <% if (allMatches.length === 0) { %>
+        <div class="alert alert-warning mx-1" role="alert">
+            Mechi za <%= day %> hazikupatikana kwa muda huu, tafadhali rudi tena baadae
+        </div>
+        <% } %>
+    </div>
+</section>
