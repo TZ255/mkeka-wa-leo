@@ -1,60 +1,98 @@
-<section class="keka-mix-sectio shadow rounded mb-5">
-    <!-- tomorrow -->
-    <div class="tble-cont" id="kday" itemscope itemtype="https://schema.org/Table">
+<section class="shadow rounded mb-5">
+    <!-- Match fixtures container -->
+    <div class="container-fluid px-0" id="kday" itemscope itemtype="https://schema.org/Table">
         <meta itemprop="about" content="Ratiba na matokeo ya mechi zote za siku ya <%= day.toLowerCase() %>">
-        <table class="table table-default">
-            <thead>
-                <tr class="table-dark">
-                    <th scope="col" class="text-center">Muda</th>
-                    <th scope="col">Mechi</th>
-                    <th class="tips-th" scope="col">Matokeo <span class="d-block m-0 fw-normal">(FT)</span></th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <% allMatches.forEach(league => { %>
-                <tr class="league-row table-secondary mt-8">
-                    <td colspan="3" class="league-name text-muted"><%= league.league %></td>
-                </tr>
-                <% league.fixtures.forEach(match => { %>
-                <tr class="tdata">
-                    <td class="text-muted text-center align-middle" style="font-size: 10px !important;">
-                        <span class="time d-block <%= match.status %>">
-                            <%= match.time %>
-                        </span>
-                        <span class="date d-block <%= match.status %>">
-                            <%= match.jsDate.split('-').reverse().join('/') %>
-                        </span>
-                        <% if (match.status === "PST") { %>
-                        <span class="date d-block text-danger">
-                            postponed
-                        </span>
-                        <% } %>
-                        <% if (match.status === "CANC") { %>
-                        <span class="date d-block text-danger">
-                            cancelled
-                        </span>
-                        <% } %>
-                    </td>
-                    <td class="<%= match.status %>">
-                        <span class="<%= match.match.home.winner === true ? 'text-success' : '' %>">
-                            <%= match.match.home.name %>
-                        </span> <br>
-                        <span class="<%= match.match.away.winner === true ? 'text-success' : '' %>">
-                            <%= match.match.away.name %>
-                        </span>
-                    </td>
-                    <td class="text-center fw-bold">
-                        <span class="<%= match.match.home.winner === true ? 'text-success' : '' %>"><%= match.matokeo.fulltime.home ?? '-' %></span> 
-                        <br> 
-                        <span class="<%= match.match.away.winner === true ? 'text-success' : '' %>"><%= match.matokeo.fulltime.away ?? '-' %></span>
-                    </td>
-                </tr>
-                <% }); %>
-                <% }); %>
-            </tbody>
-        </table>
+        <% allMatches.forEach(league => { %>
+        <div class="card mb-3">
+            <!-- League header -->
+            <div class="card-header bg-dark text-light">
+                <h2 class="card-title mb-0 fs-5"><%= league.league %></h2>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr class="table-secondary">
+                            <th scope="col" style="width: 15%;" class="text-center">Time</th>
+                            <th scope="col" style="width: 55%;">Teams</th>
+                            <th scope="col" style="width: 15%;" class="text-center">HT</th>
+                            <th scope="col" style="width: 15%;" class="text-center">FT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% league.fixtures.forEach(match => { %>
+                        <tr>
+                            <!-- Time column -->
+                            <td class="text-center">
+                                <div class="text-muted <%= ['1H', '2H', 'HT', 'CANC', 'PST'].includes(match.status) ? 'd-none' : '' %>">
+                                    <%= match.time %>
+                                </div>
+                                <small class="text-muted <%= ['1H', '2H', 'HT', 'CANC', 'PST'].includes(match.status) ? 'd-none' : 'd-block' %>">
+                                    <%= match.jsDate.split('-').reverse().join('/').split('/20')[0] %>
+                                </small>
+                                <% if (match.status === "PST") { %>
+                                <span class="badge bg-warning text-dark">Postponed</span>
+                                <% } %>
+                                <% if (match.status === "CANC") { %>
+                                <span class="badge bg-danger">Cancelled</span>
+                                <% } %>
+                                <% if (['1H', '2H', 'HT'].includes(match.status)) { %>
+                                <span class="badge bg-danger">LIVE</span>
+                                <% } %>
+                                <% if (match.status === "FT") { %>
+                                <span class="badge bg-secondary">FT</span>
+                                <% } %>
+                            </td>
+
+                            <!-- Teams column -->
+                            <td class="">
+                                <div class="d-flex flex-column">
+                                    <div class="<%= match.match.home.winner === true ? 'text-success fw-bold' : '' %> text-truncate"
+                                        style="max-width: 200px;" title="<%= match.match.home.name %>">
+                                        <%= match.match.home.name %>
+                                    </div>
+                                    <div class="<%= match.match.away.winner === true ? 'text-success fw-bold' : '' %> text-truncate"
+                                        style="max-width: 200px;" title="<%= match.match.away.name %>">
+                                        <%= match.match.away.name %>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Half time scores -->
+                            <td class="text-center">
+                                <div class="d-flex flex-column">
+                                    <div class="<%= match.match.home.winner === true ? 'text-success fw-bold' : '' %>">
+                                        <%= match.matokeo.halftime && match.matokeo.halftime.home !== null ? match.matokeo.halftime.home : '-' %>
+                                    </div>
+                                    <div class="<%= match.match.away.winner === true ? 'text-success fw-bold' : '' %>">
+                                        <%= match.matokeo.halftime && match.matokeo.halftime.away !== null ? match.matokeo.halftime.away : '-' %>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Full time scores -->
+                            <td class="text-center">
+                                <div class="d-flex flex-column">
+                                    <div class="<%= match.match.home.winner === true ? 'text-success fw-bold' : '' %>">
+                                        <%= match.matokeo.fulltime.home ?? '-' %>
+                                    </div>
+                                    <div class="<%= match.match.away.winner === true ? 'text-success fw-bold' : '' %>">
+                                        <%= match.matokeo.fulltime.away ?? '-' %>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <% }) %>
+
+        <!-- No matches message -->
         <% if (allMatches.length === 0) { %>
-        <div class="alert alert-warning mx-1" role="alert">
+        <div class="alert alert-warning" role="alert">
             Mechi za <%= day %> hazikupatikana kwa muda huu, tafadhali rudi tena baadae
         </div>
         <% } %>

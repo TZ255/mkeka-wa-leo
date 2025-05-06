@@ -19,28 +19,31 @@
 <body>
     <%- include('../0-global/header.ejs'); %>
     <main>
-        <section class="left">
-            <div class="container py-4 position-relative">
-                <div class="header-container text-center">
-                    <h1 class="fw-bold fs-2">
-                        Matokeo ya Mechi Zote za Jana
-                        <span class="d-block fs-6 mt-2 text-secondary"><%= jumasiku.jana %>: <%= trh.jana %></span>
-                    </h1>
+        <section class="left" style="margin: 0 !important;">
+            <div class="header-container text-center">
+                <h1 class="fw-bold fs-2">
+                    Matokeo ya Mechi Zote za Jana
+                    <span class="d-block fs-6 mt-2 text-secondary"><%= jumasiku.jana %>: <%= trh.jana %></span>
+                </h1>
 
-                    <div class="date-navigation d-flex justify-content-center gap-3">
-                        <a href="/mechi/jana" title="Matokeo ya mechi zote za jana <%= jumasiku.jana %>, <%= trh.jana %>" class="date-link text-success active">Jana</a>
+                <div class="date-navigation d-flex justify-content-center gap-3">
+                    <a href="/mechi/jana" title="Matokeo ya mechi zote za jana <%= jumasiku.jana %>, <%= trh.jana %>"
+                        class="date-link text-success active">Jana</a>
 
-                        <a href="/mechi/leo" title="Matokeo na Ratiba ya mechi zote za Leo <%= jumasiku.leo %>, <%= trh.leo %>" class="date-link text-success">Leo</a>
+                    <a href="/mechi/leo"
+                        title="Matokeo na Ratiba ya mechi zote za Leo <%= jumasiku.leo %>, <%= trh.leo %>"
+                        class="date-link text-success">Leo</a>
 
-                        <a href="/mechi/kesho" title="Ratiba ya mechi zote za kesho <%= jumasiku.kesho %>, <%= trh.kesho %>" class="date-link text-success">Kesho</a>
-                    </div>
+                    <a href="/mechi/kesho" title="Ratiba ya mechi zote za kesho <%= jumasiku.kesho %>, <%= trh.kesho %>"
+                        class="date-link text-success">Kesho</a>
                 </div>
-                <%- include('./partials/fixture-table.ejs'); %>
-                <br>
-                <hr> <br>
-                <%- include('../0-global/banner.ejs'); %>
-                <br>
-                <%- include('../0-global/somapia.ejs'); %>
+            </div>
+            <%- include('./partials/fixture-table.ejs'); %>
+            <br>
+            <hr> <br>
+            <%- include('../0-global/banner.ejs'); %>
+            <br>
+            <%- include('../0-global/somapia.ejs'); %>
         </section>
     </main>
 
@@ -54,4 +57,5 @@
         integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

@@ -27,12 +27,12 @@ const getFixtures = async (date, siku) => {
         const processedFixtures = fixtures.map(fixture => {
             return {
                 fixture_id: fixture.fixture.id,
-                league_id: fixture.league.name,
+                league_id: fixture.league.id,
                 league: `${fixture.league.country}: ${fixture.league.name}`,
                 match: fixture.teams,
                 siku,
                 jsDate: fixture.fixture.date.split('T')[0],
-                time: new Date(fixture.fixture.date).toTimeString().slice(0, 5),
+                time: fixture.fixture.date.split("T")[1].substring(0, 5),
                 status: fixture.fixture.status.short,
                 matokeo: fixture?.score,
                 venue: fixture.fixture?.venue?.name
