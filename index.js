@@ -173,9 +173,9 @@ setInterval(() => {
             UpdateMatchDayLeagueData();
         }
 
-        //Build MikekayaUhakika
-        if (hours % 2 === 0 && mins === 0) {
-            axios.post(`https://api.netlify.com/build_hooks/6769da06b09a29e4ecf49b63`)
+        //Build MikekayaUhakika every hour
+        if (mins === 0) {
+            axios.post(`https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/ae249406-125e-4e1a-a6fd-e58e7799db52`)
                 .catch(e => console.log(e?.message))
         }
     }
