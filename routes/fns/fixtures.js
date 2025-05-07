@@ -42,7 +42,7 @@ const getFixtures = async (date, siku) => {
         await fixtures_resultsModel.deleteMany({ siku })
         // Insert new fixtures into the database
         await fixtures_resultsModel.insertMany(processedFixtures)
-        sendNotification(741815228, `✅ ${date} (${siku}) - ${processedFixtures.length} fixtures saved`)
+        console.log(`✅ ${date} (${siku}) - ${processedFixtures.length} fixtures saved`)
     } catch (error) {
         console.error('Error fetching fixtures:', error);
         sendNotification(741815228, `❌ ${date} - ${error?.message}`)

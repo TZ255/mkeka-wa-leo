@@ -24,6 +24,8 @@ const { getAllFixtures, getFixturePredictions } = require('./fns/fixtures')
 const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
+const moment = require('moment-timezone')
+const sendNotification = require('./fns/sendTgNotifications')
 
 
 router.get('/standings', async (req, res) => {
@@ -489,7 +491,17 @@ router.get('/mechi/:siku', async (req, res) => {
     
         let day = siku.charAt(0).toUpperCase() + siku.slice(1)
 
-        res.render(`14-fixtures/${siku}`, { allMatches, trh, jumasiku, day })
+        let partials = {
+            update: {
+                jana: moment.tz('Africa/Nairobi').subtract(1, 'day').endOf('day').format(),
+                leo: moment.tz('Africa/Nairobi').startOf('hour').format(),
+                kesho: moment.tz('Africa/Nairobi').startOf('day').format()
+            }
+        }
+        //set last modified headers
+        res.set('Last-Modified', new Date(partials.update[siku]).toUTCString())
+
+        res.render(`14-fixtures/${siku}`, { allMatches, trh, jumasiku, day, partials })
     } catch (error) {
         console.error(error.message)
         sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)

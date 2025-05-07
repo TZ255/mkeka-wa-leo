@@ -276,7 +276,7 @@ const UpdateOtherLeagueMatchDay = async (date) => {
             const { league_id, league_season } = league
             const matchday = await CheckMatchDay(date, league_id, league_season)
             await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season }, { $set: { matchday } })
-            ErrorFn(`Matchday updated for ${league_id} - ${league_season} to ${matchday}`)
+            console.log(`Matchday updated for ${league_id} - ${league_season} to ${matchday}`)
         }
     } catch (error) {
         ErrorFn(`Error updating matchday: ${error?.message}`)
