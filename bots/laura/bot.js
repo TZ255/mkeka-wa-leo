@@ -382,12 +382,13 @@ const lauraMainFn = async (app) => {
             }
 
             // Handle subscriptions
-            if (['silver', 'gold', 'gold2'].includes(param)) {
+            if (['silver', 'gold', 'gold2', 'one'].includes(param)) {
 
                 const subscriptionMap = {
                     'silver': SUBSCRIPTION_TYPES.SILVER,
                     'gold': SUBSCRIPTION_TYPES.GOLD,
                     'gold2': SUBSCRIPTION_TYPES.GOLD2,
+                    'one': SUBSCRIPTION_TYPES.one,
                 };
 
                 const subscriptionType = subscriptionMap[param];
