@@ -10,6 +10,7 @@ const sendNotification = require('./sendTgNotifications')
 
 const checking3MkekaBetslip = async (d) => {
     try {
+        let allPaidVIP = await paidVipModel.countDocuments({date: d})
         //checking super 3 betslip
         let slip = await betslip.find({ date: d, vip_no: 1 })
         if (slip.length < 1) {
@@ -73,7 +74,7 @@ const checking3MkekaBetslip = async (d) => {
 
         //############## slip 2 (over 1.5 ft) #############################
         let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
-        if (vip2.length < 1) {
+        if (vip2.length < 1 && allPaidVIP < 5) {
             //find random 3 from over 1.5
             let copies = await Over15MikModel.aggregate([
                 { $match: { date: d } },
@@ -90,7 +91,7 @@ const checking3MkekaBetslip = async (d) => {
 
         //############### slip 3 (Under 3.5 from Cscore 0:0) ############################
         let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
-        if (vip3.length < 1) {
+        if (vip3.length < 1 && allPaidVIP < 5) {
             let under35 = ['0:0'];
             let copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, tip: { $in: [...under35] } } },
@@ -108,7 +109,7 @@ const checking3MkekaBetslip = async (d) => {
 
         //################ slip 4 (Direct win - match.today) #########################
         let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
-        if (vip4.length < 1) {
+        if (vip4.length < 1 && allPaidVIP < 5) {
             let direct_home = ['3:0', '4:0', '4:1', '5:0', '5:1']
             let direct_away = ['0:3', '0:4', '1:4', '0:5', '1:5']
 
@@ -147,7 +148,7 @@ const checking3MkekaBetslip = async (d) => {
 
         //######################## slip 5 (Over 2.5 from cscore - match.today)#################
         let vip5 = await paidVipModel.find({ date: d, vip_no: 5 })
-        if (vip5.length < 1) {
+        if (vip5.length < 1 && allPaidVIP < 5) {
             const copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, time: { $gte: '12:00' } } },
                 // Add a field that splits the tip string and calculates total goals
