@@ -8,7 +8,7 @@
     <meta name="description"
         content="Angalia ratiba ya mechi za <%= partials.team_info.team.name %> pamoja na matokeo ya msimu mzima wa <%= partials.season_long %>">
     <meta property="article:modified_time" content="<%= partials.team_info.update %>">
-    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>/">
+    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
     <%- include('../../../../0-global/favicon.ejs') %>
     <title>Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> <%= partials.season_long %></title>
     <%- include('../../../../0-global/style.ejs'); %>
@@ -36,7 +36,7 @@
                 <div class="utangulizi p-2 text-align-justify">
                     <p>
                         <%= partials.team_info.team.name %> ni timu inayoshiriki ligi kuu ikiwa inashikilia nafasi ya
-                        <%= partials.team_info.rank %> katika <a href="/standings/567/<%= partials.season %>" class="text-success">Msimamo
+                        <%= partials.team_info.rank %> katika <a href="/standings/football/tanzania/premier-league" class="text-success">Msimamo
                             wa Ligi Kuu Tanzania Bara <%= partials.season_long %></a> na ikiwa na jumla ya <b
                             class="text-success">points <%= partials.team_info.points %></b>. Hadi sasa imecheza jumla
                         ya mechi

@@ -241,10 +241,10 @@ const CheckMatchDay = async (date, league_id, season) => {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
             params: {
-              date: date,
-              league: String(league_id),
-              season: String(season),
-              timezone: 'Africa/Nairobi'
+                date: date,
+                league: String(league_id),
+                season: String(season),
+                timezone: 'Africa/Nairobi'
             },
             headers: {
                 'x-rapidapi-key': process.env.RAPID_API_KEY,
@@ -271,7 +271,7 @@ const CheckMatchDay = async (date, league_id, season) => {
 //get all leagues, loop with for.. of.. loop, for each league call the CheckMatchDay function to check if there is any match today, if true update the matchday field to true else false
 const UpdateOtherLeagueMatchDay = async (date) => {
     try {
-        const leagues = await OtherLigiKuuModel.find({active: true}).select('league_id league_season').lean()
+        const leagues = await OtherLigiKuuModel.find({ active: true }).select('league_id league_season').lean()
         for (const league of leagues) {
             const { league_id, league_season } = league
             const matchday = await CheckMatchDay(date, league_id, league_season)
@@ -301,38 +301,81 @@ const UpdateMatchDayLeagueData = async () => {
 
 
 // UPDATE ENGLISH LEAGUE TO SWAHILI SEO TITLES
-const LeagueNameToSwahili = (country, league_name) => {
+const LeagueNameToSwahili = (league_id) => {
 
-    switch (`${country} - ${league_name}`.toLowerCase()) {
-        case 'world - caf champions league':
-            return 'Club Bingwa Africa'
-        case 'world - caf confederation cup':
-            return 'Kombe la Shirikisho Afrika'
-        case 'england - premier league':
-            return 'Ligi Kuu ya Uingereza'
-        case 'spain - la liga':
-            return 'Ligi Kuu ya Uhispania'
-        case 'germany - bundesliga':
-            return 'Ligi Kuu ya Ujerumani'
-        case 'france - ligue 1':
-            return 'Ligi Kuu ya Ufaransa'
-        case 'italy - serie a':
-            return 'Ligi Kuu ya Italia'
-        case 'portugal - primeira liga':
-            return 'Ligi Kuu ya Ureno'
-        case 'netherlands - eredivisie':
-            return 'Ligi Kuu ya Uholanzi'
-        case 'turkey - süper lig':
-            return 'Ligi Kuu ya Uturuki'
-        case 'south-africa - premier soccer league':
-            return 'Ligi Kuu ya Afrika Kusini'
-        case 'egypt - premier league':
-            return 'Ligi Kuu ya Misri'
-        case 'algeria - ligue 1':
-            return 'Ligi Kuu ya Algeria'
+    switch (Number(league_id)) {
+        case 39:
+            return {
+                ligi: 'Ligi Kuu ya Uingereza',
+                path: 'england/premier-league'
+            };
+        case 12:
+            return {
+                ligi: 'Club Bingwa Afrika',
+                path: 'africa/caf-champions-league'
+            };
+        case 20:
+            return {
+                ligi: 'Kombe la Shirikisho Afrika',
+                path: 'africa/caf-confederation-cup'
+            };
+        case 140:
+            return {
+                ligi: 'Ligi Kuu ya Uhispania',
+                path: 'spain/la-liga'
+            };
+        case 78:
+            return {
+                ligi: 'Ligi Kuu ya Ujerumani',
+                path: 'germany/bundesliga'
+            };
+        case 61:
+            return {
+                ligi: 'Ligi Kuu ya Ufaransa',
+                path: 'france/ligue-1'
+            };
+        case 135:
+            return {
+                ligi: 'Ligi Kuu ya Italia',
+                path: 'italy/serie-a'
+            };
+        case 94:
+            return {
+                ligi: 'Ligi Kuu ya Ureno',
+                path: 'portugal/primeira-liga'
+            };
+        case 88:
+            return {
+                ligi: 'Ligi Kuu ya Uholanzi',
+                path: 'netherlands/eredivisie'
+            };
+        case 203:
+            return {
+                ligi: 'Ligi Kuu ya Uturuki',
+                path: 'turkey/super-lig'
+            };
+        case 288:
+            return {
+                ligi: 'Ligi Kuu ya Afrika Kusini',
+                path: 'south-africa/premier-soccer-league'
+            };
+        case 186:
+            return {
+                ligi: 'Ligi Kuu ya Algeria',
+                path: 'algeria/ligue-1'
+            };
+        case 29:
+            return {
+                ligi: 'Kufuzu Kombe la Dunia Africa',
+                path: 'africa/world-cup-qualification'
+            };
         default:
-            return `${country} - ${league_name}`;
+            return {
+                ligi: null,
+                path: null
+            };
     }
+
 }
 
 module.exports = {

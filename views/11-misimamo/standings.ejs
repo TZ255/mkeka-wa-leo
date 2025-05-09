@@ -47,13 +47,13 @@
                             <div class="container mt-4">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item fw-bold">
-                                        <a href="/standings/567/2024" title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025" class="text-decoration-none link-success">
+                                        <a href="/standings/football/tanzania/premier-league" title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025" class="text-decoration-none link-success">
                                             Tanzania - NBC Premier League 2024/2025
                                         </a>
                                     </li>
                                     <% leagues_2024.forEach(league => { %>
                                     <li class="list-group-item fw-bold">
-                                        <a href="/standings/<%= league.league_id %>/<%= league.league_season %>" title="Msimamo wa <%= league.ligi %> - <%= league.name %> kwa msimu wa <%= league.season_long %>" class="text-decoration-none link-success">
+                                        <a href="/standings/football/<%= league.path %>" title="Msimamo wa <%= league.ligi %> - <%= league.name %> kwa msimu wa <%= league.season_long %>" class="text-decoration-none link-success">
                                             <%= league.country %> - <%= league.ligi %> <%= league.season_long %>
                                         </a>
                                     </li>

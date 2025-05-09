@@ -10,7 +10,7 @@
     <%- include('../../../0-global/favicon.ejs') %>
     <meta property="article:published_time" content="<%= partials.createdAt %>">
     <meta property="article:modified_time" content="<%= partials.updatedAt %>">
-    <link rel="canonical" href="https://mkekawaleo.com/standings/567/<%= partials.season %>">
+    <link rel="canonical" href="https://mkekawaleo.com/standings/football/tanzania/premier-league">
     <title>Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %> - Ratiba na Matokeo</title>
     <%- include('../../../0-global/style.ejs'); %>
     <%- include('../../../0-global/google.ejs'); %>
@@ -80,12 +80,12 @@
                 <h2 class="h2 fs-6">Vidokezo NBC <%= partials.season_short %></h2>
                 <ul class="list-group list-group-flush fw-bold">
                     <li class="list-group-item">
-                        <a href="/wafungaji-bora/tanzania/<%= partials.season_vidokezo %>" class="text-success text-decoration-none">
+                        <a href="/football/top-scorers/tanzania/premier-league" class="text-success text-decoration-none">
                             Wafungaji Bora NBC - Tanzania Premier League <%= partials.season_short %>
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="/top-assists/tanzania/<%= partials.season_vidokezo %>" class="text-success text-decoration-none">
+                        <a href="/football/top-assists/tanzania/premier-league" class="text-success text-decoration-none">
                             Watoa Assists Bora NBC - Tanzania Premier League <%= partials.season_short %>
                         </a>
                     </li>
@@ -99,7 +99,7 @@
                 <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
                     <% standing.standing.forEach(team => { %>
                      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="list-group-item">
-                        <a itemprop="item" href="/ratiba/567/<%= team.team.id %>/<%= partials.season %>" class="text-success text-decoration-none">
+                        <a itemprop="item" href="/football/fixtures/tanzania/premier-league/<%= team.team.id %>" class="text-success text-decoration-none">
                             <span itemprop="name">
                                 Ratiba na Matokeo ya Mechi za <%= team.team.name.replace('Kitayosce', 'Tabora United') %>
                             </span>

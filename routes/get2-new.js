@@ -34,11 +34,9 @@ router.get('/standings', async (req, res) => {
     }
 
     try {
-        //tengeneza query hata kwa ligi za miaka ya nyuma zinazoendelea... 29 = kufuzu
-        let query = { $or: [{ league_season: '2024' }, { league_id: 29 }] };
-        let leagues_2024 = await OtherStandingLigiKuuModel.find(query)
+        let leagues_2024 = await OtherStandingLigiKuuModel.find()
             .sort('country')
-            .select('league_name league_id league_season country ligi')
+            .select('league_name league_id league_season country ligi path')
             .lean()  // Convert Mongoose documents to plain JavaScript objects
             .cache(600);
 
@@ -46,11 +44,9 @@ router.get('/standings', async (req, res) => {
         leagues_2024 = leagues_2024.map(league => {
             const leagueObj = { ...league };  // Create a new object to ensure we're not modifying the original
 
-            //update season to 'wc-2026' for league_id 29 (WC Qualifiers)
+            //update season to 'wc-2026'
             if (leagueObj.league_id === 29) {
-                leagueObj.league_season = 'wc-2026';
                 leagueObj.season_long = '2026';
-                leagueObj.ligi = 'Kufuzu Kombe la Dunia Afrika';
             } else {
                 leagueObj.season_long = `${leagueObj.league_season}/${Number(leagueObj.league_season) + 1}`;
             }
@@ -66,14 +62,16 @@ router.get('/standings', async (req, res) => {
 
 //this have static route because of keywords for tanzania league for ranking
 //Other leagues will have dynamic route like /standings/:id/:season
-router.get('/standings/567/:season', async (req, res) => {
-    let league_season = req.params.season
-
+router.get('/standings/football/tanzania/premier-league', async (req, res, next) => {
+    let path = 'tanzania/premier-league'
     try {
-        const standing = await StandingLigiKuuModel.findOne({ league_id: 567, league_season }).select('-top_scorers -top_assists').cache(600)
-        if (!standing) return res.status(404).send('League not found')
+        const standing = await StandingLigiKuuModel.findOne({ path }).select('-top_scorers -top_assists').cache(600)
+        if (!standing) return next()
+
+        const league_season = standing.league_season
 
         const agg = await StandingLigiKuuModel.aggregate([
+            { $match: { path } },
             {
                 $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
             },
@@ -120,27 +118,22 @@ router.get('/standings/567/:season', async (req, res) => {
 })
 
 //standing - for other leagues
-router.get('/standings/:league/:season', async (req, res) => {
+router.get('/standings/football/:nation/:league', async (req, res, next) => {
     try {
-        let { league, season } = req.params;
+        let { nation, league } = req.params;
 
-        // Handle special season cases
-        let league_season = season;
-        let league_id = league;
-        if (season === 'wc-2026') {
-            league_season = "2023";
-        }
+        const path = `${nation}/${league}`.toLowerCase()
 
         // Find standing data
-        const standing = await OtherStandingLigiKuuModel.findOne({ league_id, league_season }).cache(600);
-        if (!standing) {
-            return res.redirect('/');
-        }
+        const standing = await OtherStandingLigiKuuModel.findOne({ path }).cache(600);
+        if (!standing) return next();
 
+        const season = standing.league_season
+        const league_id = standing.league_id
 
         const agg = await OtherStandingLigiKuuModel.aggregate([
             {
-                $match: { league_id: Number(league_id), league_season }
+                $match: { path }
             },
             {
                 $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
@@ -195,17 +188,18 @@ router.get('/standings/:league/:season', async (req, res) => {
             createdAt: standing.createdAt.toISOString(),
             updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
             ligi: standing.ligi,
+            path,
             league_name: standing.league_name,
             league_id,
             stats: {
                 scorer: standing.top_scorers.length,
                 assist: standing.top_assists.length
             },
-            canonical_path: `/standings/${league_id}/${season}`,
+            canonical_path: `/standings/football/${path}`,
         };
 
         // SEO other leagues
-        if (season === 'wc-2026') {
+        if (path == 'africa/world-cup-qualification') {
             return res.render('11-misimamo/world/caf-wc26/caf-wc26', { standing, agg, partials });
         }
 
@@ -219,22 +213,22 @@ router.get('/standings/:league/:season', async (req, res) => {
 
 
 //BONGO LEague -- Check other league belows this one
-let ratibaRoutes = [
-    '/ratiba/567/:teamid/:season',
-    '/ratiba/567/:teamid/:season//',
-]
-router.get([ratibaRoutes], async (req, res) => {
+router.get('/football/fixtures/tanzania/premier-league/:teamid', async (req, res, next) => {
     try {
-        let league_id = 567
-        let team_id = req.params.teamid
-        let season = req.params.season
+        const team_id = req.params.teamid
+        const path = `tanzania/premier-league`
 
-        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season }).cache(600)
+        let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
+        if(!league) return next();
+
+        const season = league.league_season
         let standing = league.standing
         let fixtures = league.season_fixtures
         let ratiba = fixtures.filter(fix =>
             fix.teams.home.id == team_id || fix.teams.away.id == team_id
         )
+
+        if (ratiba.length === 0) return next();
 
         let partials = {
             path: req.path,
@@ -244,7 +238,7 @@ router.get([ratibaRoutes], async (req, res) => {
             season_vidokezo: `${season}-${Number(season) + 1}`,
             team_info: league.standing.filter(t => t.team.id == team_id)[0],
             team_id,
-            canonical_path: `/ratiba/${league_id}/${team_id}/${season}`,
+            canonical_path: `/football/fixtures/${path}/${team_id}`,
             createdAt: league.createdAt.toISOString(),
             updatedAt: league.standing[0].update
         }
@@ -266,28 +260,18 @@ router.get([ratibaRoutes], async (req, res) => {
 })
 
 //ratiba other ligi
-router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
+router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, next) => {
     try {
-        const { leagueid: league_id, teamid: team_id, season } = req.params;
-
-        // Validate inputs
-        if (!league_id || !team_id || !season) {
-            return res.status(400).send('Missing required parameters');
-        }
+        const { teamid: team_id, nation, ligi_name } = req.params;
+        const path = `${nation}/${ligi_name}`.toLowerCase()
 
         // Fetch league data with caching
-        const league = await OtherStandingLigiKuuModel.findOne({ league_id, league_season: season })
-            .cache(600);
-
-        if (!league) {
-            return res.status(404).send('League data not found');
-        }
+        const league = await OtherStandingLigiKuuModel.findOne({ path }).cache(600);
+        if(!league) return next();
 
         // Find team in standings
         const team_info = league.standing.find(t => t.team.id == team_id);
-        if (!team_info) {
-            return res.status(404).send('Team not found in league standings');
-        }
+        if (!team_info) return next();
 
         // Filter fixtures for the team
         const ratiba = league.season_fixtures.filter(fix =>
@@ -295,10 +279,12 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
         );
 
         const standing = league.standing
+        const league_id = league.league_id
+        const season = league.league_season
 
         // Prepare view data
         const partials = {
-            path: req.path,
+            path,
             season,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
             season_long: `${season}/${Number(season) + 1}`,
@@ -307,7 +293,7 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
             league_id,
             ligi: league.ligi,
             league_name: league.league_name,
-            canonical_path: `/ratiba/${league_id}/${team_id}/${season}`,
+            canonical_path: `/football/fixtures/${path}/${team_id}`,
             createdAt: league.createdAt.toISOString(),
             updatedAt: team_info.update
         };
@@ -322,27 +308,24 @@ router.get('/ratiba/:leagueid/:teamid/:season', async (req, res) => {
 });
 
 //top scorer bongo
-router.get('/wafungaji-bora/tanzania/:season', async (req, res) => {
+router.get('/football/top-scorers/tanzania/premier-league', async (req, res, next) => {
     try {
-        let league_id = 567
-        let season = req.params.season
-        if (season.includes('-')) {
-            season = season.split('-')[0]
-        }
-
-        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season }).cache(600)
-        if (!league) return res.status(404).send('League not found')
+        let path = 'tanzania/premier-league'
+        let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
+        if (!league) return next()
 
         let top_scorers = league.top_scorers
+        const season = league.league_season
+        const league_id = league.league_id
 
         let partials = {
-            path: req.path,
+            path,
             season,
             season_vidokezo: `${season}-${Number(season) + 1}`,
             season_long: `${season}/${Number(season) + 1}`,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
             league_id,
-            canonical_path: `/wafungaji-bora/tanzania/${req.params.season}`,
+            canonical_path: `/football/top-scorers/tanzania/premier-league`,
             createdAt: league.createdAt.toISOString(),
             updatedAt: league.update_top_players
         }
@@ -355,25 +338,24 @@ router.get('/wafungaji-bora/tanzania/:season', async (req, res) => {
 })
 
 //top assists bongo
-router.get('/top-assists/tanzania/:season', async (req, res) => {
+router.get('/football/top-assists/tanzania/premier-league', async (req, res, next) => {
+    const path = 'tanzania/premier-league'
     try {
-        let league_id = 567
-        let season = req.params.season
-        if (season.includes('-')) {
-            season = season.split('-')[0]
-        }
+        let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
+        if(!league) return next();
 
-        let league = await StandingLigiKuuModel.findOne({ league_id, league_season: season }).cache(600)
         let top_assists = league.top_assists
+        const season = league.league_season
+        const league_id = league.league_id
 
         let partials = {
-            path: req.path,
+            path,
             season,
             season_vidokezo: `${season}-${Number(season) + 1}`,
             season_long: `${season}/${Number(season) + 1}`,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
             league_id,
-            canonical_path: `/top-assists/tanzania/${req.params.season}`,
+            canonical_path: `/football/top-assists/tanzania/premier-league`,
             createdAt: league.createdAt.toISOString(),
             updatedAt: league.update_top_players
         }
@@ -386,24 +368,26 @@ router.get('/top-assists/tanzania/:season', async (req, res) => {
 })
 
 //topScorer other league
-router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
+router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) => {
+    const {nation, ligi_name} = req.params
+    const path = `${nation}/${ligi_name}`.toLowerCase()
     try {
-        let league_id = req.params.leagueid
-        let season = req.params.season
+        let league = await OtherStandingLigiKuuModel.findOne({ path })
+        if (!league) return next();
 
-        let league = await OtherStandingLigiKuuModel.findOne({ league_id, league_season: season })
-        if (!league) return res.status(400).send('League not found')
+        const season = league.league_season
+        const league_id = league.league_id
 
         let top_scorers = league.top_scorers
-        if (!top_scorers || top_scorers.length === 0) return res.status(400).send('Top scorers not found')
+        if (!top_scorers || top_scorers.length === 0) return next()
 
         let partials = {
-            path: req.path,
+            path,
             season,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
             season_long: `${season}/${Number(season) + 1}`,
             league_id,
-            canonical_path: `/wafungaji-bora/${league_id}/${season}`,
+            canonical_path: `/football/top-scorers/${path}`,
             ligi: league.ligi,
             league_name: league.league_name,
             stats: {
@@ -422,26 +406,28 @@ router.get('/wafungaji-bora/:leagueid/:season', async (req, res) => {
 })
 
 //top Assist other league
-router.get('/top-assists/:leagueid/:season', async (req, res) => {
+router.get('/football/top-assists/:nation/:ligi_name', async (req, res, next) => {
+    const {nation, ligi_name} = req.params
+    const path = `${nation}/${ligi_name}`.toLowerCase()
     try {
-        let league_id = req.params.leagueid
-        let season = req.params.season
+        let league = await OtherStandingLigiKuuModel.findOne({ path })
+        if (!league) return next();
 
-        let league = await OtherStandingLigiKuuModel.findOne({ league_id, league_season: season })
-        if (!league) return res.status(400).send('League not found')
+        const season = league.league_season
+        const league_id = league.league_id
 
         let top_assists = league.top_assists
-        if (!top_assists || top_assists.length === 0) return res.status(400).send('Top assists not found')
+        if (!top_assists || top_assists.length === 0) return next()
 
         let partials = {
-            path: req.path,
+            path,
             season,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
             season_long: `${season}/${Number(season) + 1}`,
             league_id,
             ligi: league.ligi,
             league_name: league.league_name,
-            canonical_path: `/top-assists/${league_id}/${season}`,
+            canonical_path: `/football/top-assists/${path}`,
             stats: {
                 scorer: top_assists.length,
                 assist: league?.top_scorers.length || 0
@@ -460,7 +446,7 @@ router.get('/top-assists/:leagueid/:season', async (req, res) => {
 //FIXTURES - matokeo na ratiba ya mechi zote
 router.get('/mechi/:siku', async (req, res) => {
     const siku = String(req.params.siku).toLowerCase()
-    if(!['jana', 'leo', 'kesho'].includes(siku)) return res.status(400).send('Invalid date parameter')
+    if (!['jana', 'leo', 'kesho'].includes(siku)) return res.status(400).send('Invalid date parameter')
     try {
         //leo
         let nd = new Date()
@@ -483,12 +469,12 @@ router.get('/mechi/:siku', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //get fixtures from db
-        const {allMatches} = await processRatibaMatokeo(siku)
+        const { allMatches } = await processRatibaMatokeo(siku)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
-    
+
         let day = siku.charAt(0).toUpperCase() + siku.slice(1)
 
         let partials = {

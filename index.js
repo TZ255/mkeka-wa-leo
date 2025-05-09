@@ -8,7 +8,8 @@ const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
 const getRouter = require('./routes/get')
-const getRouter2 = require('./routes/get2')
+const getRouter2 = require('./routes/get2-new')
+const oldLeagueRedirects = require('./routes/old-ligi-redirects')
 const getRouter3 = require('./routes/get3')
 const routeAuth = require('./routes/get4-auth')
 const resetAuth = require('./routes/fns/Auth/reset')
@@ -59,6 +60,7 @@ if (process.env.local != 'true') {
 
 app.use(postRouter)
 app.use(getRouter)
+app.use(oldLeagueRedirects)
 app.use(getRouter2)
 app.use(getRouter3)
 
@@ -130,7 +132,7 @@ app.use(resetAuth)
 
 //wrong url, redirect to home
 app.get('*', (req, res) => {
-    res.redirect('/')
+    res.status(404).send('Page not found')
 })
 
 //updating ligis

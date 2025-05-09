@@ -11,6 +11,9 @@ const LigiSchema = new Schema({
     ligi: {
         type: String,
     },
+    path: {
+        type: String,
+    },
     country: {
         type: String
     },

@@ -69,7 +69,7 @@
         <% standing.forEach(team => { %>
         <% if (team.team.id != partials.team_id) { %>
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="list-group-item">
-            <a itemprop="item" href="/ratiba/<%= partials.league_id %>/<%= team.team.id %>/<%= partials.season %>" class="text-success text-decoration-none">
+            <a itemprop="item" href="/football/fixtures/<%= partials.path %>/<%= team.team.id %>" class="text-success text-decoration-none">
                 <span itemprop="name">
                     Ratiba na Matokeo ya Mechi za <%= team.team.name %>
                 </span>

@@ -5,6 +5,9 @@ const LigiSchema = new Schema({
     league_id: {
         type: Number
     },
+    path: {
+        type: String,
+    },
     league_name: {
         type: String
     },

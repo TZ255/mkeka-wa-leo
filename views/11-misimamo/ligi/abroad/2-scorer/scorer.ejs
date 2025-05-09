@@ -76,13 +76,13 @@
                             <ul class="list-group list-group-flush fw-bold">
                                 <% if (partials?.stats?.assist > 0) { %>
                                     <li class="list-group-item"><a
-                                        href="/top-assists/<%= partials.league_id %>/<%= partials.season %>"
+                                        href="/football/top-assists/<%= partials.path %>"
                                         class="text-success text-decoration-none">Orodha ya Watoa Assist Bora
                                         <%= partials.ligi %> <%= partials.season_short %></a>
                                 </li>
                                 <% } %>
                                 <li class="list-group-item"><a
-                                        href="/standings/<%= partials.league_id %>/<%= partials.season %>"
+                                        href="/standings/football/<%= partials.path %>"
                                         class="text-success text-decoration-none">Msimamo <%= partials.ligi %>
                                         <%= partials.season_short %></a>
                                 </li>
