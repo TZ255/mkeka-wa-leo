@@ -34,12 +34,13 @@ const UpdateOtherLeagueData = async (league_id, season) => {
             let league_id = response?.data?.response[0].league.id
             let league_name = response?.data?.response[0].league.name
             let country = response?.data?.response[0].league.country
-            let ligi = LeagueNameToSwahili(league_id)
+            let ligi = LeagueNameToSwahili(league_id).ligi
+            let path = LeagueNameToSwahili(league_id).path
             let league_season = response?.data?.response[0].league.season
             let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
 
             await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season }, {
-                $set: { standing, league_id, league_name, league_season, country, ligi },
+                $set: { standing, path, league_name, league_season, country, ligi },
             }, { upsert: true })
             console.log(`${league_name} standing updated`)
 
