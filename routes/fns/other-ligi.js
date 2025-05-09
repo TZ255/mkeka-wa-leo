@@ -34,7 +34,7 @@ const UpdateOtherLeagueData = async (league_id, season) => {
             let league_id = response?.data?.response[0].league.id
             let league_name = response?.data?.response[0].league.name
             let country = response?.data?.response[0].league.country
-            let ligi = LeagueNameToSwahili(country, league_name)
+            let ligi = LeagueNameToSwahili(league_id)
             let league_season = response?.data?.response[0].league.season
             let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
 
