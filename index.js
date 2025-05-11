@@ -59,12 +59,12 @@ if (process.env.local != 'true') {
     lauraSourceCodes.bot(app)
 }
 
-//// Apply the trailing slash removal middleware (only affects GET requests)
+//redirect old link setups -- note: above slash removal to avoid multiple redirects
+app.use(oldLeagueRedirects)
+// Apply the trailing slash removal middleware (only affects GET requests)
 app.use(removeTrailingSlash())
-
 app.use(postRouter)
 app.use(getRouter)
-app.use(oldLeagueRedirects)
 app.use(getRouter2)
 app.use(getRouter3)
 
