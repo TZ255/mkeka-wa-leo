@@ -30,6 +30,7 @@ const mkekaUsersModel = require('./model/mkeka-users');
 const BetslipModel = require('./model/betslip');
 const { identity } = require('lodash');
 const { getAllFixtures } = require('./routes/fns/fixtures');
+const removeTrailingSlash = require('./routes/fns/removeTrailingSlash');
 
 const app = express()
 
@@ -57,6 +58,9 @@ if (process.env.local != 'true') {
     CharlloteSourceCodes.bot(app)
     lauraSourceCodes.bot(app)
 }
+
+//// Apply the trailing slash removal middleware (only affects GET requests)
+app.use(removeTrailingSlash())
 
 app.use(postRouter)
 app.use(getRouter)
