@@ -2,15 +2,14 @@ const axios = require("axios");
 const NodeCache = require("node-cache");
 const ipAPILimitChecker = require("../../model/ip-api-limit");
 
-// Create a cache instance with a TTL of 24 hours (86400 seconds)
-const ipCache = new NodeCache({ stdTTL: 86400 });
+// Create a cache instance with a TTL of 10 minutes (600 seconds)
+const ipCache = new NodeCache({ stdTTL: 600 });
 
 const getUserLocation = async (ip) => {
     try {
         // Check for cached data first.
         const cachedData = ipCache.get(ip);
         if (cachedData) {
-            console.log(ip + ' is cached')
             return cachedData;
         }
 
