@@ -248,6 +248,14 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
             return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
+        if (String(tip).toLowerCase() === 'shift-1') {
+            await betslip.create({
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 1, expl: match.expl
+            })
+            await match.constructor.deleteOne({ _id: match._id });
+            return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
+        }
+
         if (String(tip).toLowerCase() === 'shift-2') {
             await betslip.create({
                 match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 2, expl: match.expl
