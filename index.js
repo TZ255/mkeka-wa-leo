@@ -7,6 +7,8 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
+const requestIp = require('request-ip');
+
 const getRouter = require('./routes/get')
 const getRouter2 = require('./routes/get2-new')
 const oldLeagueRedirects = require('./routes/old-ligi-redirects')
@@ -51,6 +53,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 app.set('trust proxy', true) //our app is hosted on server using proxy to pass user request
+app.use(requestIp.mw())
+
 //Attached webhook Bots Goes Here
 if (process.env.local != 'true') {
     zambiaBotsSourceCodes.myBotsFn(app)

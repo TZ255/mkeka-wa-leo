@@ -28,6 +28,7 @@ const isProduction = require('./fns/pesapal/isProduction')
 const sendNotification = require('./fns/sendTgNotifications')
 const { processCScoreTips } = require('./fns/cscoreCollection')
 const supatipsModel = require('../model/supatips')
+const { LinkToRedirect } = require('./fns/affLinktoRedirect')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 
@@ -54,17 +55,17 @@ router.get('/', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
-        let mikeka = await mkekadb.find({ date: d, status: {$ne: 'vip'} }).sort('time').cache(600) //10 minutes
+        let mikeka = await mkekadb.find({ date: d, status: { $ne: 'vip' } }).sort('time').cache(600) //10 minutes
 
         //check if there is no any slip
         //find random 3
-        let slip = await betslip.find({date: d, vip_no: 1}).sort('-odd').limit(3).cache(600)
+        let slip = await betslip.find({ date: d, vip_no: 1 }).sort('-odd').limit(3).cache(600)
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         //multiply all odds of betslip
-        let slipOdds = await betslip.find({ date: d, status: {$ne: 'deleted'} }).cache(600)
+        let slipOdds = await betslip.find({ date: d, status: { $ne: 'deleted' } }).cache(600)
         slipOdds = slipOdds.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //Over 1.5 SUPA Tips
@@ -97,7 +98,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
-        let mikeka = await mkekadb.find({ date: kesho, status: {$ne: 'vip'} }).sort('time').cache(600) //10 minutes
+        let mikeka = await mkekadb.find({ date: kesho, status: { $ne: 'vip' } }).sort('time').cache(600) //10 minutes
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -140,105 +141,13 @@ router.get('/clear/clear', async (req, res) => {
 
 router.get('/:comp/register', async (req, res) => {
     const comp = req.params.comp
-    let links = {
-        gsb: `https://track.africabetpartners.com/visit/?bta=35468&nci=6131`,
-        pmatch: `https://grwptraq.com/?serial=61288670&creative_id=1788&anid=web&pid=web`,
-        meridian: `https://a.meridianbet.co.tz/c/kGdxSu`,
-        betway: `https://www.betway.co.tz/?register=1&btag=P94949-PR24698-CM77104-TS1988404&`,
-        premier: `https://media.premierbetpartners.com/redirect.aspx?pid=41881&bid=4921`,
-        betika: `https://record.betikapartners.com/_xq39yU84NJbUOsjNOfgKeWNd7ZgqdRLk/1/`,
-        gsb_ug: `https://track.africabetpartners.com/visit/?bta=35468&nci=6016`,
-        bet22: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1634`,
-        ke_1xbet: `https://refpa4293501.top/L?tag=d_2869291m_2528c_&site=2869291&ad=2528`,
-        tz_888: `https://tracking.888africa.com/visit/?bta=356&nci=5354`,
-        betwinner: `https://bw-prm.com/bonus-100-01/?p=%2Fregistration%2F&lang=en&id=29lf`,
-        betway_casino: `https://www.betway.co.tz/lobby/casino/all/?register=1&btag=P94949-PR37903-CM111051-TS2045159`,
-        betway_arsenal: `https://www.betway.co.tz/Arsenal-Xclusives?btag=P94949-PR37833-CM109867-TS2034255`,
-        betway_2000: `https://www.betway.co.tz/offers/deposit-wager?btag=P94949-PR38080-CM112923-TS2068965&signupcode=MKEKA&optin=TZPromo`,
-        winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
-        betlion_ke: `https://tracking.888africa.com/visit/?bta=356&nci=5362`,
-        leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1078&anid=`,
-        jpcity: 'https://en.jackpotcitycasino.co.tz/?register=1&btag=P110231-PR38119-CM113317-TS2071433'
-    }
+    const ip = req?.clientIp
     try {
-        switch (comp) {
-            case 'gsb':
-                res.redirect(links.gsb);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { gsb: 1 } });
-                break;
-            case 'pmatch':
-                res.redirect(links.pmatch);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { pmatch: 1 } });
-                break;
-            case 'betway':
-                res.redirect(links.betway);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
-                break;
-            case 'betway-casino':
-                res.redirect(links.betway_casino);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
-                break;
-            case 'betway-arsenal':
-                res.redirect(links.betway_arsenal);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { betway: 1 } });
-                break;
-            case 'betway-freebet':
-                res.redirect(links.betway_2000);
-                break;
-            case 'meridian':
-                res.redirect(links.betway);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { meridian: 1 } });
-                break;
-            case 'premier':
-                res.redirect(links.betway);
-                await affModel.findOneAndUpdate({ pid: 'shemdoe' }, { $inc: { premier: 1 } });
-                break;
-
-            case '888bet':
-                res.redirect(links.tz_888);
-                break;
-            case 'betwinner':
-                res.redirect(links.betwinner);
-                break;
-            case 'leonbet':
-                res.redirect(links.leonbet);
-                break;
-
-            case 'jpcity':
-                res.redirect(links.jpcity);
-                break;
-
-            //bots redirects
-            case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet': case 'betlion-ke':
-                res.redirect(links.betwinner);
-                break;
-            case 'gsb-tz':
-                res.redirect(links.gsb);
-                break;
-            case 'gsb-ug':
-                res.redirect(links.gsb_ug);
-                break;
-            case 'betway-tz':
-                res.redirect(links.betway);
-                break;
-            case 'premierbet':
-                res.redirect(links.betway);
-                break;
-            case '22bet-ug':
-                res.redirect(links.bet22);
-                break;
-            case '22bet-tz':
-                res.redirect(links.betway);
-                break;
-            case 'winner-et':
-                res.redirect(links.winner_ethiopia);
-                break;
-            default:
-                res.redirect('/');
-                break;
-        }
-    } catch (err) {
-        console.log(err.message)
+        let affLink = await LinkToRedirect(comp, ip)
+        res.set('X-Robots-Tag', 'noindex, nofollow');
+        res.redirect(302, affLink);
+    } catch (error) {
+        res.send('Hitilafu imetokea. Jaribu tena baadae')
     }
 })
 
@@ -276,10 +185,10 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
 
         //find random 3
-        let slip = await betslip.find({date: d, vip_no: 1}).sort('-odd').limit(3)
+        let slip = await betslip.find({ date: d, vip_no: 1 }).sort('-odd').limit(3)
 
         //multiply all odds
-        const docs = await betslip.find({ date: d, status: {$ne: 'deleted'} });
+        const docs = await betslip.find({ date: d, status: { $ne: 'deleted' } });
         const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         res.render('3-landing/landing', { slip, slipOdds })
@@ -407,7 +316,7 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        let Alltips = await mkekadb.find({ date: { $in: [d, _d, juziD, kesho] }, status: {$ne: 'vip'} }).sort('time').select('time league date match bet odds')
+        let Alltips = await mkekadb.find({ date: { $in: [d, _d, juziD, kesho] }, status: { $ne: 'vip' } }).sort('time').select('time league date match bet odds')
 
         let ktips = Alltips.filter(tip => tip.date === kesho)
         let stips = Alltips.filter(tip => tip.date === d)
