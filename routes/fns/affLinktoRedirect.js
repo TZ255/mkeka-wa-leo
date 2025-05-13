@@ -23,14 +23,14 @@ const LinkToRedirect = async (comp, ip) => {
     }
     try {
         let locationData = await getUserLocation(ip)
-        console.log(locationData)
         switch (comp) {
             case 'gsb':
-                if (locationData?.status == 'success' && locationData?.c_code !== "TZ") return links.betwinner;
+                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
                 return links.gsb
             case 'pmatch':
                 return links.pmatch
             case 'betway':
+                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
                 return links.betway
             case 'betway-casino':
                 return links.betway_casino
