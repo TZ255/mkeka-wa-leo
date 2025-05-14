@@ -1,9 +1,10 @@
 const { Bot, webhookCallback } = require('grammy')
 const axios = require('axios').default
+const { autoRetry } = require('@grammyjs/auto-retry')
+
 const usersModel = require('./database/users')
 const listModel = require('./database/botlist')
 const mkekaMega = require('./database/mkeka-mega')
-
 const mkekaReq = require('./functions/mikeka')
 const makeConvo = require('./functions/convo')
 
@@ -33,6 +34,7 @@ const myBotsFn = async (app) => {
                 .catch(e => console.log(e.message, e))
             app.use(hookPath, webhookCallback(bot, 'express'))
 
+            bot.api.config.use(autoRetry())
 
             bot.catch((err) => {
                 const ctx = err.ctx;

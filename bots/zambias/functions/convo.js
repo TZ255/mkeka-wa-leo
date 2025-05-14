@@ -1,40 +1,50 @@
-const usersModel = require('../database/users')
+const usersModel = require('../database/users');
 
 const makeConvo = async (bot, ctx, imp) => {
-    let convoBots = [
-        "Kenya_Kuma_Kutombana_Bot", 
+    const convoBots = [
+        "Kenya_Kuma_Kutombana_Bot",
         "Kuma_Kinembe_Nairobi_Kisumu_Bot",
         "lugazi_sugar_mummybot"
-    ]
-    let admins = [imp.halot, imp.shemdoe]
-    if (admins.includes(ctx.chat.id) && convoBots.includes(ctx.me.username) && ctx.match) {
-        let msg_id = Number(ctx.match.trim())
-        let bads = ['deactivated', 'blocked', 'initiate', 'chat not found']
-        try {
-            let all_users = await usersModel.find({botname: ctx.me.username})
-            await ctx.reply(`Starting broadcasting for ${all_users.length} users`)
+    ];
 
-            all_users.forEach((u, i) => {
-                setTimeout(() => {
-                    bot.api.copyMessage(u.chatid, imp.matangazoDB, msg_id)
-                        .then(() => {
-                            if (i === all_users.length - 1) {
-                                ctx.reply('Nimemaliza conversation').catch(e => console.log(e.message))
-                            }
-                        })
-                        .catch((err) => {
-                            if (bads.some((b) => err?.message.toLowerCase().includes(b))) {
-                                u.deleteOne()
-                            } else { 
-                                console.log(`🤷‍♂️ ${err.message}`) 
-                            }
-                        })
-                }, i * 50) // 20 messages per second
-            })
-        } catch (err) {
-            console.log(err?.message)
-        }
+    const admins = [imp.halot, imp.shemdoe];
+
+    if (!admins.includes(ctx.chat.id) || !ctx.match) {
+        return await ctx.reply('Not admin or no match');
     }
-}
 
-module.exports = makeConvo
+    const msg_id = Number(ctx.match.trim());
+    const matangazoDB = imp.matangazoDB;
+    const bads = ['deactivated', 'blocked', 'initiate', 'chat not found'];
+
+    try {
+        const all_users = await usersModel.find({ botname: ctx.me.username });
+        await ctx.reply(`🚀 Starting broadcasting for ${all_users.length} users`);
+
+        for (const user of all_users) {
+            const chatid = user.chatid;
+
+            try {
+                await bot.api.copyMessage(chatid, matangazoDB, msg_id);
+                console.log(`✔ sent to ${chatid}`)
+            } catch (err) {
+                const errorMsg = err?.message?.toLowerCase() || '';
+                console.log(err?.message || 'Unknown error');
+
+                if (bads.some((b) => errorMsg.includes(b))) {
+                    await usersModel.findOneAndDelete({ chatid });
+                    console.log(`🗑 User ${chatid} deleted for ${errorMsg}`);
+                } else {
+                    console.log(`🤷‍♂️ Unexpected error for ${chatid}: ${err.message}`);
+                }
+            }
+        }
+
+        return await ctx.reply('✅ Finished broadcasting');
+    } catch (err) {
+        console.error('Broadcasting error:', err?.message || err);
+        await ctx.reply('❌ Broadcasting failed');
+    }
+};
+
+module.exports = makeConvo;
