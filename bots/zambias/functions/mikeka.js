@@ -6,13 +6,13 @@ const sendMkeka3 = async (ctx, delay, bot, imp) => {
         let bwTZ = `http://bet-link.top/betway-tz/register`
         let gsb = 'http://bet-link.top/gsb-tz/register'
         let pm = `http://pmaff.com/?serial=61291818&creative_id=1788`
-        let ke = `http://bet-link.top/22bet/register`
+        let ke = `http://bet-link.top/betlion-ke/register`
         let tzWinner = `http://bet-link.top/betwinner/register`
         let ug = `http://bet-link.top/gsb-ug/register`
         let prm = `http://bet-link.top/premierbet/register`
         let zm = `https://track.africabetpartners.com/visit/?bta=35468&nci=5976&utm_campaign=zambia`
         let zm_short = `https://is.gd/register_gsb_zambia`
-        let betlion_ke = `https://media.888africa.com/C.ashx?btag=a_416b_311c_&affid=356&siteid=416&adid=311&c=`
+        let betlion_ke = `http://bet-link.top/betlion-ke/register`
 
         await ctx.replyWithChatAction('typing')
         await delay(1000)
