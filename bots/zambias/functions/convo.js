@@ -26,7 +26,6 @@ const makeConvo = async (bot, ctx, imp) => {
 
             try {
                 await bot.api.copyMessage(chatid, matangazoDB, msg_id);
-                console.log(`✔ sent to ${chatid}`)
             } catch (err) {
                 const errorMsg = err?.message?.toLowerCase() || '';
                 console.log(err?.message || 'Unknown error');
