@@ -25,12 +25,12 @@ const LinkToRedirect = async (comp, ip) => {
         let locationData = await getUserLocation(ip)
         switch (comp) {
             case 'gsb':
-                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
+                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betlion_ke;
                 return links.gsb
             case 'pmatch':
                 return links.pmatch
             case 'betway':
-                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
+                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betlion_ke;
                 return links.betway
             case 'betway-casino':
                 return links.betway_casino
@@ -55,7 +55,7 @@ const LinkToRedirect = async (comp, ip) => {
 
             //bots redirects
             case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet': case 'betlion-ke':
-                return links.betwinner
+                return links.betlion_ke
             case 'gsb-tz':
                 return links.gsb
             case 'gsb-ug':
