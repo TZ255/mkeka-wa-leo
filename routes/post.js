@@ -37,7 +37,7 @@ let imp = {
     ohmy_prem: -1001470139866,
     rtmalipo: 5849160770,
     newRT: -1002228998665,
-    matangazoDB: -1001570087172,
+    rtcopyDB: -1002634850653,
     notfy_d: -1002079073174,
     ohmy_backup: -1002363155302
 }

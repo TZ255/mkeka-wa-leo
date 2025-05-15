@@ -47,7 +47,7 @@ const lauraMainFn = async (app) => {
         rtprem: -1001946174983,
         rt4i4n: -1001880391908,
         rtmalipo: 5849160770,
-        matangazoDB: -1001570087172,
+        rtcopyDB: -1002634850653,
         scrapin: -1001858785908,
         muvikaDB: -1001802963728,
         muvikaReps: -1002045676919
@@ -108,16 +108,6 @@ const lauraMainFn = async (app) => {
                         await nyumbuChecker(chatid, first_name, bot)
                         await bot.api.copyMessage(chatid, imp.pzone, 8994)
                         break;
-
-                    case 'Free-5-USDT':
-                        await ctx.replyWithChatAction('typing')
-                        setTimeout(() => {
-                            bot.api.copyMessage(chatid, imp.matangazoDB, 84, {
-                                reply_markup: {
-                                    inline_keyboard: [[{ text: "➕ RECEIVE YOUR 5 USDT", url: 'https://bc.game/i-vhy4ij2x-n/' }]]
-                                }
-                            }).then(() => bot.api.sendMessage(imp.shemdoe, 'new 5 usdt start')).catch(e => console.log(e.message)).catch(err => console.log(err.message))
-                        }, 1500)
                 }
             } else {
                 await ctx.reply(`"Hi! Welcome. \n\nI'm Laura, and I can help you find great content on Telegram. Just let me know what information you're looking for, and I'll forward your request to my creator, who will do their best to retrieve it for you. Once they've obtained the information, I'll come back to you with what you're seeking."`)
@@ -194,7 +184,7 @@ const lauraMainFn = async (app) => {
                     if (!wapuuzi.includes(u.userId)) {
                         axios.post(tgAPI, {
                             chat_id: u.userId,
-                            from_chat_id: -1001570087172, //matangazoDB
+                            from_chat_id: -1002634850653, //rtcopyDB
                             message_id: mid
                         })
                             .catch(err => {
@@ -241,7 +231,7 @@ const lauraMainFn = async (app) => {
                     setTimeout(() => {
                         axios.post(tgAPI, {
                             chat_id: u.chatid,
-                            from_chat_id: imp.matangazoDB,
+                            from_chat_id: imp.rtcopyDB,
                             message_id: copyId,
                             reply_markup: {
                                 inline_keyboard: [
@@ -285,7 +275,7 @@ const lauraMainFn = async (app) => {
                     setTimeout(() => {
                         axios.post(tgAPI, {
                             chat_id: u.chatid,
-                            from_chat_id: imp.matangazoDB,
+                            from_chat_id: imp.rtcopyDB,
                             message_id: copyId,
                             reply_markup: {
                                 inline_keyboard: [
@@ -340,7 +330,7 @@ const lauraMainFn = async (app) => {
 
     bot.command('admin', async ctx => {
         try {
-            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from matangazodb (39) to the new channel.\n\n<code>/kenyas <msgid></code> broadcast kenya zambias from matangazodb\n\n<code>/editha_ke, /editha_ug <msgid></code> broadcast editha from matangazodb\n\n<code>/dramastore <msgid></code> broadcast dramastore from matangazodb`
+            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from rtcopyDB (39) to the new channel.\n\n<code>/kenyas <msgid></code> broadcast kenya zambias from rtcopyDB\n\n<code>/editha_ke, /editha_ug <msgid></code> broadcast editha from rtcopyDB\n\n<code>/dramastore <msgid></code> broadcast dramastore from rtcopyDB`
 
             await ctx.reply(commands, { parse_mode: 'HTML' })
         } catch (err) {

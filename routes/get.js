@@ -82,8 +82,8 @@ router.get('/', async (req, res) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 43
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 20
         }).catch(e => console.log(e.message, e))
     }
 
@@ -117,8 +117,8 @@ router.get('/mkeka/kesho', async (req, res) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 43
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 20
         }).catch(e => console.log(e.message, e))
     }
 
@@ -238,8 +238,8 @@ router.get('/mkeka/over-15', async (req, res) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 125
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 18
         }).catch(e => console.log(e.message, e))
     }
 })
@@ -285,8 +285,8 @@ router.get('/mkeka/over-25', async (req, res) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 126
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 19
         }).catch(e => console.log(e.message, e))
     }
 })
@@ -333,8 +333,8 @@ router.get('/mkeka/mega-odds-leo', async (req, res) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 126
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 19
         }).catch(e => console.log(e.message, e))
     }
 })
@@ -384,8 +384,8 @@ router.get('/mkeka/over-05-first-half', async (req, res) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 126
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 19
         }).catch(e => console.log(e.message, e))
     }
 })
@@ -431,8 +431,8 @@ router.get('/mkeka/over-under-35', async (req, res) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 126
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 19
         }).catch(e => console.log(e.message, e))
     }
 })
@@ -501,8 +501,8 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
-            from_chat_id: -1001570087172, //matangazoDB
-            message_id: 126
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 19
         }).catch(e => console.log(e.message, e))
     }
 })

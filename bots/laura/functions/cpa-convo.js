@@ -17,7 +17,7 @@ const makeKECPA = async (bot, ctx, imp) => {
             setTimeout(() => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
-                    from_chat_id: imp.matangazoDB,
+                    from_chat_id: imp.rtcopyDB,
                     message_id: copyId
                 }).then(() => {
                     if (i == all.length - 1) {
@@ -56,7 +56,7 @@ const makeUGCPA = async (bot, ctx, imp) => {
             setTimeout(() => {
                 axios.post(tgAPI, {
                     chat_id: u.chatid,
-                    from_chat_id: imp.matangazoDB,
+                    from_chat_id: imp.rtcopyDB,
                     message_id: copyId
                 }).then(() => {
                     if (i == all.length - 1) {

@@ -17,7 +17,7 @@ const myBotsFn = async (app) => {
     const imp = {
         halot: 1473393723,
         shemdoe: 741815228,
-        matangazoDB: -1001570087172
+        rtcopyDB: -1002634850653
     }
 
     try {

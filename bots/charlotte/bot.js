@@ -43,7 +43,7 @@ const charlotteFn = async (app) => {
         ohmy_prem: -1001470139866,
         rtmalipo: 5849160770,
         newRT: -1002228998665,
-        matangazoDB: -1001570087172,
+        rtcopyDB: -1002634850653,
         notfy_d: -1002079073174,
         ohmy_backup: -1002363155302
     }
@@ -516,7 +516,7 @@ const charlotteFn = async (app) => {
                 await bot.api.deleteMessage(imp.pzone, msg_id)
             }
 
-            if (ctx.channelPost.chat.id == imp.matangazoDB && ctx.channelPost?.photo) {
+            if (ctx.channelPost.chat.id == imp.rtcopyDB && ctx.channelPost?.photo) {
                 let ph = ctx.channelPost.photo.length - 1
                 await ctx.reply(`Broadcast with Kenya-Zambias\n👉 <code>${ctx.channelPost.photo[ph].file_id}</code>`, {
                     parse_mode: 'HTML',

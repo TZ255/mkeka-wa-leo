@@ -34,7 +34,7 @@ const helenCodes = async (app) => {
         xbongo: -1001263624837,
         mikekaDB: -1001696592315,
         mylove: -1001748858805,
-        matangazoDB: -1001570087172
+        rtcopyDB: -1002634850653
     }
 
     //set webhook
@@ -530,20 +530,11 @@ const helenCodes = async (app) => {
                 } else if (txt == '👑 SUPATIPS') {
                     await call_sendMikeka_functions.supatips(ctx, bot, delay, imp)
                 } else if (txt == '💯 BetWinner App (200% Bonus)' || txt.toLowerCase() == 'betwinner') {
-                    await bot.api.copyMessage(userid, imp.matangazoDB, 102)
+                    await bot.api.copyMessage(userid, imp.rtcopyDB, 17)
                 } else if (txt == '💡 MSAADA') {
                     await bot.api.copyMessage(ctx.chat.id, imp.mikekaDB, 481)
                 } else if (txt == '🔥 MIKEKA YA UHAKIKA LEO 💰') {
                     await bot.api.copyMessage(ctx.chat.id, imp.mikekaDB, 592)
-                } else if (txt == '🪙 Crypto User (Get Free 5 USDT) 🪙') {
-                    await ctx.replyWithChatAction('typing')
-                    setTimeout(() => {
-                        bot.api.copyMessage(userid, imp.matangazoDB, 84, {
-                            reply_markup: {
-                                inline_keyboard: [[{ text: "➕ RECEIVE YOUR 5 USDT", url: 'https://bc.game/i-vhy4ij2x-n/' }]]
-                            }
-                        }).catch(e => console.log(e.message))
-                    }, 1500)
                 }
 
                 //forward to me if sio mkeka

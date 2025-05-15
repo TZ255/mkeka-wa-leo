@@ -16,7 +16,7 @@ const makeConvo = async (bot, ctx, imp) => {
     }
 
     const msg_id = Number(ctx.match.trim());
-    const matangazoDB = imp.matangazoDB;
+    const rtcopyDB = imp.rtcopyDB;
     const bads = ['deactivated', 'blocked', 'initiate', 'chat not found'];
 
     try {
@@ -31,7 +31,7 @@ const makeConvo = async (bot, ctx, imp) => {
             await Promise.all(batch.map(async (user) => {
                 const chatid = user.chatid;
                 try {
-                    await bot.api.copyMessage(chatid, matangazoDB, msg_id);
+                    await bot.api.copyMessage(chatid, rtcopyDB, msg_id);
                 } catch (err) {
                     const errorMsg = err?.message?.toLowerCase() || '';
                     console.log(err?.message || 'Unknown error');
