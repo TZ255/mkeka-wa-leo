@@ -95,7 +95,7 @@ const checking3MkekaBetslip = async (d) => {
             let under35 = ['0:0'];
             let copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, tip: { $in: [...under35] } } },
-                { $sample: { size: 2 } }
+                { $sample: { size: 5 } }
             ])
 
             //add them to betslip database
@@ -120,7 +120,7 @@ const checking3MkekaBetslip = async (d) => {
                         tip: { $in: [...direct_away, ...direct_home] }
                     }
                 },
-                { $sample: { size: 3 } }
+                { $sample: { size: 5 } }
             ]);
 
             let transformedData = matches.map(doc => {
@@ -177,7 +177,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 10 }
+                    $sample: { size: 13 }
                 }
             ]);
 
