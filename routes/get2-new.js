@@ -26,6 +26,7 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 const moment = require('moment-timezone')
 const sendNotification = require('./fns/sendTgNotifications')
+const { on } = require('form-data')
 
 
 router.get('/standings', async (req, res) => {
@@ -165,11 +166,15 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
                     round: "$_id", // Rename _id to round
                     fixtures: 1,
                     numericRound: {
-                        $toDouble: {
-                            $arrayElemAt: [
-                                { $split: ["$_id", " - "] },
-                                1 // Extract numeric part after " - "
-                            ]
+                        $convert: {
+                            input: {
+                                $arrayElemAt: [
+                                    { $split: ["$_id", " - "] },
+                                    1 // Extract numeric part after " - "
+                                ]
+                            },
+                            to: "double",
+                            onError: 0 // Handle cases where conversion fails
                         }
                     },
                     _id: 0 // Exclude the default _id field
@@ -207,6 +212,7 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
         return res.render('11-misimamo/ligi/abroad/index', { standing, agg, partials });
     } catch (error) {
         console.error(`Error in standings route: ${error?.message || 'Unknown error'}`);
+        console.error(error);
         return res.status(500).send('Kumetokea changamoto. Tafadhali jaribu tena baadae.');
     }
 });
@@ -219,7 +225,7 @@ router.get('/football/fixtures/tanzania/premier-league/:teamid', async (req, res
         const path = `tanzania/premier-league`
 
         let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
-        if(!league) return next();
+        if (!league) return next();
 
         const season = league.league_season
         let standing = league.standing
@@ -267,7 +273,7 @@ router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, nex
 
         // Fetch league data with caching
         const league = await OtherStandingLigiKuuModel.findOne({ path }).cache(600);
-        if(!league) return next();
+        if (!league) return next();
 
         // Find team in standings
         const team_info = league.standing.find(t => t.team.id == team_id);
@@ -342,7 +348,7 @@ router.get('/football/top-assists/tanzania/premier-league', async (req, res, nex
     const path = 'tanzania/premier-league'
     try {
         let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
-        if(!league) return next();
+        if (!league) return next();
 
         let top_assists = league.top_assists
         const season = league.league_season
@@ -369,7 +375,7 @@ router.get('/football/top-assists/tanzania/premier-league', async (req, res, nex
 
 //topScorer other league
 router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) => {
-    const {nation, ligi_name} = req.params
+    const { nation, ligi_name } = req.params
     const path = `${nation}/${ligi_name}`.toLowerCase()
     try {
         let league = await OtherStandingLigiKuuModel.findOne({ path })
@@ -407,7 +413,7 @@ router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) =>
 
 //top Assist other league
 router.get('/football/top-assists/:nation/:ligi_name', async (req, res, next) => {
-    const {nation, ligi_name} = req.params
+    const { nation, ligi_name } = req.params
     const path = `${nation}/${ligi_name}`.toLowerCase()
     try {
         let league = await OtherStandingLigiKuuModel.findOne({ path })
@@ -498,8 +504,6 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        getAllFixtures()
-        UpdateMatchDayLeagueData()
         res.end()
     } catch (error) {
         res.send(error.message)
