@@ -290,7 +290,7 @@ const UpdateOtherLeagueMatchDay = async (date) => {
 //get all leagues with matchday true and active true, loop with for...of...loop, for each call UpdateOtherLeagueData function to update the league data fixtures, standing, scores etc
 const UpdateMatchDayLeagueData = async () => {
     try {
-        const leagues = await OtherLigiKuuModel.find({ matchday: true, active: true }).select('league_id league_season').lean()
+        const leagues = await OtherLigiKuuModel.find({ active: true }).select('league_id league_season').lean()
         for (const league of leagues) {
             const { league_id, league_season } = league
             await UpdateOtherLeagueData(league_id, league_season)
