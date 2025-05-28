@@ -156,22 +156,7 @@ setInterval(() => {
         //angalia betslip, getAllFixtures kila baada ya dakika 15
         if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
-        }
-
-        //getAllFixtures & standings
-        if (mins === 0 && hours === 3) {
-            //leo, jana and kesho fixtures
             getAllFixtures()
-
-            //bongo standings
-            setTimeout(() => {
-                UpdateBongoLeagueData(567, 2024)
-            }, 3000);
-
-            //other league standings
-            setTimeout(() => {
-                UpdateMatchDayLeagueData();
-            }, 6000);
         }
 
         //reset resend email count at 03:05 -- check matchdays
@@ -181,11 +166,12 @@ setInterval(() => {
                 .catch(e => sendNotification(741815228, e?.message))
 
             //check matchdays active true or false -- date format is YYYY-MM-DD
-            //UpdateOtherLeagueMatchDay(d_date.split('/').reverse().join('-'))
+            UpdateOtherLeagueMatchDay(d_date.split('/').reverse().join('-'))
         }
 
         //update bongo Every 35 and 5 minutes
         if ((mins === 35 || mins == 5) && (hours >= 14 || hours < 5)) {
+            UpdateBongoLeagueData(567, 2024)
             wafungajiBoraNBC() //scrape ligikuu.co.tz
             setTimeout(() => {
                 assistBoraNBC() //scrape ligikuu.co.tz
@@ -194,7 +180,7 @@ setInterval(() => {
 
         //update other leagues every 30 minutes between 14:00 and 04:00
         if (mins % 30 === 0 && (hours >= 14 || hours < 5)) {
-            //
+            UpdateMatchDayLeagueData();
         }
 
         //Build MikekayaUhakika every hour
