@@ -12,7 +12,7 @@ const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const Over15MikModel = require('../model/ove15mik')
 const MikekaDBModel = require('../model/mkeka-mega')
 const bttsModel = require('../model/ya-uhakika/btts')
-const { UpdateOtherLeagueData, LeagueNameToSwahili, UpdateOtherLeagueMatchDay } = require('./fns/other-ligi')
+const { UpdateOtherLeagueData, LeagueNameToSwahili, UpdateOtherLeagueMatchDay, UpdateMatchDayLeagueData } = require('./fns/other-ligi')
 const { testSp, extractData } = require('./fns/jsjsjjs')
 const sendEmail = require('./fns/sendemail')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
@@ -499,6 +499,7 @@ router.get('/mechi/:siku', async (req, res) => {
 router.get('/API/testing', async (req, res) => {
     try {
         getAllFixtures()
+        UpdateMatchDayLeagueData()
         res.end()
     } catch (error) {
         res.send(error.message)

@@ -36,7 +36,7 @@ const UpdateOtherLeagueData = async (league_id, season) => {
             let country = response?.data?.response[0].league.country
             let ligi = LeagueNameToSwahili(league_id).ligi
             let path = LeagueNameToSwahili(league_id).path
-            if(!ligi || !path) return ErrorFn(`❌ validate ligi and path for ${league_name}`)
+            if (!ligi || !path) return ErrorFn(`❌ validate ligi and path for ${league_name}`)
             let league_season = response?.data?.response[0].league.season
             let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
 
@@ -292,8 +292,13 @@ const UpdateMatchDayLeagueData = async () => {
     try {
         const leagues = await OtherLigiKuuModel.find({ active: true }).select('league_id league_season').lean()
         for (const league of leagues) {
-            const { league_id, league_season } = league
-            await UpdateOtherLeagueData(league_id, league_season)
+            try {
+                const { league_id, league_season } = league
+                await UpdateOtherLeagueData(league_id, league_season)
+                await new Promise(resolve => setTimeout(resolve, 20000));
+            } catch (leagueError) {
+                ErrorFn(`Error updating league data: ${leagueError?.message}`)
+            }
         }
     } catch (error) {
         ErrorFn(`Error updating matchday data: ${error?.message}`)
