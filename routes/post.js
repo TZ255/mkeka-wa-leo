@@ -42,7 +42,7 @@ let imp = {
     ohmy_backup: -1002363155302
 }
 
-const over15Eligible = ['Over 2.5', 'GG & Over 2.5', 'GG', 'Over 1.5', '1st Half. Over 0.5', '1/1', '2/2', '1 & GG', '2 & GG', 'X2 & GG', '1X & GG', '1 & Over 1.5', '2 & Over 1.5', '1 & Over 2.5', '2 & Over 2.5', 'Home Total. Over 1.5', 'Away Total. Over 1.5', 'Over 3.5 Goals', 'Over 1.5 Goals', 'Over 2.5 Goals']
+const over15Eligible = ['Over 2.5', 'GG & Over 2.5', 'GG', 'Over 1.5', '1st Half. Over 0.5', 'HT Over 0.5', '1/1', '2/2', '1 & GG', '2 & GG', 'X2 & GG', '1X & GG', '1 & Over 1.5', '2 & Over 1.5', '1 & Over 2.5', '2 & Over 2.5', 'Home Total. Over 1.5', 'Away Total. Over 1.5', 'Over 3.5 Goals', 'Over 1.5', 'Over 1.5 Goals', 'Over 2.5 Goals']
 
 router.post('/post', async (req, res) => {
     let lmatch = req.body.match
@@ -78,7 +78,7 @@ router.post('/post', async (req, res) => {
     if (over15Eligible.includes(bet)) {
         let ov = await over15Mik.findOneAndUpdate({ date: d, match }, {
             $set: {
-                date: d, match, bet, time, odds: Number(odds), league
+                date: d, match, bet: 'Over 1.5', time, odds: Number(odds), league
             }
         }, { upsert: true })
     }
