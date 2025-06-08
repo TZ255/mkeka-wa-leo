@@ -595,7 +595,7 @@ router.post('/post/grant-vip', async (req, res) => {
             });
         }
 
-        
+
 
         if (!email || !param) {
             return res.status(400).json({
@@ -606,6 +606,11 @@ router.post('/post/grant-vip', async (req, res) => {
 
         // Call the grantSubscription function
         const result = await grantSubscription(email, param);
+
+        //document to telegram
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendMessage`
+        let data = {chat_id: imp.rtmalipo, text: result.message}
+        await axios.post(tgAPI, data).catch(e => console.log(e.message, encodeURI))
 
         // Send response based on success status
         const statusCode = result.success ? 200 : 400;

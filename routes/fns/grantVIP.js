@@ -57,7 +57,7 @@ async function grantSubscription(email, param) {
         const user = await mkekaUsersModel.findOne({ email });
         if (!user) {
             return {
-                success: false,
+                success: true,
                 message: `No user found with email ${email}`
             };
         }
@@ -121,7 +121,7 @@ async function grantSubscription(email, param) {
         }
 
         return {
-            success: false,
+            success: true,
             message: 'Invalid parameter. Use: silver, gold, gold2, one, or unpaid'
         };
 
