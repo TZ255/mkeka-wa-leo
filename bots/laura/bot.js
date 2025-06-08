@@ -6,7 +6,7 @@
 const affAnalyticsModel = require('../../model/affiliates-analytics')
 const mkekaUsersModel = require('../../model/mkeka-users')
 const sendEmail = require('../../routes/fns/sendemail')
-const { updateUserSubscription, generateSubscriptionMessage, SUBSCRIPTION_TYPES } = require('./functions/grant-fns')
+const { updateUserSubscription, generateSubscriptionMessage, SUBSCRIPTION_TYPES, grantSubscription } = require('./functions/grant-fns')
 
 //Laura Codes Starting Here
 const lauraMainFn = async (app) => {
@@ -354,64 +354,10 @@ const lauraMainFn = async (app) => {
             if (!email || !param) {
                 return await ctx.reply('Please provide both email and subscription type');
             }
-
             email = String(email).toLowerCase()
 
-            // Find user
-            const user = await mkekaUsersModel.findOne({ email });
-            if (!user) {
-                return await ctx.reply(`No user found with email ${email}`);
-            }
-
-            // Handle unpaid status
-            if (param === 'unpaid') {
-                user.status = 'unpaid';
-                user.plan = '0 plan'
-                await user.save();
-                return await ctx.reply(`${email} status payment set to unpaid`);
-            }
-
-            // Handle subscriptions
-            if (['silver', 'gold', 'gold2', 'one'].includes(param)) {
-
-                const subscriptionMap = {
-                    'silver': SUBSCRIPTION_TYPES.SILVER,
-                    'gold': SUBSCRIPTION_TYPES.GOLD,
-                    'gold2': SUBSCRIPTION_TYPES.GOLD2,
-                    'one': SUBSCRIPTION_TYPES.one,
-                };
-
-                const subscriptionType = subscriptionMap[param];
-
-                const now = Date.now();
-                let endDate = now + (1000 * 60 * 60 * 24 * subscriptionType.days);
-
-                if (param === 'gold2') {
-                    endDate = new Date(new Date(Date.now()).setMonth(new Date(Date.now()).getMonth() + 1)).getTime();
-                }
-
-                // Update user subscription
-                await updateUserSubscription(user, endDate, now, subscriptionType.plan);
-
-                // Generate and send messages
-                const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name, user, subscriptionType.plan);
-
-                // Send email
-                sendEmail(email.toLowerCase(), 'Malipo yako yamethibitishwa 🎉', messages.html);
-
-                // Update analytics if user is not admins
-                if (!['georgehmariki@gmail.com', 'janjatzblog@gmail.com', 'shmdgrg@gmail.com'].includes(email.toLowerCase())) {
-                    await affAnalyticsModel.findOneAndUpdate(
-                        { pid: 'shemdoe' },
-                        { $inc: { vip_revenue: subscriptionType.amount } }
-                    );
-                }
-
-                return await ctx.reply(messages.text);
-            }
-
-            return await ctx.reply('Invalid parameter. Use: silver, gold, or unpaid');
-
+            let result = await grantSubscription(email, param)
+            return await ctx.reply(result.message)
         } catch (error) {
             console.error('Grant command error:', error);
             await ctx.reply('An error occurred while processing your request. Please try again.');
