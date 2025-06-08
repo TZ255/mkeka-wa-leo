@@ -16,7 +16,7 @@ const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const { createNewOrder } = require('./fns/pesapal/makeorder')
 const { createRefundReq } = require('./fns/pesapal/refundorder')
 const isProduction = require('./fns/pesapal/isProduction')
-const grantSubscription = require('./fns/grantVIP')
+const { grantSubscription } = require('./fns/grantVIP')
 
 let imp = {
     replyDb: -1001608248942,
