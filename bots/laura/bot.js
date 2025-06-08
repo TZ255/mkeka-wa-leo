@@ -5,8 +5,8 @@
 
 const affAnalyticsModel = require('../../model/affiliates-analytics')
 const mkekaUsersModel = require('../../model/mkeka-users')
+const { grantSubscription } = require('../../routes/fns/grantVIP')
 const sendEmail = require('../../routes/fns/sendemail')
-const { updateUserSubscription, generateSubscriptionMessage, SUBSCRIPTION_TYPES, grantSubscription } = require('./functions/grant-fns')
 
 //Laura Codes Starting Here
 const lauraMainFn = async (app) => {

@@ -16,6 +16,7 @@ const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const { createNewOrder } = require('./fns/pesapal/makeorder')
 const { createRefundReq } = require('./fns/pesapal/refundorder')
 const isProduction = require('./fns/pesapal/isProduction')
+const grantSubscription = require('./fns/grantVIP')
 
 let imp = {
     replyDb: -1001608248942,
@@ -578,6 +579,45 @@ router.post('/post/mpesa', async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(404).send('Faaiiiled')
+    }
+})
+
+router.post('/post/grant-vip', async (req, res) => {
+    try {
+        // Extract email and param from request body
+        const { email, param, secret } = req.body;
+
+        // Verify secret
+        if (!secret || secret !== process.env.PASS) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized: Invalid or missing secret'
+            });
+        }
+
+        
+
+        if (!email || !param) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing required fields: email and param'
+            });
+        }
+
+        // Call the grantSubscription function
+        const result = await grantSubscription(email, param);
+
+        // Send response based on success status
+        const statusCode = result.success ? 200 : 400;
+        return res.status(statusCode).json(result);
+
+    } catch (error) {
+        console.error('Grant VIP endpoint error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+            error: error.message
+        });
     }
 })
 

@@ -1,6 +1,6 @@
-const affAnalyticsModel = require("../../../model/affiliates-analytics");
-const mkekaUsersModel = require("../../../model/mkeka-users");
-const sendEmail = require("../../../routes/fns/sendemail");
+const affAnalyticsModel = require("../../model/affiliates-analytics");
+const mkekaUsersModel = require("../../model/mkeka-users");
+const sendEmail = require("./sendemail");
 
 const SUBSCRIPTION_TYPES = {
     SILVER: {
