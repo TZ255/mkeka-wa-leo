@@ -4,10 +4,25 @@
         <h4 class="text-danger fw-bold mb-3">Huwezi ona Michezo Hii</h4>
     </div>
     <p class="mt-2 mb-0 fs-6">
-        Michezo hii ya nyongeza ni kwa wateja waliolipia <b>Gold Plan</b>. Umelipia Silver Plan, wasiliana na Admin wetu WhatsApp kuingia kwenye Gold Plan
+        Michezo hii ya nyongeza ni kwa wateja waliolipia <b>Gold Plan</b>. Umelipia Silver Plan, wasiliana na Admin wetu
+        WhatsApp kuingia kwenye Gold Plan
     </p>
     <br>
+    <div class="">
+        <h6 class="mb-0 mt-1">
+            <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email}\nNataka kupanda kwenye Gold Plan. Malipo yangu ya mwisho ni tarehe ${new Date(user.payments[0].paidOn).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' })}`) %>"
+                class="btn btn-success rounded px-2">
+                <i class="fa-brands fa-whatsapp me-1"></i>
+                WhatsApp: <b>+255 711 935 460</b>
+            </a>
+        </h6>
+        <span class="text-danger" style="font-size: 10px;">
+            Bonyeza kwenda WhatsApp moja kwa moja
+        </span>
+    </div>
+    <br>
     <p>
-        Kila siku tunatoa tips zaidi ya 5 za nyongeza kuwapa nafasi wenye mitaji midogo kuongeza wingi wa odds na kukuza mitaji yao.
+        Kila siku tunatoa tips zaidi ya 5 za nyongeza kuwapa nafasi wenye mitaji midogo kuongeza wingi wa odds na kukuza
+        mitaji yao.
     </p>
 </div>

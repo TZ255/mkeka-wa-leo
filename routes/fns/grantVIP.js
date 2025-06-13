@@ -36,7 +36,7 @@ const formatDate = (date) => {
 const generateSubscriptionMessage = (startDate, endDate, type, user, plan) => {
     return {
         text: `Hongera 🎉 \nMalipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia *${formatDate(startDate)}* hadi *${formatDate(endDate)}*\n\nAccount yako ni:\n📧 Email: *${user.email}*\n🔑 Password: *${user.password}*\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`,
-        html: `<p>Hongera 🎉 <br> Malipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia <b>${formatDate(startDate)}</b> hadi <b>${formatDate(endDate)}</b></p>`
+        html: `<p>Hongera 🎉 <br> Malipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia <b>${formatDate(startDate)}</b> hadi <b>${formatDate(endDate)}</b></p> <p>Kwa mikeka yetu ya VIP kila siku kumbuka kutembelea <br> <a href="https://mkekawaleo.com/mkeka/vip">www.mkekawaleo.com/mkeka/vip</a></p>`,
     };
 };
 
@@ -58,6 +58,7 @@ async function grantSubscription(email, param) {
         if (!user) {
             return {
                 success: true,
+                grant_success: false,
                 message: `No user found with email ${email}`
             };
         }
@@ -110,7 +111,9 @@ async function grantSubscription(email, param) {
 
             return {
                 success: true,
+                grant_success: true,
                 message: messages.text,
+                message_html: messages.html,
                 subscription: {
                     type: subscriptionType.name,
                     plan: subscriptionType.plan,
@@ -122,6 +125,7 @@ async function grantSubscription(email, param) {
 
         return {
             success: true,
+            grant_success: false,
             message: 'Invalid parameter. Use: silver, gold, gold2, one, or unpaid'
         };
 
@@ -129,6 +133,7 @@ async function grantSubscription(email, param) {
         console.error('Grant subscription error:', error);
         return {
             success: false,
+            grant_success: false,
             message: 'An error occurred while processing your request. Please try again.',
             error: error.message
         };

@@ -25,7 +25,7 @@ const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 const moment = require('moment-timezone')
-const sendNotification = require('./fns/sendTgNotifications')
+const {sendNotification, sendLauraNotification} = require('./fns/sendTgNotifications')
 const { on } = require('form-data')
 
 

@@ -66,6 +66,14 @@
         allDivs.forEach(div => {
             if (div.classList.contains(divClass)) {
                 div.style.display = 'block';
+                //if halotel show whatsapp confirm else show payment form
+                if (divClass === 'halotel') {
+                    document.getElementById('whatsapp-confirm').classList.remove('d-none');
+                    document.getElementById('payment-form-container').classList.add('d-none');
+                } else {
+                    document.getElementById('whatsapp-confirm').classList.add('d-none');
+                    document.getElementById('payment-form-container').classList.remove('d-none');
+                }
             } else {
                 div.style.display = 'none';
             }

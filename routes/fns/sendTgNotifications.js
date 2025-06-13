@@ -1,5 +1,6 @@
 const {Bot} = require('grammy')
 const bot = new Bot(process.env.ERROR_BOT)
+const botLaura = new Bot(process.env.LAURA_TOKEN)
 
 const sendNotification = async (chatid, err_msg) => {
     try {
@@ -10,4 +11,13 @@ const sendNotification = async (chatid, err_msg) => {
     }
 }
 
-module.exports = sendNotification
+const sendLauraNotification = async (chatid, err_msg) => {
+    try {
+        if (process.env.local == 'true') return console.log(err_msg)
+        await botLaura.api.sendMessage(chatid, err_msg)
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+module.exports = {sendNotification, sendLauraNotification}

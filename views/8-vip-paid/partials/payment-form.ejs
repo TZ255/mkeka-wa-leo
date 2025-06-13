@@ -1,23 +1,178 @@
-<!-- <div>
-    <h4 class="text-center">Thibitisha Malipo</h4>
-    <p>Jaza namba na jina la usajili wa line uliyotumia kufanya malipo</p>
+<div class="card mx-auto mb-4 bg-light border-start border-info border-4 py-3 px-2 d-none" id="payment-form-container">
+    <h5 class="card-title fs-6 fw-bold mb-3">
+        <i class="fa-solid fa-circle-check me-2 text-info"></i>
+        Uthibitisho wa Malipo
+    </h5>
+    <p>Jaza namba ya simu uliyotumia kufanya malipo ukianza na 0</p>
     <form action="/user/confirm-payment" method="post" id="confirm-form">
         <div class="mb-3">
-            <label for="phone" class="form-label"><i class="fa-regular fa-profile"></i> Namba:</label>
-            <input type="text" pattern="[0-9]{10}" inputmode="numeric" maxlength="10" minlength="10"
-                class="form-control" name="phone" required title="Jaza namba sahihi, tarakimu 10 tu"
-                placeholder="Namba mf: 0756345456"
-                oninvalid="this.setCustomValidity('Tafadhali jaza namba sahihi ya tarakimu 10')"
-                oninput="this.setCustomValidity('')">
-        </div>
-        <div class="mb-3">
-            <label for="name" class="form-label"><i class="fa-regular fa-profile"></i> Jina:</label>
-            <input type="text" class="form-control" name="name" required title="Jaza Jina Sahihi"
-                placeholder="Jina lililofanya muamala">
+            <label for="phone" class="form-label"><i class="fa-solid fa-square-phone"></i> Namba:</label>
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" class="form-control" name="phone" required
+                placeholder="07XXXXXXXX" autocomplete="tel" title="Namba ya simu lazima iwe na tarakimu 10, ianze na 0">
+            <div id="validityCheck" class="text-danger" style="font-size: 12px;"></div>
         </div>
         <div class="text-center mt-4">
-            <button type="submit" class="bataniHub text-dark w-50"><i class="fa-solid fa-user"></i>
-                Thibitisha</button>
+            <button type="submit" class="bataniHub text-dark w-50">
+                <i class="fa-solid fa-spinner"></i>
+                Thibitisha
+            </button>
         </div>
     </form>
-</div> -->
+</div>
+
+
+
+<!-- MODALS -->
+
+<!-- Modal -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="modal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="loadingModalTitle">Confirming your payment... ⏳</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <!-- loadingCont -->
+                <div class="loadingCont" id="loadingCont">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">Tafadhali subiri...</p>
+                </div>
+
+                <!-- on success cont to be shown on success -->
+                <div id="successMessage" class="d-none">
+                    <div class="text-center py-4">
+                        <!-- Font Awesome tick icon -->
+                        <i class="fa-solid fa-circle-check text-success d-block mb-3" style="font-size: 80px;"></i>
+
+                        <p id="grantMessage" class="fw-semibold fs-5 text-dark mb-4">
+                            <!-- Dynamic success message goes here -->
+                        </p>
+
+                        <button class="btn btn-success px-4 py-2 rounded-pill fw-bold" onclick="window.open('/mkeka/vip?date=leo', '_self')">
+                            <i class="fa-solid fa-unlock me-2"></i>
+                            FUNGUA MIKEKA 🎉
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hidden Elements to be appended -->
+                <div class="social d-none text-start" id="noTx" style="width: 98%; margin: auto;">
+                    <p class="card-text text-muted mb-3" style="font-size: 14px;">
+                        Tumeshindwa thibitisha muamala wako moja kwa moja. Tafadhali jaribu tena
+                        au tutumie
+                        screeshot ya muamala pamoja na email yako
+                        <span class="fw-bold text-dark"><%= user.email %></span> ili kuthibitishwa na kupata access ya
+                        mikeka yetu ya VIP
+                    </p>
+
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="me-3">
+                            <span class="text-muted small">Tutumie hapa 👇👇</span>
+                            <h6 class="mb-0 mt-1">
+                                <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email}`) %>" class="btn btn-success rounded px-2">
+                                    <i class="fa-brands fa-whatsapp me-1"></i>
+                                    WhatsApp: <b>+255 711 935 460</b>
+                                </a>
+                            </h6>
+                            <span class="text-danger" style="font-size: 10px;">
+                                Bonyeza kwenda WhatsApp moja kwa moja
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="modal_footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('confirm-form');
+        const phoneInput = form.elements['phone'];
+        const validityCheck = document.getElementById('validityCheck');
+        const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+        const loadingCont = document.getElementById('loadingCont');
+        const successMessageCont = document.getElementById('successMessage');
+        const successMsg = document.getElementById('grantMessage');
+        const noTx = document.getElementById('noTx');
+        const modalTitle = document.getElementById('loadingModalTitle');
+
+        // Clear error on input
+        phoneInput.addEventListener('input', () => {
+            validityCheck.textContent = '';
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const phone = phoneInput.value.trim();
+
+            // Custom validation
+            if (!/^\d+$/.test(phone)) {
+                validityCheck.textContent = 'Namba ya simu inapaswa kuwa tarakimu pekee.';
+                return;
+            }
+
+            if (phone.length !== 10) {
+                validityCheck.textContent = 'Jaza namba sahihi, namba lazima ziwe na tarakimu 10 kamili.';
+                return;
+            }
+
+            if (!phone.startsWith('0')) {
+                validityCheck.textContent = 'Namba ya simu lazima ianze na 0.';
+                return;
+            }
+
+            // Clear previous messages
+            validityCheck.textContent = '';
+            successMessageCont.classList.add('d-none');
+            noTx.classList.add('d-none');
+            loadingCont.classList.remove('d-none');
+
+            // Show modal
+            loadingModal.show();
+
+            try {
+                const res = await fetch('/user/confirm-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ phone, email: '<%= user?.email %>' }),
+                });
+
+                const data = await res.json();
+                loadingCont.classList.add('d-none');
+
+                if (res.ok && data.status === 'success') {
+                    successMsg.innerHTML = data?.message.split('') || 'Malipo yako yamethibitishwa kikamilifu!';
+                    modalTitle.textContent = '✅ Malipo Yathibitishwa 🎉';
+                    successMessageCont.classList.remove('d-none');
+                    noTx.classList.add('d-none')
+                    //reloading page on success
+                    document.getElementById('loadingModal').addEventListener('hidden.bs.modal', function () {
+                        location.href = '/mkeka/vip?date=leo';
+                    });
+                } else {
+                    noTx.classList.remove('d-none');
+                    successMessageCont.classList.add('d-none')
+                    console.log(data)
+                }
+
+            } catch (err) {
+                console.error(err);
+                loadingCont.classList.add('d-none');
+                successMessageCont.classList.add('d-none')
+                noTx.classList.remove('d-none');
+            }
+        });
+    });
+</script>

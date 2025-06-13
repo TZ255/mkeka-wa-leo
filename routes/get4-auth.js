@@ -12,6 +12,7 @@ const BookingCodesModel = require('../model/booking_code');
 const mkekaDB = require('../model/mkeka-mega');
 const supatipsModel = require('../model/supatips');
 const matchExplanation = require('./fns/match-expl');
+const { autoConfirmVIP } = require('./fns/autoConfirmVIP');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -382,6 +383,25 @@ router.post('/post/vip/code', async (req, res) => {
     } catch (error) {
         console.error("Error saving betslip:", error);
         res.status(500).json({ error: error.message });
+    }
+});
+
+router.post('/user/confirm-payment', async (req, res) => {
+    const { phone, email } = req.body;
+
+    if (!phone || !/^0\d{9}$/.test(phone) || !req.isAuthenticated()) {
+        return res.status(400).json({
+            status: "failed",
+            message: "Namba ya simu si sahihi au hujalogin kwenye account yako."
+        });
+    }
+
+    try {
+        const result = await autoConfirmVIP(phone, String(email).toLocaleLowerCase())
+        res.status(200).json(result)
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ status: 'failed', message: 'Server Error!' })
     }
 });
 

@@ -6,7 +6,7 @@ const supatipsModel = require('../../model/supatips')
 const fameTipsModel = require('../../model/ya-uhakika/fametips')
 const Over15MikModel = require('../../model/ya-uhakika/over15db')
 const matchExplanation = require('./match-expl')
-const sendNotification = require('./sendTgNotifications')
+const {sendNotification, sendLauraNotification} = require('./sendTgNotifications')
 
 const checking3MkekaBetslip = async (d) => {
     try {

@@ -1,6 +1,6 @@
 const { default: axios } = require("axios");
 const fixtures_resultsModel = require("../../model/Ligi/fixtures");
-const sendNotification = require("./sendTgNotifications");
+const {sendNotification, sendLauraNotification} = require("./sendTgNotifications");
 
 
 const getFixtures = async (date, siku) => {

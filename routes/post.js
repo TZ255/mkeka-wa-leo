@@ -17,6 +17,7 @@ const { createNewOrder } = require('./fns/pesapal/makeorder')
 const { createRefundReq } = require('./fns/pesapal/refundorder')
 const isProduction = require('./fns/pesapal/isProduction')
 const { grantSubscription } = require('./fns/grantVIP')
+const { autoConfirmVIP } = require('./fns/autoConfirmVIP')
 
 let imp = {
     replyDb: -1001608248942,
@@ -609,7 +610,7 @@ router.post('/post/grant-vip', async (req, res) => {
 
         //document to telegram
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/sendMessage`
-        let data = {chat_id: imp.rtmalipo, text: result.message}
+        let data = { chat_id: imp.rtmalipo, text: result.message }
         await axios.post(tgAPI, data).catch(e => console.log(e.message, encodeURI))
 
         // Send response based on success status

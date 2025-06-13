@@ -1,7 +1,7 @@
 const { default: axios } = require("axios")
 const cheerio = require("cheerio");
 const isEqual = require('lodash/isEqual')
-const sendNotification = require("./sendTgNotifications");
+const {sendNotification, sendLauraNotification} = require("./sendTgNotifications");
 const StandingLigiKuuModel = require("../../model/Ligi/bongo");
 
 const ligiKuuUrl = "https://ligikuu.co.tz/statistics/season-2024-2025/";
