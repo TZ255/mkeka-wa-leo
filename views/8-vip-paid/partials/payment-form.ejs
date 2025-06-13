@@ -61,11 +61,11 @@
 
                 <!-- Hidden Elements to be appended -->
                 <div class="social d-none text-start" id="noTx" style="width: 98%; margin: auto;">
-                    <p class="card-text text-muted mb-3" style="font-size: 14px;">
-                        Tumeshindwa thibitisha muamala wako moja kwa moja. Tafadhali jaribu tena
+                    <p class="card-text text-dark mb-3" style="font-size: 14px;">
+                        Tumeshindwa thibitisha malipo yako moja kwa moja. Tafadhali jaribu tena
                         au tutumie
                         screeshot ya muamala pamoja na email yako
-                        <span class="fw-bold text-dark"><%= user.email %></span> ili kuthibitishwa na kupata access ya
+                        <span class="fw-bold"><%= user.email %></span> ili kuthibitishwa na kupata access ya
                         mikeka yetu ya VIP
                     </p>
 
@@ -154,7 +154,7 @@
 
                 if (res.ok && data.status === 'success') {
                     successMsg.innerHTML = data?.message || 'Malipo yako yamethibitishwa kikamilifu!';
-                    modalTitle.textContent = '✅ Malipo Yathibitishwa 🎉';
+                    modalTitle.textContent = '✅ Malipo Yamethibitishwa 🎉';
                     successMessageCont.classList.remove('d-none');
                     noTx.classList.add('d-none')
                     //reloading page on success
@@ -164,6 +164,7 @@
                 } else {
                     noTx.classList.remove('d-none');
                     successMessageCont.classList.add('d-none')
+                    modalTitle.textContent = '❌ Malipo hayajathibitishwa'
                     console.log(data)
                 }
 
