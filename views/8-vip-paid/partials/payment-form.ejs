@@ -153,7 +153,7 @@
                 loadingCont.classList.add('d-none');
 
                 if (res.ok && data.status === 'success') {
-                    successMsg.innerHTML = data?.message.split('') || 'Malipo yako yamethibitishwa kikamilifu!';
+                    successMsg.innerHTML = data?.message || 'Malipo yako yamethibitishwa kikamilifu!';
                     modalTitle.textContent = '✅ Malipo Yathibitishwa 🎉';
                     successMessageCont.classList.remove('d-none');
                     noTx.classList.add('d-none')
