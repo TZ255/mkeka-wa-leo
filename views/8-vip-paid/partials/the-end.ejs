@@ -1,3 +1,15 @@
+<hr class="text-muted"><br>
+<div class="kesho_count container my-5 p-4 rounded shadow-sm bg-light border border-success"
+     style="max-width: 600px; background-color: rgba(25, 135, 84, 0.05);">
+    <h2 class="mb-4 text-center text-success fw-bold">Mechi za Kesho</h2>
+    <p class="text-center fs-6">Muda uliobakia kuona mechi za kesho</p>
+    <div id="counting"
+         class="fs-3 fw-semibold text-center text-success border border-success rounded-pill py-3 px-4 mx-auto"
+         style="max-width: 300px; background-color: rgba(25, 135, 84, 0.1);">
+        Loading countdown...
+    </div>
+</div>
+
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-12 text-center">
@@ -9,7 +21,9 @@
                         <hr class="flex-grow-1 border-2">
                     </div>
                     <h2 class="display-6 fw-bold text-secondary mb-3">Mwisho</h2>
-                    <p class="text-muted mb-4" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>Zingatia! Betting ni Burudani.. <br> Beti kistaarabu. Usibetie kiasi cha pesa ambacho kikipotea kitakuathiri.</p>
+                    <p class="text-muted mb-4" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>Zingatia!
+                        Betting ni Burudani.. <br> Beti kistaarabu. Usibetie kiasi cha pesa ambacho kikipotea
+                        kitakuathiri.</p>
                 </div>
             </div>
         </div>
@@ -24,4 +38,47 @@
         prevSection.classList.toggle('d-none')
         adminSection.classList.toggle('d-none')
     }
+</script>
+
+<script>
+    function startCountdown() {
+        const countingDiv = document.getElementById('counting');
+
+        // Helper: Convert Date to Africa/Nairobi timezone
+        function getCurrentTimeInNairobi() {
+            return new Date(new Date().toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));
+        }
+
+        // Helper: Get tomorrow at 00:00:00 in Nairobi time
+        function getMidnightTomorrowNairobi() {
+            const now = getCurrentTimeInNairobi();
+            const midnight = new Date(now);
+            midnight.setDate(now.getDate() + 1);
+            midnight.setHours(0, 0, 0, 0);
+            return midnight;
+        }
+
+        function updateCountdown() {
+            const now = getCurrentTimeInNairobi();
+            const target = getMidnightTomorrowNairobi();
+            const distance = target - now;
+
+            if (distance <= 0) {
+                location.reload(); // Refresh at 00:00:00
+                return;
+            }
+
+            const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((distance / (1000 * 60)) % 60);
+            const seconds = Math.floor((distance / 1000) % 60);
+
+            countingDiv.textContent =
+                `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    startCountdown();
 </script>
