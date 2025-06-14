@@ -41,7 +41,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="loadingModalTitle">Confirming your payment... ⏳</h1>
+        <h1 class="modal-title fs-5" id="loadingModalTitle">Checking your payment... ⏳</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -67,20 +67,19 @@
 
         <!-- Fallback / Error Block -->
         <div class="social d-none text-start" id="noTx" style="width: 98%; margin: auto;">
-          <p class="card-text text-dark mb-3" style="font-size: 14px;">
-            Tumeshindwa thibitisha malipo yako moja kwa moja. Tafadhali jaribu tena au tutumie screenshot ya muamala pamoja na email yako
-            <span class="fw-bold"><%= user.email %></span> ili kuthibitishwa na kupata access ya mikeka yetu ya VIP
+          <p class="card-text text-dark mb-3">
+            Tumeshindwa thibitisha malipo yako moja kwa moja. Tafadhali tutumie screenshot ya muamala wako ili kuthibitishwa na kupata access ya mikeka yetu ya VIP
           </p>
 
           <div class="d-flex align-items-center mt-3">
             <div class="me-3">
-              <span class="text-muted small">Tutumie hapa 👇👇</span>
-              <h6 class="mb-0 mt-1">
+              <span class="text-muted">Tutumie hapa 👇👇</span>
+              <h5 class="mb-0 mt-1">
                 <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email}`) %>" class="btn btn-success rounded px-2">
                   <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp: <b>+255 711 935 460</b>
                 </a>
-              </h6>
-              <span class="text-danger" style="font-size: 10px;">
+              </h5>
+              <span class="text-danger" style="font-size: 12px;">
                 Bonyeza kwenda WhatsApp moja kwa moja
               </span>
             </div>
