@@ -663,16 +663,21 @@ router.post(['/pesapal/notifications', '/pesapal/notifications/sandbox'], async 
     }
 })
 
-router.post('/httpsms/events', (req, res)=> {
+router.post('/httpsms/events', (req, res) => {
     res.status(200).end()
-    const {data, type} = req?.body
-    console.log(req.body)
+    const { data, type } = req?.body
 
-    if(type === "message.phone.delivered") {
-        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `✅ SMS delivered to ${data?.contact}`)
+    const {content, contact} = data
+    const wallets = ['M-PESA', 'AirtelMoney', 'AzamPesa']
+
+    if(wallets.includes(contact)) {
+        sendLauraNotification(GLOBAL_VARS.laura_logs_channel, `From: ${contact}\nMessage:\n${content}`, true)
     }
-    if(type === "message.send.failed" || "message.send.expired") {
-        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `❌ SMS to ${data?.contact} ${type}`)
+    if (type === "message.phone.delivered") {
+        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `✅ SMS delivered to ${data?.contact}`, true)
+    }
+    if (type === "message.send.failed" || type === "message.send.expired") {
+        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `❌ SMS to ${data?.contact} ${type}`, true)
     }
 })
 
