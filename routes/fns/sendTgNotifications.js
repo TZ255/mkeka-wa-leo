@@ -11,10 +11,10 @@ const sendNotification = async (chatid, err_msg) => {
     }
 }
 
-const sendLauraNotification = async (chatid, err_msg) => {
+const sendLauraNotification = async (chatid, err_msg, disable_notification = false) => {
     try {
         if (process.env.local == 'true') return console.log(err_msg)
-        await botLaura.api.sendMessage(chatid, err_msg)
+        await botLaura.api.sendMessage(chatid, err_msg, { disable_notification })
     } catch (error) {
         console.error(error)
     }

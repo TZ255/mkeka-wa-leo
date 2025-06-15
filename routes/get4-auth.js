@@ -13,6 +13,8 @@ const mkekaDB = require('../model/mkeka-mega');
 const supatipsModel = require('../model/supatips');
 const matchExplanation = require('./fns/match-expl');
 const { autoConfirmVIP } = require('./fns/autoConfirmVIP');
+const { sendLauraNotification } = require('./fns/sendTgNotifications');
+const { GLOBAL_VARS } = require('./fns/global-var');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -395,6 +397,9 @@ router.post('/user/confirm-payment', async (req, res) => {
             message: "Namba ya simu si sahihi au hujalogin kwenye account yako."
         });
     }
+
+    //notify req
+    sendLauraNotification(GLOBAL_VARS.donny_tg_id, `${phone} is trying to confirm payment`, true)
 
     try {
         const result = await autoConfirmVIP(phone, String(email).toLocaleLowerCase())

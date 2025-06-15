@@ -1,4 +1,5 @@
 const miamalaModel = require("../../model/miamalaDB");
+const { GLOBAL_VARS } = require("./global-var");
 const {grantSubscription} = require("./grantVIP");
 const { sendNotification, sendLauraNotification } = require("./sendTgNotifications");
 
@@ -34,7 +35,7 @@ const autoConfirmVIP = async (phone, email) => {
 
         if (granting?.grant_success === false) {
             let message = `❌Failed adding points for ${email} -- ${phone}\n${granting?.message}`
-            sendLauraNotification(5849160770, message) //donny
+            sendLauraNotification(GLOBAL_VARS.donny_tg_id, message) //donny
             return {
                 status: 'failed',
                 message: message
@@ -43,7 +44,7 @@ const autoConfirmVIP = async (phone, email) => {
 
         if (granting?.grant_success === true) {
             //send tgNotification
-            sendLauraNotification(5849160770, `🔥 Auto confirmed: ${phone}\n\n${granting.message}`) //donny
+            sendLauraNotification(GLOBAL_VARS.donny_tg_id, `🔥 Auto confirmed: ${phone}\n\n${granting.message}`) //donny
 
             return {
                 status: 'success',
@@ -52,7 +53,7 @@ const autoConfirmVIP = async (phone, email) => {
         }
     } catch (error) {
         console.error("Error auto confirming VIP:", error);
-        sendLauraNotification(5849160770, error.message) //donny
+        sendLauraNotification(GLOBAL_VARS.donny_tg_id, error.message) //donny
         return {
             status: "failed",
             message: "Hitilafu imetokea. Tafadhali jaribu tena."
