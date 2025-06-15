@@ -1,6 +1,7 @@
 const miamalaModel = require("../../model/miamalaDB");
 const { GLOBAL_VARS } = require("./global-var");
 const {grantSubscription} = require("./grantVIP");
+const { sendNormalSMS } = require("./sendSMS");
 const { sendNotification, sendLauraNotification } = require("./sendTgNotifications");
 
 const autoConfirmVIP = async (phone, email) => {
@@ -19,6 +20,9 @@ const autoConfirmVIP = async (phone, email) => {
                 message: "Hakuna muamala uliofanana na namba hii ya simu."
             };
         }
+
+        //add +255 to phone if not already present
+        const formattedPhone = phone.startsWith('+255') ? phone : `+255${phone.replace(/^0/, '')}`;
 
         //confirm the transaction and delete from db
         let subType = ""
@@ -42,6 +46,8 @@ const autoConfirmVIP = async (phone, email) => {
         }
 
         if (granting?.grant_success === true) {
+            //send user a message
+            sendNormalSMS(GLOBAL_VARS.benard_phone, formattedPhone, granting.message)
             //send tgNotification
             sendLauraNotification(GLOBAL_VARS.donny_tg_id, `🔥 Auto confirmed: ${phone}\n\n${granting.message}`) //donny
 

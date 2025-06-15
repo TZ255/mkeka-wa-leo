@@ -1,6 +1,8 @@
 const affAnalyticsModel = require("../../model/affiliates-analytics");
 const mkekaUsersModel = require("../../model/mkeka-users");
+const { GLOBAL_VARS } = require("./global-var");
 const sendEmail = require("./sendemail");
+const { sendNormalSMS } = require("./sendSMS");
 
 const SUBSCRIPTION_TYPES = {
     SILVER: {
@@ -30,12 +32,12 @@ const SUBSCRIPTION_TYPES = {
 };
 
 const formatDate = (date) => {
-    return new Date(date).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi' });
+    return new Date(date).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
 };
 
 const generateSubscriptionMessage = (startDate, endDate, type, user, plan) => {
     return {
-        text: `Hongera 🎉 \nMalipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia *${formatDate(startDate)}* hadi *${formatDate(endDate)}*\n\nAccount yako ni:\n📧 Email: *${user.email}*\n🔑 Password: *${user.password}*\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`,
+        text: `Hongera 🎉 \nMalipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia ${formatDate(startDate)} hadi ${formatDate(endDate)}\n\nAccount yako ni:\n📧 Email: ${user.email}\n🔑 Password: ${user.password}\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`,
         html: `<p>Hongera 🎉 <br> Malipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia <b>${formatDate(startDate)}</b> hadi <b>${formatDate(endDate)}</b></p> <p>Kwa mikeka yetu ya VIP kila siku kumbuka kutembelea <br> <a href="https://mkekawaleo.com/mkeka/vip?date=leo" class="text-success">www.mkekawaleo.com/mkeka/vip</a></p>`,
     };
 };
@@ -98,7 +100,8 @@ async function grantSubscription(email, param) {
             const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name, user, subscriptionType.plan);
 
             // Send email
-            await sendEmail(email.toLowerCase(), 'Malipo yako yamethibitishwa 🎉', messages.html);
+            sendEmail(email.toLowerCase(), 'Malipo yako yamethibitishwa 🎉', messages.html)
+                .catch(e => console.log(e?.message, e));
 
             // Update analytics if user is not admin
             const adminEmails = ['georgehmariki@gmail.com', 'janjatzblog@gmail.com', 'shmdgrg@gmail.com'];

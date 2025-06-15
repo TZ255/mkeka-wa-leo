@@ -18,6 +18,8 @@ const { createRefundReq } = require('./fns/pesapal/refundorder')
 const isProduction = require('./fns/pesapal/isProduction')
 const { grantSubscription } = require('./fns/grantVIP')
 const { autoConfirmVIP } = require('./fns/autoConfirmVIP')
+const { sendLauraNotification } = require('./fns/sendTgNotifications')
+const { GLOBAL_VARS } = require('./fns/global-var')
 
 let imp = {
     replyDb: -1001608248942,
@@ -658,6 +660,19 @@ router.post(['/pesapal/notifications', '/pesapal/notifications/sandbox'], async 
         res.status(200).send('notification received')
     } catch (error) {
         console.log(error?.message, error)
+    }
+})
+
+router.post('/httpsms/events', (req, res)=> {
+    res.status(200).end()
+    const {data, type} = req?.body
+    console.log(req.body)
+
+    if(type === "message.phone.delivered") {
+        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `✅ SMS delivered to ${data?.contact}`)
+    }
+    if(type === "message.send.failed") {
+        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `❌ SMS to ${data?.contact} failed`)
     }
 })
 

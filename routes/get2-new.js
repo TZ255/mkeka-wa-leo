@@ -27,6 +27,8 @@ const timeAgo = new TimeAgo('en-US')
 const moment = require('moment-timezone')
 const {sendNotification, sendLauraNotification} = require('./fns/sendTgNotifications')
 const { on } = require('form-data')
+const { sendNormalSMS } = require('./fns/sendSMS')
+const { GLOBAL_VARS } = require('./fns/global-var')
 
 
 router.get('/standings', async (req, res) => {
@@ -504,6 +506,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
+        sendNormalSMS(GLOBAL_VARS.benard_phone, GLOBAL_VARS.paulo_phone, "Ile mishe nimefanikisha")
         res.end()
     } catch (error) {
         res.send(error.message)
