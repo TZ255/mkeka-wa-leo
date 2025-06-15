@@ -506,7 +506,6 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        sendNormalSMS(GLOBAL_VARS.benard_phone, GLOBAL_VARS.paulo_phone, "Ile mishe nimefanikisha")
         res.end()
     } catch (error) {
         res.send(error.message)
