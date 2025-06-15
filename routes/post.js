@@ -671,8 +671,8 @@ router.post('/httpsms/events', (req, res)=> {
     if(type === "message.phone.delivered") {
         sendLauraNotification(GLOBAL_VARS.donny_tg_id, `✅ SMS delivered to ${data?.contact}`)
     }
-    if(type === "message.send.failed") {
-        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `❌ SMS to ${data?.contact} failed`)
+    if(type === "message.send.failed" || "message.send.expired") {
+        sendLauraNotification(GLOBAL_VARS.donny_tg_id, `❌ SMS to ${data?.contact} ${type}`)
     }
 })
 
