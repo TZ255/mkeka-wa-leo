@@ -41,7 +41,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="loadingModalTitle">Checking your payment... ⏳</h1>
+        <h1 class="modal-title fs-5" id="loadingModalTitle">Tunathibitisha... ⏳</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -68,12 +68,12 @@
         <!-- Fallback / Error Block -->
         <div class="social d-none text-start" id="noTx" style="width: 98%; margin: auto;">
           <p class="card-text text-dark mb-3">
-            Tumeshindwa thibitisha malipo yako moja kwa moja. Tafadhali tutumie screenshot ya muamala wako ili kuthibitishwa na kupata access ya mikeka yetu ya VIP
+            Hakuna malipo yaliyopatikana kwa namba <span id="namba_noTx"></span> <br><br> Iwapo unapitia changamoto yoyote kwenye kufanya malipo au umefanya malipo na tumeshindwa thibitisha kwa wakati, tafadhali wasiliana nasi.
           </p>
 
           <div class="d-flex align-items-center mt-3">
             <div class="me-3">
-              <span class="text-muted">Tutumie hapa 👇👇</span>
+              <span class="text-muted">Contact Us 👇👇</span>
               <h5 class="mb-0 mt-1">
                 <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email}`) %>" class="btn btn-success rounded px-2">
                   <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp: <b>+255 711 935 460</b>
@@ -104,6 +104,7 @@
     const successMsg = document.getElementById('grantMessage');
     const noTx = document.getElementById('noTx');
     const modalTitle = document.getElementById('loadingModalTitle');
+    const namba_noTx = document.getElementById('namba_noTx')
 
     // Clear custom error on input
     phoneInput.addEventListener('input', () => {
@@ -131,10 +132,12 @@
       phoneInput.classList.remove('is-invalid');
       successMessageCont.classList.add('d-none');
       noTx.classList.add('d-none');
+      modalTitle.textContent = 'Tunathibitisha... ⏳'
       loadingCont.classList.remove('d-none');
 
       // Show modal
       loadingModal.show();
+      namba_noTx.textContent = phone
 
       try {
         const res = await fetch('/user/confirm-payment', {
@@ -147,6 +150,10 @@
         });
 
         const data = await res.json();
+
+        //async delay to simulate loading for 3000ms
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         loadingCont.classList.add('d-none');
 
         if (res.ok && data.status === 'success') {
