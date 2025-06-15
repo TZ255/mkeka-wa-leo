@@ -27,8 +27,7 @@ const autoConfirmVIP = async (phone, email) => {
         if (tx.amt >= 30000 && tx.amt <= 35000) subType = "gold2";
 
         //delete the transaction from db
-        let alltrans = await miamalaModel.find({phone: { $in: [phone, alt1, alt2] }})
-        for (let t of alltrans) {await t.deleteOne()}
+        await miamalaModel.deleteMany({ phone: { $in: [phone, alt1, alt2] } });
         
         //grant sub
         let granting = await grantSubscription(email, subType)
