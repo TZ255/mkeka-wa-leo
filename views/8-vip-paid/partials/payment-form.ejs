@@ -19,7 +19,7 @@
         pattern="0[0-9]{9}" 
         inputmode="numeric"
         maxlength="10"
-        autocomplete="tel"
+        autocomplete="off"
         required
         title="Namba ya simu lazima iwe na tarakimu 10, ianze na 0">
       <div class="invalid-feedback" id="validityCheck">
@@ -140,6 +140,9 @@
       namba_noTx.textContent = phone
 
       try {
+        //async delay to simulate loading for 3000ms
+        await new Promise(resolve => setTimeout(resolve, 3000));
+
         const res = await fetch('/user/confirm-payment', {
           method: 'POST',
           headers: {
@@ -150,9 +153,6 @@
         });
 
         const data = await res.json();
-
-        //async delay to simulate loading for 3000ms
-        await new Promise(resolve => setTimeout(resolve, 2000));
 
         loadingCont.classList.add('d-none');
 
