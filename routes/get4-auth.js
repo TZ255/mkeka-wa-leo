@@ -85,10 +85,19 @@ router.get('/mkeka/vip', async (req, res) => {
             //find VIP Slips
             let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time')
 
-            //find yesterday won
+            //find yesterday won, combine and sort by time
             let gold_won = await paidVipModel.find({ status: 'won', date: jana }).cache(600)
             let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(600)
-            let won_slips = [...gold_won, ...supa_won]
+
+            const parseTime = (t) => {
+                if (!t || !t.includes(':')) return 0;
+                const [h, m] = t.split(':').map(Number);
+                return (isNaN(h) || isNaN(m)) ? 0 : h * 60 + m;
+            };
+
+            const won_slips = [...gold_won, ...supa_won].sort((a, b) => {
+                return parseTime(a.time) - parseTime(b.time);
+            });
 
             //Booking Codes
             let today_codes = await BookingCodesModel.find({ date: d });
