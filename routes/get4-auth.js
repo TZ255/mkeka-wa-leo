@@ -399,7 +399,7 @@ router.post('/user/confirm-payment', async (req, res) => {
     }
 
     //notify req
-    sendLauraNotification(GLOBAL_VARS.donny_tg_id, `${phone} is trying to confirm payment`, true)
+    sendLauraNotification(GLOBAL_VARS.laura_logs_channel, `${phone} is trying to confirm payment`, true)
 
     try {
         const result = await autoConfirmVIP(phone, String(email).toLocaleLowerCase())
