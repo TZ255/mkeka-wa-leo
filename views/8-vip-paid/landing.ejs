@@ -26,10 +26,16 @@
         <ul style="list-style: circle;">
             <li>Name: <b class="text-bold text-capitalize"><%= user?.name %></b></li>
             <li>Email: <b class="text-bold"><%= user.email %></b></li>
-            <li>Status: <b class="text-info text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b> (<%= user?.plan %>)</li>
+            <li>Status: <b
+                    class="text-info text-capitalize"><%= String(user.status).replace('unpaid', 'Not Paid') %></b>
+                (<%= user?.plan %>)</li>
             <% if (user.status === 'paid') { %>
-             <li>Paid On: <b class="text-bold"><%= new Date(user.payments[0].paidOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
-             <li>End On: <b class="text-bold"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b></li>
+            <li>Paid On: <b
+                    class="text-bold"><%= new Date(user.payments[0].paidOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b>
+            </li>
+            <li>End On: <b
+                    class="text-bold"><%= new Date(user.payments[0].endedOn).toLocaleString('en-GB', {timeZone: 'Africa/Nairobi'}) %></b>
+            </li>
             <% } %>
         </ul>
 
@@ -37,9 +43,11 @@
     <main>
         <section class="left mt-5">
             <!-- If user unpaid. Show this header -->
-             <% if (user.status !== 'paid') { %>
-                <h2 class="h2 mb-3 fw-bold bg-dark fs-5">VIP TiPS za Siku - <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %></h2>
-             <% } %>
+            <% if (user.status !== 'paid') { %>
+            <h2 class="h2 mb-3 fw-bold bg-dark fs-5">VIP TiPS za Siku -
+                <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
+            </h2>
+            <% } %>
             <!-- if user paid -->
             <% if (user.status === 'paid') { %>
             <!-- <%- include('./partials/status.ejs'); %> -->
@@ -51,11 +59,11 @@
             <%- include('./partials/tip-cards.ejs'); %>
             <%- include('./partials/the-end.ejs'); %>
             <% if (user.role === 'admin') { %>
-                <%- include('./partials/form-prev.ejs'); %>
-                <section id="adminSection" class="d-none">
-                    <%- include('./partials/admin.ejs'); %>
-                </section>
-                <% } %>
+            <%- include('./partials/form-prev.ejs'); %>
+            <section id="adminSection" class="d-none">
+                <%- include('./partials/admin.ejs'); %>
+            </section>
+            <% } %>
             <% } %>
 
             <!-- if user unpaid -->
@@ -77,7 +85,7 @@
     <%- include('./partials/script.ejs'); %>
 
     <% if (user?.status === 'paid') { %>
-        <%- include('./partials/animation.ejs'); %>
+    <%- include('./partials/animation.ejs'); %>
     <% } %>
 </body>
 

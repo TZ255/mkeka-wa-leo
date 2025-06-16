@@ -195,7 +195,7 @@ const UpdateOtherTopAssistFn = async (league_id, season) => {
                 $set: { top_assists },
             })
         } else {
-            ErrorFn(`Error fetching ${league_id} top assists`)
+            console.log(`Error fetching ${league_id} top assists`)
         }
     } catch (error) {
         console.log(error?.message, error)
