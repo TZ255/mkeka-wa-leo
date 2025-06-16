@@ -1,12 +1,26 @@
 <br><br>
 <div class="kesho_count container my-5 p-4 rounded shadow bg-dark text-light"
-     style="max-width: 600px; background-color: rgba(25, 135, 84, 0.05);">
-    <h2 class="mb-4 text-center fw-bold">Mechi za Kesho</h2>
-    <p class="text-center fs-6">Muda uliobakia kuona mechi za kesho</p>
-    <div id="counting"
-         class="fs-3 fw-semibold text-center border border-dark rounded-pill py-3 px-4 mx-auto bg-light text-muted"
-         style="max-width: 300px;">
-        Loading countdown...
+     style="max-width: 600px; background-color: rgba(25, 135, 84, 0.08);">
+    
+    <div class="text-center mb-3">
+        <i class="fas fa-clock fa-2x text-success mb-2 rotate-icon"></i>
+        <h2 class="fw-bold">Mechi za Kesho</h2>
+        <p class="fs-6">Muda uliobakia kuona mechi za kesho</p>
+    </div>
+
+    <div id="counting" class="d-flex justify-content-center gap-3 fs-4 fw-semibold text-center">
+        <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
+            <div id="hours" class="fs-2">--</div>
+            <small class="text-muted">Hours</small>
+        </div>
+        <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
+            <div id="minutes" class="fs-2">--</div>
+            <small class="text-muted">Minutes</small>
+        </div>
+        <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
+            <div id="seconds" class="fs-2">--</div>
+            <small class="text-muted">Seconds</small>
+        </div>
     </div>
 </div>
 
@@ -42,14 +56,14 @@
 
 <script>
     function startCountdown() {
-        const countingDiv = document.getElementById('counting');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
 
-        // Helper: Convert Date to Africa/Nairobi timezone
         function getCurrentTimeInNairobi() {
             return new Date(new Date().toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));
         }
 
-        // Helper: Get tomorrow at 00:00:00 in Nairobi time
         function getMidnightTomorrowNairobi() {
             const now = getCurrentTimeInNairobi();
             const midnight = new Date(now);
@@ -64,7 +78,7 @@
             const distance = target - now;
 
             if (distance <= 0) {
-                location.reload(); // Refresh at 00:00:00
+                location.reload();
                 return;
             }
 
@@ -72,8 +86,9 @@
             const minutes = Math.floor((distance / (1000 * 60)) % 60);
             const seconds = Math.floor((distance / 1000) % 60);
 
-            countingDiv.textContent =
-                `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`;
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minutesEl.textContent = String(minutes).padStart(2, '0');
+            secondsEl.textContent = String(seconds).padStart(2, '0');
         }
 
         updateCountdown();
