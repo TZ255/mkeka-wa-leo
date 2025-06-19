@@ -109,9 +109,10 @@ router.get('/mkeka/vip', async (req, res) => {
             let codes = { slip1, slip2 };
 
             //autopilot
-            let auto_pilot = await affAnalyticsModel.findOne({pid: 'shemdoe'}).select('auto_pilot')
+            let aff = await affAnalyticsModel.findOne({pid: 'shemdoe'}).select('autopilot')
+            let autopilot = aff?.autopilot;
 
-            return res.render(`8-vip-paid/landing`, { sure3, sure5, slipOdds, sure5Odds, slips, user, d, won_slips, codes, siku, auto_pilot })
+            return res.render(`8-vip-paid/landing`, { sure3, sure5, slipOdds, sure5Odds, slips, user, d, won_slips, codes, siku, autopilot })
         }
         res.render('8-vip/vip')
     } catch (err) {

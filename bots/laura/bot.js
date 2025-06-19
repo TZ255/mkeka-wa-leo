@@ -373,17 +373,17 @@ const lauraMainFn = async (app) => {
         }
     })
 
-    bot.command('auto_pilot', async ctx => {
+    bot.command('autopilot', async ctx => {
         try {
             if(![imp.shemdoe, imp.rtmalipo].includes(ctx.chat.id)) return await ctx.reply('Not authorized');
             
-            //get auto_pilot status, if true, set it to false, if false, set it to true
+            //get autopilot status, if true, set it to false, if false, set it to true
             let aff = await affAnalyticsModel.findOne({ pid: 'shemdoe' })
             if (!aff) return await ctx.reply('Affiliate analytics not found');
 
-            aff.auto_pilot = !aff.auto_pilot;
+            aff.autopilot = !aff.autopilot;
             await aff.save();
-            await ctx.reply(`Auto Pilot is now ${aff.auto_pilot ? 'enabled (auto confirm)' : 'disabled (manual confirm)'}.`);
+            await ctx.reply(`Auto Pilot is now ${aff.autopilot ? 'enabled (auto confirm)' : 'disabled (manual confirm)'}.`);
         } catch (error) {
             await ctx.reply(error?.message)
         }

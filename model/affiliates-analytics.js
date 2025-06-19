@@ -32,7 +32,7 @@ const analyticsSchema = new Schema({
         type: String,
         default: 'shemdoe'
     },
-    auto_pilot: {
+    autopilot: {
         type: Boolean,
         default: false
     },
