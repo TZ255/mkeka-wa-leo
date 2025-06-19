@@ -83,11 +83,20 @@ const getFixturePredictions = async (fixtureId) => {
         const response = await axios.request(options);
         const predictions = response.data?.response;
         if (!predictions || predictions.length === 0) {
-            throw new Error('No predictions found for the given fixture ID');
+            console.log('No prediction')
+            return null;
         }
 
-        let tip = await processPrediction(response.data); // Process the prediction data
-        console.log(tip)
+        const matchPrediction = predictions[0];
+        return {
+            winner: matchPrediction?.predictions?.winner || null,
+            goals: matchPrediction?.predictions?.goals,
+            advice: matchPrediction?.predictions?.advice || null,
+            last5_form: {
+                home: matchPrediction.teams.home.league?.form || '',
+                away: matchPrediction.teams.away.league?.form || '',
+            },
+        }
     } catch (error) {
         console.error('Error fetching fixture predictions:', error);
         throw error; // Rethrow the error to be handled by the caller

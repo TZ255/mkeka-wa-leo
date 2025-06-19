@@ -32,6 +32,10 @@ const analyticsSchema = new Schema({
         type: String,
         default: 'shemdoe'
     },
+    auto_pilot: {
+        type: Boolean,
+        default: false
+    },
 }, {strict: false, timestamps: true })
 
 let affAnalyticsModel = mongoose.model('Affiliate-analytics', analyticsSchema)

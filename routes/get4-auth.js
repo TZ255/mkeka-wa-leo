@@ -15,6 +15,7 @@ const matchExplanation = require('./fns/match-expl');
 const { autoConfirmVIP } = require('./fns/autoConfirmVIP');
 const { sendLauraNotification } = require('./fns/sendTgNotifications');
 const { GLOBAL_VARS } = require('./fns/global-var');
+const affAnalyticsModel = require('../model/affiliates-analytics');
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -107,7 +108,10 @@ router.get('/mkeka/vip', async (req, res) => {
 
             let codes = { slip1, slip2 };
 
-            return res.render(`8-vip-paid/landing`, { sure3, sure5, slipOdds, sure5Odds, slips, user, d, won_slips, codes, siku })
+            //autopilot
+            let auto_pilot = await affAnalyticsModel.findOne({pid: 'shemdoe'}).select('auto_pilot')
+
+            return res.render(`8-vip-paid/landing`, { sure3, sure5, slipOdds, sure5Odds, slips, user, d, won_slips, codes, siku, auto_pilot })
         }
         res.render('8-vip/vip')
     } catch (err) {

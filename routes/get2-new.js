@@ -29,6 +29,7 @@ const {sendNotification, sendLauraNotification} = require('./fns/sendTgNotificat
 const { on } = require('form-data')
 const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
+const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
 
 
 router.get('/standings', async (req, res) => {
@@ -506,6 +507,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
+        getAllEligiblePredictions('2025-06-19')
         res.end()
     } catch (error) {
         res.send(error.message)
