@@ -507,7 +507,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        getAllEligiblePredictions('2025-06-19')
+        //getAllEligiblePredictions('2025-06-19')
         res.end()
     } catch (error) {
         res.send(error.message)

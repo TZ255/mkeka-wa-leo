@@ -383,7 +383,7 @@ const lauraMainFn = async (app) => {
 
             aff.autopilot = !aff.autopilot;
             await aff.save();
-            await ctx.reply(`Auto Pilot is now ${aff.autopilot ? 'enabled (auto confirm)' : 'disabled (manual confirm)'}.`);
+            await ctx.reply(`Auto Pilot is now ${aff.autopilot ? 'enabled (auto confirm)' : 'disabled (whatsapp confirm)'}.`);
         } catch (error) {
             await ctx.reply(error?.message)
         }
