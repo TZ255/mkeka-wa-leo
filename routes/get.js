@@ -703,30 +703,37 @@ router.get('/get/tips/upcoming/:date', async (req, res) => {
     }
 })
 
-//payments
-router.get('/payments/validate', async (req, res) => {
-    try {
-        let { OrderTrackingId, OrderMerchantReference } = req.query
-
-        if (OrderTrackingId) {
-            console.log(req.query)
-            let { token, expiryDate } = await makePesaPalAuth(true)
-            let thibitisha = await getPaymentStatus(OrderTrackingId, isProduction(), token)
-            switch (thibitisha) {
-                case 1:
-                    res.redirect('/standings/567/2024')
-                    break;
-
-                default:
-                    res.send('Muamala wako haukufanikiwa. Ikiwa unapitia changamoto kwenye malipo, wasiliana nasi WhatsApp +254769028387')
-                    break;
-            }
-        } else {
-            res.redirect('/')
-        }
-    } catch (error) {
-        res.send('Changamoto imetokea kuthibitisha malipo yako. Tafadhali tutumie screeshot ya muamala wako kwenye WhatsApp yetu +254769028387')
+//list of tanzania bookies
+router.get('/tanzania/bookies', (req, res) => {
+    const partials = {
+        canonicalPath: '/tanzania/bookies',
+        year: new Date().getFullYear()
     }
+
+    res.render('4-betting-sites/index', {partials})
+})
+
+//tanzania bookies
+router.get('/tanzania/bookies/:bookie', async (req, res) => {
+    let bookie = req.params.bookie
+    //object with bookie name and render path
+    const bookies = {
+        'gsb': '4-betting-sites/1-gsbtz/index',
+        'betway': '4-betting-sites/2-betwaytz/index'
+    }
+
+    if (!Object.keys(bookies).includes(bookie)) {
+        return res.status(404).send('Bookie not found')
+    }
+
+    //get fullyear in one line
+    const partials = {
+        canonicalPath: `/tanzania/bookies/${bookie}`,
+        bookieName: bookie.charAt(0).toUpperCase() + bookie.slice(1),
+        year: new Date().getFullYear()
+    }
+
+    res.render(bookies[bookie], { partials })
 })
 
 
