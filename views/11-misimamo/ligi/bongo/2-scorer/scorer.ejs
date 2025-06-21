@@ -27,7 +27,8 @@
     <main>
         <section class="left">
             <h1 class="fs-4 mx-2 my-4">
-                Wafungaji Bora NBC Premier League <%= partials.season_short %>. Je, Nani Atamaliza Msimu Kinara wa Magoli?
+                Wafungaji Bora NBC Premier League <%= partials.season_short %>. Je, Nani Atamaliza Msimu Kinara wa
+                Magoli?
             </h1>
             <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-muted" style="font-size: 12px;">
                 <i class="fa-regular fa-clock"></i> Updated on:
@@ -39,11 +40,12 @@
                 <%- include(`./partials/${partials.season}/intro.ejs`); %>
 
                 <div class="table-section" itemscope itemtype="https://schema.org/Table">
-                    <h2 class="h2 fs-6 mb-3" itemprop="about"> 
+                    <h2 class="h2 fs-6 mb-3" itemprop="about">
                         Orodha ya Wafungaji Bora (Top Goal Scorers) NBC <%= partials.season_short %>
                     </h2>
                     <p class="p-2">
-                        Hadi hivi sasa, wachezaji wafuatao wameonyesha umahiri mkubwa wa kufumania nyavu. Hapa chini ni orodha ya wafungaji bora 30 Ligi Kuu Tanzania Bara:
+                        Hadi hivi sasa, wachezaji wafuatao wameonyesha umahiri mkubwa wa kufumania nyavu. Hapa chini ni
+                        orodha ya wafungaji bora 30 Ligi Kuu Tanzania Bara:
                     </p>
                     <table class="table table-striped-columns">
                         <thead style="font-size: 13px !important;">
@@ -55,21 +57,31 @@
                         </thead>
                         <tbody>
                             <% top_scorers.forEach((player, index) => { %>
-                                <tr style="font-size: 12px !important;">
-                                    <td class="tdata text-center"><%= index+1 %>.</td>
-                                    <td class="tdata"><%= player.playerName %></td>
-                                    <td class="tdata"><%= player.club %></td>
-                                    <td class="tdata"><%= player.country %></td>
-                                    <td class="tdata text-center"><%= player.goals %></td>
-                                </tr>
+                            <tr style="font-size: 12px !important;">
+                                <td class="tdata text-center"><%= index+1 %>.</td>
+                                <td class="tdata"><%= player.playerName %></td>
+                                <td class="tdata"><%= player.club %></td>
+                                <td class="tdata"><%= player.country %></td>
+                                <td class="tdata text-center"><%= player.goals %></td>
+                            </tr>
                             <% }) %>
                         </tbody>
                         <caption class="p-2 fst-italic">
                             <p>Orodha hii inasasishwa mara kwa mara kulingana na mechi za kila wiki.</p>
                             <p>Ona pia</p>
                             <ul class="list-group list-group-flush fw-bold">
-                                <li class="list-group-item"><a href="/football/top-assists/tanzania/premier-league" class="text-success text-decoration-none">Orodha ya Watoa Assist Bora wa NBC <%= partials.season_short %></a></li>
-                                <li class="list-group-item"><a href="/standings/football/tanzania/premier-league" class="text-success text-decoration-none">Msimamo Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %></a></li>
+                                <li class="list-group-item"><a href="/football/top-assists/tanzania/premier-league"
+                                        class="text-success text-decoration-none">Orodha ya Watoa Assist Bora wa NBC
+                                        <%= partials.season_short %></a></li>
+                                <li class="list-group-item"><a href="/standings/football/tanzania/premier-league"
+                                        class="text-success text-decoration-none">Msimamo Ligi Kuu ya NBC Tanzania Bara
+                                        <%= partials.season_short %></a></li>
+                                <li class="list-group-item">
+                                    <a href="/football/fixtures/tanzania/premier-league"
+                                        class="text-success text-decoration-none">
+                                        Ratiba na Matokeo NBC - Tanzania Premier League <%= partials.season_short %>
+                                    </a>
+                                </li>
                             </ul>
                         </caption>
                     </table>

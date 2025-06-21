@@ -3,9 +3,9 @@
     </h2>
 
     <!-- Current round for only leagues -->
-    <% if (typeof standing.standing[0] === 'object' && standing.standing[0] !== null && !Array.isArray(standing.standing[0])) { %>
+    <% if (typeof standing.standing[0] === 'object' && standing.standing[0] !== null && !Array.isArray(standing.standing[0]) && standing.current_round_fixtures?.length > 0) { %>
         <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
-            <%= standing.current_round_fixtures[0]?.league?.round.replace('Regular Season -', 'Mzunguko wa').replace('fff - 0.01', 'Fainali').replace('fff - 0.02', 'Nusu Fainali').replace('fff - 0.03', 'Robo Fainali').replace("pre - 0.", "Hatua ya Mtoano - ").replace('Group Stage -', 'Hatua ya Makundi -') %>
+            <%= standing.current_round_fixtures[0]?.league?.round %>
         </h3>
         <table class="table table-striped">
             <thead>
@@ -49,7 +49,7 @@
     <% agg.forEach(round => { %>
     <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
         <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
-            <%= round.round.replace('Regular Season -', 'Mzunguko wa').replace('fff - 0.01', 'Fainali').replace('fff - 0.02', 'Nusu Fainali').replace('fff - 0.03', 'Robo Fainali').replace("pre - 0.", "Hatua ya Mtoano - ").replace('Group Stage -', 'Hatua ya Makundi -') %>
+            <%= round.round %>
         </h3>
         <table class="table table-striped">
             <thead>

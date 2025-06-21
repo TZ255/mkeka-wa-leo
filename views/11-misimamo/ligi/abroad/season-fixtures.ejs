@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Angalia msimamo wa <%= partials.ligi %> - <%= partials.league_name %> <%= partials.season_long %>. Nani kinara, nani mkia.">
+        content="Ratiba ya <%= partials.ligi %> - <%= partials.league_name %> <%= partials.season_long %>. Angalia ratiba na matokeo ya <%= partials.ligi %> ya msimu mzima wa <%= partials.season_short %>. Matokeo ya jana na juzi, ratiba ya kesho.">
     <%- include('../../../0-global/favicon.ejs') %>
     <meta property="article:modified_time" content="<%= partials.updatedAt %>">
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
-    <title>Msimamo wa <%= partials.ligi %>
-        <%= partials.season_long %></title>
+    <title>Ratiba na Matokeo ya <%= partials.ligi %>
+        <%= partials.season_long %> - Msimu Mzima</title>
     <%- include('../../../0-global/style.ejs'); %>
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
@@ -20,26 +20,8 @@
             font-size: 12px;
         }
 
-        .relegation {
-            background-color: #d32f2f !important;
-            color: #ffffff !important;
-        }
-
-        .champions {
-            background-color: #1976d2 !important;
-            color: #ffffff !important;
-        }
-
-        .europa {
-            background-color: #0097a7 !important;
-            /* Teal/cyan */
-            color: #ffffff !important;
-        }
-
-        .conference {
-            background-color: #7b1fa2 !important;
-            /* Purple */
-            color: #ffffff !important;
+        .PST {
+            text-decoration: line-through;
         }
     </style>
 </head>
@@ -49,8 +31,8 @@
     <main>
         <section class="left text-align-justify">
             <div class="intro">
-                <h1 class="fs-3 p-2">Msimamo wa <%= partials.ligi %>
-                    <%= partials.season_long %></h1>
+                <h1 class="fs-3 p-2">Ratiba na Matokeo ya <%= partials.ligi %>
+                    <%= partials.season_long %> - Msimu Mzima</h1>
                 <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-muted" style="font-size: 12px;">
                     <i class="fa-regular fa-clock"></i> Updated on:
                     <abbr class="date published" title="<%= partials.updatedAt %>">
@@ -60,7 +42,7 @@
                     </abbr>
                 </span>
             </div>
-            <%- include('./partials/standing.ejs'); %>
+            <%- include('./partials/fixtures.ejs'); %>
             <br>
             <div class="vidokezo p-2">
                 <h2 class="h2 fs-6">Vidokezo <%= partials.ligi %>
@@ -68,9 +50,9 @@
                 </h2>
                 <ul class="list-group list-group-flush fw-bold">
                     <li class="list-group-item">
-                        <a href="/football/fixtures/<%= partials.path %>"
+                        <a href="/standings/football/<%= partials.path %>"
                             class="text-success text-decoration-none">
-                            Ratiba na Matokeo - <%= partials.ligi %>
+                            Msimamo wa <%= partials.ligi %>
                             <%= partials.season_short %>
                         </a>
                     </li>

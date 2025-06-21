@@ -25,13 +25,15 @@
             const league_id = cell.getAttribute('data-league_id')?.toLowerCase() || '';
 
             // Add appropriate classes based on description content
-            let second_ligs = ['caf confederation cup']
-            if (description.includes('europa') || second_ligs.some(lig => description.includes(lig)) || (description == "playoffs" && league_id == "20")) {
+            let fst_ligs = ['champions league', '15: playoffs', '29: promotion - world cha']
+            let second_ligs = ['20 playoffs', 'europa', '29: ranking of second']
+
+            if (second_ligs.some(lig => `${league_id}: ${description}`.includes(lig))) {
                 cell.classList.add('europa');
                 status_expl.push({ description: cell.getAttribute('title'), class: 'europa' });
             }
 
-            if (description.includes('champions league')) {
+            if (fst_ligs.some(lig => `${league_id}: ${description}`.includes(lig))) {
                 cell.classList.add('champions');
                 status_expl.push({ description: cell.getAttribute('title'), class: 'champions' });
             }

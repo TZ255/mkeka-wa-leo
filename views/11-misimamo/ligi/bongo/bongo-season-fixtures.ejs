@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Msimamo wa ligi kuu ya NBC Tanzania Bara <%= partials.season_long %>. Angalia msimamo wa ligi kuu ya NBC Tanzania, Ratiba na Matokeo ya mechi za leo na nyuma">
+        content="Ratiba ya ligi kuu ya NBC Tanzania Bara <%= partials.season_long %>. Angalia ratiba ya msimu mzima wa ligi kuu ya NBC Tanzania bara, matokeo ya ligi kuu bara jana na leo">
     <%- include('../../../0-global/favicon.ejs') %>
     <meta property="article:published_time" content="<%= partials.createdAt %>">
     <meta property="article:modified_time" content="<%= partials.updatedAt %>">
-    <link rel="canonical" href="https://mkekawaleo.com/standings/football/tanzania/premier-league">
-    <title>Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %> - Ratiba na Matokeo</title>
+    <link rel="canonical" href="https://mkekawaleo.com/football/fixtures/tanzania/premier-league">
+    <title>Ratiba ya Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %> - Ratiba na Matokeo</title>
     <%- include('../../../0-global/style.ejs'); %>
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
@@ -19,36 +19,7 @@
         .tdata {
             font-size: 12px;
         }
-
-        .champ1,
-        .champ2 {
-            background: green !important;
-            color: white !important;
-        }
-
-        .champ3 {
-            background: #1e90ff !important;
-            color: white !important;
-        }
-
-        .champ13,
-        .champ14 {
-            background-color: #a52a2a !important;
-            color: white !important;
-        }
-
-        .champ15,
-        .champ16 {
-            background-color: red !important;
-            color: white !important;
-        }
-
-        .spanchamp {
-            width: 20px !important;
-            height: 20px !important;
-            border-radius: 6px !important;
-        }
-
+        
         .PST {
             text-decoration: line-through;
         }
@@ -60,10 +31,9 @@
     <main>
         <section class="left">
             <div class="intro">
-                <h1 class="fs-3 p-2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season_long %> - Ratiba na Matokeo</h1>
-                <p class="p-2">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa
+                <h1 class="fs-3 p-2">Ratiba ya Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %> - Ratiba na Matokeo</h1>
+                <p class="p-2">Hapa chini tumekuwekea ratiba na matokeo ya Ligi Kuu ya NBC Tanzania Bara kwa msimu mzima wa
                     <%= partials.season_short %>.
-                    Matokeo na Ratiba ya msimu mzima
                 </p>
                 <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-muted" style="font-size: 12px;">
                     <i class="fa-regular fa-clock"></i> Updated on:
@@ -72,13 +42,16 @@
                     </abbr>
                 </span>
             </div>
-            <%- include('./partials/standing.ejs'); %>
-            <br>
             <%- include('./partials/fixtures.ejs'); %>
             <br>
             <div class="vidokezo p-2">
                 <h2 class="h2 fs-6">Vidokezo NBC <%= partials.season_short %></h2>
                 <ul class="list-group list-group-flush fw-bold">
+                    <li class="list-group-item">
+                        <a href="/standings/football/tanzania/premier-league" class="text-success text-decoration-none">
+                            Msimamo Ligi Kuu Bara (NBC) - Tanzania Premier League <%= partials.season_short %>
+                        </a>
+                    </li>
                     <li class="list-group-item">
                         <a href="/football/top-scorers/tanzania/premier-league" class="text-success text-decoration-none">
                             Wafungaji Bora NBC - Tanzania Premier League <%= partials.season_short %>
@@ -109,7 +82,6 @@
                     <% }) %>
                 </ul>
             </div>
-            <%- include('./partials/faqpage.ejs'); %>
             <%- include('../../../0-global/somapia.ejs'); %>
         </section>
         <%- include('../../../0-global/right.ejs'); %>

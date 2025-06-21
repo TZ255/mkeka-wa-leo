@@ -34,19 +34,20 @@ const UpdateOtherLeagueData = async (league_id, season) => {
             let league_id = response?.data?.response[0].league.id
             let league_name = response?.data?.response[0].league.name
             let country = response?.data?.response[0].league.country
-            let ligi = LeagueNameToSwahili(league_id).ligi
-            let path = LeagueNameToSwahili(league_id).path
-            if (!ligi || !path) return ErrorFn(`❌ validate ligi and path for ${league_name}`)
             let league_season = response?.data?.response[0].league.season
+            let ligi = LeagueNameToSwahili(league_id, league_season).ligi
+            let path = LeagueNameToSwahili(league_id, league_season).path
+            let msimu = LeagueNameToSwahili(league_id, league_season).msimu
+            if (!ligi || !path || !msimu) return ErrorFn(`❌ validate ligi and path for ${league_name}`)
             let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
 
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season }, {
-                $set: { standing, path, league_name, league_season, country, ligi },
+            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
+                $set: { standing, path, league_name, league_season, country, ligi, msimu },
             }, { upsert: true })
             console.log(`${league_name} standing updated`)
 
             //update fixture for the same league
-            await UpdateOtherFixuresFn(league_id, league_season).catch(e => console.log(e?.message))
+            await UpdateOtherFixuresFn(league_id, league_season).catch(e => console.log(e?.message, e))
             console.log(`${league_name} fixtures updated`)
 
             await UpdateOtherCurrentFixture(league_id, league_season).catch(e => console.log(e?.message))
@@ -86,11 +87,11 @@ const UpdateOtherFixuresFn = async (league_id, season) => {
         };
 
         const response = await axios.request(options);
-        if (response.status === 200 && response?.data?.results > 100) {
+        if (response.status === 200 && response?.data?.results > 3) {
             let league_id = response?.data?.parameters.league
             let league_season = response?.data?.parameters.season
             let fixtures = response?.data?.response
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season }, {
+            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
                 $set: { season_fixtures: fixtures }
             })
         } else {
@@ -129,7 +130,7 @@ const UpdateOtherCurrentFixture = async (league_id, season) => {
             let league_id = response?.data?.parameters.league
             let league_season = response?.data?.parameters.season
             let fixtures = response?.data?.response
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season }, {
+            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
                 $set: { current_round_fixtures: fixtures }
             })
         } else {
@@ -160,7 +161,7 @@ const UpdateOtherTopScorerFn = async (league_id, season) => {
         const response = await axios.request(options);
         if (response.status === 200 && response?.data?.response.length > 0) {
             let top_scorers = response.data.response
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season: season }, {
+            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
                 $set: { top_scorers },
             })
         } else {
@@ -191,7 +192,7 @@ const UpdateOtherTopAssistFn = async (league_id, season) => {
         const response = await axios.request(options);
         if (response.status === 200 && response?.data?.response.length > 0) {
             let top_assists = response.data.response
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id, league_season: season }, {
+            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
                 $set: { top_assists },
             })
         } else {
@@ -304,81 +305,184 @@ const UpdateMatchDayLeagueData = async () => {
 
 
 // UPDATE ENGLISH LEAGUE TO SWAHILI SEO TITLES
-const LeagueNameToSwahili = (league_id) => {
+const LeagueNameToSwahili = (league_id, season) => {
 
     switch (Number(league_id)) {
         case 39:
             return {
                 ligi: 'Ligi Kuu ya Uingereza',
-                path: 'england/premier-league'
+                path: 'england/premier-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 12:
             return {
                 ligi: 'Club Bingwa Afrika',
-                path: 'africa/caf-champions-league'
+                path: 'africa/caf-champions-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 20:
             return {
                 ligi: 'Kombe la Shirikisho Afrika',
-                path: 'africa/caf-confederation-cup'
+                path: 'africa/caf-confederation-cup',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 140:
             return {
                 ligi: 'Ligi Kuu ya Uhispania',
-                path: 'spain/la-liga'
+                path: 'spain/la-liga',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 78:
             return {
                 ligi: 'Ligi Kuu ya Ujerumani',
-                path: 'germany/bundesliga'
+                path: 'germany/bundesliga',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 61:
             return {
                 ligi: 'Ligi Kuu ya Ufaransa',
-                path: 'france/ligue-1'
+                path: 'france/ligue-1',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 135:
             return {
                 ligi: 'Ligi Kuu ya Italia',
-                path: 'italy/serie-a'
+                path: 'italy/serie-a',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 94:
             return {
                 ligi: 'Ligi Kuu ya Ureno',
-                path: 'portugal/primeira-liga'
+                path: 'portugal/primeira-liga',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 88:
             return {
                 ligi: 'Ligi Kuu ya Uholanzi',
-                path: 'netherlands/eredivisie'
+                path: 'netherlands/eredivisie',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 203:
             return {
                 ligi: 'Ligi Kuu ya Uturuki',
-                path: 'turkey/super-lig'
+                path: 'turkey/super-lig',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 288:
             return {
                 ligi: 'Ligi Kuu ya Afrika Kusini',
-                path: 'south-africa/premier-soccer-league'
+                path: 'south-africa/premier-soccer-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 186:
             return {
                 ligi: 'Ligi Kuu ya Algeria',
-                path: 'algeria/ligue-1'
+                path: 'algeria/ligue-1',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         case 29:
             return {
                 ligi: 'Kufuzu Kombe la Dunia Africa',
-                path: 'africa/world-cup-qualification'
+                path: 'africa/world-cup-qualification',
+                msimu: {
+                    long: `${Number(season) + 3}`,
+                    short: `${Number(season) + 3}`
+                }
+            };
+        case 15:
+            return {
+                ligi: 'Kombe la Dunia la Vilabu',
+                path: 'fifa/club-world-cup',
+                msimu: {
+                    long: String(season),
+                    short: String(season)
+                }
+            };
+        case 2:
+            return {
+                ligi: 'UEFA',
+                path: 'uefa/champions-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
+            };
+        case 3:
+            return {
+                ligi: 'EUROPA',
+                path: 'uefa/europa-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
             };
         default:
             return {
                 ligi: null,
-                path: null
+                path: null,
+                msimu: {
+                    long: '',
+                    short: ''
+                }
             };
     }
 
+}
+
+//refine league data
+const RefineLeagueDatabase = async () => {
+    try {
+        const leagues = await OtherLigiKuuModel.find({}).lean();
+        for (const league of leagues) {
+            const { league_id, league_season } = league;
+            const refinedLeague = LeagueNameToSwahili(league_id, league_season);
+            if (refinedLeague.ligi && refinedLeague.path && refinedLeague.msimu) {
+                await OtherLigiKuuModel.findOneAndUpdate(
+                    { league_id, league_season },
+                    { $set: { msimu: refinedLeague.msimu } }
+                );
+                console.log(`Refined ${league_id} - ${league_season}`);
+            }
+        }
+    } catch (error) {
+        console.error(`Error refining league database: ${error.message}`);
+    }
 }
 
 module.exports = {
@@ -386,5 +490,6 @@ module.exports = {
     LeagueNameToSwahili,
     UpdateOtherLeagueMatchDay,
     UpdateMatchDayLeagueData,
+    RefineLeagueDatabase
 }
 

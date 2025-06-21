@@ -12,7 +12,7 @@ const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const Over15MikModel = require('../model/ove15mik')
 const MikekaDBModel = require('../model/mkeka-mega')
 const bttsModel = require('../model/ya-uhakika/btts')
-const { UpdateOtherLeagueData, LeagueNameToSwahili, UpdateOtherLeagueMatchDay, UpdateMatchDayLeagueData } = require('./fns/other-ligi')
+const { UpdateOtherLeagueData, LeagueNameToSwahili, UpdateOtherLeagueMatchDay, UpdateMatchDayLeagueData, RefineLeagueDatabase } = require('./fns/other-ligi')
 const { testSp, extractData } = require('./fns/jsjsjjs')
 const sendEmail = require('./fns/sendemail')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
@@ -25,7 +25,7 @@ const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 const moment = require('moment-timezone')
-const {sendNotification, sendLauraNotification} = require('./fns/sendTgNotifications')
+const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotifications')
 const { on } = require('form-data')
 const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
@@ -38,86 +38,11 @@ router.get('/standings', async (req, res) => {
     }
 
     try {
-        let leagues_2024 = await OtherStandingLigiKuuModel.find()
-            .sort('country')
-            .select('league_name league_id league_season country ligi path')
-            .lean()  // Convert Mongoose documents to plain JavaScript objects
-            .cache(600);
-
-        // Update season to 'wc-2026' for league_id 29
-        leagues_2024 = leagues_2024.map(league => {
-            const leagueObj = { ...league };  // Create a new object to ensure we're not modifying the original
-
-            //update season to 'wc-2026'
-            if (leagueObj.league_id === 29) {
-                leagueObj.season_long = '2026';
-            } else {
-                leagueObj.season_long = `${leagueObj.league_season}/${Number(leagueObj.league_season) + 1}`;
-            }
-
-            return leagueObj;
-        });
+        let leagues_2024 = await OtherStandingLigiKuuModel.find().sort('country').cache(600);
         res.render('11-misimamo/standings', { jumasiku, leagues_2024 })
     } catch (error) {
         console.log(error?.message)
         res.status(500).send('Kumetokea changamoto. Tafadhali jaribu tena baadae.')
-    }
-})
-
-//this have static route because of keywords for tanzania league for ranking
-//Other leagues will have dynamic route like /standings/:id/:season
-router.get('/standings/football/tanzania/premier-league', async (req, res, next) => {
-    let path = 'tanzania/premier-league'
-    try {
-        const standing = await StandingLigiKuuModel.findOne({ path }).select('-top_scorers -top_assists').cache(600)
-        if (!standing) return next()
-
-        const league_season = standing.league_season
-
-        const agg = await StandingLigiKuuModel.aggregate([
-            { $match: { path } },
-            {
-                $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
-            },
-            {
-                $group: {
-                    _id: "$season_fixtures.league.round", // Group by the round field
-                    fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
-                }
-            },
-            {
-                $project: {
-                    round: "$_id", // Rename _id to round
-                    fixtures: 1,
-                    numericRound: {
-                        $toInt: {
-                            $arrayElemAt: [
-                                { $split: ["$_id", " - "] },
-                                1 // Extract numeric part after " - "
-                            ]
-                        }
-                    },
-                    _id: 0 // Exclude the default _id field
-                }
-            },
-            {
-                $sort: { numericRound: 1 } // Sort by the numeric part of the round
-            }
-        ]).cache(600)
-
-        let partials = {
-            mwaka: new Date().getFullYear(),
-            season: league_season,
-            season_long: `${league_season}/${Number(league_season) + 1}`,
-            season_short: `${league_season}/${String(Number(league_season) + 1).slice(-2)}`,
-            season_vidokezo: `${league_season}-${Number(league_season) + 1}`,
-            createdAt: standing.createdAt.toISOString(),
-            updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
-        }
-
-        res.render('11-misimamo/ligi/bongo/bongo', { standing, agg, partials })
-    } catch (error) {
-        console.log(error?.message)
     }
 })
 
@@ -129,90 +54,104 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
         const path = `${nation}/${league}`.toLowerCase()
 
         // Find standing data
-        const standing = await OtherStandingLigiKuuModel.findOne({ path }).cache(600);
+        const standing = await OtherStandingLigiKuuModel.findOne({ path }).select('-season_fixtures').cache(600);
         if (!standing) return next();
 
         const season = standing.league_season
         const league_id = standing.league_id
 
-        const agg = await OtherStandingLigiKuuModel.aggregate([
-            {
-                $match: { path }
-            },
-            {
-                $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
-            },
-            {
-                $addFields: {
-                    "season_fixtures.league.roundRenamed": {
-                        $switch: {
-                            branches: [
-                                { case: { $eq: ["$season_fixtures.league.round", "Final"] }, then: "fff - 0.01" },
-                                { case: { $eq: ["$season_fixtures.league.round", "Semi-finals"] }, then: "fff - 0.02" },
-                                { case: { $eq: ["$season_fixtures.league.round", "Quarter-finals"] }, then: "fff - 0.03" },
-                                { case: { $eq: ["$season_fixtures.league.round", "1st Preliminary Round"] }, then: "pre - 0.1" },
-                                { case: { $eq: ["$season_fixtures.league.round", "2nd Preliminary Round"] }, then: "pre - 0.2" }
-                            ],
-                            default: "$season_fixtures.league.round" // Default case if no match is found
-                        }
-                    }
-                }
-            },
-            {
-                $group: {
-                    _id: "$season_fixtures.league.roundRenamed", // Group by the renamed round field
-                    fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
-                }
-            },
-            {
-                $project: {
-                    round: "$_id", // Rename _id to round
-                    fixtures: 1,
-                    numericRound: {
-                        $convert: {
-                            input: {
-                                $arrayElemAt: [
-                                    { $split: ["$_id", " - "] },
-                                    1 // Extract numeric part after " - "
-                                ]
-                            },
-                            to: "double",
-                            onError: 0 // Handle cases where conversion fails
-                        }
-                    },
-                    _id: 0 // Exclude the default _id field
-                }
-            },
-            {
-                $sort: { numericRound: 1 } // Sort by the numeric part of the round
-            }
-        ]).cache(600);
-
 
         const partials = {
             season,
-            season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
-            season_long: `${season}/${Number(season) + 1}`,
+            season_short: standing.msimu.short,
+            season_long: standing.msimu.long,
             createdAt: standing.createdAt.toISOString(),
             updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
             ligi: standing.ligi,
-            path,
+            path: standing.path,
             league_name: standing.league_name,
             league_id,
             stats: {
                 scorer: standing.top_scorers.length,
                 assist: standing.top_assists.length
             },
-            canonical_path: `/standings/football/${path}`,
+            canonical_path: `/standings/football/${standing.path}`,
         };
 
-        // SEO other leagues
-        if (path == 'africa/world-cup-qualification') {
-            return res.render('11-misimamo/world/caf-wc26/caf-wc26', { standing, agg, partials });
+        //abroad leagues
+        return res.render('11-misimamo/ligi/abroad/index', { standing, partials });
+    } catch (error) {
+        console.error(`Error in standings route: ${error?.message || 'Unknown error'}`);
+        console.error(error);
+        return res.status(500).send('Kumetokea changamoto. Tafadhali jaribu tena baadae.');
+    }
+});
+
+//ratiba ya msimu - other ligi
+router.get('/football/fixtures/:nation/:ligi_name', async (req, res, next) => {
+    try {
+        let { nation, ligi_name: league } = req.params;
+
+        const path = `${nation}/${league}`.toLowerCase();
+
+        // Find standing data
+        const standing = await OtherStandingLigiKuuModel.findOne({ path }).cache(600);
+        if (!standing) return next();
+
+        const season = standing.league_season;
+        const league_id = standing.league_id;
+
+        // Get and flatten all fixtures
+        const flatFixtures = await OtherStandingLigiKuuModel.aggregate([
+            { $match: { path } },
+            { $unwind: "$season_fixtures" },
+            { $sort: { "season_fixtures.fixture.timestamp": 1 } },
+            { $replaceRoot: { newRoot: "$season_fixtures" } }
+        ]).cache(600);
+
+        // Group in JS while assigning incremental group "name"
+        const seenRounds = {};
+        let roundCounter = 1;
+        const groupedFixtures = [];
+
+        for (const fixture of flatFixtures) {
+            const roundName = fixture.league.round;
+
+            if (!(roundName in seenRounds)) {
+                seenRounds[roundName] = {
+                    name: roundCounter++, // group index
+                    round: roundName,
+                    fixtures: []
+                };
+                groupedFixtures.push(seenRounds[roundName]);
+            }
+
+            seenRounds[roundName].fixtures.push(fixture);
         }
 
-        //abroad leagues
-        return res.render('11-misimamo/ligi/abroad/index', { standing, agg, partials });
+        const partials = {
+            season,
+            season_short: standing.msimu.short,
+            season_long: standing.msimu.long,
+            createdAt: standing.createdAt.toISOString(),
+            updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
+            ligi: standing.ligi,
+            path: standing.path,
+            league_name: standing.league_name,
+            league_id,
+            stats: {
+                scorer: standing.top_scorers.length,
+                assist: standing.top_assists.length
+            },
+            canonical_path: `/football/fixtures/${standing.path}`,
+        };
+
+        // abroad leagues
+        return res.render('11-misimamo/ligi/abroad/season-fixtures', {
+            standing,
+            agg: groupedFixtures, // using new sorted and grouped data
+            partials
+        });
     } catch (error) {
         console.error(`Error in standings route: ${error?.message || 'Unknown error'}`);
         console.error(error);
@@ -221,54 +160,7 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
 });
 
 
-//BONGO LEague -- Check other league belows this one
-router.get('/football/fixtures/tanzania/premier-league/:teamid', async (req, res, next) => {
-    try {
-        const team_id = req.params.teamid
-        const path = `tanzania/premier-league`
-
-        let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
-        if (!league) return next();
-
-        const season = league.league_season
-        let standing = league.standing
-        let fixtures = league.season_fixtures
-        let ratiba = fixtures.filter(fix =>
-            fix.teams.home.id == team_id || fix.teams.away.id == team_id
-        )
-
-        if (ratiba.length === 0) return next();
-
-        let partials = {
-            path: req.path,
-            season_long: `${season}/${Number(season) + 1}`,
-            season,
-            season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
-            season_vidokezo: `${season}-${Number(season) + 1}`,
-            team_info: league.standing.filter(t => t.team.id == team_id)[0],
-            team_id,
-            canonical_path: `/football/fixtures/${path}/${team_id}`,
-            createdAt: league.createdAt.toISOString(),
-            updatedAt: league.standing[0].update
-        }
-
-        switch (partials.team_info.team.name) {
-            case 'Young Africans':
-                partials.team_info.team.name = 'Yanga SC'
-                break;
-            case 'Kitayosce':
-                partials.team_info.team.name = 'Tabora United'
-                break;
-        }
-
-        res.render('11-misimamo/ligi/bongo/1-ratiba/ratiba', { ratiba, standing, partials })
-    } catch (error) {
-        console.error(error?.message, error)
-        res.send(`Kumetokea changamoto. Fungua page hii upya`)
-    }
-})
-
-//ratiba other ligi
+//ratiba other ligi teams
 router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, next) => {
     try {
         const { teamid: team_id, nation, ligi_name } = req.params;
@@ -293,16 +185,16 @@ router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, nex
 
         // Prepare view data
         const partials = {
-            path,
+            path: league.path,
             season,
-            season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
-            season_long: `${season}/${Number(season) + 1}`,
+            season_short: league.msimu.short,
+            season_long: league.msimu.long,
             team_info,
             team_id,
             league_id,
             ligi: league.ligi,
             league_name: league.league_name,
-            canonical_path: `/football/fixtures/${path}/${team_id}`,
+            canonical_path: `/football/fixtures/${league.path}/${team_id}`,
             createdAt: league.createdAt.toISOString(),
             updatedAt: team_info.update
         };
@@ -316,65 +208,7 @@ router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, nex
     }
 });
 
-//top scorer bongo
-router.get('/football/top-scorers/tanzania/premier-league', async (req, res, next) => {
-    try {
-        let path = 'tanzania/premier-league'
-        let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
-        if (!league) return next()
 
-        let top_scorers = league.top_scorers
-        const season = league.league_season
-        const league_id = league.league_id
-
-        let partials = {
-            path,
-            season,
-            season_vidokezo: `${season}-${Number(season) + 1}`,
-            season_long: `${season}/${Number(season) + 1}`,
-            season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
-            league_id,
-            canonical_path: `/football/top-scorers/tanzania/premier-league`,
-            createdAt: league.createdAt.toISOString(),
-            updatedAt: league.update_top_players
-        }
-
-        res.render('11-misimamo/ligi/bongo/2-scorer/scorer', { top_scorers, partials })
-    } catch (error) {
-        console.error(error?.message, error)
-        res.send(`Kumetokea changamoto. Fungua page hii upya`)
-    }
-})
-
-//top assists bongo
-router.get('/football/top-assists/tanzania/premier-league', async (req, res, next) => {
-    const path = 'tanzania/premier-league'
-    try {
-        let league = await StandingLigiKuuModel.findOne({ path }).cache(600)
-        if (!league) return next();
-
-        let top_assists = league.top_assists
-        const season = league.league_season
-        const league_id = league.league_id
-
-        let partials = {
-            path,
-            season,
-            season_vidokezo: `${season}-${Number(season) + 1}`,
-            season_long: `${season}/${Number(season) + 1}`,
-            season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
-            league_id,
-            canonical_path: `/football/top-assists/tanzania/premier-league`,
-            createdAt: league.createdAt.toISOString(),
-            updatedAt: league.update_top_players
-        }
-
-        res.render('11-misimamo/ligi/bongo/3-assist/assist', { top_assists, partials })
-    } catch (error) {
-        console.error(error?.message, error)
-        res.send(`Kumetokea changamoto. Fungua page hii upya`)
-    }
-})
 
 //topScorer other league
 router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) => {
@@ -391,12 +225,12 @@ router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) =>
         if (!top_scorers || top_scorers.length === 0) return next()
 
         let partials = {
-            path,
+            path: league.path,
             season,
-            season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
-            season_long: `${season}/${Number(season) + 1}`,
+            season_short: league.msimu.short,
+            season_long: league.msimu.long,
             league_id,
-            canonical_path: `/football/top-scorers/${path}`,
+            canonical_path: `/football/top-scorers/${league.path}`,
             ligi: league.ligi,
             league_name: league.league_name,
             stats: {
@@ -429,14 +263,14 @@ router.get('/football/top-assists/:nation/:ligi_name', async (req, res, next) =>
         if (!top_assists || top_assists.length === 0) return next()
 
         let partials = {
-            path,
+            path: league.path,
             season,
-            season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
-            season_long: `${season}/${Number(season) + 1}`,
+            season_short: league.msimu.short,
+            season_long: league.msimu.long,
             league_id,
             ligi: league.ligi,
             league_name: league.league_name,
-            canonical_path: `/football/top-assists/${path}`,
+            canonical_path: `/football/top-assists/${league.path}`,
             stats: {
                 scorer: top_assists.length,
                 assist: league?.top_scorers.length || 0
@@ -507,7 +341,8 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        //getAllEligiblePredictions('2025-06-19')
+        UpdateOtherLeagueData(2, 2024)
+        UpdateOtherLeagueData(3, 2024)
         res.end()
     } catch (error) {
         res.send(error.message)

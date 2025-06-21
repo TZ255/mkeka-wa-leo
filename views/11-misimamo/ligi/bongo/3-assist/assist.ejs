@@ -38,7 +38,7 @@
                 <%- include(`./partials/${partials.season}/intro.ejs`); %>
 
                 <div class="table-section" itemscope itemtype="https://schema.org/Table">
-                    <h2 class="h2 fs-6 mb-3" itemprop="about"> 
+                    <h2 class="h2 fs-6 mb-3" itemprop="about">
                         Wachezaji Wanaongoza kwa Asisti NBC <%= partials.season_short %>
                     </h2>
                     <p class="p-2">
@@ -54,21 +54,31 @@
                         </thead>
                         <tbody>
                             <% top_assists.forEach((player, index) => { %>
-                                <tr style="font-size: 12px !important;">
-                                    <td class="tdata text-center"><%= index+1 %>.</td>
-                                    <td class="tdata"><%= player.playerName %></td>
-                                    <td class="tdata"><%= player.club %></td>
-                                    <td class="tdata"><%= player.country %></td>
-                                    <td class="tdata text-center"><%= player.assists %></td>
-                                </tr>
+                            <tr style="font-size: 12px !important;">
+                                <td class="tdata text-center"><%= index+1 %>.</td>
+                                <td class="tdata"><%= player.playerName %></td>
+                                <td class="tdata"><%= player.club %></td>
+                                <td class="tdata"><%= player.country %></td>
+                                <td class="tdata text-center"><%= player.assists %></td>
+                            </tr>
                             <% }) %>
                         </tbody>
                         <caption class="p-2 fst-italic">
                             <p>Orodha hii inasasishwa mara kwa mara kulingana na mechi za kila wiki.</p>
                             <p>Ona pia</p>
                             <ul class="list-group list-group-flush fw-bold">
-                                <li class="list-group-item"><a href="/football/top-scorers/tanzania/premier-league" class="text-success text-decoration-none">Orodha ya Wafungaji Bora wa NBC <%= partials.season_short %></a></li>
-                                <li class="list-group-item"><a href="/standings/football/tanzania/premier-league" class="text-success text-decoration-none">Msimamo Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %></a></li>
+                                <li class="list-group-item"><a href="/football/top-scorers/tanzania/premier-league"
+                                        class="text-success text-decoration-none">Orodha ya Wafungaji Bora wa NBC
+                                        <%= partials.season_short %></a></li>
+                                <li class="list-group-item"><a href="/standings/football/tanzania/premier-league"
+                                        class="text-success text-decoration-none">Msimamo Ligi Kuu ya NBC Tanzania Bara
+                                        <%= partials.season_short %></a></li>
+                                <li class="list-group-item">
+                                    <a href="/football/fixtures/tanzania/premier-league"
+                                        class="text-success text-decoration-none">
+                                        Ratiba na Matokeo NBC - Tanzania Premier League <%= partials.season_short %>
+                                    </a>
+                                </li>
                             </ul>
                         </caption>
                     </table>

@@ -42,8 +42,17 @@ const LigiSchema = new Schema({
     matchday: {
         type: Boolean,
         default: false
+    },
+    //msimu field type object with keys as long and short
+    msimu: {
+        type: {
+            long: { type: String, required: true },
+            short: { type: String, required: true }
+        },
+        required: true,
+        default: () => ({ long: '', short: '' })
     }
-}, {timestamps: true, strict: false})
+}, { timestamps: true, strict: false })
 
 const OtherLeagueModel = mongoose.model('Other League', LigiSchema)
 module.exports = OtherLeagueModel

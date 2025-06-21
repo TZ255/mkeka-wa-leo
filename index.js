@@ -11,6 +11,7 @@ const requestIp = require('request-ip');
 
 const getRouter = require('./routes/get')
 const getRouter2 = require('./routes/get2-new')
+const getBongoLigiRouter = require('./routes/get1-bongo-ligi')
 const oldLeagueRedirects = require('./routes/old-ligi-redirects')
 const getRouter3 = require('./routes/get3')
 const routeAuth = require('./routes/get4-auth')
@@ -69,6 +70,7 @@ app.use(oldLeagueRedirects)
 app.use(removeTrailingSlash())
 app.use(postRouter)
 app.use(getRouter)
+app.use(getBongoLigiRouter)
 app.use(getRouter2)
 app.use(getRouter3)
 

@@ -71,16 +71,21 @@
                         <p>Ona pia</p>
                         <ul class="list-group list-group-flush fw-bold">
                             <% if (partials?.stats?.scorer > 0) { %>
-                                <li class="list-group-item"><a
-                                    href="/football/top-scorers/<%= partials.path %>"
+                            <li class="list-group-item"><a href="/football/top-scorers/<%= partials.path %>"
                                     class="text-success text-decoration-none">Orodha ya Wafungaji Bora
                                     <%= partials.league_name %> <%= partials.season_short %></a>
                             </li>
                             <% } %>
-                            <li class="list-group-item"><a
-                                    href="/standings/football/<%= partials.path %>"
+                            <li class="list-group-item"><a href="/standings/football/<%= partials.path %>"
                                     class="text-success text-decoration-none">Msimamo <%= partials.ligi %> -
                                     <%= partials.league_name %> <%= partials.season_short %></a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="/football/fixtures/<%= partials.path %>"
+                                    class="text-success text-decoration-none">
+                                    Ratiba na matokeo - <%= partials.ligi %>
+                                    <%= partials.season_short %>
+                                </a>
                             </li>
                         </ul>
                     </caption>
