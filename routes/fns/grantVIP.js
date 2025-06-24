@@ -56,7 +56,11 @@ const updateUserSubscription = async (user, endDate, now, plan) => {
 async function grantSubscription(email, param) {
     try {
         // Find user
-        const user = await mkekaUsersModel.findOne({ email });
+        const sanitizedEmail = (email) => {
+            if (email.toLowerCase().includes('email: ')) return email.toLowerCase().replace('email: ', '').trim();
+            return email;
+        }
+        const user = await mkekaUsersModel.findOne({ email: sanitizedEmail(email) });
         if (!user) {
             return {
                 success: true,
