@@ -349,7 +349,10 @@ const lauraMainFn = async (app) => {
             }
 
             // Parse command parameters
-            let [email, param] = ctx.match.split(' ');
+            let match = ctx.match
+            if(match.includes('mail: ')) match = match.split('mail: ')[1].trim();
+
+            let [email, param] = match.split(' ');
 
             if (!email || !param) {
                 return await ctx.reply('Please provide both email and subscription type');
