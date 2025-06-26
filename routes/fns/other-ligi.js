@@ -159,14 +159,13 @@ const UpdateOtherTopScorerFn = async (league_id, season) => {
         };
 
         const response = await axios.request(options);
-        if (response.status === 200 && response?.data?.response.length > 0) {
-            let top_scorers = response.data.response
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
-                $set: { top_scorers },
-            })
-        } else {
-            ErrorFn(`Error fetching ${league_id} top scorers`)
-        }
+        if (response.status !== 200) throw new Error(`Error fetching ${league_id} top scorers: ${response.statusText}`);
+        if (response.data?.response.length === 0) return console.log(`No top scorers for ${league_id} in season ${season}`);
+
+        let top_scorers = response.data.response
+        await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
+            $set: { top_scorers },
+        })
     } catch (error) {
         console.log(error?.message, error)
         let message = `Error Updating ${league_id} Top Scorers: ${error?.message}`
@@ -190,14 +189,13 @@ const UpdateOtherTopAssistFn = async (league_id, season) => {
         };
 
         const response = await axios.request(options);
-        if (response.status === 200 && response?.data?.response.length > 0) {
-            let top_assists = response.data.response
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
-                $set: { top_assists },
-            })
-        } else {
-            console.log(`Error fetching ${league_id} top assists`)
-        }
+        if (response.status !== 200) throw new Error(`Error fetching ${league_id} top assists: ${response.statusText}`);
+        if (response.data?.response.length === 0) return console.log(`No top assists for ${league_id} in season ${season}`);
+
+        let top_assists = response.data.response
+        await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
+            $set: { top_assists },
+        })
     } catch (error) {
         console.log(error?.message, error)
         let message = `Error Updating ${league_id} Top Assists: ${error?.message}`
