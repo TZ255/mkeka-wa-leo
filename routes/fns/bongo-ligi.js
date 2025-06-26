@@ -116,7 +116,6 @@ const UpdateCurrentFixture = async (league_id, season) => {
         if (response.status !== 200) throw new Error(`Error fetching ${league_id} current fix: ${response.statusText}`);
         if (response.data?.response.length === 0) return console.log(`No current fix for ${league_id} in season ${season}`);
 
-        let league_id = response?.data?.parameters.league
         let league_season = response?.data?.parameters.season
         let fixtures = response?.data?.response
         await StandingLigiKuuModel.findOneAndUpdate({ league_id, league_season }, {
