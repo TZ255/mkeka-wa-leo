@@ -1,7 +1,8 @@
 const { default: axios } = require("axios");
 
 const StandingLigiKuuModel = require('../../model/Ligi/bongo')
-const TeamsLigiKuuModel = require('../../model/Ligi/timubongo')
+const TeamsLigiKuuModel = require('../../model/Ligi/timubongo');
+const { getLessUsedAPIKey } = require("./RAPIDAPI");
 const bongo_league = 567
 
 const ErrorFn = async (message) => {
@@ -16,6 +17,7 @@ const ErrorFn = async (message) => {
 
 const UpdateBongoLeagueData = async (league_id, season) => {
     try {
+        const RAPID_API_KEY = await getLessUsedAPIKey()
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/standings',
@@ -24,7 +26,7 @@ const UpdateBongoLeagueData = async (league_id, season) => {
                 season: `${season}`
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY2,
+                'x-rapidapi-key': RAPID_API_KEY,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -59,6 +61,7 @@ const UpdateBongoLeagueData = async (league_id, season) => {
 //fixtures
 const UpdateFixuresFn = async (league_id, season) => {
     try {
+        const RAPID_API_KEY = await getLessUsedAPIKey()
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
@@ -68,7 +71,7 @@ const UpdateFixuresFn = async (league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY2,
+                'x-rapidapi-key': RAPID_API_KEY,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -93,6 +96,7 @@ const UpdateFixuresFn = async (league_id, season) => {
 
 const UpdateCurrentFixture = async (league_id, season) => {
     try {
+        const RAPID_API_KEY = await getLessUsedAPIKey()
         //get current round
         const current_round = await GetCurrentRound(league_id, season)
         if (current_round === null) return
@@ -107,7 +111,7 @@ const UpdateCurrentFixture = async (league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY2,
+                'x-rapidapi-key': RAPID_API_KEY,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -130,6 +134,7 @@ const UpdateCurrentFixture = async (league_id, season) => {
 
 const GetCurrentRound = async (league_id, season) => {
     try {
+        const RAPID_API_KEY = await getLessUsedAPIKey()
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures/rounds',
@@ -139,7 +144,7 @@ const GetCurrentRound = async (league_id, season) => {
                 current: 'true'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY2,
+                'x-rapidapi-key': RAPID_API_KEY,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };

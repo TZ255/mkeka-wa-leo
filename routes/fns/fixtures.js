@@ -1,10 +1,12 @@
 const { default: axios } = require("axios");
 const fixtures_resultsModel = require("../../model/Ligi/fixtures");
 const {sendNotification, sendLauraNotification} = require("./sendTgNotifications");
+const { getLessUsedAPIKey } = require("./RAPIDAPI");
 
 
 const getFixtures = async (date, siku) => {
     try {
+        const RAPID_API_KEY = await getLessUsedAPIKey()
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
@@ -13,7 +15,7 @@ const getFixtures = async (date, siku) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY2,
+                'x-rapidapi-key': RAPID_API_KEY,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -70,12 +72,13 @@ const getAllFixtures = async () => {
 // Get predictions for a specific fixture
 const getFixturePredictions = async (fixtureId) => {
     try {
+        const RAPID_API_KEY = await getLessUsedAPIKey()
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/predictions',
             params: { fixture: String(fixtureId) },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY2,
+                'x-rapidapi-key': RAPID_API_KEY,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };

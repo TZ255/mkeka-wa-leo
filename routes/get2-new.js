@@ -30,6 +30,7 @@ const { on } = require('form-data')
 const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
 const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
+const { getLessUsedAPIKey } = require('./fns/RAPIDAPI')
 
 
 router.get('/standings', async (req, res) => {
@@ -341,8 +342,6 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        UpdateOtherLeagueData(2, 2024)
-        UpdateOtherLeagueData(3, 2024)
         res.end()
     } catch (error) {
         res.send(error.message)

@@ -3,6 +3,7 @@ const { sendNotification } = require("./sendTgNotifications");
 const { GLOBAL_VARS } = require("./global-var");
 const { getFixturePredictions } = require("./fixtures");
 const { apiTipsModel } = require("../../model/APITips");
+const { getLessUsedAPIKey } = require("./RAPIDAPI");
 
 const lessPopularFootballCountries = [
     'afghanistan', 'albania', 'andorra', 'angola', 'antigua and barbuda', 'aruba', 'azerbaijan', 'bahamas', 'barbados', 'belize', 'benin', 'bhutan', 'bolivia', 'botswana', 'brunei darussalam', 'burkina faso', 'burundi', 'cambodia', 'cameroon', 'cape verde islands', 'central african republic', 'chad', 'comoros islands', 'congo dr', 'congo republic', 'cook islands', 'costa rica', 'cuba', 'djibouti', 'dominica', 'dominican republic',
@@ -14,6 +15,7 @@ const lessPopularFootballCountries = [
 
 const getAllEligiblePredictions = async (date) => {
     try {
+        const RAPID_API_KEY = await getLessUsedAPIKey()
         const options = {
             method: 'GET',
             url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
@@ -22,7 +24,7 @@ const getAllEligiblePredictions = async (date) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY2,
+                'x-rapidapi-key': RAPID_API_KEY,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
