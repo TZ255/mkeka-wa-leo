@@ -24,7 +24,7 @@ const UpdateOtherLeagueData = async (league_id, season) => {
                 season: `${season}`
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -81,7 +81,7 @@ const UpdateOtherFixuresFn = async (league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -120,7 +120,7 @@ const UpdateOtherCurrentFixture = async (league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -151,7 +151,7 @@ const UpdateOtherTopScorerFn = async (league_id, season) => {
                 season: `${season}`
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -181,7 +181,7 @@ const UpdateOtherTopAssistFn = async (league_id, season) => {
                 season: `${season}`
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -212,7 +212,7 @@ const GetCurrentRound = async (league_id, season) => {
                 current: 'true'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -244,7 +244,7 @@ const CheckMatchDay = async (date, league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -290,6 +290,9 @@ const UpdateMatchDayLeagueData = async () => {
         for (const league of leagues) {
             const { league_id, league_season } = league
             await UpdateOtherLeagueData(league_id, league_season)
+
+            //delay 10 seconds before updating the next league
+            await new Promise(resolve => setTimeout(resolve, 10000));
         }
     } catch (error) {
         ErrorFn(`Error updating matchday data: ${error?.message}`)

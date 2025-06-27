@@ -173,15 +173,19 @@ setInterval(() => {
 
         //update bongo Every 35 and 5 minutes
         if ((mins === 35 || mins == 5) && (hours >= 14 || hours < 5)) {
-            UpdateBongoLeagueData(567, 2024)
             wafungajiBoraNBC() //scrape ligikuu.co.tz
             setTimeout(() => {
                 assistBoraNBC() //scrape ligikuu.co.tz
             }, 5000)
         }
 
-        //update other leagues every 30 minutes between 14:00 and 04:00
-        if (mins % 30 === 0 && (hours >= 14 || hours < 5)) {
+        //update bongo league two times a day at 22:01 and 03:01
+        if (mins === 1 && (hours === 22 || hours === 3)) {
+            UpdateBongoLeagueData(567, 2024)
+        }
+
+        //update other leagues once a day at 01:10
+        if (mins === 10 && (hours ===  1)) {
             UpdateMatchDayLeagueData();
         }
 

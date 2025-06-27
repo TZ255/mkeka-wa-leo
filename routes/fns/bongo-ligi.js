@@ -24,7 +24,7 @@ const UpdateBongoLeagueData = async (league_id, season) => {
                 season: `${season}`
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -68,7 +68,7 @@ const UpdateFixuresFn = async (league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -107,7 +107,7 @@ const UpdateCurrentFixture = async (league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -139,7 +139,7 @@ const GetCurrentRound = async (league_id, season) => {
                 current: 'true'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };

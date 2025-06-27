@@ -13,7 +13,7 @@ const getFixtures = async (date, siku) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
@@ -75,7 +75,7 @@ const getFixturePredictions = async (fixtureId) => {
             url: 'https://api-football-v1.p.rapidapi.com/v3/predictions',
             params: { fixture: String(fixtureId) },
             headers: {
-                'x-rapidapi-key': process.env.RAPID_API_KEY,
+                'x-rapidapi-key': process.env.RAPID_API_KEY2,
                 'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
             }
         };
