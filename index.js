@@ -158,7 +158,6 @@ setInterval(() => {
         //angalia betslip, getAllFixtures kila baada ya dakika 15
         if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
-            getAllFixtures()
         }
 
         //reset resend email count at 03:05 -- check matchdays
@@ -187,6 +186,11 @@ setInterval(() => {
         //update other leagues once a day at 01:10
         if (mins === 10 && (hours ===  1)) {
             UpdateMatchDayLeagueData();
+        }
+
+        //fixtures once a day at 00:01
+        if (mins === 1 && (hours === 0)) {
+            getAllFixtures()
         }
 
         //Build MikekayaUhakika every hour
