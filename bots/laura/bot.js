@@ -5,6 +5,7 @@
 
 const affAnalyticsModel = require('../../model/affiliates-analytics')
 const mkekaUsersModel = require('../../model/mkeka-users')
+const RapidKeysModel = require('../../model/rapid_keys')
 const { grantSubscription } = require('../../routes/fns/grantVIP')
 const sendEmail = require('../../routes/fns/sendemail')
 
@@ -389,6 +390,21 @@ const lauraMainFn = async (app) => {
             await ctx.reply(`Auto Pilot is now ${aff.autopilot ? 'enabled (auto confirm)' : 'disabled (whatsapp confirm)'}.`);
         } catch (error) {
             await ctx.reply(error?.message)
+        }
+    })
+
+    bot.command('api_usage', async ctx => {
+        try {
+            let apis = await RapidKeysModel.find().sort({times_used: 1})
+            let text = `<b>Rapid API Keys usage</b>\n\n`
+            for (let api of apis) {
+                let key = api.key
+                let usage = api.times_used
+                text = text + `- ${key}: ${usage}\n\n`
+            }
+            await ctx.reply(text, {parse_mode: 'HTML'})
+        } catch (error) {
+            await ctx.reply(error?.message).catch(e => console.log(e?.message, e))
         }
     })
 
