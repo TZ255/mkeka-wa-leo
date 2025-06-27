@@ -54,62 +54,39 @@
     }
 </script>
 
+
+
 <script>
-    function startCountdown() {
-        const hoursEl = document.getElementById('hours');
-        const minutesEl = document.getElementById('minutes');
-        const secondsEl = document.getElementById('seconds');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
 
-        function getCurrentTimeInNairobi() {
-            const formatter = new Intl.DateTimeFormat("en-US", {
-                timeZone: "Africa/Nairobi",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: false
-            });
+    function getTimeLeftToNairobiMidnight() {
+        // Get current time in Nairobi
+        const now = new Date();
+        const nairobiNow = new Date(now.toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));
 
-            const parts = formatter.formatToParts(new Date());
-            const obj = {};
-            parts.forEach(({ type, value }) => {
-                obj[type] = value;
-            });
+        const midnight = new Date(nairobiNow);
+        midnight.setHours(24, 0, 0, 0); // Set to next midnight
 
-            return new Date(`${obj.year}-${obj.month}-${obj.day}T${obj.hour}:${obj.minute}:${obj.second}`);
-        }
+        const diffMs = midnight - nairobiNow;
 
-        function getMidnightTomorrowNairobi(now) {
-            const midnight = new Date(now);
-            midnight.setDate(midnight.getDate() + 1);
-            midnight.setHours(0, 0, 0, 0);
-            return midnight;
-        }
+        const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
+        const seconds = Math.floor((diffMs / 1000) % 60);
 
-        function updateCountdown() {
-            const now = getCurrentTimeInNairobi();
-            const target = getMidnightTomorrowNairobi(now);
-            const distance = target - now;
-
-            if (distance <= 0) {
-                location.reload();
-                return;
-            }
-
-            const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((distance / (1000 * 60)) % 60);
-            const seconds = Math.floor((distance / 1000) % 60);
-
-            hoursEl.textContent = String(hours).padStart(2, '0');
-            minutesEl.textContent = String(minutes).padStart(2, '0');
-            secondsEl.textContent = String(seconds).padStart(2, '0');
-        }
-
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+        return { hours, minutes, seconds };
     }
 
-    startCountdown();
+    setInterval(() => {
+        const { hours, minutes, seconds } = getTimeLeftToNairobiMidnight();
+
+        hoursEl.textContent = String(hours).padStart(2, '0');
+        minutesEl.textContent = String(minutes).padStart(2, '0');
+        secondsEl.textContent = String(seconds).padStart(2, '0');
+
+       if (hours === 0 && minutes === 0 && seconds <= 2) {
+            location.reload();
+        }
+    }, 1000);
 </script>
