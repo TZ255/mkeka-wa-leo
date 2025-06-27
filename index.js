@@ -179,7 +179,7 @@ setInterval(() => {
         }
 
         //update bongo league two times a day at 22:01 and 03:01
-        if (mins === 1 && (hours === 22 || hours === 3)) {
+        if (mins === 1 && [3, 22].includes(hours)) {
             UpdateBongoLeagueData(567, 2024)
         }
 
@@ -188,8 +188,8 @@ setInterval(() => {
             UpdateMatchDayLeagueData();
         }
 
-        //fixtures once a day at 00:01
-        if (mins === 1 && (hours === 0)) {
+        //fixtures once a day at 00:01, 04:01, 20:01
+        if (mins === 1 && [0, 4, 20].includes(hours)) {
             getAllFixtures()
         }
 

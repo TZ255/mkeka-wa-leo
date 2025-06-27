@@ -342,6 +342,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
+        UpdateOtherLeagueData(15, 2025)
         res.end()
     } catch (error) {
         res.send(error.message)
