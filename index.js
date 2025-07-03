@@ -34,6 +34,7 @@ const BetslipModel = require('./model/betslip');
 const { identity } = require('lodash');
 const { getAllFixtures } = require('./routes/fns/fixtures');
 const removeTrailingSlash = require('./routes/fns/removeTrailingSlash');
+const RapidKeysModel = require('./model/rapid_keys');
 
 const app = express()
 
@@ -162,9 +163,13 @@ setInterval(() => {
 
         //reset resend email count at 03:05 -- check matchdays
         if (hours === 3 && mins === 5) {
+            //reset email count sendig
             affAnalyticsModel.findOneAndUpdate({ pid: 'shemdoe' }, { $set: { email_count: 0 } })
                 .then(() => sendNotification(741815228, '✅ Email count set to 0'))
-                .catch(e => sendNotification(741815228, e?.message))
+                .catch(e => sendNotification(741815228, e?.message));
+
+            //reset rapid apis
+            RapidKeysModel.updateMany({}, { $set: { times_used: 0 } }).catch(e => console.log(e?.message, e))
 
             //check matchdays active true or false -- date format is YYYY-MM-DD
             UpdateOtherLeagueMatchDay(d_date.split('/').reverse().join('-'))
@@ -188,8 +193,8 @@ setInterval(() => {
             UpdateMatchDayLeagueData();
         }
 
-        //fixtures once a day at 00:01, 04:01, 20:01
-        if (mins === 1 && [0, 4, 20].includes(hours)) {
+        //fixtures once a day at 00:01, 05:01, 18:01 20:01
+        if (mins === 1 && [0, 5, 18, 20].includes(hours)) {
             getAllFixtures()
         }
 
