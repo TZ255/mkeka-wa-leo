@@ -25,7 +25,7 @@ const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
 TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo('en-US')
 const moment = require('moment-timezone')
-const {sendNotification, sendLauraNotification} = require('./fns/sendTgNotifications')
+const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotifications')
 const { on } = require('form-data')
 const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
@@ -67,36 +67,32 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
 
         const league_season = standing.league_season
 
-        const agg = await StandingLigiKuuModel.aggregate([
+        const flatFixtures = await StandingLigiKuuModel.aggregate([
             { $match: { path } },
-            {
-                $unwind: "$season_fixtures" // Break down season_fixtures array into separate documents
-            },
-            {
-                $group: {
-                    _id: "$season_fixtures.league.round", // Group by the round field
-                    fixtures: { $push: "$season_fixtures" } // Collect fixtures for each round
-                }
-            },
-            {
-                $project: {
-                    round: "$_id", // Rename _id to round
-                    fixtures: 1,
-                    numericRound: {
-                        $toInt: {
-                            $arrayElemAt: [
-                                { $split: ["$_id", " - "] },
-                                1 // Extract numeric part after " - "
-                            ]
-                        }
-                    },
-                    _id: 0 // Exclude the default _id field
-                }
-            },
-            {
-                $sort: { numericRound: 1 } // Sort by the numeric part of the round
+            { $unwind: "$season_fixtures" },
+            { $sort: { "season_fixtures.fixture.timestamp": 1 } },
+            { $replaceRoot: { newRoot: "$season_fixtures" } }
+        ]).cache(600);
+
+        // Group in JS while assigning incremental group "name"
+        const seenRounds = {};
+        let roundCounter = 1;
+        const groupedFixtures = [];
+
+        for (const fixture of flatFixtures) {
+            const roundName = fixture.league.round;
+
+            if (!(roundName in seenRounds)) {
+                seenRounds[roundName] = {
+                    name: roundCounter++, // group index
+                    round: roundName,
+                    fixtures: []
+                };
+                groupedFixtures.push(seenRounds[roundName]);
             }
-        ]).cache(600)
+
+            seenRounds[roundName].fixtures.push(fixture);
+        }
 
         let partials = {
             mwaka: new Date().getFullYear(),
@@ -108,9 +104,9 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
             updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
         }
 
-        res.render('11-misimamo/ligi/bongo/bongo-season-fixtures', { standing, agg, partials })
+        res.render('11-misimamo/ligi/bongo/bongo-season-fixtures', { standing, agg: groupedFixtures, partials })
     } catch (error) {
-        console.log(error?.message)
+        console.log(error?.message, error)
     }
 })
 
