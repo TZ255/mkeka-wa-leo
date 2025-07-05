@@ -512,7 +512,7 @@ const helenCodes = async (app) => {
                 await create(bot, ctx, typ)
 
                 let userid = ctx.chat.id
-                let txt = ctx.message.text
+                let txt = ctx.message?.text || ''
                 let username = ctx.chat.first_name
                 let mid = ctx.message.message_id
 
