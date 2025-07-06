@@ -683,6 +683,19 @@
         margin-top: 2rem;
         padding-top: 1.5rem;
         border-top: 1px solid #dee2e6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .gaware .blck {
+        color: #212529;
+    }
+
+    .gaware .orange {
+        color: #fd7e14;
     }
 
     .gaware a {
@@ -694,40 +707,38 @@
         display: inline-flex;
         align-items: center;
         transition: all 0.3s ease;
+        margin-bottom: 0.5rem;
     }
 
-    .gaware a:hover {
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .gaware a.gbt-link {
+        background: #fff;
+        border: 1px solid #dee2e6;
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem 0.5rem 0.5rem;
     }
 
-    .gaware .blck {
-        color: #212529;
+    .gaware a.gbt-link img {
+        height: 32px;
+        width: auto;
+        margin-right: 8px;
+        border-radius: 4px;
+        background: #fff;
+        border: 1px solid #eee;
     }
 
-    .gaware .orange {
-        color: #fd7e14;
+    .gaware .vr {
+        border-left: 2px solid #dee2e6;
+        height: 32px;
+        margin: 0 12px;
     }
 
-    /* Add responsive improvements */
-    @media (max-width: 992px) {
-        footer .footer {
-            justify-content: flex-start;
+    @media (max-width: 600px) {
+        .gaware {
+            flex-direction: column;
+            gap: 0.5rem;
         }
-
-        footer .footer .rightside,
-        footer .footer .middle,
-        footer .footer .leftside {
-            width: 50%;
-        }
-    }
-
-    @media (max-width: 768px) {
-
-        footer .footer .rightside,
-        footer .footer .middle,
-        footer .footer .leftside {
-            width: 100%;
+        .gaware .vr {
+            display: none !important;
         }
     }
 
