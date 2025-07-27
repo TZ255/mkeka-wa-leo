@@ -197,7 +197,7 @@ const checking3MkekaBetslip = async (d) => {
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         if (multikeka.length < 1) {
             let htMulti = ['2:0', '3:0', '0:2', '0:3'];
-            let htDC = ['4:0', '4:1', '4:2', '0:4', '1:4', '2:4']
+            let htDC = ['4:0', '4:1', '0:4', '1:4']
 
             let matches = await correctScoreModel.aggregate([
                 {
