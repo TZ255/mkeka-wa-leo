@@ -196,15 +196,14 @@ const checking3MkekaBetslip = async (d) => {
         //################# slip 6 (Correct score double cha) ###################################
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         if (multikeka.length < 1) {
-            let home_win = ['2:0, 3:1'];
-            let away_win = ['0:2', '1:3'];
-            let htmulti = ['4:0', '4:1', '4:2', '0:4', '1:4', '2:4']
+            let htMulti = ['2:0', '3:0', '0:2', '0:3'];
+            let htDC = ['4:0', '4:1', '4:2', '0:4', '1:4', '2:4']
 
             let matches = await correctScoreModel.aggregate([
                 {
                     $match: {
                         siku: d, time: { $gte: '12:00' },
-                        tip: { $in: [...home_win, ...away_win, ...htmulti] }
+                        tip: { $in: [...htMulti, ...htDC] }
                     }
                 },
                 { $sample: { size: 5 } }
@@ -213,17 +212,14 @@ const checking3MkekaBetslip = async (d) => {
             let transformedData = matches.map(doc => {
                 let newTip;
                 let expl = ""
-                let odd = '1.28'
-                if (home_win.includes(doc.tip)) {
-                    newTip = "Home Multigoals: 1 - 3";
+                let odd = '1.38'
+                if (htMulti.includes(doc.tip)) {
+                    newTip = "1st Half Multigoals: 1 - 2";
                     expl = matchExplanation(newTip)
-                } else if (away_win.includes(doc.tip)) {
-                    newTip = "Away Multigoals: 1 - 3";
+                    odd = '1.50'
+                } else if (htDC.includes(doc.tip)) {
+                    newTip = "HT Double Chance: 12";
                     expl = matchExplanation(newTip)
-                } else if (htmulti.includes(doc.tip)) {
-                    newTip = "1st Half Multigoals: 1 - 3";
-                    expl = matchExplanation(newTip)
-                    odd = '1.33'
                 }
 
                 return {
