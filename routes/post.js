@@ -681,4 +681,11 @@ router.post('/httpsms/events', (req, res) => {
     }
 })
 
+//leonbet postback webhook
+router.post('/post/webhook/leonbet', async (req, res) => {
+    console.log('Leonbet webhook received:', req.body)
+    sendLauraNotification(GLOBAL_VARS.donny_tg_id, `Leonbet webhook received:\n${JSON.stringify(req.body, null, 2)}`, false)
+    res.status(200).send('Webhook received')
+})
+
 module.exports = router

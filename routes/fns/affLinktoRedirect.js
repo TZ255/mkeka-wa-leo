@@ -18,7 +18,7 @@ const LinkToRedirect = async (comp, ip) => {
         betway_2000: `https://www.betway.co.tz/offers/deposit-wager?btag=P94949-PR38080-CM112923-TS2068965&signupcode=MKEKA&optin=TZPromo`,
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
         betlion_ke: `https://tracking.888africa.com/visit/?bta=356&nci=5362`,
-        leonbet: `https://c1li7tt5ck.com/?serial=44835&creative_id=1078&anid=`,
+        leonbet: `https://k56thc2itt.com/?serial=44835&creative_id=1061&anid=`,
         jpcity: 'https://en.jackpotcitycasino.co.tz/?register=1&btag=P110231-PR38119-CM113317-TS2071433'
     }
     try {
