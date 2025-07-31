@@ -32,34 +32,38 @@ const UpdateOtherLeagueData = async (league_id, season) => {
         };
 
         const response = await axios.request(options);
-        if (response.status === 200 && response?.data?.response.length > 0) {
-            let league_id = response?.data?.response[0].league.id
-            let league_name = response?.data?.response[0].league.name
-            let country = response?.data?.response[0].league.country
-            let league_season = response?.data?.response[0].league.season
-            let ligi = LeagueNameToSwahili(league_id, league_season).ligi
-            let path = LeagueNameToSwahili(league_id, league_season).path
-            let msimu = LeagueNameToSwahili(league_id, league_season).msimu
-            if (!ligi || !path || !msimu) return ErrorFn(`❌ validate ligi and path for ${league_name}`)
-            let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
+        if (response.status === 200) {
+            //update standing if response.data.response.length > 0
+            if (response?.data?.response.length > 0) {
+                let league_id = response?.data?.response[0].league.id
+                let league_name = response?.data?.response[0].league.name
+                let country = response?.data?.response[0].league.country
+                let league_season = response?.data?.response[0].league.season
+                let ligi = LeagueNameToSwahili(league_id, league_season).ligi
+                let path = LeagueNameToSwahili(league_id, league_season).path
+                let msimu = LeagueNameToSwahili(league_id, league_season).msimu
+                if (!ligi || !path || !msimu) return ErrorFn(`❌ validate ligi and path for ${league_name}`)
+                let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
 
-            await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
-                $set: { standing, path, league_name, league_season, country, ligi, msimu },
-            }, { upsert: true })
-            console.log(`${league_name} standing updated`)
+                await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
+                    $set: { standing, path, league_name, league_season, country, ligi, msimu },
+                }, { upsert: true })
+                console.log(`${league_name} standing updated`)
+            }
 
-            //update fixture for the same league
-            await UpdateOtherFixuresFn(league_id, league_season).catch(e => console.log(e?.message, e))
+
+            //update fixture for the same league if response is 200
+            await UpdateOtherFixuresFn(league_id, season).catch(e => console.log(e?.message, e))
             console.log(`${league_name} fixtures updated`)
 
-            await UpdateOtherCurrentFixture(league_id, league_season).catch(e => console.log(e?.message))
+            await UpdateOtherCurrentFixture(league_id, season).catch(e => console.log(e?.message))
             console.log(`${league_name} current fixtures updated`)
 
             //update top scorers for the same league
-            await UpdateOtherTopScorerFn(league_id, league_season).catch(e => console.log(e?.message))
+            await UpdateOtherTopScorerFn(league_id, season).catch(e => console.log(e?.message))
             console.log(`${league_name} top scorers updated`)
 
-            await UpdateOtherTopAssistFn(league_id, league_season).catch(e => console.log(e?.message))
+            await UpdateOtherTopAssistFn(league_id, season).catch(e => console.log(e?.message))
             console.log(`${league_name} top assists updated`)
         } else {
             ErrorFn(`Error fetching Other Ligi Kuu Data`)
