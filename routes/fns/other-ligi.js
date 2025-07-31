@@ -54,17 +54,17 @@ const UpdateOtherLeagueData = async (league_id, season) => {
 
             //update fixture for the same league if response is 200
             await UpdateOtherFixuresFn(league_id, season).catch(e => console.log(e?.message, e))
-            console.log(`${league_name} fixtures updated`)
+            console.log(`${league_id} fixtures updated`)
 
             await UpdateOtherCurrentFixture(league_id, season).catch(e => console.log(e?.message))
-            console.log(`${league_name} current fixtures updated`)
+            console.log(`${league_id} current fixtures updated`)
 
             //update top scorers for the same league
             await UpdateOtherTopScorerFn(league_id, season).catch(e => console.log(e?.message))
-            console.log(`${league_name} top scorers updated`)
+            console.log(`${league_id} top scorers updated`)
 
             await UpdateOtherTopAssistFn(league_id, season).catch(e => console.log(e?.message))
-            console.log(`${league_name} top assists updated`)
+            console.log(`${league_id} top assists updated`)
         } else {
             ErrorFn(`Error fetching Other Ligi Kuu Data`)
         }
