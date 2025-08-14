@@ -1,4 +1,5 @@
 <br><br>
+<!-- Disabling Arsenal Ad for Simba until September 10
 <div id="cas250" class="ad pmatchtz card border-0 shadow-lg rounded-3 overflow-hidden position-relative mb-3" style="transition: transform 0.2s ease-in-out;" onmouseover="this.style.transform='translateY(-3px)';this.style.cursor='pointer';" onmouseout="this.style.transform='translateY(0)';" onclick="window.open('/betway-arsenal/register')">
     <div role="button" tabindex="0" style="outline: none;" onkeypress="if(event.key==='Enter') window.open('/betway-arsenal/register')" onfocus="this.style.outline='2px solid #dc3545'" onblur="this.style.outline='none'">
       <div class="position-relative">
@@ -11,27 +12,52 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
+<!-- Simba Ad -->
+<div id="cas250" class="ad pmatchtz card border-0 shadow-lg rounded-3 overflow-hidden position-relative mb-3"
+  style="transition: transform 0.2s ease-in-out;"
+  onmouseover="this.style.transform='translateY(-3px)';this.style.cursor='pointer';"
+  onmouseout="this.style.transform='translateY(0)';" onclick="window.open('/betway/register')">
+  <div role="button" tabindex="0" style="outline: none;"
+    onkeypress="if(event.key==='Enter') window.open('/betway/register')"
+    onfocus="this.style.outline='2px solid #dc3545'" onblur="this.style.outline='none'">
+    <div class="position-relative">
+      <img src="/ofa/zawadi-simba-sc.webp" class="img-fluid w-100" alt="BetWay - Shinda zawadi na mnyama Simba"
+        loading="lazy">
+
+      <div class="p-3 text-center bg-light">
+        <p class="fw-bold text-danger mb-1 h5">Kombora la Simba</p>
+        <p class="mb-2 text-dark" style="font-size: 0.8rem;">Ibuka mshindi kila siku ukiwa na Betway na Simba <br>
+          Shinda <span class="badge bg-danger">Jezi mpya</span> na Tickets za bure mechi za Simba kwa kucheza casino
+          mpya ya <strong>Simba Spin</strong> na <strong>Kombora la Simba</strong>.
+        </p>
+        <button class="btn btn-danger btn-sm fw-bold px-4 rounded-pill">Jiunge na Ofa Hii Sasa!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- J4 Ad -->
 <div id="j4" class="ad pmatchtz shadow rounded" onclick="window.open('/betway/register')" style="display: none;">
-    <img loading="lazy" src="/imgs/j4-bw.webp" alt="Pata Zaidi Kila Ukiweka Pesa na Betway">
-    <div class="p-1 text-center text-muted" style="font-size: 13px;">Jumanne, <b>Weka Tuweke!</b> Pata zaidi ukiweka pesa kwenye account yako leo!</div>
+  <img loading="lazy" src="/imgs/j4-bw.webp" alt="Pata Zaidi Kila Ukiweka Pesa na Betway">
+  <div class="p-1 text-center text-muted" style="font-size: 13px;">Jumanne, <b>Weka Tuweke!</b> Pata zaidi ukiweka pesa
+    kwenye account yako leo!</div>
 </div>
 <br><br>
 
 
 <script>
-    function showAds() {
-        let cas250 = document.getElementById('cas250');
-        let j4 = document.getElementById('j4');
-        let d = new Date().toLocaleString('en-GB', {timeZone: 'Africa/Nairobi', weekday: 'long'})
+  function showAds() {
+    let cas250 = document.getElementById('cas250');
+    let j4 = document.getElementById('j4');
+    let d = new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        if (d == "Tuesday") {
-            cas250.style.display = 'none';
-            j4.style.display = 'block';
-        }
+    if (d == "Tuesday") {
+      cas250.style.display = 'none';
+      j4.style.display = 'block';
     }
+  }
 
-    window.onload = showAds;
+  window.onload = showAds;
 </script>
-
