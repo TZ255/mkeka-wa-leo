@@ -719,7 +719,8 @@ router.get('/tanzania/bookies/:bookie', async (req, res) => {
     //object with bookie name and render path
     const bookies = {
         'gsb': '4-betting-sites/1-gsbtz/index',
-        'betway': '4-betting-sites/2-betwaytz/index'
+        'betway': '4-betting-sites/2-betwaytz/index',
+        'leonbet': '4-betting-sites/3-leonbet/index'
     }
 
     if (!Object.keys(bookies).includes(bookie)) {
