@@ -1,8 +1,5 @@
 const router = require('express').Router()
 
-//times
-const TimeAgo = require('javascript-time-ago')
-const en = require('javascript-time-ago/locale/en')
 const betslip = require('../model/betslip')
 const { WeekDayFn, GetDayFromDateString } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
@@ -22,8 +19,6 @@ const checking3MkekaBetslip = require('./fns/checking-betslip')
 const mkekaUsersModel = require('../model/mkeka-users')
 const { getAllFixtures, getFixturePredictions } = require('./fns/fixtures')
 const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
-TimeAgo.addDefaultLocale(en)
-const timeAgo = new TimeAgo('en-US')
 const moment = require('moment-timezone')
 const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotifications')
 const { on } = require('form-data')

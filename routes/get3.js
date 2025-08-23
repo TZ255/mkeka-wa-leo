@@ -14,17 +14,12 @@ const PassionPredict35Model = require('../model/pp35')
 const axios = require('axios')
 const cheerio = require('cheerio')
 
-//times
-const TimeAgo = require('javascript-time-ago')
-const en = require('javascript-time-ago/locale/en')
 const { WeekDayFn } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateBongoLeagueData } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherLeagueData } = require('./fns/other-ligi')
-TimeAgo.addDefaultLocale(en)
-const timeAgo = new TimeAgo('en-US')
 
 router.get('/astro/home', async (req, res) => {
     try {

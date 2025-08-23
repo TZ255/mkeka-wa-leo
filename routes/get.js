@@ -12,9 +12,6 @@ const over15Mik = require('../model/ove15mik')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
-//times
-const TimeAgo = require('javascript-time-ago')
-const en = require('javascript-time-ago/locale/en')
 const { WeekDayFn, findMikekaByWeekday, SwahiliDayToEnglish, DetermineNextPrev, GetJsDate, GetDayFromDateString } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateBongoLeagueData } = require('./fns/bongo-ligi')
@@ -29,8 +26,6 @@ const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotific
 const { processCScoreTips } = require('./fns/cscoreCollection')
 const supatipsModel = require('../model/supatips')
 const { LinkToRedirect } = require('./fns/affLinktoRedirect')
-TimeAgo.addDefaultLocale(en)
-const timeAgo = new TimeAgo('en-US')
 
 router.get('/', async (req, res) => {
     try {
