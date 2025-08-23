@@ -14,6 +14,7 @@ const getRouter2 = require('./routes/get2-new')
 const getBongoLigiRouter = require('./routes/get1-bongo-ligi')
 const oldLeagueRedirects = require('./routes/old-ligi-redirects')
 const getRouter3 = require('./routes/get3')
+const blogRouter = require('./routes/blog')
 const routeAuth = require('./routes/get4-auth')
 const resetAuth = require('./routes/fns/Auth/reset')
 const postRouter = require('./routes/post')
@@ -74,6 +75,7 @@ app.use(getRouter)
 app.use(getBongoLigiRouter)
 app.use(getRouter2)
 app.use(getRouter3)
+app.use(blogRouter)
 
 //Attached Bots Goes Here
 if (process.env.local != 'true') {

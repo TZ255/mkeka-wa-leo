@@ -1,0 +1,31 @@
+<!-- JSON-LD: Article -->
+<script type="application/ld+json">
+<%- JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://mkekawaleo.com/blog/${meta.slug}`
+  },
+  "headline": meta.title,
+  "description": meta.description,
+  "image": meta.coverImage || 'https://mkekawaleo.com/favicon/android-chrome-512x512.png',
+  "author": {
+    "@type": "Person",
+    "name": meta.author,
+    "url": "https://mkekawaleo.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Mkeka wa Leo",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://mkekawaleo.com/favicon/android-chrome-192x192.png"
+    }
+  },
+  "datePublished": meta.date_created,
+  "dateModified": meta.date_modified,
+  "articleSection": "Betting",
+  "keywords": meta.keywords
+}, null, 2) %>
+</script>
