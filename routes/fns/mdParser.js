@@ -1,44 +1,49 @@
 const fs = require("fs");
 const path = require("path");
 const matter = require("gray-matter");
-const { marked } = require("marked");
 
+
+let markedModule;
 async function parseMarkdown(filePath) {
-    // Read file asynchronously
-    const raw = await fs.promises.readFile(filePath, "utf8");
+  if (!markedModule) {
+    markedModule = await import("marked");
+  }
+  const { marked } = markedModule;
+  // Read file asynchronously
+  const raw = await fs.promises.readFile(filePath, "utf8");
 
-    // Extract frontmatter + markdown content
-    const { data: meta, content } = matter(raw);
+  // Extract frontmatter + markdown content
+  const { data: meta, content } = matter(raw);
 
-    // Table of Contents array
-    const toc = [];
+  // Table of Contents array
+  const toc = [];
 
-    // Create renderer for marked ≥5
-    const renderer = {
-        heading({ tokens, depth }) {
-            // Convert inline tokens to string
-            const text = this.parser.parseInline(tokens);
+  // Create renderer for marked ≥5
+  const renderer = {
+    heading({ tokens, depth }) {
+      // Convert inline tokens to string
+      const text = this.parser.parseInline(tokens);
 
-            // Generate slug safely
-            const slug = text
-                .toLowerCase()
-                .replace(/[^\w]+/g, "-")
-                .replace(/^-+|-+$/g, "");
+      // Generate slug safely
+      const slug = text
+        .toLowerCase()
+        .replace(/[^\w]+/g, "-")
+        .replace(/^-+|-+$/g, "");
 
-            // Add to TOC for H1–H3
-            if (depth <= 3) toc.push({ text, level: depth, slug });
+      // Add to TOC for H1–H3
+      if (depth <= 3) toc.push({ text, level: depth, slug });
 
-            return `<h${depth} id="${slug}">${text}</h${depth}>`;
-        }
-    };
+      return `<h${depth} id="${slug}">${text}</h${depth}>`;
+    }
+  };
 
-    // Use the custom renderer
-    marked.use({ renderer });
+  // Use the custom renderer
+  marked.use({ renderer });
 
-    // Convert markdown to HTML
-    const html = marked.parse(content);
+  // Convert markdown to HTML
+  const html = marked.parse(content);
 
-    return { meta, html, toc };
+  return { meta, html, toc };
 }
 
 
