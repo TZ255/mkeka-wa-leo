@@ -11,11 +11,9 @@ const {sendNotification, sendLauraNotification} = require('./sendTgNotifications
 const checking3MkekaBetslip = async (d) => {
     try {
         let allPaidVIP = await paidVipModel.countDocuments({date: d})
-        let hour = new Date().getHours() + 3
+        //checking super 3 betslip
         let slip = await betslip.find({ date: d, vip_no: 1 })
-
-        // check if slip length is 0 and hour is 10
-        if (slip.length < 1 && hour === 10) {
+        if (slip.length < 1) {
             const copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, time: { $gte: '14:00' } } },
                 // Add a field that splits the tip string and calculates total goals
@@ -55,6 +53,24 @@ const checking3MkekaBetslip = async (d) => {
                 })
             }
         }
+
+        //CHECKING VIP SLIPS ##############################################################
+        // ###################### slip 1 (normal betslip - other than free) ###############
+        // let vip1 = await paidVipModel.find({ date: d, vip_no: 1 })
+        // if (vip1.length < 1) {
+        //     //find random 3 from mkekadb
+        //     let copies = await mkekadb.aggregate([
+        //         { $match: { date: d } },
+        //         { $sample: { size: 1 } }
+        //     ])
+
+        //     //add them to betslip database
+        //     for (let c of copies) {
+        //         await paidVipModel.create({
+        //             date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 1
+        //         })
+        //     }
+        // }
 
         //############## slip 2 (over 1.5 ft) #############################
         let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
@@ -100,11 +116,11 @@ const checking3MkekaBetslip = async (d) => {
             let matches = await correctScoreModel.aggregate([
                 {
                     $match: {
-                        siku: d, time: { $gte: '12:00' },
+                        siku: d, time: { $gte: '10:00' },
                         tip: { $in: [...direct_away, ...direct_home] }
                     }
                 },
-                { $sample: { size: 7 } }
+                { $sample: { size: 5 } }
             ]);
 
             let transformedData = matches.map(doc => {
@@ -161,7 +177,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 16 }
+                    $sample: { size: 13 }
                 }
             ]);
 
@@ -179,7 +195,7 @@ const checking3MkekaBetslip = async (d) => {
 
         //################# slip 6 (Correct score double cha) ###################################
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
-        if (multikeka.length < 1 && hour === 10) {
+        if (multikeka.length < 1) {
             let htMulti = ['2:0', '3:0', '0:2', '0:3'];
             let htDC = ['4:0', '4:1', '0:4', '1:4']
 
