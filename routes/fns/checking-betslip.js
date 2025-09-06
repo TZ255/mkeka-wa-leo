@@ -11,9 +11,11 @@ const {sendNotification, sendLauraNotification} = require('./sendTgNotifications
 const checking3MkekaBetslip = async (d) => {
     try {
         let allPaidVIP = await paidVipModel.countDocuments({date: d})
-        //checking super 3 betslip
+        let hour = new Date().getHours() + 3
         let slip = await betslip.find({ date: d, vip_no: 1 })
-        if (slip.length < 1) {
+
+        // check if slip length is 0 and hour is 10
+        if (slip.length < 1 && hour === 10) {
             const copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, time: { $gte: '14:00' } } },
                 // Add a field that splits the tip string and calculates total goals
@@ -90,21 +92,21 @@ const checking3MkekaBetslip = async (d) => {
         }
 
         //############### slip 3 (Under 3.5 from Cscore 0:0) ############################
-        let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
-        if (vip3.length < 1 && allPaidVIP < 5) {
-            let under35 = ['0:0'];
-            let copies = await correctScoreModel.aggregate([
-                { $match: { siku: d, tip: { $in: [...under35] } } },
-                { $sample: { size: 5 } }
-            ])
+        // let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
+        // if (vip3.length < 1 && allPaidVIP < 5) {
+        //     let under35 = ['0:0'];
+        //     let copies = await correctScoreModel.aggregate([
+        //         { $match: { siku: d, tip: { $in: [...under35] } } },
+        //         { $sample: { size: 5 } }
+        //     ])
 
-            //add them to betslip database
-            for (let c of copies) {
-                await paidVipModel.create({
-                    date: c.siku, time: c.time, league: c.league, tip: 'Under 3.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 3
-                })
-            }
-        }
+        //     //add them to betslip database
+        //     for (let c of copies) {
+        //         await paidVipModel.create({
+        //             date: c.siku, time: c.time, league: c.league, tip: 'Under 3.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 3
+        //         })
+        //     }
+        // }
 
 
         //################ slip 4 (Direct win - match.today) #########################
@@ -177,7 +179,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 13 }
+                    $sample: { size: 16 }
                 }
             ]);
 
@@ -196,29 +198,30 @@ const checking3MkekaBetslip = async (d) => {
         //################# slip 6 (Correct score double cha) ###################################
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         if (multikeka.length < 1) {
-            let htMulti = ['2:0', '3:0', '0:2', '0:3'];
-            let htDC = ['4:0', '4:1', '0:4', '1:4']
+            let htMulti = ['2:0', '0:2', '0:0'];
 
             let matches = await correctScoreModel.aggregate([
                 {
                     $match: {
-                        siku: d, time: { $gte: '12:00' },
-                        tip: { $in: [...htMulti, ...htDC] }
+                        siku: d, time: { $gte: '14:00' },
+                        tip: { $in: [...htMulti] }
                     }
                 },
-                { $sample: { size: 5 } }
+                { $sample: { size: 6 } }
             ]);
 
             let transformedData = matches.map(doc => {
                 let newTip;
                 let expl = ""
                 let odd = '1.38'
-                if (htMulti.includes(doc.tip)) {
-                    newTip = "1st Half Multigoals: 1 - 2";
+                if (doc.tip === '0:0') {
+                    newTip = "Under 3.5";
                     expl = matchExplanation(newTip)
-                    odd = '1.50'
-                } else if (htDC.includes(doc.tip)) {
-                    newTip = "HT Double Chance: 12";
+                } else if (doc.tip === '2:0') {
+                    newTip = "1 & Under 4.5";
+                    expl = matchExplanation(newTip)
+                } else if (doc.tip === '0:2') {
+                    newTip = "2 & Under 4.5";
                     expl = matchExplanation(newTip)
                 }
 
