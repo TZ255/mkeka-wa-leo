@@ -13,7 +13,17 @@ async function parseMarkdown(filePath) {
   const raw = await fs.promises.readFile(filePath, "utf8");
 
   // Extract frontmatter + markdown content
-  const { data: meta, content } = matter(raw);
+  let { data: meta, content } = matter(raw);
+
+  // Inject dynamic placeholders
+  const placeholders = { year: new Date().getFullYear() };
+  for (const key in meta) {
+    if (typeof meta[key] === "string") {
+      meta[key] = meta[key].replace(/<%= year %>/g, placeholders.year);
+    }
+  }
+  content = content
+    .replace(/<%= year %>/g, placeholders.year)
 
   // Table of Contents array
   const toc = [];

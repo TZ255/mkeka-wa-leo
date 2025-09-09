@@ -39,7 +39,7 @@ const LinkToRedirect = async (comp, ip) => {
             case 'betway-freebet':
                 return links.betway_2000
             case 'meridian':
-                return links.betway
+                return links.meridian
             case 'premier':
                 return links.betway
 
