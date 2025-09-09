@@ -13,7 +13,7 @@ keywords: "Gal Sport Betting Tanzania, GSB App, GSB promo code, jinsi ya kujisaj
 ![Gal Sport Betting Tanzania Screenshot](/imgs/kampuni/sshot-gsbtz.webp)
 
 ## Maelezo ya Kampuni
-- 🌍 **Tovuti:** <a href="/gsb/register" target="_blank" class="link-success" rel="nofollow sponsored">https://gsb.co.tz/</a>  
+- 🌍 **Tovuti:** <a href="/gsb/register" target="_blank" rel="nofollow sponsored">https://gsb.co.tz/</a>  
 - 📅 **Ilianzishwa:** 2014  
 - 🎰 **Leseni kutoka:** Bodi ya Michezo ya Kubahatisha Tanzania  
 - 🆔 **Nambari ya Leseni:** SBL000000023 (Iliyopewa 14 Agosti 2020)  
@@ -62,7 +62,7 @@ Malipo ni ya papo hapo na huduma inapatikana masaa 24/7.
 ---
 
 ## Jinsi ya Kujisajili
-1. Tembelea tovuti rasmi: <a href="https://gsb.co.tz/" target="_blank" class="link-success">https://gsb.co.tz/</a>  
+1. Tembelea tovuti rasmi: <a href="https://gsb.co.tz/" target="_blank">https://gsb.co.tz/</a>  
 2. Bonyeza kitufe cha <strong>"Jisajili"</strong>  
 3. Weka namba yako ya simu na password  
 4. Thibitisha akaunti kupitia ujumbe wa SMS (OTP)  
@@ -71,8 +71,8 @@ Malipo ni ya papo hapo na huduma inapatikana masaa 24/7.
 ---
 
 ## App ya Gal Sport Betting - Download
-- <i class="fa-brands fa-android text-success"></i> **Android:** <a href="/gsb/register" target="_blank" class="link-success" rel="nofollow sponsored">Jisajili na Pakua App</a>  
-- <i class="fa-brands fa-apple text-secondary"></i> **iOS:** <a href="/gsb/register" target="_blank" class="link-success" rel="nofollow sponsored">Jisajili na Tumia Web App</a>  
+- <i class="fa-brands fa-android text-success"></i> **Android:** <a href="/gsb/register" target="_blank" rel="nofollow sponsored">Jisajili na Pakua App</a>  
+- <i class="fa-brands fa-apple text-secondary"></i> **iOS:** <a href="/gsb/register" target="_blank" rel="nofollow sponsored">Jisajili na Tumia Web App</a>  
 
 ---
 

@@ -13,7 +13,7 @@ keywords: "Betway Tanzania, Betway App, Betway promo code, jinsi ya kujisajili B
 ![Betway Tanzania Screenshot](/imgs/kampuni/sshot-betwaytz.webp)
 
 ## Maelezo ya Kampuni
-- 🌍 **Tovuti:** <a class="link-success" href="/betway/register" target="_blank" rel="nofollow sponsored">https://en.betway.co.tz/</a>
+- 🌍 **Tovuti:** <a href="/betway/register" target="_blank" rel="nofollow sponsored">https://en.betway.co.tz/</a>
 - 📅 **Imeanzishwa:** 2006 (Tanzania 2021)
 - 🎰 **Leseni:** Gaming Board of Tanzania
 - 🆔 **Nambari ya Leseni:** SBI000000037 / OC000000019
@@ -60,7 +60,7 @@ Kiasi cha chini kudeposit ni 100 TZS, kiasi cha juu 1,000,000 TZS kwa siku; with
 ---
 
 ## Jinsi ya Kujisajili
-1. Tembelea: <a class="link-success" href="/betway/register" target="_blank" rel="nofollow sponsored">https://en.betway.co.tz/</a>
+1. Tembelea: <a href="/betway/register" target="_blank" rel="nofollow sponsored">https://en.betway.co.tz/</a>
 2. Bonyeza kitufe cha <strong>“Sign Up”</strong>
 3. Weka namba yako ya simu Tz pamoja na password
 4. Kubali T&C na uhakikishe uko na miaka 18+
@@ -70,8 +70,8 @@ Kiasi cha chini kudeposit ni 100 TZS, kiasi cha juu 1,000,000 TZS kwa siku; with
 ---
 
 ## App ya Betway - Download
-- <i class="fa-brands fa-android me-1"></i> Android: <a href="/betway/register" class="link-success" target="_blank" rel="nofollow sponsored">Jisajili na Pakua App</a>
-- <i class="fa-brands fa-apple me-1"></i> iOS: <a href="/betway/register" class="link-success" target="_blank" rel="nofollow sponsored">Jisajili na Pakua App</a>
+- <i class="fa-brands fa-android me-1"></i> Android: <a href="/betway/register" target="_blank" rel="nofollow sponsored">Jisajili na Pakua App</a>
+- <i class="fa-brands fa-apple me-1"></i> iOS: <a href="/betway/register" target="_blank" rel="nofollow sponsored">Jisajili na Pakua App</a>
 
 ---
 
