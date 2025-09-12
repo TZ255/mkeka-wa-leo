@@ -186,8 +186,8 @@ setInterval(() => {
         }
 
         //update bongo league two times a day at 22:01 and 03:01
-        if (mins === 1 && [3, 22].includes(hours)) {
-            UpdateBongoLeagueData(567, 2024)
+        if (mins === 1 && [3, 19, 22].includes(hours)) {
+            UpdateBongoLeagueData(567, 2025)
         }
 
         //update other leagues once a day at 01:10
