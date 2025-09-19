@@ -34,8 +34,8 @@ router.get('/standings', async (req, res) => {
     }
 
     try {
-        let leagues_2024 = await OtherStandingLigiKuuModel.find().sort('country').cache(600);
-        res.render('11-misimamo/standings', { jumasiku, leagues_2024 })
+        let leagues_others = await OtherStandingLigiKuuModel.find().sort('country').cache(600);
+        res.render('11-misimamo/standings', { jumasiku, leagues_others })
     } catch (error) {
         console.log(error?.message)
         res.status(500).send('Kumetokea changamoto. Tafadhali jaribu tena baadae.')
