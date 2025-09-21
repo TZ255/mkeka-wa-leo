@@ -4,7 +4,7 @@ const isEqual = require('lodash/isEqual')
 const {sendNotification, sendLauraNotification} = require("./sendTgNotifications");
 const StandingLigiKuuModel = require("../../model/Ligi/bongo");
 
-const ligiKuuUrl = "https://ligikuu.co.tz/statistics/season-2024-2025/";
+const ligiKuuUrl = "https://ligikuu.co.tz/statistics/season-2025-2026/";
 let shemdoe_id = 741815228
 
 const countryCodeWrapper = (cc) => {
@@ -55,6 +55,8 @@ const countryCodeWrapper = (cc) => {
   }
 };
 
+const season = 2025
+
 const wafungajiBoraNBC = async () => {
   try {
     const response = await axios.get(ligiKuuUrl, {
@@ -67,11 +69,18 @@ const wafungajiBoraNBC = async () => {
     // Load the HTML into Cheerio
     const $ = cheerio.load(response.data);
 
-    //Find the heading that contains "NBC PREMIER LEAGUE SCORERS"
-    const heading = $("h4.sp-table-caption").filter((i, el) => $(el).text().trim() === "NBC PREMIER LEAGUE SCORERS");
+    // Find heading by matching any of the allowed captions (hardcoded)
+    const scorerHeadings = [
+      "NBC PREMIER LEAGUE SCORERS",
+      "NBC PREMIER LEAGUE 2025/2026 SCORERS",
+    ];
+    const heading = $("h4.sp-table-caption").filter((i, el) => {
+      const txt = $(el).text().trim();
+      return scorerHeadings.includes(txt);
+    });
 
     if (!heading.length) {
-      let error = "Could not find the 'NBC PREMIER LEAGUE SCORERS' heading."
+      let error = `Could not find scorers heading. Tried: ${scorerHeadings.join(", ")}`
       sendNotification(shemdoe_id, error)
       return console.log(error);
     }
@@ -120,10 +129,10 @@ const wafungajiBoraNBC = async () => {
 
       scrapedResults.push({ country, playerName, club, goals });
     });
-    if (scrapedResults.length < 30) {
-      return sendNotification(shemdoe_id, 'wafungaji bora NBC is less than 30')
+    if (scrapedResults.length < 2) {
+      return sendNotification(shemdoe_id, 'wafungaji bora NBC is less than 2')
     }
-    let ligi = await StandingLigiKuuModel.findOne({ league_id: 567, league_season: '2024' })
+    let ligi = await StandingLigiKuuModel.findOne({ league_id: 567, league_season: `${season}` })
     let topScores = ligi.top_scorers
     //check if web === to topScores
     if (!isEqual(topScores, scrapedResults)) {
@@ -150,11 +159,19 @@ const assistBoraNBC = async () => {
     // Load the HTML into Cheerio
     const $ = cheerio.load(response.data);
 
-    //Find the heading that contains "NBC PREMIER LEAGUE SCORERS"
-    const heading = $("h4.sp-table-caption").filter((i, el) => $(el).text().trim() === "NBC PREMIER LEAGUE ASISSTS");
+    // Find heading by matching any of the allowed captions (hardcoded)
+    const assistHeadings = [
+      "NBC REMIER LEAGUE 2025/2026 ASISSTS",
+      "NBC PREMIER LEAGUE ASISSTS",
+      "NBC PREMIER LEAGUE 2025/2026 ASISSTS",
+    ];
+    const heading = $("h4.sp-table-caption").filter((i, el) => {
+      const txt = $(el).text().trim();
+      return assistHeadings.includes(txt);
+    });
 
     if (!heading.length) {
-      let error = "Could not find the 'NBC PREMIER LEAGUE ASISSTS' heading."
+      let error = `Could not find assists heading. Tried: ${assistHeadings.join(", ")}`
       sendNotification(shemdoe_id, error)
       return console.log(error);
     }
@@ -203,10 +220,10 @@ const assistBoraNBC = async () => {
 
       scrapedResults.push({ country, playerName, club, assists });
     });
-    if (scrapedResults.length < 30) {
-      return sendNotification(shemdoe_id, 'top assists bora NBC is less than 30')
+    if (scrapedResults.length < 2) {
+      return sendNotification(shemdoe_id, 'top assists bora NBC is less than 2')
     }
-    let ligi = await StandingLigiKuuModel.findOne({ league_id: 567, league_season: '2024' })
+    let ligi = await StandingLigiKuuModel.findOne({ league_id: 567, league_season: `${season}` })
     let topAssist = ligi.top_assists
     //check if web === to topScores
     if (!isEqual(topAssist, scrapedResults)) {

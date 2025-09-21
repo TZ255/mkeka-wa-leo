@@ -38,7 +38,7 @@
                         <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse"
                             data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
                             aria-controls="panelsStayOpen-collapseOne">
-                            MISIMAMO YA LIGI KUU 2024/2025
+                            MISIMAMO YA LIGI KUU 2025/2026
                         </button>
                     </h2>
                     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
@@ -47,11 +47,11 @@
                             <div class="container mt-4">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item fw-bold">
-                                        <a href="/standings/football/tanzania/premier-league" title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025" class="text-decoration-none link-success">
-                                            Tanzania - NBC Premier League 2024/2025
+                                        <a href="/standings/football/tanzania/premier-league" title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2025/2026" class="text-decoration-none link-success">
+                                            Tanzania - NBC Premier League 2025/2026
                                         </a>
                                     </li>
-                                    <% leagues_2024.forEach(league => { %>
+                                    <% leagues_others.forEach(league => { %>
                                     <li class="list-group-item fw-bold">
                                         <a href="/standings/football/<%= league.path %>" title="Msimamo wa <%= league.ligi %> - <%= league.league_name %> kwa msimu wa <%= league.msimu.long %>" class="text-decoration-none link-success">
                                             <%= league.country %> - <%= league.ligi %> <%= league.msimu.short %>
@@ -99,11 +99,11 @@
 
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item fw-bold">
-                                        <a href="/football/fixtures/tanzania/premier-league" title="Ratiba na Matokeo ya Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2024/2025" class="text-decoration-none link-success">
-                                            Tanzania: NBC Premier League 2024/2025 - Ratiba na Matokeo
+                                        <a href="/football/fixtures/tanzania/premier-league" title="Ratiba na Matokeo ya Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2025/2026" class="text-decoration-none link-success">
+                                            Tanzania: NBC Premier League 2025/2026 - Ratiba na Matokeo
                                         </a>
                                     </li>
-                                    <% leagues_2024.forEach(league => { %>
+                                    <% leagues_others.forEach(league => { %>
                                     <li class="list-group-item fw-bold">
                                         <a href="/football/fixtures/<%= league.path %>" title="Ratiba na Matokeo ya <%= league.ligi %> - <%= league.league_name %> kwa msimu wa <%= league.msimu.long %>" class="text-decoration-none link-success">
                                             <%= league.country %>: <%= league.league_name %> <%= league.msimu.short %> - Ratiba na Matokeo
