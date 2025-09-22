@@ -260,8 +260,7 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
         }
 
         if (String(tip).toLowerCase() === 'deleted') {
-            match.status = 'deleted'
-            await match.save()
+            await match.constructor.deleteOne({ _id: match._id });
             return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 

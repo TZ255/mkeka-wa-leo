@@ -196,15 +196,15 @@ const checking3MkekaBetslip = async (d) => {
         //################# slip 6 (Correct score double cha) ###################################
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         if (multikeka.length < 1) {
-            let homeWin = ['2:0', '3:0'];
-            let awayWin = ['0:3']
+            let home_1_3 = ['2:0', '3:1', '3:2'];
+            let away_1_3 = ['0:2', '1:3', '2:3'];
             let btts = ['2:3', '2:4']
 
             let matches = await correctScoreModel.aggregate([
                 {
                     $match: {
                         siku: d, time: { $gte: '14:00' },
-                        tip: { $in: [...homeWin, ...awayWin] }
+                        tip: { $in: [...home_1_3, ...away_1_3] }
                     }
                 },
                 { $sample: { size: 5 } }
@@ -213,13 +213,12 @@ const checking3MkekaBetslip = async (d) => {
             let transformedData = matches.map(doc => {
                 let newTip;
                 let expl = ""
-                let odd = '1.52'
-                if (homeWin.includes(doc.tip)) {
-                    newTip = "Home Win";
+                let odd = '1.28'
+                if (home_1_3.includes(doc.tip)) {
+                    newTip = "Home Multigoals: 1 - 3";
                     expl = matchExplanation(newTip)
-                    odd = '1.48'
-                } else if (awayWin.includes(doc.tip)) {
-                    newTip = "Away Win";
+                } else if (away_1_3.includes(doc.tip)) {
+                    newTip = "Away Multigoals: 1 - 3";
                     expl = matchExplanation(newTip)
                 } else if (btts.includes(doc.tip)) {
                     newTip = "GG - Yes";
