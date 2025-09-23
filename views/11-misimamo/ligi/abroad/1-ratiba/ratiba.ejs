@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Angalia ratiba ya mechi za <%= partials.team_info.team.name %> pamoja na matokeo ya msimu mzima wa <%= partials.season_long %>">
+        content="Angalia ratiba ya mechi za <%= partials.team_info.team.name %> <%= partials.ligi %> pamoja na matokeo ya msimu mzima wa <%= partials.season_long %>">
     <meta property="article:modified_time" content="<%= partials.team_info.update %>">
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
     <%- include('../../../../0-global/favicon.ejs') %>
@@ -29,7 +29,7 @@
     <%- include('../../../../0-global/header.ejs'); %>
     <main>
         <section class="left">
-            <h1 class="fs-4 mx-2 my-4">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> Msimu wa
+            <h1 class="fs-4 mx-2 my-4">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> <%= partials.ligi %> Msimu wa
                 <%= partials.season_long %></h1>
             <div>
                 <h2 class="h2 fs-6 mb-3">Utangulizi</h2>
