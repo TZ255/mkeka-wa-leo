@@ -6,11 +6,11 @@ const supatipsModel = require('../../model/supatips')
 const fameTipsModel = require('../../model/ya-uhakika/fametips')
 const Over15MikModel = require('../../model/ya-uhakika/over15db')
 const matchExplanation = require('./match-expl')
-const {sendNotification, sendLauraNotification} = require('./sendTgNotifications')
+const { sendNotification, sendLauraNotification } = require('./sendTgNotifications')
 
 const checking3MkekaBetslip = async (d) => {
     try {
-        let allPaidVIP = await paidVipModel.countDocuments({date: d})
+        let allPaidVIP = await paidVipModel.countDocuments({ date: d })
         //checking super 3 betslip
         let slip = await betslip.find({ date: d, vip_no: 1 })
         if (slip.length < 1) {
@@ -197,7 +197,7 @@ const checking3MkekaBetslip = async (d) => {
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         if (multikeka.length < 1) {
             let copies = await mkekadb.aggregate([
-                { $match: { date: d } },
+                { $match: { date: d, $expr: { $gt: [{ $toDouble: "$odds" }, 1.39] } } },
                 { $sample: { size: 4 } }
             ])
 
