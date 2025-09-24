@@ -26,7 +26,7 @@
 
             // Add appropriate classes based on description content
             let fst_ligs = ['champions league', '15: playoffs', '29: promotion - world cha']
-            let second_ligs = ['20 playoffs', 'europa', '29: ranking of second']
+            let second_ligs = ['20 playoffs', 'europa', '29: ranking of second', 'confederation cup']
 
             if (second_ligs.some(lig => `${league_id}: ${description}`.includes(lig))) {
                 cell.classList.add('europa');
