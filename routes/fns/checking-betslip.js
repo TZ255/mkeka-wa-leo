@@ -196,51 +196,15 @@ const checking3MkekaBetslip = async (d) => {
         //################# slip 6 (Correct score double cha) ###################################
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         if (multikeka.length < 1) {
-            let home_1_3 = ['2:0', '3:1', '3:2'];
-            let away_1_3 = ['0:2', '1:3', '2:3'];
-            let btts = ['2:3', '2:4']
+            let copies = await mkekadb.aggregate([
+                { $match: { date: d } },
+                { $sample: { size: 4 } }
+            ])
 
-            let matches = await correctScoreModel.aggregate([
-                {
-                    $match: {
-                        siku: d, time: { $gte: '14:00' },
-                        tip: { $in: [...home_1_3, ...away_1_3] }
-                    }
-                },
-                { $sample: { size: 5 } }
-            ]);
-
-            let transformedData = matches.map(doc => {
-                let newTip;
-                let expl = ""
-                let odd = '1.28'
-                if (home_1_3.includes(doc.tip)) {
-                    newTip = "Home Multigoals: 1 - 3";
-                    expl = matchExplanation(newTip)
-                } else if (away_1_3.includes(doc.tip)) {
-                    newTip = "Away Multigoals: 1 - 3";
-                    expl = matchExplanation(newTip)
-                } else if (btts.includes(doc.tip)) {
-                    newTip = "GG - Yes";
-                    expl = matchExplanation(newTip)
-                    odd = '1.57'
-                }
-
-                return {
-                    date: doc.siku,
-                    tip: newTip,
-                    expl,
-                    vip_no: 2,
-                    odd,
-                    status: 'pending',
-                    time: doc.time,
-                    league: doc.league,
-                    match: doc.match
-                };
-            });
-
-            if (transformedData.length > 0) {
-                await betslip.insertMany(transformedData);
+            for (let c of copies) {
+                await betslip.create({
+                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
+                })
             }
         }
     } catch (error) {
