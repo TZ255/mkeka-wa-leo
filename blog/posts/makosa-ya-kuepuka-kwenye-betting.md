@@ -4,7 +4,7 @@ description: "Makosa gani ya kawaida hufanywa na wabetaji Tanzania? Jifunze jins
 date_created: "2025-08-23T18:45:00+03:00"
 date_modified: "2025-08-23T18:45:00+03:00"
 slug: "makosa-ya-kuepuka-kwenye-betting"
-coverImage: null
+coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
 author: "By Admin"
 keywords: "Makosa betting, jinsi ya kushinda betting, bankroll management, betting Tanzania, epuka parlays, over under betting"
 ---

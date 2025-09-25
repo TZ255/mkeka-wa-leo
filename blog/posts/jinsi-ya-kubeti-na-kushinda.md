@@ -4,7 +4,7 @@ description: "Jifunze mbinu bora za kubeti na kushinda. Makala hii inaeleza misi
 date_created: "2025-08-23T09:45:10+03:00"
 date_modified: "2025-08-23T09:45:10+03:00"
 slug: "jinsi-ya-kubeti-na-kushinda"
-coverImage: null
+coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
 author: "By Admin"
 keywords: "jinsi ya kubeti, jinsi ya kushinda betting, mikakati ya betting, betting Tanzania, tips za betting"
 ---

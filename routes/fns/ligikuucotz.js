@@ -161,9 +161,8 @@ const assistBoraNBC = async () => {
 
     // Find heading by matching any of the allowed captions (hardcoded)
     const assistHeadings = [
-      "NBC REMIER LEAGUE 2025/2026 ASISSTS",
-      "NBC PREMIER LEAGUE ASISSTS",
-      "NBC PREMIER LEAGUE 2025/2026 ASISSTS",
+      "NBC PREMIER LEAGUE ASSISTS",
+      "NBC PREMIER LEAGUE 2025/2026 ASSISTS"
     ];
     const heading = $("h4.sp-table-caption").filter((i, el) => {
       const txt = $(el).text().trim();

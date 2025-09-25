@@ -4,7 +4,7 @@ description: "Kuhusu betPawa Tanzania <%= year %> - jinsi ya kujisajili, malipo 
 date_created: "2025-09-09T12:12:15+03:00"
 date_modified: "2025-09-09T12:12:15+03:00"
 slug: "betpawa"
-coverImage: null
+coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
 author: "By Admin"
 keywords: "betPawa Tanzania, betpawa PayBill 445445, betpawa app, jinsi ya kujisajili betpawa, betpawa cashout, Pawa6, jackpot betpawa"
 ---
