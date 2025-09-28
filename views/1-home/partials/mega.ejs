@@ -1,66 +1,110 @@
-<section class="cont shadow-lg rounded" itemscope>
-    <h2 class="header" id="mega-za-leo">
-        <div>
-            <i class="fa-solid fa-star star8"></i>
-            Mega Odds za Leo
-            <i class="fa-solid fa-star star8"></i>
+<section class="mega-card card border-0 shadow-sm" itemscope>
+    <div class="mega-card__header border-bottom" id="mega-za-leo">
+        <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <h2 class="mega-card__title m-0 fw-bold fs-4 fs-md-3">
+                    <span class="bullet" aria-hidden="true"></span>
+                    Mega Odds za Leo
+                </h2>
+                <div class="date-wrap d-flex align-items-center gap-2">
+                    <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i><%= jumasiku.leo %></span>
+                    <span class="vr d-none d-sm-inline"></span>
+                    <span class="date-badge"> <%= trh.leo %> </span>
+                </div>
+            </div>
         </div>
-        <div style="font-size: 12px; margin-top: 12px;">📅 <%= jumasiku.leo %>: <%= trh.leo %></div>
-    </h2>
-    <div>
-        <ul class="list-group list-group-flush">
+    </div>
+
+    <% if (mikeka?.length > 0) { %>
+    <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
+        <div class="prediction-list">
             <% mikeka.forEach(el=> { %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="ms-2 me-auto">
-                    <div class="date">
-                        <div class="dtime">
-                            <%= el.time %>
-                        </div>
-                        <div class="ligi">
-                            <%= el.league %>
-                        </div>
+            <% const _parts = (el.match || '').split(' - '); const _home = _parts[0] || ''; const _away = _parts[1] || ''; %>
+            <article class="prediction">
+                <div class="prediction__grid">
+                    <div class="prediction__meta">
+                        <div class="time"><i class="fa-regular fa-clock me-1"></i><%= el.time %></div>
+                        <div class="league mt-1"><span class="league-tag"><%= el.league %></span></div>
                     </div>
-                    <div class="fw-bold">
-                        <div class="match">
-                            <%= el.match.split(' - ')[0] %><br>
-                            <%= el.match.split(' - ')[1] %>
+                    <div class="prediction__match">
+                        <div class="teams">
+                            <div class="team"><span class="dot" aria-hidden="true"></span><span
+                                    class="name"><%= _home %></span></div>
+                            <div class="team"><span class="dot alt" aria-hidden="true"></span><span
+                                    class="name"><%= _away %></span></div>
                         </div>
-                        <div class="bet"><%= el.bet %></div>
+                        <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %></span></div>
+                    </div>
+                    <div class="prediction__odds">
+                        <div class="odds-cta">
+                            <span class="odds-chip" aria-label="Odds">
+                                <%= String(el.odds).padEnd(4, '0') %>
+                            </span>
+                            <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')"
+                                aria-label="Bet now on Betway">
+                                BET <i class="fa-solid fa-circle-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <span class="badge rounded-pill" onclick="window.open('/betway/register')"
-                    style="width: 48px; text-align: center; font-weight: bold; padding: 17px 8px; cursor: pointer; background-color: #00A826; color: white; font-family: serif; font-size: 16px;">
-                    <%= String(el.odds).padEnd(4, '0') %>
-                </span>
-            </li>
+            </article>
             <% }) %>
-        </ul>
+        </div>
     </div>
-    <div class="total">
-        <div class="subtotal">
-            <div class="btm w40">
-                <span class="hdr">Bookie</span>
-                <span class="ct" style="background-color: black; color: white; font-weight: bold;">BetWay</span>
+    <% } %>
+
+    <!-- If no Tips -->
+    <% if (mikeka.length == 0) { %>
+    <div class="alert alert-warning mx-1" role="alert">
+        Bado hakuna tips za Mega Odds kwa siku ya kesho, tafadhali tembelea tena baadae au endelea kufuatilia <a
+            href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya bure hapa.</a>
+    </div>
+    <br>
+    <% } %>
+
+    <div class="mega-card__summary border-top">
+        <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+            <div class="row g-3 align-items-stretch metrics">
+                <div class="col-12 col-md-4">
+                    <div class="stat d-flex align-items-center gap-3 stat--bookie">
+                        <div class="stat__icon"><i class="fa-solid fa-building-columns"></i></div>
+                        <div class="stat__body">
+                            <div class="label">Bookie</div>
+                            <div class="value"><span class="badge text-bg-dark px-3 py-2">BetWay</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="stat d-flex align-items-center gap-3 stat--odds">
+                        <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
+                        <div class="stat__body">
+                            <div class="label">Total Odds</div>
+                            <div class="value fw-bold fs-5"><%= Number(megaOdds) %></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="stat d-flex align-items-center gap-3 stat--bonus">
+                        <div class="stat__icon"><i class="fa-solid fa-gift"></i></div>
+                        <div class="stat__body">
+                            <div class="label">Bonus</div>
+                            <div class="value fw-semibold">400%</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="btm w25">
-                <span class="hdr">Total Odds</span>
-                <span class="ct">
-                    <%= Number(megaOdds) %>
-                </span>
+
+            <div
+                class="summary-cta d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-3 mt-3">
+                <div class="promo small flex-grow-1 text-muted text-center">* Pata Tsh. 2,000 BURE! Kwa Kujisajili Leo
+                </div>
+                <div class="cta-wrap">
+                    <button class="btn btn-success btn-lg px-4 rounded-pill cta-btn w-100 w-md-auto mb-2"
+                        onclick="window.open('/betway/register')">
+                        CHUKUA 2,000 BURE!<i class="fa-solid fa-up-right-from-square ms-2"></i>
+                    </button>
+                </div>
             </div>
-            <div class="btm w25">
-                <span class="hdr">Bonus</span>
-                <span class="ct">400%</span>
-            </div>
-        </div>
-        <div class="tangazo">
-            * Pata Tsh. 2,000 BURE! Kwa Kujisajili Leo
-        </div>
-        <div class="sasa">
-            <button onclick="window.open('/betway/register')" style="width: 80%; max-width: 300px;">
-                <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                PATA TSH. 2,000 BURE!&nbsp;
-                <i class="fa-solid fa-up-right-from-square"></i></button>
         </div>
     </div>
 </section>

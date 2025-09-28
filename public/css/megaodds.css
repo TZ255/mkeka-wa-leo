@@ -1,0 +1,405 @@
+/* Scoped, professional dark theme for Mega Odds card */
+.mega-card {
+    --bg: #0f1420;
+    --panel: #121a2a;
+    --muted: #9aa8c4;
+    --text: #e9eef9;
+    --border: rgba(255, 255, 255, .08);
+    --border-strong: rgba(255, 255, 255, .16);
+    --accent: #2bd576;
+    --accent-2: #4ca1ff;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.mega-card .mega-card__header {
+    background: linear-gradient(180deg, rgba(255, 255, 255, .02), rgba(255, 255, 255, 0));
+}
+
+.mega-card .mega-card__title {
+    color: #101828;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: .2px;
+}
+
+.mega-card .mega-card__title .bullet {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 0 4px rgba(76, 161, 255, .10), 0 2px 12px rgba(0, 0, 0, .25);
+}
+
+.mega-card .mega-card__header .vr {
+    opacity: .6;
+}
+
+.mega-card .mega-card__body {
+    background: radial-gradient(120% 120% at 0% 0%, rgba(255, 255, 255, .02), transparent 60%);
+}
+
+/* Header date styling for light background */
+.mega-card .date-wrap {
+    color: #101828;
+    font-weight: 700;
+}
+
+.mega-card .date-wrap .day-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eef4ff;
+    /* very light blue */
+    color: #0b2a6f;
+    border: 1px solid #c7dbff;
+    padding: .3rem .65rem;
+    border-radius: 999px;
+    font-size: .9rem;
+}
+
+.mega-card .date-wrap .date-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #f2f4f7;
+    color: #101828;
+    border: 1px solid #d0d5dd;
+    border-radius: 10px;
+    padding: .3rem .6rem;
+    font-size: .9rem;
+    letter-spacing: .3px;
+}
+
+@media (max-width: 576px) {
+    .mega-card .mega-card__title {
+        font-size: 1.1rem;
+    }
+}
+
+/* Prediction list */
+.mega-card .prediction-list {
+    display: grid;
+    gap: 10px;
+}
+
+.mega-card .prediction {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.mega-card .prediction:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .25);
+}
+
+.mega-card .prediction__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px 14px;
+}
+
+@media (min-width: 768px) {
+    .mega-card .prediction__grid {
+        grid-template-columns: 160px 1fr 140px;
+        align-items: center;
+        padding: 16px 18px;
+    }
+}
+
+.mega-card .prediction__meta .time {
+    color: var(--text);
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+
+.mega-card .league-tag {
+    display: inline-block;
+    font-size: .75rem;
+    letter-spacing: .6px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, .02);
+    padding: .25rem .5rem;
+    border-radius: 999px;
+}
+
+.mega-card .teams {
+    display: grid;
+    gap: 6px;
+}
+
+.mega-card .team {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mega-card .team .name {
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+.mega-card .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 2px rgba(43, 213, 118, .15);
+}
+
+.mega-card .dot.alt {
+    background: var(--accent-2);
+    box-shadow: 0 0 0 2px rgba(76, 161, 255, .15);
+}
+
+.mega-card .bet-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(76, 161, 255, .12);
+    color: #cfe4ff;
+    border: 1px solid rgba(76, 161, 255, .35);
+    padding: .4rem .65rem;
+    border-radius: 24px;
+    font-weight: 600;
+}
+
+.mega-card .prediction__odds {
+    display: flex;
+    align-items: center;
+    justify-content: stretch;
+}
+
+/* Odds + Bet split */
+.mega-card .odds-cta {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.mega-card .odds-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    padding: .5rem .75rem;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(43, 213, 118, .15), rgba(20, 184, 98, .08));
+    color: #c9f5de;
+    border: 1px solid rgba(43, 213, 118, .35);
+    font-weight: 800;
+    letter-spacing: .3px;
+    font-variant-numeric: tabular-nums;
+}
+
+.mega-card .bet-btn {
+    background: linear-gradient(180deg, #2bd576, #14b862);
+    color: #0b1a10;
+    border: 0;
+    font-weight: 800;
+    letter-spacing: .3px;
+    border-radius: 12px;
+    padding: .5rem .9rem;
+    min-width: 120px;
+    box-shadow: 0 6px 16px rgba(20, 184, 98, .35);
+}
+
+.mega-card .bet-btn:hover {
+    filter: brightness(1.03);
+    box-shadow: 0 8px 20px rgba(20, 184, 98, .45);
+}
+
+/* Summary */
+.mega-card .mega-card__summary {
+    position: relative;
+    background: var(--panel);
+    color: var(--text);
+    border-top: 1px solid var(--border-strong);
+}
+
+.mega-card .stat .label {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+.mega-card .stat .value {
+    color: var(--text);
+}
+
+.mega-card .promo {
+    color: #a7b4cf;
+}
+
+.mega-card .cta-btn {
+    box-shadow: 0 10px 22px rgba(76, 161, 255, .25);
+}
+
+/* Bootstrap adjustments on dark bg */
+.mega-card.card {
+    background-color: transparent;
+}
+
+/* Mobile refinements */
+@media (max-width: 576px) {
+    .mega-card .h4 {
+        font-size: 1.05rem;
+    }
+
+    .mega-card .prediction__odds {
+        margin-top: 2px;
+    }
+
+    .mega-card .odds-cta {
+        justify-content: stretch;
+        gap: 8px;
+    }
+
+    .mega-card .bet-btn,
+    .mega-card .odds-chip {
+        flex: 1 1 50%;
+        text-align: center;
+        min-height: 42px;
+    }
+
+    .mega-card .bet-tag {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* === Summary refinements (scoped) === */
+.mega-card .mega-card__summary {
+    position: relative;
+    background: var(--panel);
+    color: var(--text);
+    border-top: 1px solid var(--border-strong);
+}
+
+.mega-card .mega-card__summary::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    opacity: .4;
+}
+
+.mega-card .metrics .stat {
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 12px 14px;
+    height: 100%;
+}
+
+.mega-card .metrics .stat .label {
+    color: var(--muted);
+    font-size: .8rem;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.mega-card .metrics .stat .value {
+    color: var(--text);
+}
+
+.mega-card .metrics .stat--odds .value {
+    background: linear-gradient(90deg, var(--accent-2), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.mega-card .metrics .stat--bonus .value {
+    color: #2bd576;
+}
+
+.mega-card .metrics .stat--bookie .badge {
+    background: rgba(0, 0, 0, .65) !important;
+    border: 1px solid var(--border);
+}
+
+.mega-card .cta-btn {
+    box-shadow: 0 10px 22px #000000;
+    border: 0;
+}
+
+/* Icon badges for stats */
+.mega-card .metrics .stat__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, .06);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+    font-size: 1rem;
+}
+
+.mega-card .metrics .stat--bookie .stat__icon {
+    background: rgba(255, 255, 255, .06);
+    color: #e9eef9;
+}
+
+.mega-card .metrics .stat--odds .stat__icon {
+    background: linear-gradient(135deg, rgba(76, 161, 255, .18), rgba(76, 161, 255, .08));
+    color: #a8d2ff;
+}
+
+.mega-card .metrics .stat--bonus .stat__icon {
+    background: linear-gradient(135deg, rgba(43, 213, 118, .22), rgba(43, 213, 118, .08));
+    color: #baf6d7;
+}
+
+/* Emphasize odds value */
+.mega-card .metrics .stat--odds .value {
+    font-weight: 800;
+    letter-spacing: .3px;
+}
+
+/* Interaction */
+.mega-card .metrics .stat:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .25);
+}
+
+.mega-card .metrics .stat {
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+/* CTA area */
+.mega-card .summary-cta {
+    border-top: 1px dashed var(--border-strong);
+    padding-top: 12px;
+}
+
+.mega-card .cta-btn:hover {
+    filter: brightness(1.03);
+}
+
+.mega-card .cta-wrap {
+    min-width: 260px;
+}
+
+@media (max-width: 576px) {
+    .mega-card .cta-wrap {
+        min-width: 100%;
+    }
+}
