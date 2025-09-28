@@ -149,19 +149,6 @@
     line-height: 1.2;
 }
 
-.mega-card .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 2px rgba(43, 213, 118, .15);
-}
-
-.mega-card .dot.alt {
-    background: var(--accent-2);
-    box-shadow: 0 0 0 2px rgba(76, 161, 255, .15);
-}
-
 .mega-card .bet-tag {
     display: inline-flex;
     align-items: center;
