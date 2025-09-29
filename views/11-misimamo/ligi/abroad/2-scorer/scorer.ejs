@@ -12,7 +12,7 @@
     <%- include('../../../../0-global/favicon.ejs') %>
     <title>Wafungaji Bora <%= partials.ligi %> <%= partials.season_long %> - Vinara wa Magoli
         <%= partials.league_name %></title>
-    <%- include('../../../../0-global/style.ejs'); %>
+    <link rel="stylesheet" href="/css/global.css">
     <%- include('../../../../0-global/google.ejs'); %>
     <%- include('../../../../0-global/fonts.ejs'); %>
 
@@ -41,9 +41,9 @@
             <hr>
             <div class="utangulizi p-2 text-align-justify">
                 <p>
-                    Hadi sasa, <%= top_scorers[0].player.name %> wa <%= top_scorers[0].statistics[0].team.name %> na
-                    <%= top_scorers[1].player.name %> wa <%= top_scorers[1].statistics[0].team.name %> wanaongoza kwa
-                    magoli <%= partials.ligi %> msimu huu.
+                    Hadi sasa, <strong><%= top_scorers[0].player.name %></strong> wa <%= top_scorers[0].statistics[0].team.name %> na
+                    <strong><%= top_scorers[1].player.name %></strong> wa <%= top_scorers[1].statistics[0].team.name %> wanaongoza kwa
+                    magoli <%= partials.ligi %> msimu huu. <strong><%= top_scorers[0].player.name %></strong> akiwa na magoli <%= top_scorers[0].statistics[0].goals.total %> na <strong><%= top_scorers[1].player.name %></strong> akiwa na magoli <%= top_scorers[1].statistics[0].goals.total %>.
                 </p>
             </div>
             <br>

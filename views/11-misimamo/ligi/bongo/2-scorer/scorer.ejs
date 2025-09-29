@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
     <%- include('../../../../0-global/favicon.ejs') %>
     <title>Wafungaji Bora NBC <%= partials.season_long %> - Vinara wa Magoli Ligi Kuu Tanzania Bara</title>
-    <%- include('../../../../0-global/style.ejs'); %>
+    <link rel="stylesheet" href="/css/global.css">
     <%- include('../../../../0-global/google.ejs'); %>
     <%- include('../../../../0-global/fonts.ejs'); %>
 
@@ -37,7 +37,7 @@
                 </abbr>
             </span>
             <div>
-                <%- include(`./partials/${partials.season}/intro.ejs`); %>
+                <%- include(`./partials/intro.ejs`); %> 
 
                 <div class="table-section" itemscope itemtype="https://schema.org/Table">
                     <h2 class="h2 fs-6 mb-3" itemprop="about">
@@ -89,8 +89,6 @@
                 <br>
                 <hr>
                 <br>
-                <%- include(`./partials/${partials.season}/conclusion.ejs`); %>
-
                 <%- include('../../../../0-global/somapia.ejs'); %>
             </div>
             <br><br>

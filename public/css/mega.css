@@ -107,11 +107,15 @@
     padding: 14px 14px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1000px) {
     .mega-card .prediction__grid {
         grid-template-columns: 160px 1fr 140px;
         align-items: center;
         padding: 16px 18px;
+    }
+
+    .mega-card .teams {
+        font-size: 14px;
     }
 }
 
@@ -150,7 +154,9 @@
 }
 
 .mega-card .bet-tag {
+    min-width: 140px;
     display: inline-flex;
+    justify-content: center;
     align-items: center;
     gap: 8px;
     background: rgba(76, 161, 255, .12);
@@ -239,9 +245,16 @@
 }
 
 /* Mobile refinements */
-@media (max-width: 576px) {
+@media (max-width: 576px), (min-width: 901px) and (max-width: 999px) {
     .mega-card .h4 {
         font-size: 1.05rem;
+    }
+
+    .mega-card .prediction__meta {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .mega-card .prediction__odds {
@@ -262,7 +275,6 @@
 
     .mega-card .bet-tag {
         width: 100%;
-        justify-content: center;
     }
 }
 

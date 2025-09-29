@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
     <%- include('../../../../0-global/favicon.ejs') %>
     <title>Watoa Assist Bora NBC <%= partials.season_long %> - Vinara wa Assist Ligi Kuu Tanzania Bara</title>
-    <%- include('../../../../0-global/style.ejs'); %>
+    <link rel="stylesheet" href="/css/global.css">
     <%- include('../../../../0-global/google.ejs'); %>
     <%- include('../../../../0-global/fonts.ejs'); %>
     <style>
@@ -35,8 +35,6 @@
                 </abbr>
             </span>
             <div>
-                <%- include(`./partials/${partials.season}/intro.ejs`); %>
-
                 <div class="table-section" itemscope itemtype="https://schema.org/Table">
                     <h2 class="h2 fs-6 mb-3" itemprop="about">
                         Wachezaji Wanaongoza kwa Asisti NBC <%= partials.season_short %>
@@ -85,8 +83,6 @@
                 </div>
                 <br>
                 <hr>
-                <br>
-                <%- include(`./partials/${partials.season}/conclusion.ejs`); %>
                 <br>
                 <%- include('../../../../0-global/somapia.ejs'); %>
             </div>
