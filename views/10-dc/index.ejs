@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../0-global/fonts.ejs'); %>
+    <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
+    <meta name="description" content="<%= SEO.description %>">
+    <meta name="keywords" content="<%= SEO.keywords %>">
+
+    <title><%= SEO.title %></title>
+    <link rel="canonical" href="<%= SEO.canonical %>">
+    <link rel="stylesheet" href="/css/mega.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <%- include('../0-global/google.ejs'); %>
+    <%- include('../0-global/favicon.ejs'); %>
+</head>
+
+<body>
+    <%- include('../0-global/header.ejs'); %>
+    <main>
+        <section class="left">
+            <h1 class="h2" style="font-size: 16px;">Mkeka wa Double Chance - <%= SEO.trh.day %>, <%= SEO.trh.date %></h1>
+            <div class="introduction p">
+                <p>
+                    Karibu mahali ambapo ushindi wako unathaminika!
+                    Pata utabiri wa Double Chance (DC) za uhakika kwa siku ya <strong><%= SEO.siku %></strong>. Kwa siku ya <%= SEO.siku.toLowerCase() %> tarehe <%= SEO.trh.date %> tuna jumla ya mechi <strong><%= mikeka.length %></strong> za Double Chance (DC) zilizochambuliwa kwa umakini wa hali ya juu, kuhakikisha unakuwa katika nafasi bora zaidi ya kushinda.
+                </p>
+                <p>
+                    Tunatoa aina zote za bashiri za Double Chance (DC), ikiwemo:
+                </p>
+                <ul style="list-style: circle;">
+                    <li><strong>1X:</strong> Timu ya Nyumbani kushinda au mechi kumalizika kwa sare</li>
+                    <li><strong>X2:</strong> Timu ya Ugenini kushinda au mechi kumalizika kwa sare</li>
+                    <li><strong>12:</strong> Timu ya Nyumbani au Ugenini kushinda</li>
+                </ul>
+            </div>
+            <%- include('../0-global/banner.ejs'); %>
+            <hr class="my-3 text-light">
+            <%- include('./partials/mega.ejs'); %>
+            <hr class="my-5 text-light">
+            <%- include('../0-global/vip.ejs'); %>
+            <%- include('../0-global/banner2.ejs'); %>
+            <%- include('./partials/maana.ejs'); %>
+            <%- include('../0-global/banner3.ejs'); %>
+            <%- include('../0-global/somapia.ejs'); %>
+        </section>
+        <%- include('../0-global/right.ejs'); %>
+    </main>
+
+    <%- include('../0-global/footer.ejs'); %>
+
+    <%- include('./partials/script.ejs'); %>
+    <%- include('../0-global/script.ejs'); %>
+    <%- include('../0-global/modal.ejs'); %>
+
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -63,6 +63,18 @@
        <priority>0.9000</priority>
   </url>
   <url>
+       <loc>https://mkekawaleo.com/mkeka/double-chance</loc>
+       <lastmod>2025-09-29T09:54:13+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
+       <loc>https://mkekawaleo.com/mkeka/double-chance/kesho</loc>
+       <lastmod>2025-09-29T09:54:13+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
        <loc>https://mkekawaleo.com/mkeka/jumatatu</loc>
        <lastmod>2025-09-12T09:54:13+00:00</lastmod>
        <changefreq>daily</changefreq>

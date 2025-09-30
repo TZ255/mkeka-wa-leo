@@ -26,6 +26,7 @@ const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotific
 const { processCScoreTips } = require('./fns/cscoreCollection')
 const supatipsModel = require('../model/supatips')
 const { LinkToRedirect } = require('./fns/affLinktoRedirect')
+const correctScoreModel = require('../model/cscore')
 
 router.get('/', async (req, res) => {
     try {
@@ -467,6 +468,87 @@ router.get('/mkeka/correct-score', async (req, res) => {
         sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)
         res.status(500).send('Internal Server Error')
     }
+})
+
+//Double Chance
+//handle the path /mkeka/double-chance and /mkeka/double-chance/kesho, write the seo description, title and keywords for /mkeka/double-chance and if kesho is present, change the title, description and keywords to kesho
+router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, res) => {
+    try {
+        const SEO = {
+            title: 'Double Chance Tips (DC) Leo - Mkeka wa Double Chance Leo',
+            description: 'Pata mikeka ya uhakika ya Double Chance (DC) kwa siku ya leo. Utabiri wetu wa kitaalamu unahusisha ligi na mechi kuu za kukusaidia kushinda mikeka yako ya Double Chance.',
+            keywords: 'Double Chance tips, Double Chance predictions, mkeka wa leo, mkeka wa double chance, tanzania betting tips',
+            siku: 'Leo',
+            canonical: 'https://mkekawaleo.com/mkeka/double-chance',
+            trh: {
+                date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' }))
+            }
+        }
+        if (req.path.includes('kesho')) {
+            SEO.title = 'Double Chance Tips (DC) Kesho - Mkeka wa Double Chance Kesho'
+            SEO.description = 'Pata mikeka ya kesho ya uhakika ya Double Chance (DC). Utabiri wetu wa kitaalamu unahusisha ligi na mechi kuu zote za kesho za kukusaidia kushinda mikeka yako ya Double Chance.'
+            SEO.keywords = 'Double Chance tips, Double Chance predictions, mkeka wa kesho, mkeka wa double chance, tanzania betting tips'
+            SEO.siku = 'Kesho'
+            SEO.canonical = 'https://mkekawaleo.com/mkeka/double-chance/kesho'
+            SEO.trh = {
+                date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' }))
+            }
+        }
+
+        //dc leo
+        let dc_1x = ['2:0', '1:0', '3:1']
+        let dc_x2 = ['0:2', '0:1', '1:3']
+        let dc_12 = ['3:2', '2:3', '3:3']
+
+        let dc_leo = await correctScoreModel.aggregate([
+            {
+                $match: {
+                    siku: SEO.trh.date, time: { $gte: '12:00' },
+                    tip: { $in: [...dc_1x, ...dc_x2, ...dc_12] }
+                }
+            }, { $sort: { time: 1 } }
+        ]).cache(600);
+
+        let transformedData = dc_leo.map(doc => {
+            let newTip;
+            //random odd from 1.20 to 1.29
+            let odd = (Math.random() * (1.29 - 1.20) + 1.20).toFixed(2);
+            //random odd kwa 1:0 na 0:1 from 1.39 to 1.49
+            if (doc.tip === '1:0' || doc.tip === '0:1') odd = (Math.random() * (1.41 - 1.28) + 1.28).toFixed(2);
+            if (dc_1x.includes(doc.tip)) {
+                newTip = 'Home/Draw'
+            } else if (dc_x2.includes(doc.tip)) {
+                newTip = 'Draw/Away'
+            } else if (dc_12.includes(doc.tip)) {
+                newTip = 'Home/Away'
+                //random odd from 1.28 to 1.39
+                odd = (Math.random() * (1.39 - 1.28) + 1.28).toFixed(2);
+            }
+
+            return {
+                ...doc,
+                date: doc.siku,
+                tip: newTip,
+                odd
+            };
+        });
+
+        //multiply all odds
+        const total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+
+        res.render('10-dc/index', { total_odds, mikeka: transformedData, SEO })
+    } catch (err) {
+        console.log(err.message, err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 20
+        }).catch(e => console.log(e.message, e))
+    }
+
 })
 
 //mikeka ya wiki
