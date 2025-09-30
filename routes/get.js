@@ -91,7 +91,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         //kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
-        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi',  })
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi', })
         let month_date = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
@@ -309,8 +309,8 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             SEO.description = 'Mega Odds (Acca) Tips za kesho Tanzania. Pata mikeka ya mega odds kesho na accumulator tips za uhakika zenye odds kubwa kila siku BURE. Kuza ushindi wako na tips bora za betting.'
             SEO.keywords = 'Mega Odds Tanzania, Mkeka wa Mega Odds Acca, Accumulator Tips, Mikeka ya Kesho, Mikeka Tanzania, Betting Tips Tanzania, Mikeka ya Uhakika, Mega Odds za Kesho, Mikeka Bure, Acca Tips Tanzania'
             SEO.siku = 'Kesho',
-            SEO.siku_eng = 'Tomorrow',
-            SEO.canonical = 'https://mkekawaleo.com/mkeka/mega-odds-kesho'
+                SEO.siku_eng = 'Tomorrow',
+                SEO.canonical = 'https://mkekawaleo.com/mkeka/mega-odds-kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -537,6 +537,82 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
         const total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         res.render('10-dc/index', { total_odds, mikeka: transformedData, SEO })
+    } catch (err) {
+        console.log(err.message, err)
+        let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
+        await axios.post(tgAPI, {
+            chat_id: 741815228,
+            from_chat_id: -1002634850653, //rtcopyDB
+            message_id: 20
+        }).catch(e => console.log(e.message, e))
+    }
+
+})
+
+// Both teams to score
+router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], async (req, res) => {
+    try {
+        const SEO = {
+            title: 'Mkeka wa GG Leo - Both Teams to Score Tips',
+            description: 'Pata mikeka ya uhakika ya GG (Both Teams to Score) kwa leo. Utabiri wetu wa kitaalamu wa GG unahusisha ligi maarufu na mechi kubwa ili kukusaidia kushinda mikeka yako ya betting Tanzania.',
+            keywords: 'GG tips, Both Teams to Score tips, BTTS predictions, mkeka wa GG leo, GG betting tips Tanzania, mkeka wa leo',
+            siku: 'Leo',
+            canonical: 'https://mkekawaleo.com/mkeka/both-teams-to-score',
+            trh: {
+                date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+            }
+        }
+
+        if (req.path.includes('kesho')) {
+            SEO.title = 'Mkeka wa GG Kesho - Both Teams to Score Tips'
+            SEO.description = 'Pata mikeka ya kesho ya uhakika ya GG (Both Teams to Score). Utabiri wetu wa kitaalamu wa GG unajumuisha ligi na mechi kubwa zitakazochezwa kesho kwa ushindi wa uhakika.'
+            SEO.keywords = 'GG kesho, Both Teams to Score tips kesho, BTTS kesho, mkeka wa GG kesho, betting tips Tanzania, mkeka wa kesho'
+            SEO.siku = 'Kesho'
+            SEO.canonical = 'https://mkekawaleo.com/mkeka/both-teams-to-score/kesho'
+            SEO.trh = {
+                date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+            }
+        }
+
+
+        //dc leo
+        let btts_1 = ['3:2', '4:3']
+        let btts_2 = ['2:3', '1:3', '2:4', '2:5', '3:5']
+        let nobtts = ['0:0', '1:0']
+
+        let gg_leo = await correctScoreModel.aggregate([
+            {
+                $match: {
+                    siku: SEO.trh.date, time: { $gte: '12:00' },
+                    tip: { $in: [...btts_1, ...btts_2, ...nobtts] }
+                }
+            }, { $sort: { time: 1 } }
+        ]).cache(600);
+
+        let transformedData = gg_leo.map(doc => {
+            let newTip = 'GG - Yes'
+            //random odd from 1.50 to 1.64
+            let odd = (Math.random() * (1.64 - 1.50) + 1.50).toFixed(2);
+            if (nobtts.includes(doc.tip)) {
+                newTip = 'NG'
+            }
+
+            return {
+                ...doc,
+                date: doc.siku,
+                tip: newTip,
+                odd
+            };
+        });
+
+        //multiply all odds
+        const total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+
+        res.render('10-gg/index', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`

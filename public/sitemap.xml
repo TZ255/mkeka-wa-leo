@@ -68,6 +68,16 @@
        <priority>0.9000</priority>
   </url>
   <url>
+       <loc>https://mkekawaleo.com/mkeka/both-teams-to-score</loc>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
+       <loc>https://mkekawaleo.com/mkeka/both-teams-to-score/kesho</loc>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
        <loc>https://mkekawaleo.com/mkeka/jumatatu</loc>
        <changefreq>daily</changefreq>
        <priority>0.9000</priority>

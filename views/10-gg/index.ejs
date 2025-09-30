@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('../0-global/fonts.ejs'); %>
+  <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
+  <meta name="description" content="<%= SEO.description %>">
+  <meta name="keywords" content="<%= SEO.keywords %>">
+
+  <title>
+    <%= SEO.title %>
+  </title>
+  <link rel="canonical" href="<%= SEO.canonical %>">
+  <link rel="stylesheet" href="/css/mega.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <%- include('../0-global/google.ejs'); %>
+  <%- include('../0-global/favicon.ejs'); %>
+</head>
+
+<body>
+  <%- include('../0-global/header.ejs'); %>
+  <main>
+    <section class="left">
+      <h1 class="h2" style="font-size: 16px;">
+        Mkeka wa GG (BTTS) - <%= SEO.trh.day %>, <%= SEO.trh.month_date %>
+      </h1>
+      <div class="introduction p">
+        <p>
+          Karibu kwenye mkusanyiko wa tabiri bora za <strong>GG Tips</strong> kwa mashabiki wa betting Tanzania!
+          Hapa tunakuletea utabiri wa <strong>Both Teams to Score (BTTS)</strong> kwa siku ya <strong>
+            <%= SEO.trh.day %>, <%= SEO.trh.date %></strong>.
+          Kwa siku ya <%= SEO.siku.toLowerCase() %>, tumekuletea jumla ya mechi <strong><%= mikeka.length %></strong> za GG, zikiwa zimechambuliwa kwa umakini na kwa kutumia data na takwimu sahihi.
+        </p>
+        <p>
+          Utabiri wa GG (Both Teams to Score) unamaanisha timu zote mbili zina nafasi kubwa ya kufunga
+          goli angalau moja kila moja ndani ya mechi.
+          Ni aina ya kubashiri inayopendwa sana kwa sababu inatoa odds nzuri na matokeo ya kuvutia, hasa
+          kwenye ligi kubwa barani Ulaya na Afrika.
+        </p>
+        <ul style="list-style: circle;">
+          <li><strong>GG (Yes):</strong> Timu zote mbili kufunga goli angalau moja</li>
+          <li><strong>NG (No Goal):</strong> Timu moja au zote mbili hazitafunga</li>
+        </ul>
+      </div>
+
+      <%- include('../0-global/banner.ejs'); %>
+      <hr class="my-3 text-light">
+
+      <%- include('./partials/mega.ejs'); %>
+      <hr class="my-5 text-light">
+
+      <%- include('../0-global/vip.ejs'); %>
+      <%- include('../0-global/banner2.ejs'); %>
+      <%- include('./partials/maana.ejs'); %>
+      <%- include('./partials/ligi.ejs'); %>
+      <%- include('../0-global/banner3.ejs'); %>
+      <%- include('../0-global/somapia.ejs'); %>
+    </section>
+
+    <%- include('../0-global/right.ejs'); %>
+  </main>
+
+
+  <%- include('../0-global/footer.ejs'); %>
+
+  <%- include('./partials/script.ejs'); %>
+  <%- include('../0-global/script.ejs'); %>
+  <%- include('../0-global/modal.ejs'); %>
+
+  <!-- bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,12 +1,12 @@
-<section class="mega-card card border-0 shadow-sm mt-4" itemscope>
+<section id="mega-tips" class="mega-card card border-0 shadow-sm mt-4" itemscope>
     <!-- Navigation Header -->
     <div class="btn-group" role="group" aria-label="Mega Odds za Leo na Kesho">
-        <a href="/mkeka/mega-odds-leo"
+        <a href="/mkeka/mega-odds-leo#mega-tips"
             class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Mega Odds"
             style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
             Leo
         </a>
-        <a href="/mkeka/mega-odds-kesho"
+        <a href="/mkeka/mega-odds-kesho#mega-tips"
             class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Mega Odds"
             style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
             Kesho
@@ -118,17 +118,7 @@
                 </div>
             </div>
 
-            <div
-                class="summary-cta d-flex flex-column flex-md-row align-items-stretch align-items-md-center gap-2 gap-md-3 mt-3">
-                <div class="promo small flex-grow-1 text-muted text-center">* Pata Tsh. 2,000 BURE! Kwa Kujisajili Leo
-                </div>
-                <div class="cta-wrap">
-                    <button class="btn btn-success btn-lg px-4 rounded-pill cta-btn w-100 w-md-auto mb-2"
-                        onclick="window.open('/betway/register')">
-                        CHUKUA 2,000 BURE!<i class="fa-solid fa-up-right-from-square ms-2"></i>
-                    </button>
-                </div>
-            </div>
+            <%- include('../../0-global/aff-mega.ejs'); %>
         </div>
     </div>
 </section>
