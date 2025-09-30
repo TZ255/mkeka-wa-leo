@@ -1,26 +1,30 @@
-<section class="mega-card card border-0 shadow-sm" itemscope>
-    <div class="btn-group" role="group" aria-label="Leo na Kesho">
-        <a href="/mkeka/double-chance"
-            class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Double Chance" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+<section class="mega-card card border-0 shadow-sm mt-4" itemscope>
+    <!-- Navigation Header -->
+    <div class="btn-group" role="group" aria-label="Mega Odds za Leo na Kesho">
+        <a href="/mkeka/mega-odds-leo"
+            class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Mega Odds"
+            style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
             Leo
         </a>
-        <a href="/mkeka/double-chance/kesho"
-            class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Double Chance" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+        <a href="/mkeka/mega-odds-kesho"
+            class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Mega Odds"
+            style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
             Kesho
         </a>
     </div>
 
+    <!-- Title Header -->
     <div class="mega-card__header border-top" id="mega-za-leo">
         <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                 <h2 class="mega-card__title m-0 fw-bold fs-3">
                     <span class="bullet" aria-hidden="true"></span>
-                    Double Chance - Tips za <%= SEO.siku %>
+                    Mega Odds (Acca) za <%= SEO.siku %>
                 </h2>
                 <div class="date-wrap d-flex align-items-center gap-2">
                     <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i><%= SEO.trh.day %></span>
                     <span class="vr d-none d-sm-inline"></span>
-                    <span class="date-badge"> <%= SEO.trh.date %> </span>
+                    <span class="date-badge"> <%= SEO.trh.month_date %> </span>
                 </div>
             </div>
         </div>
@@ -53,12 +57,12 @@
                                 <span class="name"><%= _away %></span>
                             </div>
                         </div>
-                        <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.tip %></span></div>
+                        <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %></span></div>
                     </div>
                     <div class="prediction__odds">
                         <div class="odds-cta">
                             <span class="odds-chip" aria-label="Odds">
-                                -:-
+                                <%= el.odds %>
                             </span>
                             <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')"
                                 aria-label="Bet now on Betway">
@@ -76,7 +80,7 @@
     <!-- If no Tips -->
     <% if (mikeka.length == 0) { %>
     <div class="alert alert-warning mx-1" role="alert">
-        Bado hakuna tips za Double Chance kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
+        Bado hakuna tips za Mega Odds kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
         kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya bure hapa.</a>
     </div>
     <br>

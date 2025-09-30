@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Mega Odds Tanzania | Pata Mega Odds za leo na kesho bure. Accumulator tips za uhakika kila siku kwa nafasi bora ya kushinda.">
-    <link rel="canonical" href="https://mkekawaleo.com/mkeka/mega-odds-leo">
-    <title>Mega Odds (Acca) | Tips za Leo na Kesho</title>
+    <meta name="description" content="<%= SEO.description %>">
+    <link rel="canonical" href="<%= SEO.canonical %>">
+    <title><%= SEO.title %></title>
     <%- include('./partials/style.ejs'); %>
     <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/mega.css">
     <%- include('../0-global/google.ejs'); %>
     <%- include('../0-global/fonts.ejs'); %>
     <%- include('../0-global/favicon.ejs') %>
@@ -20,15 +20,17 @@
     <%- include('../0-global/header.ejs'); %>
     <main>
         <section class="left">
-            <h1 class="h2" style="font-size: 16px;">Mega Odds (Acca) | Mkeka wa Leo</h1>
+            <h1 class="h2" style="font-size: 16px;">Mega Odds za <%= SEO.siku %>, <%= SEO.trh.month_date %></h1>
             <p class="p">
-                Pata Mega Odds za Leo (Today Accumulator Tips). Accumulator (Acca) Tips ni aina ya mikeka ya kubashiri
+                Pata Mega Odds za <%= SEO.siku %> (<%= SEO.siku_eng %> Accumulator Tips). Accumulator (Acca) Tips ni aina ya mikeka ya kubashiri
                 mechi nyingi kwa mkupuo mmoja, aina hii ya mkeka inakupa nafasi ya kushinda dau kubwa kwa kuunganisha
                 mechi kadhaa kwenye tiketi moja. Kwa mikeka yetu na chambuzi zetu za kitaalamu, utapata odds za uhakika
                 za Acca Bets (Mega Tips) kila siku hapa BURE!.
+                <br><br>
+                Kwa siku ya <%= SEO.siku %>, <strong><%= SEO.trh.day %> ya <%= SEO.trh.month_date %></strong>, tumeandaa mkeka wa Mega Odds wenye mechi <strong><%= mikeka.length %></strong> na jumla ya odds <strong><%= total_odds %></strong>.
             </p>
             <%- include('../0-global/banner.ejs'); %>
-            <%- include('./partials/supatips-tables.ejs'); %>
+            <%- include('./partials/mega.ejs'); %>
             <%- include('../0-global/banner2.ejs'); %><br>
             <%- include('../0-global/vip.ejs'); %>
             <hr class="my-5 text-light">

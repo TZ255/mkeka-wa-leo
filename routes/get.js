@@ -33,6 +33,7 @@ router.get('/', async (req, res) => {
         //leo
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let month_date_leo = new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
         let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //jana
         let _nd = new Date()
@@ -68,7 +69,7 @@ router.get('/', async (req, res) => {
         const { stips, ytips, jtips, ktips } = await processOver15(d, _d, _s, kesho)
 
         //tarehes
-        let trh = { leo: d, kesho, jana: _d, juzi: _s }
+        let trh = { leo: month_date_leo, kesho, jana: _d, juzi: _s, siku: 'leo' }
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
 
@@ -90,7 +91,8 @@ router.get('/mkeka/kesho', async (req, res) => {
         //kesho
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
-        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi',  })
+        let month_date = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
@@ -103,7 +105,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         const { ktips } = await processOver15('no leo', 'no jana', 'no juzi', kesho)
 
         //tarehes
-        let trh = { kesho }
+        let trh = { kesho: month_date, siku: 'kesho' }
         let jumasiku = { kesho: WeekDayFn(k_juma) }
 
 
@@ -287,43 +289,39 @@ router.get('/mkeka/over-25', async (req, res) => {
     }
 })
 
-router.get('/mkeka/mega-odds-leo', async (req, res) => {
+router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) => {
     try {
-        let nd = new Date()
-        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        const SEO = {
+            title: 'Mega Odds za Leo - Mkeka wa Mega Odds (Acca) Tips Leo',
+            description: 'Mega Odds (Acca) Tips za leo Tanzania. Pata mikeka ya uhakika yenye odds kubwa ya accumulator (acca) kila siku BURE. Kuza ushindi wako na tips bora za betting.',
+            keywords: 'Mega Odds Tanzania, Mega Odds Acca, Accumulator Tips, Mikeka ya Leo, Mikeka Tanzania, Betting Tips Tanzania, Mikeka ya Uhakika, Mega Odds za Leo, Mikeka Bure, Acca Tips Tanzania',
+            siku: 'Leo',
+            siku_eng: 'Today',
+            canonical: 'https://mkekawaleo.com/mkeka/mega-odds-leo',
+            trh: {
+                date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+            }
+        }
+        if (req.path.includes('kesho')) {
+            SEO.title = 'Mega Odds za Kesho - Mkeka wa Mega Odds (Acca) Tips Kesho'
+            SEO.description = 'Mega Odds (Acca) Tips za kesho Tanzania. Pata mikeka ya mega odds kesho na accumulator tips za uhakika zenye odds kubwa kila siku BURE. Kuza ushindi wako na tips bora za betting.'
+            SEO.keywords = 'Mega Odds Tanzania, Mkeka wa Mega Odds Acca, Accumulator Tips, Mikeka ya Kesho, Mikeka Tanzania, Betting Tips Tanzania, Mikeka ya Uhakika, Mega Odds za Kesho, Mikeka Bure, Acca Tips Tanzania'
+            SEO.siku = 'Kesho',
+            SEO.siku_eng = 'Tomorrow',
+            SEO.canonical = 'https://mkekawaleo.com/mkeka/mega-odds-kesho'
+            SEO.trh = {
+                date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+            }
+        }
 
-        //mega odds za jana
-        let _nd = new Date()
-        _nd.setDate(_nd.getDate() - 1)
-        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        let Alltips = await mkekadb.find({ date: SEO.trh.date }).sort('time').select('time league date match bet odds')
+        let total_odds = Alltips.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
-        //mega odds za juzi
-        let juzi = new Date()
-        juzi.setDate(juzi.getDate() - 2)
-        let juziD = juzi.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let juzi_juma = juzi.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
-
-
-        //mega za kesho
-        let new_d = new Date()
-        new_d.setDate(new_d.getDate() + 1)
-        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
-
-        let Alltips = await mkekadb.find({ date: { $in: [d, _d, juziD, kesho] }, status: { $ne: 'vip' } }).sort('time').select('time league date match bet odds')
-
-        let ktips = Alltips.filter(tip => tip.date === kesho)
-        let stips = Alltips.filter(tip => tip.date === d)
-        let ytips = Alltips.filter(tip => tip.date === _d)
-        let jtips = Alltips.filter(tip => tip.date === juziD)
-
-        //tarehes
-        let trh = { leo: d, kesho, jana: _d, juzi: juziD }
-        let jumasiku = { juzi: WeekDayFn(juzi_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
-
-        res.render('7-mega/mega', { stips, ytips, ktips, jtips, trh, jumasiku })
+        res.render('7-mega/mega', { mikeka: Alltips, SEO, total_odds })
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`

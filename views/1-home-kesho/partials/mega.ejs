@@ -1,4 +1,19 @@
 <section class="mega-card card border-0 shadow-sm" itemscope>
+    <!-- Navigation Header -->
+    <div class="btn-group" role="group" aria-label="Mikeka ya Leo na Kesho">
+        <a href="/"
+            class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo"
+            style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+            Leo
+        </a>
+        <a href="/mkeka/kesho"
+            class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mikeka ya Kesho"
+            style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+            Kesho
+        </a>
+    </div>
+
+    <!-- Title header -->
     <div class="mega-card__header border-top" id="mega-za-kesho">
         <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
