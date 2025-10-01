@@ -1,86 +1,67 @@
-<section class="shadow-lg rounded">
+<div class="betslip-card" id="sure3_betslip_card">
+    <!-- Header (visible) -->
+    <h2 class="betslip-header">
+        ⭐ Betslip ya Leo | SURE 3 ⭐
+
+        <div class="d-flex align-items-center justify-content-center gap-2 mt-2" style="font-size: 0.75rem;">
+            <span><i class="fa-regular fa-calendar me-1"></i><%= jumasiku.leo %>:</span>
+            <span> <%= trh.leo %> </span>
+        </div>
+    </h2>
+
+    <!-- if no vip tips -->
     <% if (slip.length < 1) { %>
     <p class="text-center zakesho">* Betslip ya Leo (Sure 3) bado iko kwenye maandalizi</p>
     <% } %>
 
-    <% if (slip.length > 0) { %>
-    <div class="betslipCont" id="betslipCont">
-        <div class="cap">
-            <h2 id="betslip-ya-leo">
-                ⭐ Betslip ya Leo | Sure 3 ⭐ <br>
-                <span class="slip-siku">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <span id="trh_betslip"><%= jumasiku.leo %>: </span><%= trh.leo %>
-                </span>
-            </h2>
+    <!-- Matches... blurred by frosted overlay only -->
+    <% if (slip?.length > 0) { %>
+    <div class="matches-locked">
+        <div class="betslip-body">
+            <% slip.forEach(match => { %>
+            <div class="match">
+                <div class="league" style="font-size: 0.85rem;"><i
+                        class="fa-solid fa-trophy text-warning me-1"></i><%= match?.league || "Premier League" %></div>
+                <div class="teams" style="font-size: 0.85rem;"><%= match?.match || "Besiktas vs Fenerbahce" %></div>
+                <div class="line">
+                    <span>Tip: JOIN VIP</span>
+                    <span class="pill">X.XX</span>
+                </div>
+            </div>
+            <% }) %>
         </div>
 
-        <table class="table">
-            <thead>
-                <tr class="table-secondary">
-                    <th scope="col">Betslip</th>
-                    <th scope="col" class="cell-left">Odds</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% slip.forEach(mch => { %>
-                <tr class="table-light">
-                    <td>
-                        <span class="d-inline-block" style="font-size: 10px;">
-                            <i class="fa-solid fa-trophy"></i>
-                            <%= mch.league %>
-                        </span> <br>
-                        <span class="match fw-bold">
-                            <i class="fa-regular fa-futbol"></i>
-                            <%= mch.match %>
-                        </span> <br>
-                        <b class="tip text-success scratchable scratch-all fw-bold">
-                            tipGoesHere
-                            <span class="scratch-overlay"></span>
-                        </b>
-                    </td>
-                    <td class="cell-left" style="vertical-align: middle;">
-                        <span class="scratchable scratch-all">
-                            <%= mch.odd %>
-                            <span class="scratch-overlay"></span>
-                        </span>
-                    </td>
-                </tr>
-                <% }) %>
-
-                <tr class="table-secondary">
-                    <th scope="col" style="font-size: 14px;">
-                        Stake: <span class="brown">75,000 TZS</span><br>
-                        Win: <span class="brown"
-                            id="slipOdd"><%= Number((slipOdds * 75000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
-                    </th>
-                    <th scope="col" class="cell-left" style="font-size: 14px;">
-                        Odds: <span class="brown"><%= slipOdds %></span> <br>
-                        Bonus: <span style="color:green;">+15%</span>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="bottomSlip">
-            <div>
-            </div>
-            <div onclick="jiunge()">
-                <span>INGIA VIP</span>
-                <i class="fa-solid fa-crown"></i>
+        <!-- Frosted lock overlay... ONLY covers matches -->
+        <div class="frost-lock">
+            <div class="overlay-card" onclick="window.location.href='/mkeka/vip'">
+                <div class="lock"><i class="fa-solid fa-lock"></i></div>
+                <div class="heading">Jisajili VIP kuona SURE 3 za Leo</div>
+                <div class="subtxt">Pata odds 10 hadi 30 kila siku za VIP kwa kujisajili na mikeka yetu ya VIP leo</div>
+                <a href="/mkeka/vip" title="Jisajili VIP MIKEKA kuona mikeka yetu ya VIP"
+                    class="btn btn-success px-3 fw-bold">
+                    JISAJILI SASA
+                    <i class="fa-solid fa-circle-right ms-2"></i>
+                </a>
             </div>
         </div>
+    </div>
 
-        <div class="scratch-instruction text-danger bg-light py-3" onclick="jiunge()"><i
-                class="fa-solid fa-circle-exclamation"></i> <br>
-            Jisajili na VIP
-            kuona SURE 3 za leo</div>
+    <!-- Summary (fully visible) -->
+    <div class="summary">
+        <div class="row-line"><span>Total Odds:</span><span class="value"><%= slipOdds || "12.55" %></span></div>
+        <div class="row-line"><span>Stake:</span><span class="value">75,000 TZS</span></div>
+        <div class="row-line"><span>Win Amount:</span><span
+                class="value"><%= Number(((slipOdds || 12.55) * 75000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
+        </div>
+    </div>
+
+    <!-- Footer (visible) -->
+    <div class="betslip-footer">
+        <span style="font-size: 0.75rem;"><i class="fa-solid fa-lock me-1"></i> Mkeka huu ni kwa VIP pekee</span>
+        <button class="btn btn-outline-success" onclick="window.location.href='/mkeka/vip'" style="font-size: 0.9rem;">
+            INGIA VIP
+            <i class="fa-solid fa-circle-right ms-2"></i>
+        </button>
     </div>
     <% } %>
-</section>
-
-<script>
-    function jiunge() {
-        window.location.href = '/mkeka/vip'
-    }
-</script>
+</div>

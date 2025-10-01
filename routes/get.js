@@ -181,6 +181,8 @@ router.get('/admin/posting', async (req, res) => {
 router.get('/mkeka/betslip-ya-leo', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        let d_juma = d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        let month_date_leo = new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
 
         //find random 3
         let slip = await betslip.find({ date: d, vip_no: 1 }).sort('-odd').limit(3)
@@ -189,7 +191,11 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         const docs = await betslip.find({ date: d, status: { $ne: 'deleted' } });
         const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
-        res.render('3-landing/landing', { slip, slipOdds })
+        //tarehes
+        let trh = { leo: month_date_leo }
+        let jumasiku = { leo: WeekDayFn(d_juma) }
+
+        res.render('3-landing/landing', { slip, slipOdds, jumasiku, trh })
     } catch (err) {
         console.log(err.message)
     }
