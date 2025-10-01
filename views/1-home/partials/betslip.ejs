@@ -20,11 +20,10 @@
         <div class="betslip-body">
             <% slip.forEach(match => { %>
             <div class="match">
-                <div class="league" style="font-size: 0.85rem;"><i
-                        class="fa-solid fa-trophy text-warning me-1"></i><%= match?.league || "Premier League" %></div>
-                <div class="teams" style="font-size: 0.85rem;"><%= match?.match || "Besiktas vs Fenerbahce" %></div>
+                <div class="league"><i class="fa-solid fa-trophy text-warning me-1"></i><%= match?.league || "Premier League" %></div>
+                <div class="teams" style="font-size: 1rem;"><%= match?.match || "Besiktas vs Fenerbahce" %></div>
                 <div class="line">
-                    <span>Tip: JOIN VIP</span>
+                    <span>Tip: Locked</span>
                     <span class="pill">X.XX</span>
                 </div>
             </div>
@@ -35,12 +34,12 @@
         <div class="frost-lock">
             <div class="overlay-card" onclick="window.location.href='/mkeka/vip'">
                 <div class="lock"><i class="fa-solid fa-lock"></i></div>
-                <div class="heading">Jisajili VIP kuona SURE 3 za Leo</div>
-                <div class="subtxt">Pata odds 10 hadi 30 kila siku za VIP kwa kujisajili na mikeka yetu ya VIP leo</div>
-                <a href="/mkeka/vip" title="Jisajili VIP MIKEKA kuona mikeka yetu ya VIP"
+                <div class="heading">Jiunge VIP kuona SURE 3 za Leo</div>
+                <div class="subtxt">Pata odds 10 hadi 30 za VIP kila siku kwa kujiunga na mikeka yetu ya VIP</div>
+                <a href="/mkeka/vip" title="VIP Tips za Leo"
                     class="btn btn-success px-3 fw-bold">
-                    JISAJILI SASA
-                    <i class="fa-solid fa-circle-right ms-2"></i>
+                    JIUNGE SASA
+                    <i class="fa-solid fa-crown ms-1 text-warning"></i>
                 </a>
             </div>
         </div>
@@ -49,9 +48,9 @@
     <!-- Summary (fully visible) -->
     <div class="summary">
         <div class="row-line"><span>Total Odds:</span><span class="value"><%= slipOdds || "12.55" %></span></div>
-        <div class="row-line"><span>Stake:</span><span class="value">75,000 TZS</span></div>
+        <div class="row-line"><span>Stake:</span><span class="value">35,000 TZS</span></div>
         <div class="row-line"><span>Win Amount:</span><span
-                class="value"><%= Number(((slipOdds || 12.55) * 75000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
+                class="value"><%= Number(((slipOdds || 12.55) * 35000).toFixed(2)).toLocaleString('en-US') %> TZS</span>
         </div>
     </div>
 
