@@ -1,120 +1,128 @@
 <section id="dc-tips" class="mega-card card border-0 shadow-sm" itemscope>
-    <div class="btn-group" role="group" aria-label="Leo na Kesho">
-        <a href="/mkeka/double-chance#dc-tips"
-            class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Double Chance" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
-            Leo
-        </a>
-        <a href="/mkeka/double-chance/kesho#dc-tips"
-            class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Double Chance" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
-            Kesho
-        </a>
-    </div>
+  <div class="btn-group" role="group" aria-label="Leo na Kesho">
+    <a href="/mkeka/double-chance#dc-tips" class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Double Chance" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+      Leo
+    </a>
+    <a href="/mkeka/double-chance/kesho#dc-tips" class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Double Chance" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+      Kesho
+    </a>
+  </div>
 
-    <div class="mega-card__header border-top" id="mega-za-leo">
-        <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
-            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                <h2 class="mega-card__title m-0 fw-bold fs-3">
-                    <span class="bullet" aria-hidden="true"></span>
-                    Double Chance - Tips za <%= SEO.siku %>
-                </h2>
-                <div class="date-wrap d-flex align-items-center gap-2">
-                    <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i><%= SEO.trh.day %></span>
-                    <span class="vr d-none d-sm-inline"></span>
-                    <span class="date-badge"> <%= SEO.trh.date %> </span>
-                </div>
-            </div>
+  <div class="mega-card__header border-top" id="mega-za-leo">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <h2 class="mega-card__title m-0 fw-bold fs-3">
+          <span class="bullet" aria-hidden="true"></span>
+          Double Chance - Tips za <%= SEO.siku %>
+        </h2>
+        <div class="date-wrap d-flex align-items-center gap-2">
+          <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i><%= SEO.trh.day %></span>
+          <span class="vr d-none d-sm-inline"></span>
+          <span class="date-badge"> <%= SEO.trh.month_date %> </span>
         </div>
+      </div>
     </div>
+  </div>
 
-    <% if (mikeka?.length > 0) { %>
-    <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
-        <div class="prediction-list">
-            <% mikeka.forEach(el=> { %>
-            <!-- variables -->
-            <% 
+  <% if (mikeka?.length > 0) { %>
+  <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
+    <div class="prediction-list">
+      <% mikeka.forEach(el=> { %>
+      <!-- variables -->
+      <% 
             const _parts = (el.match || '').split(' - '); 
             const _home = _parts[0] || ''; 
             const _away = _parts[1] || ''; 
             %>
-            <article class="prediction">
-                <div class="prediction__grid">
-                    <div class="prediction__meta">
-                        <div class="time"><i class="fa-regular fa-clock me-1"></i><%= el.time %></div>
-                        <div class="league mt-1"><span class="league-tag"><%= el.league %></span></div>
-                    </div>
-                    <div class="prediction__match">
-                        <div class="teams">
-                            <div class="team">
-                                <i class="fa-solid fa-user-group text-muted"></i>
-                                <span class="name"><%= _home %></span>
-                            </div>
-                            <div class="team">
-                                <i class="fa-solid fa-user-group text-muted"></i>
-                                <span class="name"><%= _away %></span>
-                            </div>
-                        </div>
-                        <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.tip %></span></div>
-                    </div>
-                    <div class="prediction__odds">
-                        <div class="odds-cta">
-                            <span class="odds-chip" aria-label="Odds">
-                                -:-
-                            </span>
-                            <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')"
-                                aria-label="Bet now on Betway">
-                                BET <i class="fa-solid fa-circle-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            <% }) %>
-        </div>
-    </div>
-    <% } %>
-
-    <!-- If no Tips -->
-    <% if (mikeka.length == 0) { %>
-    <div class="alert alert-warning mx-1" role="alert">
-        Bado hakuna tips za Double Chance kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
-        kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya bure hapa.</a>
-    </div>
-    <br>
-    <% } %>
-
-    <div class="mega-card__summary border-top">
-        <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
-            <div class="row g-3 align-items-stretch metrics">
-                <div class="col-12 col-md-4">
-                    <div class="stat d-flex align-items-center gap-3 stat--bookie">
-                        <div class="stat__icon"><i class="fa-solid fa-building-columns"></i></div>
-                        <div class="stat__body">
-                            <div class="label">Kampuni</div>
-                            <div class="value"><span class="badge text-bg-dark px-3 py-2">BETWAY</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4">
-                    <div class="stat d-flex align-items-center gap-3 stat--odds">
-                        <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
-                        <div class="stat__body">
-                            <div class="label">Total Odds</div>
-                            <div class="value fw-bold fs-5"><%= Number(total_odds) %></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4">
-                    <div class="stat d-flex align-items-center gap-3 stat--bonus">
-                        <div class="stat__icon"><i class="fa-solid fa-gift"></i></div>
-                        <div class="stat__body">
-                            <div class="label">Bonus</div>
-                            <div class="value fw-semibold">400%</div>
-                        </div>
-                    </div>
-                </div>
+      <article class="prediction" itemscope itemtype="https://schema.org/CreativeWork">
+        <div class="prediction__grid">
+          <div class="prediction__meta">
+            <div class="time"><i class="fa-regular fa-clock me-1"></i><%= el.time %></div>
+            <div class="league mt-1"><span class="league-tag"><%= el.league %></span></div>
+          </div>
+          <div class="prediction__match">
+            <div class="teams">
+              <div class="team">
+                <i class="fa-solid fa-user-group text-muted"></i>
+                <span class="name"><%= _home %></span>
+              </div>
+              <div class="team">
+                <i class="fa-solid fa-user-group text-muted"></i>
+                <span class="name"><%= _away %></span>
+              </div>
             </div>
-
-            <%- include('../../0-global/aff-mega.ejs'); %>
+            <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.tip %></span></div>
+          </div>
+          <div class="prediction__odds">
+            <div class="odds-cta">
+              <span class="odds-chip" aria-label="Odds">
+                -:-
+              </span>
+              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet now on Betway">
+                BET <i class="fa-solid fa-circle-right"></i>
+              </button>
+            </div>
+          </div>
         </div>
+
+        <!-- SEO CreativeWork -->
+        <meta itemprop="headline" content="<%= _home %> vs <%= _away %> double chance prediction - <%= SEO.trh.month_date %>">
+        <meta itemprop="about" content="Utabiri wa <%= SEO.trh.siku %> mechi ya <%= _home %> vs <%= _away %>, <%= el.league %>">
+        <meta itemprop="abstract" content="Mechi hii ya <%= _home %> vs <%= _away %> utabiri wetu wa mwisho wa double chance ni - <%= el.tip %>">
+        <meta itemprop="datePublished" content="<%= SEO.trh.created %>">
+        <meta itemprop="dateModified" content="<%= SEO.trh.created %>">
+        <meta itemprop="author" content="Mkeka wa Leo">
+        <meta itemprop="publisher" content="Mkeka wa Leo">
+        <meta itemprop="keywords" content="utabiri wa mechi za <%= SEO.siku %>, 'double chance tips', utabiri wa <%= el.league %>, <%= _home %> vs <%= _away %> prediction">
+        <meta itemprop="mainEntityOfPage" content="<%= SEO.canonical %>">
+      </article>
+      <% }) %>
     </div>
+  </div>
+  <% } %>
+
+  <!-- If no Tips -->
+  <% if (mikeka.length == 0) { %>
+  <div class="alert alert-warning mx-1" role="alert">
+    Bado hakuna tips za Double Chance kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
+    kufuatilia <a href="/mkeka" class="link-success" title="Mikeka ya Bure">mikeka yetu mingine ya bure hapa.</a>
+  </div>
+  <br>
+  <% } %>
+
+  <div class="mega-card__summary border-top">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+      <div class="row g-3 align-items-stretch metrics">
+        <div class="col-12 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--bookie">
+            <div class="stat__icon"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="stat__body">
+              <div class="label">Kampuni</div>
+              <div class="value"><span class="badge text-bg-dark px-3 py-2">BETWAY</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--odds">
+            <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="stat__body">
+              <div class="label">Total Odds</div>
+              <div class="value fw-bold fs-5"><%= Number(total_odds) %></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--bonus">
+            <div class="stat__icon"><i class="fa-solid fa-gift"></i></div>
+            <div class="stat__body">
+              <div class="label">Bonus</div>
+              <div class="value fw-semibold">400%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%- include('../../0-global/aff-mega.ejs'); %>
+    </div>
+  </div>
 </section>

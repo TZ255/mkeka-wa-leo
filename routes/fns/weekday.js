@@ -14,7 +14,7 @@ const WeekDayFn = (engDay) => {
             return "Jumatano"
 
         case 'Thursday':
-            return "Alhamis"
+            return "Alhamisi"
 
         case 'Friday':
             return "Ijumaa"

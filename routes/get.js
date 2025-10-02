@@ -69,7 +69,8 @@ router.get('/', async (req, res) => {
         const { stips, ytips, jtips, ktips } = await processOver15(d, _d, _s, kesho)
 
         //tarehes
-        let trh = { leo: month_date_leo, kesho, jana: _d, juzi: _s, siku: 'leo' }
+        let created = `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
+        let trh = { leo: month_date_leo, kesho, jana: _d, juzi: _s, siku: 'leo', created }
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
 
@@ -105,7 +106,8 @@ router.get('/mkeka/kesho', async (req, res) => {
         const { ktips } = await processOver15('no leo', 'no jana', 'no juzi', kesho)
 
         //tarehes
-        let trh = { kesho: month_date, siku: 'kesho' }
+        let created = `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
+        let trh = { kesho: month_date, siku: 'kesho', created }
         let jumasiku = { kesho: WeekDayFn(k_juma) }
 
 
@@ -192,7 +194,8 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //tarehes
-        let trh = { leo: month_date_leo }
+        let created = `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
+        let trh = { leo: month_date_leo, created }
         let jumasiku = { leo: WeekDayFn(d_juma) }
 
         res.render('3-landing/landing', { slip, slipOdds, jumasiku, trh })
@@ -307,7 +310,8 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
         if (req.path.includes('kesho')) {
@@ -320,11 +324,12 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
 
-        let Alltips = await mkekadb.find({ date: SEO.trh.date }).sort('time').select('time league date match bet odds')
+        let Alltips = await mkekadb.find({ date: SEO.trh.date }).sort('time').select('time league date match bet odds createdAt')
         let total_odds = Alltips.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         res.render('7-mega/mega', { mikeka: Alltips, SEO, total_odds })
@@ -486,7 +491,9 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             canonical: 'https://mkekawaleo.com/mkeka/double-chance',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
-                day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' }))
+                day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
         if (req.path.includes('kesho')) {
@@ -497,7 +504,9 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             SEO.canonical = 'https://mkekawaleo.com/mkeka/double-chance/kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
-                day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' }))
+                day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
 
@@ -567,7 +576,8 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
 
@@ -580,7 +590,8 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA',{ timeZone:'Africa/Dar_es_Salaam', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
 
