@@ -1,258 +1,129 @@
-<div class="toggle-cont" id="supa-za-leo">
-    <div class="toggles">
-        <div class="jtoggle" id="jtoggle">« Juzi</div>
-        <div class="ytoggle" id="ytoggle">Jana</div>
-        <div class="ltoggle active_toggle" id="ltoggle">⁕ Leo ⁕</div>
-        <div class="ktoggle" id="ktoggle">Kesho »</div>
-    </div>
-</div>
+<section id="first-half-tips" class="mega-card card border-0 shadow-sm" itemscope>
+  <div class="btn-group" role="group" aria-label="Over 0.5 1st Half Leo na Kesho">
+    <a href="/mkeka/over-05-first-half#first-half-tips" class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Magoli Over 0.5 1st Half" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+      Leo
+    </a>
+    <a href="/mkeka/over-05-first-half/kesho#first-half-tips" class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Magoli Over 0.5 1st Half" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+      Kesho
+    </a>
+  </div>
 
-<!-- juzi -->
-<div class="tble-cont ficha" id="jday" style="display: none;">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐ Over 0.5 HT Tips | Juzi ⭐</span>
-            <span class="spn_trh"><b id="trh_jz"><%= jumasiku.juzi %>: </b><%= trh.juzi %></span>
+  <div class="mega-card__header border-top" id="mega-za-leo">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <h2 class="mega-card__title m-0 fw-bold fs-3">
+          <span class="bullet" aria-hidden="true"></span>
+          Mkeka wa Over 0.5 Halftime - <%= SEO.siku %>
         </h2>
-    </div>
-    <table class="table table-dark table-striped-columns">
-        <thead>
-            <tr>
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tips</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% jtips.forEach(el=> { %>
-            <tr>
-                <td class=" time-td">
-                    <time>
-                        <%= el.time %> <br> <span><%= el.date %></span>
-                    </time>
-                </td>
-                <td class="match-td">
-                    <span class="league"><%= el.league %></span> <br>
-                    <%- el.match.replace(/ - /g, '<br>' ) %>
-                </td>
-                <th class="tip-td" style="color: gold;">Over 0.5</th>
-            </tr>
-            <% }) %>
-        </tbody>
-    </table>
-    <% if (jtips.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
-
-<!-- yesterday -->
-<div class="tble-cont ficha" id="yday" style="display: none;">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐ Over 0.5 HT Tips | Jana ⭐</span>
-            <span class="spn_trh"><b id="trh_jn"><%= jumasiku.jana %>: </b><%= trh.jana %></span>
-        </h2>
-    </div>
-    <table class="table table-dark table-striped-columns">
-        <thead>
-            <tr>
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tips</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% ytips.forEach(el=> { %>
-            <tr>
-                <td class=" time-td">
-                    <time>
-                        <%= el.time %> <br> <span><%= el.date %></span>
-                    </time>
-                </td>
-                <td class="match-td">
-                    <span class="league"><%= el.league %></span> <br>
-                    <%- el.match.replace(/ - /g, '<br>' ) %>
-                </td>
-                <th class="tip-td" style="color: gold;">Over 0.5</th>
-            </tr>
-            <% }) %>
-        </tbody>
-    </table>
-    <% if (ytips.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
-
-
-<!-- today -->
-<div class="tble-cont" id="lday">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐ Over 0.5 HT Tips | Leo ⭐</span>
-            <span class="spn_trh" id="trh_l"><b id="trh_slip"><%= jumasiku.leo %>: </b><%= trh.leo %></span>
-        </h2>
-    </div>
-    <table class="table table-dark table-striped-columns">
-        <thead>
-            <tr>
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tips</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% stips.forEach(el=> { %>
-            <tr>
-                <td class=" time-td">
-                    <time>
-                        <%= el.time %> <br> <span><%= el.date %></span>
-                    </time>
-                </td>
-                <td class="match-td">
-                    <!-- include schemas -->
-                    <meta itemprop="name" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %> Tips">
-                    <meta itemprop="description"
-                        content="Over 0.5 HT | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
-                    <meta itemprop="performer" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
-                    <span class="league" itemprop="location"><%= el.league %></span>
-                    <br>
-                    <span class="home" itemprop="homeTeam">
-                        <%= el.match.split(' - ')[0] %>
-                    </span>
-                    <br>
-                    <span class="away" itemprop="awayTeam">
-                        <%= el.match.split(' - ')[1] %>
-                    </span>
-                </td>
-                <th class="tip-td" style="color: gold;">Over 0.5</th>
-            </tr>
-            <% }) %>
-        </tbody>
-    </table>
-    <% if (stips.length === 0) { %>
-        <div class="zakesho">
-            * Tips za Leo <b><%= trh.leo %></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
+        <div class="date-wrap d-flex align-items-center gap-2">
+          <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i><%= SEO.trh.day %></span>
+          <span class="vr d-none d-sm-inline"></span>
+          <span class="date-badge"> <%= SEO.trh.month_date %> </span>
         </div>
-    <% } %>
-    <% if (stips.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
-
-
-<!-- tomorrow -->
-<div class="tble-cont ficha" id="kday" style="display: none;">
-    <div class="table-head">
-        <h2>
-            <span style="display: block;">⭐ Over 0.5 HT Tips | Kesho ⭐</span>
-            <span class="spn_trh"><b id="trh_ksh"><%= jumasiku.kesho %>: </b><%= trh.kesho %></span>
-        </h2>
+      </div>
     </div>
-    <table class="table table-dark table-striped-columns">
-        <thead>
-            <tr>
-                <th scope="col">Time</th>
-                <th scope="col">Matches</th>
-                <th class="tips-th" scope="col">Tips</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% ktips.forEach(el=> { %>
-            <tr>
-                <td class="time-td">
-                    <time>
-                        <%= el.time %> <br> <span><%= el.date %></span>
-                    </time>
-                </td>
-                <td class="match-td">
-                    <!-- include schemas -->
-                    <meta itemprop="name" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %> Tips">
-                    <meta itemprop="description"
-                        content="Over 0.5 HT | <%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
-                    <meta itemprop="performer" content="<%= el.match.split(' - ')[0] %> vs <%= el.match.split(' - ')[1] %>">
-                    <span class="league" itemprop="location"><%= el.league %></span>
-                    <br>
-                    <span class="home" itemprop="homeTeam">
-                        <%= el.match.split(' - ')[0] %>
-                    </span>
-                    <br>
-                    <span class="away" itemprop="awayTeam">
-                        <%= el.match.split(' - ')[1] %>
-                    </span>
-                </td>
-                <th class="tip-td" style="color: gold;">Over 0.5</th>
-            </tr>
-            <% }) %>
-        </tbody>
-    </table>
-    <% if (ktips.length === 0) { %>
-        <div class="zakesho">
-            * Tips za Kesho <b id="siku_kesho"></b> bado hazijaandaliwa, rudi baada ya mda kidogo zitakuwa tayari.
+  </div>
+
+  <% if (mikeka?.length > 0) { %>
+  <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
+    <div class="prediction-list">
+      <% mikeka.forEach(el=> { %>
+      <!-- variables -->
+      <% 
+            const _parts = (el.match || '').split(' - '); 
+            const _home = _parts[0] || ''; 
+            const _away = _parts[1] || ''; 
+            %>
+      <article class="prediction" itemscope itemtype="https://schema.org/CreativeWork">
+        <div class="prediction__grid">
+          <div class="prediction__meta">
+            <div class="time"><i class="fa-regular fa-clock me-1"></i><%= el.time %></div>
+            <div class="league mt-1"><span class="league-tag"><%= el.league %></span></div>
+          </div>
+          <div class="prediction__match">
+            <div class="teams">
+              <div class="team">
+                <i class="fa-solid fa-user-group text-muted"></i>
+                <span class="name"><%= _home %></span>
+              </div>
+              <div class="team">
+                <i class="fa-solid fa-user-group text-muted"></i>
+                <span class="name"><%= _away %></span>
+              </div>
+            </div>
+            <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.tip %></span></div>
+          </div>
+          <div class="prediction__odds">
+            <div class="odds-cta">
+              <span class="odds-chip" aria-label="Odds">
+                -:-
+              </span>
+              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet now on Betway">
+                BET <i class="fa-solid fa-circle-right"></i>
+              </button>
+            </div>
+          </div>
         </div>
-    <% } %>
-    <% if (ktips.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
-    <% } %>
-</div>
 
+        <!-- SEO CreativeWork -->
+        <meta itemprop="headline" content="<%= _home %> vs <%= _away %> Over 0.5 1st Half prediction - <%= SEO.trh.month_date %>">
+        <meta itemprop="about" content="Utabiri wa magoli kipindi cha kwanza <%= SEO.trh.siku %> mechi ya <%= _home %> vs <%= _away %>, <%= el.league %>">
+        <meta itemprop="abstract" content="Mechi hii ya <%= _home %> vs <%= _away %> utabiri wetu wa mwisho wa Over 0.5 1st Half ni - <%= el.tip %>">
+        <meta itemprop="datePublished" content="<%= SEO.trh.created %>">
+        <meta itemprop="dateModified" content="<%= SEO.trh.created %>">
+        <meta itemprop="author" content="Mkeka wa Leo">
+        <meta itemprop="publisher" content="Mkeka wa Leo">
+        <meta itemprop="keywords" content="utabiri wa mechi za <%= SEO.siku %>, 'Over 0.5 1st Half tips', utabiri wa magoli <%= el.league %>, <%= _home %> vs <%= _away %> prediction">
+        <meta itemprop="mainEntityOfPage" content="<%= SEO.canonical %>">
+      </article>
+      <% }) %>
+    </div>
+  </div>
+  <% } %>
 
-<script>
-    let yday_cont = document.getElementById('yday')
-    let lday_cont = document.getElementById('lday')
-    let kday_cont = document.getElementById('kday')
-    let jday_cont = document.getElementById('jday')
+  <!-- If no Tips -->
+  <% if (mikeka.length == 0) { %>
+  <div class="alert alert-warning mx-1" role="alert">
+    Bado hakuna tips za Over 0.5 1st Half kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
+    kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya bure hapa.</a>
+  </div>
+  <br>
+  <% } %>
 
-    let ytoggle = document.getElementById('ytoggle')
-    let ltoggle = document.getElementById('ltoggle')
-    let ktoggle = document.getElementById('ktoggle')
-    let jtoggle = document.getElementById('jtoggle')
+  <div class="mega-card__summary border-top">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+      <div class="row g-3 align-items-stretch metrics">
+        <div class="col-12 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--bookie">
+            <div class="stat__icon"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="stat__body">
+              <div class="label">Kampuni</div>
+              <div class="value"><span class="badge text-bg-dark px-3 py-2">BETWAY</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--odds">
+            <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="stat__body">
+              <div class="label">Total Odds</div>
+              <div class="value fw-bold fs-5"><%= Number(total_odds) %></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--bonus">
+            <div class="stat__icon"><i class="fa-solid fa-gift"></i></div>
+            <div class="stat__body">
+              <div class="label">Bonus</div>
+              <div class="value fw-semibold">400%</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-
-    ytoggle.addEventListener('click', () => {
-        ytoggle.classList.add('active_toggle')
-        ltoggle.classList.remove('active_toggle')
-        ktoggle.classList.remove('active_toggle')
-        jtoggle.classList.remove('active_toggle')
-
-        yday_cont.style.display = 'block'
-        lday_cont.style.display = 'none'
-        kday_cont.style.display = 'none'
-        jday_cont.style.display = 'none'
-    })
-
-    ltoggle.addEventListener('click', () => {
-        ltoggle.classList.add('active_toggle')
-        ytoggle.classList.remove('active_toggle')
-        ktoggle.classList.remove('active_toggle')
-        jtoggle.classList.remove('active_toggle')
-
-        lday_cont.style.display = 'block'
-        yday_cont.style.display = 'none'
-        kday_cont.style.display = 'none'
-        jday_cont.style.display = 'none'
-    })
-
-    jtoggle.addEventListener('click', () => {
-        jtoggle.classList.add('active_toggle')
-        ytoggle.classList.remove('active_toggle')
-        ktoggle.classList.remove('active_toggle')
-        ltoggle.classList.remove('active_toggle')
-
-        jday_cont.style.display = 'block'
-        yday_cont.style.display = 'none'
-        kday_cont.style.display = 'none'
-        lday_cont.style.display = 'none'
-    })
-
-    ktoggle.addEventListener('click', () => {
-        ktoggle.classList.add('active_toggle')
-        ytoggle.classList.remove('active_toggle')
-        ltoggle.classList.remove('active_toggle')
-        jtoggle.classList.remove('active_toggle')
-
-        kday_cont.style.display = 'block'
-        lday_cont.style.display = 'none'
-        yday_cont.style.display = 'none'
-        jday_cont.style.display = 'none'
-    })
-</script>
+      <!-- Aff Offer -->
+      <%- include('../../0-global/aff-mega.ejs'); %>
+    </div>
+  </div>
+</section>

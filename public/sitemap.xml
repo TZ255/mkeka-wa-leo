@@ -48,6 +48,11 @@
        <priority>0.9000</priority>
   </url>
   <url>
+       <loc>https://mkekawaleo.com/mkeka/over-05-first-half/kesho</loc>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
        <loc>https://mkekawaleo.com/mkeka/correct-score</loc>
        <changefreq>daily</changefreq>
        <priority>0.9000</priority>

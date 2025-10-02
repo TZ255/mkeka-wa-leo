@@ -2,55 +2,77 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="First Half Over 0.5 Tips za Leo | Tanzania Betting Tips | Pata Mikeka ya Over 0.5 kipindi cha kwanza hapa kila siku BURE. Fungua kuona mikeka ya Over 0.5 First Half">
-    <link rel="canonical" href="https://mkekawaleo.com/mkeka/over-05-first-half">
-    <title>Over 0.5 1st Half | Mkeka wa Leo</title>
-    <%- include('./partials/style.ejs'); %>
-    <link rel="stylesheet" href="/css/global.css">
-    <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/fonts.ejs'); %>
-    <%- include('../0-global/favicon.ejs') %>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<%= SEO.description %>">
+  <link rel="canonical" href="<%= SEO.canonical %>">
+  <meta name="keywords" content="<%= SEO.keywords %>">
+
+  <!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="<%= SEO.canonical %>">
+<meta property="og:title" content="<%= SEO.title %>">
+<meta property="og:description" content="<%= SEO.description %>">
+<meta property="og:image" content="https://mkekawaleo.com/imgs/mikeka/over05.webp">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="<%= SEO.canonical %>">
+<meta name="twitter:title" content="<%= SEO.title %>">
+<meta name="twitter:description" content="<%= SEO.description %>">
+<meta name="twitter:image" content="https://mkekawaleo.com/imgs/mikeka/over05.webp">
+
+  <title>
+    <%= SEO.title %>
+  </title>
+  <%- include('./partials/style.ejs'); %>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/mega.css">
+  <%- include('../0-global/google.ejs'); %>
+  <%- include('../0-global/fonts.ejs'); %>
+  <%- include('../0-global/favicon.ejs') %>
 </head>
 
 <body>
-    <%- include('../0-global/header.ejs'); %>
-    <main>
-        <section class="left">
-            <h1 class="h2" style="font-size: 16px;">Over 0.5 1st Half | Mkeka wa Leo</h1>
-            <p class="p">
-                Pata Mikeka ya Leo Over 0.5 HT (Halftime). Hii ni mikeka ya kila siku tunayobashiri jumla ya mabao kwa
-                kipindi cha kwanza cha mechi husika. Mikeka hii ya bure ya Over 0.5 1st Half tunatabiri kwamba kwa
-                kipindi cha kwanza cha mchezo angalau goli moja litafungwa. Kipindi cha kwanza kikiisha bila goli
-                tunakuwa tumepoteza beti yetu.
-            </p>
-            <p class="p">
-                Mfano wa matokeo ya ushindi ni kipindi cha kwanza kuisha na angalau goli moja au zaidi. <b>Mfano: 1:0,
-                    2:0, 3:0, 1:1, 2:1, 2:2, 3:0, 3:1, 3:2, 3:3, 0:1, 0:2, 0:3, 1:2, 2:3, n.k.</b>
-            </p>
-            <%- include('../0-global/banner.ejs'); %>
-            <%- include('./partials/over05-tables.ejs'); %>
-            <%- include('../0-global/banner2.ejs'); %><br>
-            <%- include('../0-global/vip.ejs'); %>
-            <hr class="my-5 text-light">
-            <br>
-            <%- include('./partials/ligi.ejs'); %>
-            <%- include('../0-global/somapia.ejs'); %>
-        </section>
-    </main>
+  <%- include('../0-global/header.ejs'); %>
+  <main>
+    <section class="left">
+      <h1 class="h2" style="font-size: 16px;">
+        Mkeka wa Over 0.5 Halftime - <%= SEO.trh.month_date %>
+      </h1>
+      <p class="p">
+        Pata <b>Mikeka ya <%= SEO.siku %> Over 0.5 HT (Halftime)</b>. Hii ni aina ya bashiri ya kila siku ambapo
+        tunatabiri jumla ya mabao
+        katika kipindi cha kwanza cha mechi husika. Lengo ni rahisi: kipindi cha kwanza lazima kimalizike na
+        angalau goli moja
+        ili beti ishinde. Iwapo dakika 45 za kwanza zitaisha bila goli, beti inakuwa imepotea.
+        <br><br>
+        <b>Mifano ya matokeo ya ushindi:</b> kipindi cha kwanza kikiisha na matokeo kama 1:0, 2:0, 1:1, 2:2,
+        0:1, 0:2, 3:1, 3:2, n.k.
+      </p>
+      <p class="p">
+        Kwa siku ya <%= SEO.siku.toLowerCase() %>, <%= SEO.trh.day %> <%= SEO.trh.date %> tumekuletea jumla ya tabiri <strong><%= mikeka.length %></strong> za Over 0.5 magoli kipindi cha kwanza, zikiwa zimechambuliwa kwa umakini na kwa kutumia data na takwimu sahihi.
+      </p>
 
-    <%- include('../0-global/footer.ejs'); %>
-    <%- include('./partials/script.ejs'); %>
-    <%- include('../0-global/script.ejs'); %>
-    <%- include('../0-global/modal-leon.ejs'); %>
+      <%- include('../0-global/banner.ejs'); %>
+      <%- include('./partials/over05-tables.ejs'); %>
+      <%- include('../0-global/banner2.ejs'); %><br>
+      <%- include('../0-global/vip.ejs'); %>
+      <hr class="my-5 text-light">
+      <br>
+      <%- include('./partials/ligi.ejs'); %>
+      <%- include('../0-global/somapia.ejs'); %>
+    </section>
+  </main>
 
-    <!-- bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-        crossorigin="anonymous"></script>
+  <%- include('../0-global/footer.ejs'); %>
+  <%- include('./partials/script.ejs'); %>
+  <%- include('../0-global/script.ejs'); %>
+  <%- include('../0-global/modal-leon.ejs'); %>
+
+  <!-- bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </body>
 
 </html>

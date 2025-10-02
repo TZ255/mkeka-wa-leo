@@ -2,53 +2,66 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<%= SEO.description %>">
-    <link rel="canonical" href="<%= SEO.canonical %>">
-    <title><%= SEO.title %></title>
-    <%- include('./partials/style.ejs'); %>
-    <link rel="stylesheet" href="/css/global.css">
-    <link rel="stylesheet" href="/css/mega.css">
-    <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/fonts.ejs'); %>
-    <%- include('../0-global/favicon.ejs') %>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<%= SEO.description %>">
+  <link rel="canonical" href="<%= SEO.canonical %>">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= SEO.canonical %>">
+  <meta property="og:title" content="<%= SEO.title %>">
+  <meta property="og:description" content="<%= SEO.description %>">
+  <meta property="og:image" content="https://mkekawaleo.com/imgs/mikeka/mega.webp">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="<%= SEO.canonical %>">
+  <meta name="twitter:title" content="<%= SEO.title %>">
+  <meta name="twitter:description" content="<%= SEO.description %>">
+  <meta name="twitter:image" content="https://mkekawaleo.com/imgs/mikeka/mega.webp">
+
+  <title><%= SEO.title %></title>
+  <%- include('./partials/style.ejs'); %>
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/mega.css">
+  <%- include('../0-global/google.ejs'); %>
+  <%- include('../0-global/fonts.ejs'); %>
+  <%- include('../0-global/favicon.ejs') %>
 </head>
 
 <body>
-    <%- include('../0-global/header.ejs'); %>
-    <main>
-        <section class="left">
-            <h1 class="h2" style="font-size: 16px;">Mega Odds za <%= SEO.siku %>, <%= SEO.trh.month_date %></h1>
-            <p class="p">
-                Pata Mega Odds za <%= SEO.siku %> (<%= SEO.siku_eng %> Accumulator Tips). Accumulator (Acca) Tips ni aina ya mikeka ya kubashiri
-                mechi nyingi kwa mkupuo mmoja, aina hii ya mkeka inakupa nafasi ya kushinda dau kubwa kwa kuunganisha
-                mechi kadhaa kwenye tiketi moja. Kwa mikeka yetu na chambuzi zetu za kitaalamu, utapata odds za uhakika
-                za Acca Bets (Mega Tips) kila siku hapa BURE!.
-                <br><br>
-                Kwa siku ya <%= SEO.siku %>, <strong><%= SEO.trh.day %> ya <%= SEO.trh.month_date %></strong>, tumeandaa mkeka wa Mega Odds wenye mechi <strong><%= mikeka.length %></strong> na jumla ya odds <strong><%= total_odds %></strong>.
-            </p>
-            <%- include('../0-global/banner.ejs'); %>
-            <%- include('./partials/mega.ejs'); %>
-            <%- include('../0-global/banner2.ejs'); %><br>
-            <%- include('../0-global/vip.ejs'); %>
-            <hr class="my-5 text-light">
-            <br>
-            <%- include('./partials/ligi.ejs'); %>
-            <%- include('../0-global/somapia.ejs'); %>
-        </section>
-    </main>
+  <%- include('../0-global/header.ejs'); %>
+  <main>
+    <section class="left">
+      <h1 class="h2" style="font-size: 16px;">Mega Odds za <%= SEO.siku %>, <%= SEO.trh.month_date %></h1>
+      <p class="p">
+        Pata Mega Odds za <%= SEO.siku %> (<%= SEO.siku_eng %> Accumulator Tips). Accumulator (Acca) Tips ni aina ya mikeka ya kubashiri
+        mechi nyingi kwa mkupuo mmoja, aina hii ya mkeka inakupa nafasi ya kushinda dau kubwa kwa kuunganisha
+        mechi kadhaa kwenye tiketi moja. Kwa mikeka yetu na chambuzi zetu za kitaalamu, utapata odds za uhakika
+        za Acca Bets (Mega Tips) kila siku hapa BURE!.
+        <br><br>
+        Kwa siku ya <%= SEO.siku %>, <strong><%= SEO.trh.day %> ya <%= SEO.trh.month_date %></strong>, tumeandaa mkeka wa Mega Odds wenye mechi <strong><%= mikeka.length %></strong> na jumla ya odds <strong><%= total_odds %></strong>.
+      </p>
+      <%- include('../0-global/banner.ejs'); %>
+      <%- include('./partials/mega.ejs'); %>
+      <%- include('../0-global/banner2.ejs'); %><br>
+      <%- include('../0-global/vip.ejs'); %>
+      <hr class="my-5 text-light">
+      <br>
+      <%- include('./partials/ligi.ejs'); %>
+      <%- include('../0-global/somapia.ejs'); %>
+    </section>
+  </main>
 
-    <%- include('../0-global/footer.ejs'); %>
-    <%- include('./partials/script.ejs'); %>
-    <%- include('../0-global/script.ejs'); %>
-    <%- include('../0-global/modal.ejs'); %>
+  <%- include('../0-global/footer.ejs'); %>
+  <%- include('./partials/script.ejs'); %>
+  <%- include('../0-global/script.ejs'); %>
+  <%- include('../0-global/modal.ejs'); %>
 
-    <!-- bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-        crossorigin="anonymous"></script>
+  <!-- bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </body>
 
 </html>
