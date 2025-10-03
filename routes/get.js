@@ -391,7 +391,8 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
         }));
 
         //multiply all odds
-        const total_odds = Math.pow(1.24, magoli.length).toFixed(2)
+        let total_odds = Math.pow(1.24, magoli.length).toFixed(2)
+        if (total_odds > 9999) total_odds = 9999.99
 
         res.render('9-over05/over05', { total_odds, mikeka: magoli, SEO })
     } catch (err) {
@@ -558,7 +559,8 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
         });
 
         //multiply all odds
-        const total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        if (total_odds > 9999) total_odds = 9999.99
 
         res.render('10-dc/index', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
@@ -636,7 +638,8 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
         });
 
         //multiply all odds
-        const total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        if (total_odds > 9999) total_odds = 9999.99
 
         res.render('10-gg/index', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
