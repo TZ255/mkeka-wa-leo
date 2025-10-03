@@ -1,0 +1,81 @@
+<!-- Top Asists Schema LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "inLanguage": "sw-TZ",
+  "name": "Watoa Assist Bora NBC <%= partials.season_short %> - Ligi Kuu Tanzania Bara",
+  "url": "https://mkekawaleo.com/football/top-assists/tanzania/premier-league",
+  "description": "Orodha ya watoa assist bora wa NBC Tanzania Premier League <%= partials.season_short %>, inasasishwa kila siku kulingana na mechi zilizochezwa.",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Watoa Assist Bora",
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "numberOfItems": <%= top_assists.length %>,
+    "itemListElement": [
+      <% top_assists.forEach((player, index) => { %>
+      {
+        "@type": "ListItem",
+        "position": <%= index+1 %>,
+        "item": {
+          "@type": "Person",
+          "name": "<%= player.playerName %>",
+          "nationality": {
+            "@type": "Country",
+            "name": "<%= player.country %>"
+          },
+          "memberOf": {
+            "@type": "SportsTeam",
+            "name": "<%= player.club %>",
+            "sport": "Soccer"
+          },
+          "additionalProperty": [
+            {
+              "@type": "PropertyValue",
+              "propertyID": "assists",
+              "name": "Asisti",
+              "value": "<%= player.assists %>"
+            }
+          ]
+        }
+      }<% if (index !== top_assists.length-1) { %>,<% } %>
+      <% }) %>
+    ]
+  }
+}
+</script>
+
+<!-- FAQ Schema for Top Assists -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "sw-TZ",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Nani anaongoza kwa kutoa asisti NBC Ligi Kuu Tanzania Bara <%= partials.season_short %>?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kwa sasa, kinara wa asisti ni <%= top_assists[0].playerName %> kutoka <%= top_assists[0].club %> akiwa na jumla ya asisti <%= top_assists[0].assists %>."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Orodha ya watoa asisti bora inasasishwa mara ngapi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Orodha ya watoa asisti bora inasasishwa kila siku mara baada ya michezo kumalizika."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Naweza kuona pia orodha ya wafungaji bora?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ndiyo, unaweza kuona orodha ya wafungaji bora wa NBC Tanzania Premier League hapa: <a href='https://mkekawaleo.com/football/top-assists/tanzania/premier-league'>Orodha ya Wafungaji Bora NBC <%= partials.season_short %></a>."
+      }
+    }
+  ]
+}
+</script>

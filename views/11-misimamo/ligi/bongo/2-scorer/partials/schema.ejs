@@ -1,0 +1,81 @@
+<!-- Top Scorers Schema LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "inLanguage": "sw-TZ",
+  "name": "Wafungaji Bora NBC <%= partials.season_short %> - Ligi Kuu Tanzania Bara",
+  "url": "https://mkekawaleo.com/football/top-scorers/tanzania/premier-league",
+  "description": "Orodha ya wafungaji bora wa NBC, Ligi Kuu Tanzania Bara <%= partials.season_short %>, inasasishwa kila siku kulingana na magoli yaliyofungwa.",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Wafungaji Bora",
+    "itemListOrder": "https://schema.org/ItemListOrderDescending",
+    "numberOfItems": <%= top_scorers.length %>,
+    "itemListElement": [
+      <% top_scorers.forEach((player, index) => { %>
+      {
+        "@type": "ListItem",
+        "position": <%= index+1 %>,
+        "item": {
+          "@type": "Person",
+          "name": "<%= player.playerName %>",
+          "nationality": {
+            "@type": "Country",
+            "name": "<%= player.country %>"
+          },
+          "memberOf": {
+            "@type": "SportsTeam",
+            "name": "<%= player.club %>",
+            "sport": "Soccer"
+          },
+          "additionalProperty": [
+            {
+              "@type": "PropertyValue",
+              "propertyID": "goals",
+              "name": "Magoli",
+              "value": "<%= player.goals %>"
+            }
+          ]
+        }
+      }<% if (index !== top_scorers.length-1) { %>,<% } %>
+      <% }) %>
+    ]
+  }
+}
+</script>
+
+<!-- FAQ Schema for Top Scorers -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "sw-TZ",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Nani anaongoza kwa magoli ligi kuu Tanzania <%= partials.season_short %>?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kwa sasa, kinara wa mabao ni <%= top_scorers[0].playerName %> kutoka <%= top_scorers[0].club %> akiwa na jumla ya <%= top_scorers[0].goals %>."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Orodha ya wafungaji bora inasasishwa mara ngapi?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Orodha ya wafungaji bora inasasishwa mara kwa mara baada ya kila siku ya michezo kumalizika."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Naweza kuona pia watoa assist bora?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ndiyo, unaweza kuona orodha ya watoa assist bora kwenye ukurasa huu: <a href='https://mkekawaleo.com/football/top-assists/tanzania/premier-league'>Orodha ya Watoa Assist Bora wa NBC <%= partials.season_short %></a>."
+      }
+    }
+  ]
+}
+</script>
