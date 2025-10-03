@@ -115,6 +115,10 @@ const wafungajiBoraNBC = async () => {
         .text()
         .trim();
 
+      if (playerName.includes('Rushine')) {
+        country = 'South Africa'
+      }
+
       // 3. Club
       const club = $(row)
         .find("td.data-team a")
