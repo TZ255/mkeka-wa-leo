@@ -69,23 +69,24 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
         ]).cache(600);
 
         // Group in JS while assigning incremental group "name"
-        const seenRounds = {};
+        const seenDates = {};
         let roundCounter = 1;
         const groupedFixtures = [];
 
         for (const fixture of flatFixtures) {
+            const theDate = fixture.fixture.date.split('T')[0];
             const roundName = fixture.league.round;
 
-            if (!(roundName in seenRounds)) {
-                seenRounds[roundName] = {
+            if (!(theDate in seenDates)) {
+                seenDates[theDate] = {
                     name: roundCounter++, // group index
-                    round: roundName,
+                    round: theDate,
                     fixtures: []
                 };
-                groupedFixtures.push(seenRounds[roundName]);
+                groupedFixtures.push(seenDates[theDate]);
             }
 
-            seenRounds[roundName].fixtures.push(fixture);
+            seenDates[theDate].fixtures.push(fixture);
         }
 
         let partials = {
