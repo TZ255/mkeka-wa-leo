@@ -522,8 +522,8 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
         }
 
         //dc leo
-        let dc_1x = ['2:0', '1:0', '3:1']
-        let dc_x2 = ['0:2', '0:1', '1:3']
+        let dc_1x = ['2:0', '3:1']
+        let dc_x2 = ['0:2', '1:3']
         let dc_12 = ['3:2', '2:3', '3:3']
 
         let dc_leo = await correctScoreModel.aggregate([
@@ -539,8 +539,6 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             let newTip;
             //random odd from 1.20 to 1.29
             let odd = (Math.random() * (1.29 - 1.20) + 1.20).toFixed(2);
-            //random odd kwa 1:0 na 0:1 from 1.39 to 1.49
-            if (doc.tip === '1:0' || doc.tip === '0:1') odd = (Math.random() * (1.41 - 1.28) + 1.28).toFixed(2);
             if (dc_1x.includes(doc.tip)) {
                 newTip = 'Home/Draw'
             } else if (dc_x2.includes(doc.tip)) {
