@@ -90,9 +90,19 @@
               postponed
             </span>
             <% } %>
+
+            <!-- date, end, start and location schemas -->
+            <meta itemprop="startDate" content="<%= fixture.fixture.date %>">
+            <meta itemprop="endDate" content="<%= new Date((fixture.fixture.timestamp + 5*60*60) * 1000).toISOString().slice(0,19) + '+03:00' %>">
+            <meta itemprop="location"
+              content="<%= fixture.fixture?.venue?.name %>, <%= fixture.fixture?.venue?.city %>, <%= fixture.league.country %>">
           </td>
           <td class="date text-muted text-center align-middle">
             <%= fixture.league.round?.match(/\d+/)?.[0] || '-' %>
+
+            <!-- schema description -->
+            <meta itemprop="description"
+              content="<%= fixture.league.name %> mechi kati ya <%= fixture.teams.home.name %> na <%= fixture.teams.away.name %>.">
           </td>
           <td class="<%= fixture.fixture.status.short %>">
             <span class="<%= fixture.teams.home.winner === true ? 'text-success' : '' %>">
@@ -101,6 +111,11 @@
             <span class="<%= fixture.teams.away.winner === true ? 'text-success' : '' %>">
               <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United' ) %>
             </span>
+
+            <!-- performer and name schema -->
+            <meta itemprop="name" content="<%= fixture.teams.home.name %> vs <%= fixture.teams.away.name %>">
+            <meta itemprop="performer" content="<%= fixture.teams.home.name %>">
+            <meta itemprop="performer" content="<%= fixture.teams.away.name %>">
           </td>
           <td class="text-center fw-bold">
             <%= fixture.goals.home ?? '-' %> <br>
