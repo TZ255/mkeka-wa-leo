@@ -2,7 +2,7 @@
 title: "Kubeti Machaguo ya Kona Kwenye Mpira wa Miguu: Kila Kitu Unachohitaji Kujua"
 description: "Jifunze kila kitu kuhusu kubeti kwenye kona za mpira wa miguu – aina za corner bets, mikakati bora na maswali yanayoulizwa mara kwa mara kwa mabettor wa Tanzania."
 date_created: "2025-09-25T15:20:00+03:00"
-date_modified: "2025-09-25T15:20:00+03:00"
+date_modified: "2025-10-06T11:24:10+03:00"
 slug: "kubeti-kona-muongozo-na-namna-ya-kubeti"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
 author: "By Admin"
@@ -111,3 +111,118 @@ Kabla ya kuweka dau lako, zingatia mambo haya:
 ## Hitimisho
 
 Kubeti kwenye kona kunaleta changamoto ya kipekee kwa wabetiji, kwani hakuangalii tu nani anashinda mechi bali pia namna mchezo unavyoendelea. Ukiwa na uelewa sahihi wa **timu, wachezaji, mbinu na stats**, basi kubeti kwenye kona kunaweza kuwa silaha nzuri ya kuongeza ushindi wako kwenye beti builder au single bet.
+
+
+---
+
+<section itemscope itemtype="https://schema.org/FAQPage">
+  <h2><i class="fas fa-question-circle me-2 text-warning"></i> Maswali Yanayoulizwa Mara kwa Mara (FAQ)</h2>
+
+  <div class="accordion accordion-flush" id="faqAccordion">
+    <!-- Q1 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading1">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1" itemprop="name">
+          Kubeti kwenye kona ni nini katika mpira wa miguu?
+        </button>
+      </h3>
+      <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Kubeti kwenye kona ni aina ya dau ambapo unachagua matokeo yanayohusiana na kona kwenye mechi ya mpira wa miguu. Unaweza kubashiri jumla ya kona, timu itakayopata kona nyingi, kona ya kwanza au ya mwisho, au hata kona katika kipindi fulani cha mchezo.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q2 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2" itemprop="name">
+          Je, kona za extra-time au penati hujumuishwa kwenye corner bets?
+        </button>
+      </h3>
+      <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Hapana, dau la kona huangaliwa ndani ya dakika 90 pekee za mchezo pamoja na muda wa nyongeza wa refa (injury time). Kona zinazotokea kwenye extra-time au penati shootout hazihesabiwi isipokuwa bookmaker ameweka masharti tofauti.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q3 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3" itemprop="name">
+          “Over 10.5 corners” inamaanisha nini kwenye beti?
+        </button>
+      </h3>
+      <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Hii inamaanisha unahitaji kona 11 au zaidi ili dau lako liwe mshindi. Ikiwa mechi itamalizika na kona 10 au chini, beti hiyo inapoteza. Hii ni aina ya “Over/Under” bet inayohusisha idadi ya jumla ya kona kwenye mechi.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q4 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4" itemprop="name">
+          “Under 10.5 corners” inamaanisha nini?
+        </button>
+      </h3>
+      <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Under 10.5 corners inamaanisha unahitaji mechi kumalizika na kona 10 au chini ili ushinde. Ikiwa kutakuwa na kona 11 au zaidi, dau lako litapotea. Ni chaguo zuri ikiwa unatarajia mechi kuwa ya taratibu au yenye mashambulizi machache.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q5 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading5">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5" itemprop="name">
+          Ni aina gani za betting za kona zinazopatikana kwa wabetiji?
+        </button>
+      </h3>
+      <div id="faqCollapse5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Baadhi ya aina maarufu ni: <strong>Total Match Corners</strong> (jumla ya kona zote), <strong>Team Corners</strong> (kona za timu fulani), <strong>First/Last Corner</strong>, <strong>Corner Race</strong>, <strong>Handicap Corners</strong>, na <strong>Asian Corners</strong>. Kila aina ina odds na hatari tofauti kulingana na tabia ya mchezo.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q6 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading6">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6" itemprop="name">
+          Mikakati gani bora ya kushinda kwenye kubeti kona?
+        </button>
+      </h3>
+      <div id="faqCollapse6" class="accordion-collapse collapse" aria-labelledby="faqHeading6" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Kabla ya kubashiri, zingatia mambo kama form ya timu, wachezaji wanaopiga mipira ya kona, hali ya hewa, aina ya mechi (mfano derby au kikombe), na rekodi ya kona za zamani. Timu zenye wachezaji warefu na mashambulizi mengi kwa upande wa pembeni mara nyingi hupata kona nyingi zaidi.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q7 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading7">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse7" aria-expanded="false" aria-controls="faqCollapse7" itemprop="name">
+          Je, kubeti kwenye kona ni bora kama single bet au sehemu ya bet builder?
+        </button>
+      </h3>
+      <div id="faqCollapse7" class="accordion-collapse collapse" aria-labelledby="faqHeading7" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Kubeti kona kunaweza kufanywa kama single bet kwa usahihi mkubwa, lakini mara nyingi hutumika vizuri zaidi kama sehemu ya <strong>bet builder</strong> ili kuongeza odds. Hii ni kwa sababu masoko ya kona yana uhusiano mdogo na matokeo ya mechi, hivyo kuongeza utofauti wa bet zako.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

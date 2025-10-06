@@ -2,7 +2,7 @@
 title: "Kubeti Live: Mwongozo wa Kubashiri Mubashara (Live Betting) kwa Faida"
 description: "Jifunze mbinu bora za live betting, kutoka kuchagua mechi sahihi hadi kutambua fursa za odds kubwa na kutumia cash out kwa faida zaidi."
 date_created: "2025-09-25T16:15:00+03:00"
-date_modified: "2025-09-25T16:15:00+03:00"
+date_modified: "2025-10-06T11:25:10+03:00"
 slug: "mwongozo-kubeti-live-betting-na-faida-zake"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
 author: "By Admin"

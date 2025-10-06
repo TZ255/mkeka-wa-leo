@@ -120,3 +120,151 @@ Kubeti ni burudani lakini pia ni sanaa ya kufanya maamuzi sahihi kwa kutumia taa
 Kumbuka, hakuna mbinu inayohakikisha ushindi kila wakati... lakini kwa nidhamu, utafiti na subira, unaweza kuongeza nafasi zako mara nyingi zaidi kuliko kuacha yote kwa bahati.  
 
 Mwisho wa siku, betting inapaswa kubaki kuwa **burudani yenye uwajibikaji**. Weka akilini kuwa lengo kuu ni kufurahia michezo, na kama faida inakuja, basi hiyo ni bonasi ya ziada.
+
+
+---
+
+
+<section itemscope itemtype="https://schema.org/FAQPage">
+  <h2><i class="fas fa-question-circle me-2 text-warning"></i> Maswali Yanayoulizwa Mara kwa Mara (FAQ)</h2>
+  <div class="accordion accordion-flush" id="faqAccordion">
+    <!-- Q1 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading1">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="false" aria-controls="faqCollapse1" itemprop="name">
+          Nawezaje kuanza kubeti kwa usahihi?
+        </button>
+      </h3>
+      <div id="faqCollapse1" class="accordion-collapse collapse" aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Ili kuanza kubeti kwa usahihi, chagua kampuni halali yenye leseni, amua bajeti yako, elewa aina za bet (kama money line, over/under, point spread), na usibashiri kwa hisia.  
+            Fanya utafiti wa mechi kabla ya kuweka beti na hakikisha unafuata nidhamu ya bankroll.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q2 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading2">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2" itemprop="name">
+          Odds zipi ni rahisi kushinda – favorites au underdogs?
+        </button>
+      </h3>
+      <div id="faqCollapse2" class="accordion-collapse collapse" aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Favorites huwa na nafasi kubwa ya kushinda lakini faida yake ni ndogo kwa sababu odds huwa ndogo.  
+            Underdogs wana odds kubwa, hivyo ukipata bet sahihi faida ni kubwa zaidi, ingawa hatari ni nyingi.  
+            Wabashiri wenye uzoefu mara nyingi huchanganya favorites na underdogs zenye “value odds”.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q3 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading3">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3" itemprop="name">
+          Point spread betting ni nini na inafanyaje kazi?
+        </button>
+      </h3>
+      <div id="faqCollapse3" class="accordion-collapse collapse" aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Point spread ni mfumo wa kusawazisha timu mbili kwa kutoa au kuongeza pointi za “handicap”.  
+            Mfano: Yanga -2 inamaanisha lazima washinde kwa tofauti ya zaidi ya magoli 2 ili ushinde bet.  
+            Simba +2 inamaanisha wanashinda beti ikiwa watashinda au wakipoteza kwa chini ya magoli 2.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q4 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading4">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4" itemprop="name">
+          Over/Under betting ni nini kwenye mechi za mpira?
+        </button>
+      </h3>
+      <div id="faqCollapse4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Hii ni aina ya bet ambapo unabashiri jumla ya magoli au pointi kwenye mechi fulani.  
+            Mfano, kwenye Over/Under 2.5:  
+            <strong>Over 2.5</strong> = magoli 3 au zaidi.  
+            <strong>Under 2.5</strong> = magoli 2 au chini.  
+            Ni bet rahisi kuelewa na haina uhusiano na timu gani imeshinda.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q5 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading5">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5" itemprop="name">
+          Money line bet ni nini na ni nani anayefaa kuitumia?
+        </button>
+      </h3>
+      <div id="faqCollapse5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Money line ni bet rahisi ambapo unabashiri tu timu gani itashinda mechi.  
+            Hakuna spread wala magoli yanayohesabiwa.  
+            Ni chaguo bora kwa wachezaji wapya kwa sababu ni rahisi kuelewa na kutekeleza.  
+            Mfano: Manchester City kushinda dhidi ya Arsenal moja kwa moja.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q6 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading6">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6" itemprop="name">
+          Parlay bet ni nini na ni salama kuitumia?
+        </button>
+      </h3>
+      <div id="faqCollapse6" class="accordion-collapse collapse" aria-labelledby="faqHeading6" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Parlay ni bet moja yenye mechi mbili au zaidi zilizochanganywa. Ili ushinde, kila chaguo lazima kiwe sahihi.  
+            Payout yake ni kubwa lakini hatari ni kubwa zaidi — ukikosa mechi moja tu, mkeka wote unapotea.  
+            Waanziaji wanashauriwa kuanza na parlays ndogo (2 au 3 mechi).
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q7 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading7">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse7" aria-expanded="false" aria-controls="faqCollapse7" itemprop="name">
+          Jinsi gani naweza kusimamia bankroll yangu kwenye betting?
+        </button>
+      </h3>
+      <div id="faqCollapse7" class="accordion-collapse collapse" aria-labelledby="faqHeading7" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Bankroll management ni muhimu kwa mafanikio ya muda mrefu.  
+            Weka bajeti ya kila wiki au mwezi, usibeti zaidi ya unachoweza kupoteza, na tumia “unit system” – mfano, beti kila wakati kiasi kidogo sawa (kama 5% ya bankroll).  
+            Usiongeze dau kwa hasira au kufukuzia hasara.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- Q8 -->
+    <div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <h3 class="accordion-header" id="faqHeading8">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse8" aria-expanded="false" aria-controls="faqCollapse8" itemprop="name">
+          Je, kuna mbinu ya uhakika ya kushinda betting kila mara?
+        </button>
+      </h3>
+      <div id="faqCollapse8" class="accordion-collapse collapse" aria-labelledby="faqHeading8" data-bs-parent="#faqAccordion">
+        <div class="accordion-body" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">
+            Hapana, hakuna mbinu ya uhakika ya kushinda kila wakati. Betting ni mchezo wa uwezekano.  
+            Kinachoweza kuongeza nafasi zako ni kufanya utafiti, kufuata mikakati thabiti, na kuwa na nidhamu kwenye bankroll.  
+            Betting inapaswa kuwa burudani yenye uwajibikaji, si njia ya haraka ya kutajirika.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
