@@ -365,8 +365,8 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
             SEO.title = 'Over 0.5 1st Half Tips - Kesho'
             SEO.description = 'Pata mikeka ya kesho ya uhakika ya 1st Half Over 0.5. Utabiri wetu wa kitaalamu wa under/over magoli kipindi cha kwanza unahusisha ligi maarufu na mechi kubwa ili kukusaidia kushinda mikeka yako ya betting Tanzania kirahisi.'
             SEO.keywords = 'over 0.5 1st half kesho, 1st Half Over 0.5 tips za kesho, ht predictions, mkeka wa magoli kipindi cha kwanza, under/over betting tips Tanzania, mkeka wa leo',
-            SEO.canonical = 'https://mkekawaleo.com/mkeka/over-05-first-half/kesho',
-            SEO.siku = 'Kesho'
+                SEO.canonical = 'https://mkekawaleo.com/mkeka/over-05-first-half/kesho',
+                SEO.siku = 'Kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -525,7 +525,7 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
         //dc leo
         let dc_1x = ['2:0', '3:1', '4:2']
         let dc_x2 = ['0:2', '1:3', '2:4']
-        let dc_12 = ['3:2', '2:3', '3:3']
+        let dc_12 = ['3:2', '2:3', '3:3', '4:3', '3:4']
 
         let dc_leo = await correctScoreModel.aggregate([
             {
@@ -611,15 +611,13 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
         let btts_1 = ['3:2', '4:3']
         let btts_2 = ['2:3', '1:3', '2:4', '2:5', '3:5']
         let nobtts = ['0:0', '1:0']
+        let less_gg = ['4:2', '1:4']
 
-        let gg_leo = await correctScoreModel.aggregate([
-            {
-                $match: {
-                    siku: SEO.trh.date, time: { $gte: '12:00' },
-                    tip: { $in: [...btts_1, ...btts_2, ...nobtts] }
-                }
-            }, { $sort: { time: 1 } }
-        ]).cache(600);
+        let gg_leo = await correctScoreModel.find({
+            siku: SEO.trh.date,
+            time: { $gte: '12:00' },
+            tip: { $in: [...btts_1, ...btts_2, ...nobtts, ...less_gg] }
+        }).sort({ time: 1 }).lean().cache(600);
 
         let transformedData = gg_leo.map(doc => {
             let newTip = 'GG - Yes'
@@ -636,6 +634,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
                 odd
             };
         });
+
 
         //multiply all odds
         let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
