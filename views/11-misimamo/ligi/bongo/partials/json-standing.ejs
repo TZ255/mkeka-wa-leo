@@ -1,0 +1,72 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportsStanding",
+  "@id": "https://mkekawaleo.com/standings/football/tanzania/premier-league",
+  "name": "Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season_long %>",
+  "sport": "Football",
+  "description": "Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa <%= partials.season_long %>, ukionyesha timu zote, alama, magoli, mechi zilizochezwa, na nafasi zao kwenye jedwali la ligi.",
+  "url": "https://mkekawaleo.com/standings/football/tanzania/premier-league",
+  "mainEntityOfPage": {
+    "@type": "SportsOrganization",
+    "name": "NBC Premier League Tanzania <%= partials.season_long %>",
+    "sport": "Football",
+    "url": "https://mkekawaleo.com/standings/football/tanzania/premier-league"
+  },
+  "standingType": "LeagueTable",
+  "season": "<%= partials.season_long %>",
+  "competitor": [
+    <% standing.standing.forEach((team, i) => { %>
+    {
+      "@type": "SportsTeam",
+      "name": "<%= team.team.name %>",
+      "image": "<%= team.team.logo %>",
+      "position": <%= team.rank %>,
+      "url": "https://mkekawaleo.com/football/fixtures/tanzania/premier-league/<%= team.team.id %>",
+      "memberOf": {
+        "@type": "SportsOrganization",
+        "name": "NBC Premier League Tanzania"
+      },
+      "description": "Timu iko nafasi ya <%= team.rank %> ikiwa na pointi <%= team.points %> na tofauti ya magoli <%= team.goalsDiff %>.",
+      "additionalProperty": [
+        { "@type": "PropertyValue", "name": "Mechi Zilizochezwa", "value": <%= team.all.played %> },
+        { "@type": "PropertyValue", "name": "Ushindi", "value": <%= team.all.win %> },
+        { "@type": "PropertyValue", "name": "Sare", "value": <%= team.all.draw %> },
+        { "@type": "PropertyValue", "name": "Kipigo", "value": <%= team.all.lose %> },
+        { "@type": "PropertyValue", "name": "Magoli Kufunga", "value": <%= team.all.goals.for %> },
+        { "@type": "PropertyValue", "name": "Magoli Kuruhusu", "value": <%= team.all.goals.against %> },
+        { "@type": "PropertyValue", "name": "Form", "value": "<%= team.form %>" },
+        { "@type": "PropertyValue", "name": "Updated", "value": "<%= team.update %>" }
+      ]
+    }<%= i < standing.length - 1 ? ',' : '' %>
+    <% }) %>
+  ],
+  "potentialAction": [
+    {
+      "@type": "ViewAction",
+      "target": "https://mkekawaleo.com/football/fixtures/tanzania/premier-league",
+      "name": "Ratiba na Matokeo Ligi Kuu"
+    },
+    {
+      "@type": "ViewAction",
+      "target": "https://mkekawaleo.com/football/top-scorers/tanzania/premier-league",
+      "name": "Wafungaji Bora NBC"
+    },
+    {
+      "@type": "ViewAction",
+      "target": "https://mkekawaleo.com/football/top-assists/tanzania/premier-league",
+      "name": "Watoa Assist Bora NBC"
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Mkeka wa Leo",
+    "url": "https://mkekawaleo.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://mkekawaleo.com/favicon/android-chrome-512x512.png"
+    }
+  },
+  "inLanguage": "sw-TZ"
+}
+</script>

@@ -1,0 +1,52 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Ratiba ya <%= partials.team_info.team.name %> - Ligi Kuu Bara Tanzania",
+  "description": "Angalia ratiba kamili ya mechi za <%= partials.team_info.team.name %> kwenye Ligi Kuu Bara Tanzania msimu wa <%= partials.season_long %>. Pata tarehe, wapinzani na viwanja vya mechi zote za <%= partials.team_info.team.name %>.",
+  "url": "https://mkekawaleo.com<%= partials.canonical_path %>",
+  "numberOfItems": <%= ratiba.length %>,
+  "itemListElement": [
+    <% ratiba.forEach(function(fx, index) { %>
+    {
+      "@type": "SportsEvent",
+      "position": <%= index + 1 %>,
+      "name": "<%= fx.teams.home.name %> vs <%= fx.teams.away.name %>",
+      "sport": "Football",
+      "eventStatus": "<%= fx.fixture.status.long %>",
+      "startDate": "<%= new Date(fx.fixture.date).toISOString() %>",
+      "endDate": "<%= new Date(fx.fixture.timestamp * 1000 + 2 * 60 * 60 * 1000).toISOString() %>",
+      "location": {
+        "@type": "Place",
+        "name": "<%= fx.fixture.venue.name || 'Uwanja wa mpira Tanzania' %>",
+        "address": "<%= fx.fixture.venue.city || 'Tanzania' %>"
+      },
+      "homeTeam": {
+        "@type": "SportsTeam",
+        "name": "<%= fx.teams.home.name %>",
+        "logo": "<%= fx.teams.home.logo %>"
+      },
+      "awayTeam": {
+        "@type": "SportsTeam",
+        "name": "<%= fx.teams.away.name %>",
+        "logo": "<%= fx.teams.away.logo %>"
+      },
+      "aggregateScore": {
+        "@type": "AggregateScore",
+        "homeScore": <%= fx.goals.home === null ? 0 : fx.goals.home %>,
+        "awayScore": <%= fx.goals.away === null ? 0 : fx.goals.away %>
+      },
+      "competition": {
+        "@type": "SportsOrganization",
+        "name": "<%= fx.league.name %>",
+        "sport": "Football",
+        "logo": "<%= fx.league.logo %>",
+        "url": "https://mkekawaleo.com/standings/football/tanzania/premier-league"
+      },
+      "image": "<%= fx.league.logo %>",
+      "sameAs": "https://mkekawaleo.com<%= partials.canonical_path %>"
+    }<% if (index + 1 !== ratiba.length) { %>,<% } %>
+    <% }) %>
+  ]
+}
+</script>

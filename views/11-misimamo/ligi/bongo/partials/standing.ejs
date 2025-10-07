@@ -15,7 +15,12 @@
             <% standing.standing.forEach(team => { %>
             <tr>
                 <td class="tdata text-center champ<%= team.rank %>"><%= team.rank %>.</td>
-                <td class="tdata"><%= team.team.name.replace('Kitayosce', 'Tabora United') %></td>
+                <td class="tdata">
+                    <% let tname = team.team.name.replace('Kitayosce', 'Tabora United') %>
+                    <a class="link-dark fw-semibold" href="/football/fixtures/tanzania/premier-league/<%= team.team.id %>" title="Ratiba na Matokeo ya <%= tname %>" style="text-decoration: none;">
+                        <%= tname %>
+                    </a>
+                </td>
                 <td class="tdata text-center"><%= team.all.played %></td>
                 <td class="tdata text-center"><%= team.all.win %></td>
                 <td class="tdata text-center"><%= team.all.draw %></td>

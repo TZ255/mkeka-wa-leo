@@ -32,7 +32,7 @@ router.get('/standings/football/tanzania/premier-league', async (req, res, next)
     let path = 'tanzania/premier-league'
     try {
         const standing = await StandingLigiKuuModel.findOne({ path }).select('-top_scorers -top_assists').cache(600)
-        if (!standing) return next()
+        if (!standing) return next();
 
         const league_season = standing.league_season
 
@@ -57,7 +57,7 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
     let path = 'tanzania/premier-league'
     try {
         const standing = await StandingLigiKuuModel.findOne({ path }).select('-top_scorers -top_assists -current_round_fixtures').cache(600)
-        if (!standing) return next()
+        if (!standing) return next();
 
         const league_season = standing.league_season
 
