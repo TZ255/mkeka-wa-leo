@@ -1,10 +1,10 @@
-<div class="ratiba-section" itemscope>
-  <h2 class="fs-5 ps-2">Matokeo na Ratiba ya Msimu Mzima wa <%= partials.season_long %>
-  </h2>
+<div class="ratiba-section">
+  <!-- recent results -->
+  <% if (recent_results.length> 0) { %>
   <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
-    <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
-      <%= standing.current_round_fixtures[0].league.round.replace('Regular Season -', 'Mzunguko wa' ) %>
-    </h3>
+    <h2 class="fs-5 ps-2" itemprop="about">
+      Matokeo ya Ligi Kuu NBC <%= partials.season_short %> - Mechi <%= recent_results.length %> za Hivi Karibuni
+    </h2>
     <table class="table table-striped">
       <thead>
         <th scope="col" class="tdata text-center">Date</th>
@@ -13,17 +13,66 @@
         <th scope="col" class="text-center tdata">Results</th>
       </thead>
       <tbody>
-        <% standing.current_round_fixtures.forEach(fixture=> { %>
+        <% recent_results.forEach(fixture=> { %>
         <tr class="tdata">
           <td class="text-muted text-center">
             <span class="time d-block <%= fixture.fixture.status.short %>">
-              <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US',
-                                    {timeZone: 'Africa/Nairobi' , hour12: false, hour: "2-digit" , minute: "2-digit" })
-                                    %>
+              <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi' , hour12:
+                    false, hour: "2-digit" , minute: "2-digit" }) %>
             </span>
             <span class="date d-block <%= fixture.fixture.status.short %>">
-              <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB',
-                                    {timeZone: 'Africa/Nairobi' }) %>
+              <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi' }) %>
+            </span>
+            <% if (fixture.fixture.status.short==="PST" ) { %>
+            <span class="date d-block text-danger">
+              postponed
+            </span>
+            <% } %>
+          </td>
+          <td class="text-muted text-center align-middle">
+            <%= fixture.league.round?.match(/\d+/)?.[0] || '-' %>
+          </td>
+          <td class="<%= fixture.fixture.status.short %>">
+            <span class="<%= fixture.teams.home.winner === true ? 'text-success' : '' %>">
+              <%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United' ) %>
+            </span> <br>
+            <span class="<%= fixture.teams.away.winner === true ? 'text-success' : '' %>">
+              <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United' ) %>
+            </span>
+          </td>
+          <td class="text-center fw-bold">
+            <%= fixture.goals.home ?? '-' %> <br>
+            <%= fixture.goals.away ?? '-' %>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+
+  <!-- recent fixtures -->
+  <div class="rounds-table my-5" itemscope itemtype="https://schema.org/Table">
+    <h2 class="fs-5 ps-2" itemprop="about">
+      Ratiba ya Ligi Kuu NBC <%= partials.season_short %> - Mechi <%= recent_results.length %> za Hivi Karibuni
+    </h2>
+    <table class="table table-striped">
+      <thead>
+        <th scope="col" class="tdata text-center">Date</th>
+        <th scope="col" class="tdata text-center">Round</th>
+        <th scope="col" class="tdata">Match</th>
+        <th scope="col" class="text-center tdata">Results</th>
+      </thead>
+      <tbody>
+        <% recent_fixtures.forEach(fixture=> { %>
+        <tr class="tdata">
+          <td class="text-muted text-center">
+            <span class="time d-block <%= fixture.fixture.status.short %>">
+              <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi' , hour12:
+                      false, hour: "2-digit" , minute: "2-digit" }) %>
+            </span>
+            <span class="date d-block <%= fixture.fixture.status.short %>">
+              <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi' }) %>
             </span>
             <% if (fixture.fixture.status.short==="PST" ) { %>
             <span class="date d-block text-danger">
@@ -52,81 +101,77 @@
     </table>
   </div>
 
-  <% agg.forEach(round=> { %>
-  <% 
-        let date = new Intl.DateTimeFormat('sw-TZ', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(round.round)); 
-        if (round.fixtures.some(fx => fx.fixture.status.short === 'FT')) {
-            date = `Matokeo ya ${date}`
-        } else {
-            date = `Ratiba ya ${date}`
-        }
-    %>
-  <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
-    <h3 class="h3 p-2 bg-dark text-light" itemprop="about">
-      <%= date %>
-    </h3>
-    <table class="table table-striped">
-      <thead>
-        <th scope="col" class="tdata text-center">Date</th>
-        <th scope="col" class="tdata text-center">Round</th>
-        <th scope="col" class="tdata">Match</th>
-        <th scope="col" class="text-center tdata">Results</th>
-      </thead>
-      <tbody>
-        <% round.fixtures.forEach(fixture=> { %>
-        <tr class="tdata" itemscope itemtype="https://schema.org/SportsEvent">
-          <td class="text-muted text-center">
-            <span class="time d-block <%= fixture.fixture.status.short %>">
-              <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US',
-                                        {timeZone: 'Africa/Nairobi' , hour12: false, hour: "2-digit" , minute: "2-digit"
-                                        }) %>
-            </span>
-            <span class="date d-block <%= fixture.fixture.status.short %>">
-              <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB',
-                                        {timeZone: 'Africa/Nairobi' }) %>
-            </span>
-            <% if (fixture.fixture.status.short==="PST" ) { %>
-            <span class="date d-block text-danger">
-              postponed
-            </span>
-            <% } %>
+  <!-- All fixtures -->
+  <div class="rounds-table my-5">
+    <h2 class="fs-5 ps-2">Ratiba na Matokeo ya Msimu Mzima wa <%= partials.season_long %></h2>
+    <p class="p">
+      Katika msimu huu wa NBC <%= partials.season_long %>, zitachezwa jumla ya mechi <%= standing.season_fixtures?.length %> zitakazohusisha vilabu <%= standing.standing?.length %> kwa michezo ya raundi mbili.
+    </p>
+    <% agg.forEach(round=> { %>
+    <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
+      <meta itemprop="about" content="Ratiba na Matokeo ya NBC Tanzania Bara - Msimu Mzima wa <%= partials.season_long %>">
+      <h3 class="h3 p-2 bg-dark text-light">
+        <%= new Intl.DateTimeFormat('sw-TZ', { weekday: 'long' , day: '2-digit' , month: 'short' ,
+          year: 'numeric' }).format(new Date(round.round)) %>
+      </h3>
+      <table class="table table-striped">
+        <thead>
+          <th scope="col" class="tdata text-center">Date</th>
+          <th scope="col" class="tdata text-center">Round</th>
+          <th scope="col" class="tdata">Match</th>
+          <th scope="col" class="text-center tdata">Results</th>
+        </thead>
+        <tbody>
+          <% round.fixtures.forEach(fixture=> { %>
+          <tr class="tdata" itemscope itemtype="https://schema.org/SportsEvent">
+            <td class="text-muted text-center">
+              <span class="time d-block <%= fixture.fixture.status.short %>">
+                <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi' ,
+                          hour12: false, hour: "2-digit" , minute: "2-digit" }) %>
+              </span>
+              <span class="date d-block <%= fixture.fixture.status.short %>">
+                <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi' }) %>
+              </span>
+              <% if (fixture.fixture.status.short==="PST" ) { %>
+              <span class="date d-block text-danger">
+                postponed
+              </span>
+              <% } %>
 
-            <!-- date, end, start and location schemas -->
-            <meta itemprop="startDate" content="<%= fixture.fixture.date %>">
-            <meta itemprop="endDate" content="<%= new Date((fixture.fixture.timestamp + 5*60*60) * 1000).toISOString().slice(0,19) + '+03:00' %>">
-            <meta itemprop="location"
-              content="<%= fixture.fixture?.venue?.name %>, <%= fixture.fixture?.venue?.city %>, <%= fixture.league.country %>">
-          </td>
-          <td class="date text-muted text-center align-middle">
-            <%= fixture.league.round?.match(/\d+/)?.[0] || '-' %>
+              <!-- date, end, start and location schemas -->
+              <meta itemprop="startDate" content="<%= fixture.fixture.date %>">
+              <meta itemprop="endDate" content="<%= new Date((fixture.fixture.timestamp + 5*60*60) * 1000).toISOString().slice(0,19) + '+03:00' %>">
+              <meta itemprop="location" content="<%= fixture.fixture?.venue?.name %>, <%= fixture.fixture?.venue?.city %>, <%= fixture.league.country %>">
+            </td>
+            <td class="date text-muted text-center align-middle">
+              <%= fixture.league.round?.match(/\d+/)?.[0] || '-' %>
 
-            <!-- schema description -->
-            <meta itemprop="description"
-              content="<%= fixture.league.name %> mechi kati ya <%= fixture.teams.home.name %> na <%= fixture.teams.away.name %>.">
-          </td>
-          <td class="<%= fixture.fixture.status.short %>">
-            <span class="<%= fixture.teams.home.winner === true ? 'text-success' : '' %>">
-              <%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United' ) %>
-            </span> <br>
-            <span class="<%= fixture.teams.away.winner === true ? 'text-success' : '' %>">
-              <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United' ) %>
-            </span>
+              <!-- schema description -->
+              <meta itemprop="description" content="<%= fixture.league.name %> mechi kati ya <%= fixture.teams.home.name %> na <%= fixture.teams.away.name %>.">
+            </td>
+            <td class="<%= fixture.fixture.status.short %>">
+              <span class="<%= fixture.teams.home.winner === true ? 'text-success' : '' %>">
+                <%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United' ) %>
+              </span> <br>
+              <span class="<%= fixture.teams.away.winner === true ? 'text-success' : '' %>">
+                <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United' ) %>
+              </span>
 
-            <!-- performer and name schema -->
-            <meta itemprop="name" content="<%= fixture.teams.home.name %> vs <%= fixture.teams.away.name %>">
-            <meta itemprop="performer" content="<%= fixture.teams.home.name %>">
-            <meta itemprop="performer" content="<%= fixture.teams.away.name %>">
-          </td>
-          <td class="text-center fw-bold">
-            <%= fixture.goals.home ?? '-' %> <br>
-            <%= fixture.goals.away ?? '-' %>
-          </td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
+              <!-- performer and name schema -->
+              <meta itemprop="name" content="<%= fixture.teams.home.name %> vs <%= fixture.teams.away.name %>">
+              <meta itemprop="performer" content="<%= fixture.teams.home.name %>">
+              <meta itemprop="performer" content="<%= fixture.teams.away.name %>">
+            </td>
+            <td class="text-center fw-bold">
+              <%= fixture.goals.home ?? '-' %> <br>
+              <%= fixture.goals.away ?? '-' %>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <% }) %>
   </div>
-
-  <br>
-  <% }) %>
 </div>

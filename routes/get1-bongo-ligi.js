@@ -89,6 +89,56 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
             seenDates[theDate].fixtures.push(fixture);
         }
 
+        let recent_results = await StandingLigiKuuModel.aggregate([
+            { $unwind: "$season_fixtures" },
+            {
+                $match: {
+                    "season_fixtures.fixture.status.long": "Match Finished"
+                }
+            },
+            {
+                $sort: {
+                    "season_fixtures.fixture.timestamp": -1
+                }
+            },
+            { $limit: 10 },
+            {
+                $project: {
+                    _id: 0,
+                    fixture: "$season_fixtures.fixture",
+                    league: "$season_fixtures.league",
+                    teams: "$season_fixtures.teams",
+                    goals: "$season_fixtures.goals",
+                    score: "$season_fixtures.score"
+                }
+            }
+        ]);
+
+        let recent_fixtures = await StandingLigiKuuModel.aggregate([
+            { $unwind: "$season_fixtures" },
+            {
+                $match: {
+                    "season_fixtures.fixture.status.short": "NS"
+                }
+            },
+            {
+                $sort: {
+                    "season_fixtures.fixture.timestamp": 1
+                }
+            },
+            { $limit: 10 },
+            {
+                $project: {
+                    _id: 0,
+                    fixture: "$season_fixtures.fixture",
+                    league: "$season_fixtures.league",
+                    teams: "$season_fixtures.teams",
+                    goals: "$season_fixtures.goals",
+                    score: "$season_fixtures.score"
+                }
+            }
+        ]);
+
         let partials = {
             mwaka: new Date().getFullYear(),
             season: league_season,
@@ -99,7 +149,7 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
             updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
         }
 
-        res.render('11-misimamo/ligi/bongo/bongo-season-fixtures', { standing, agg: groupedFixtures, partials })
+        res.render('11-misimamo/ligi/bongo/bongo-season-fixtures', { standing, agg: groupedFixtures, partials, recent_results, recent_fixtures })
     } catch (error) {
         console.log(error?.message, error)
     }
