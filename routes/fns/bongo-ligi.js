@@ -46,7 +46,7 @@ const UpdateBongoLeagueData = async (league_id, season) => {
             //update fixture for the same league
             await UpdateFixuresFn(league_id, league_season).catch(e => console.log(e?.message))
             console.log(`${league_name} fixtures updated`)
-            await UpdateCurrentFixture(league_id, league_season).catch(e => console.log(e?.message))
+            //await UpdateCurrentFixture(league_id, league_season).catch(e => console.log(e?.message))
             console.log(`${league_name} current fixtures updated`)
         } else {
             ErrorFn(`Error fetching Ligi Kuu Standing`)
