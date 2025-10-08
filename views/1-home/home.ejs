@@ -1,3 +1,6 @@
+<% const title = "Mkeka wa Leo | Pata Tips za Mikeka ya Leo" %>
+<% const description = "Tanzania Betting Tips | Tovuti inayoongoza kwa betting tips sahihi, odds kubwa, na mikeka ya bure ya ushindi kila siku kutoka Ligi Kuu ya NBC Tanzania Bara na ligi kubwa za Ulaya." %>
+
 <!DOCTYPE html>
 <html lang="sw">
 
@@ -7,16 +10,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%- include('../0-global/fonts.ejs'); %>
     <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
-    <meta name="description" content="Tanzania Betting Tips | Pata Mikeka ya Uhakika Kila Siku Bure">
-    <title>Mkeka wa Leo | Pata Tips za Mikeka ya Leo</title>
+    <meta name="description" content="<%= description %>">
+    <title><%= title %></title>
     <link rel="canonical" href="https://mkekawaleo.com/">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="sw_TZ">
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= description %>">
+    <meta property="og:url" content="https://mkekawaleo.com/">
+    <meta property="og:site_name" content="Mkeka wa Leo">
+    <meta property="og:image" content="https://mkekawaleo.com/imgs/logos/og.webp">
+    <meta property="og:image:secure_url" content="https://mkekawaleo.com/imgs/logos/og.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Mkeka wa Leo - Betting Tips Tanzania">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mkeka wa Leo - Betting Tips Bora Tanzania">
+    <meta name="twitter:description" content="<%= description %>">
+    <meta name="twitter:image" content="https://mkekawaleo.com/imgs/logos/og.webp">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="/css/mega.css">
-    <%- include('./partials/style.ejs'); %>
-    <%- include('./partials/listschemajs.ejs'); %>
     <link rel="stylesheet" href="/css/global.css">
+
+    <!-- partials -->
+    <%- include('../0-global/favicon.ejs') %>
+    <%- include('./partials/style.ejs'); %>
+    <%- include('./partials/schema.ejs'); %>
     <%- include('../0-global/sure3-styles.ejs'); %>
     <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/favicon.ejs') %>
 </head>
 
 <body>
