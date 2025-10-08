@@ -57,4 +57,22 @@ router.get('/tanzania/bookies/:bookie', async (req, res) => {
     }
 })
 
+//us pages
+router.get(['/contact-us', '/privacy-policy', '/cookie-policy', '/about-us'], async (req, res) => {
+    try {
+        const slug = req.path;
+        const filePath = path.join(__dirname, "..", "blog/us", `${slug}.md`);
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).send("Post not found");
+        }
+        const { meta, html, toc } = await parseMarkdown(filePath);
+
+        res.render("us/index", { meta, body: html, toc });
+    } catch (err) {
+        console.error(err.message, err);
+        res.status(500).send("Server error");
+    }
+})
+
+
 module.exports = router;

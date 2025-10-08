@@ -1,5 +1,5 @@
 ---
-title: "Kubeti Basketball: Mbinu Bora za Kubashiri Mpira wa Kikapu kwa Mafanikio"
+title: "Kubeti Basketball Tanzania: Mbinu Bora za Kubashiri Mpira wa Kikapu kwa Mafanikio"
 description: "Jifunze mbinu bora na za kitaalamu za kubashiri mpira wa kikapu (NBA) kwa faida — kutoka point spread, prop bets hadi usimamizi wa bajeti yako."
 date_created: "2025-09-25T16:10:00+03:00"
 date_modified: "2025-10-06T11:25:10+03:00"
@@ -10,7 +10,7 @@ keywords: "kubashiri mpira wa kikapu, NBA betting, point spread, prop bets, bank
 ---
 
 
-# Kubeti Basketball: Mbinu Bora za Kubashiri Mpira wa Kikapu kwa Mafanikio
+# Kubeti Basketball Tanzania: Mbinu Bora za Kubashiri Mpira wa Kikapu kwa Mafanikio
 
 ![Kubashiri mpira wa kikapu - Image](/imgs/blog/makala-default.webp)
 

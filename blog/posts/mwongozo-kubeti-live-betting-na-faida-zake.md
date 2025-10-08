@@ -1,5 +1,5 @@
 ---
-title: "Kubeti Live: Mwongozo wa Kubashiri Mubashara (Live Betting) kwa Faida"
+title: "Kubeti Live Tanzania: Mwongozo wa Kubashiri Mubashara (Live Betting) kwa Faida"
 description: "Jifunze mbinu bora za live betting, kutoka kuchagua mechi sahihi hadi kutambua fursa za odds kubwa na kutumia cash out kwa faida zaidi."
 date_created: "2025-09-25T16:15:00+03:00"
 date_modified: "2025-10-06T11:25:10+03:00"
@@ -10,7 +10,7 @@ keywords: "live betting Tanzania, kubashiri mechi mubashara, cash out, in-play b
 ---
 
 
-# Kubeti Live: Mwongozo Kamili wa Kubashiri Mechi Mubashara (Live Betting) kwa Faida
+# Kubeti Live Tanzania: Mwongozo Kamili wa Kubashiri Mechi Mubashara (Live Betting) kwa Faida
 
 ![Kubeti Live - Image](/imgs/blog/makala-default.webp)
 
