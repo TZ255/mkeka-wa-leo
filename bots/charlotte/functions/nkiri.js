@@ -83,7 +83,7 @@ const nkiriFunction = async (ctx, drama_url, idadi) => {
 
             reqEpisodeAxios(Origin, url, formData).then((res) => {
                 let drama = url.split('/').pop() //remove last item and return it
-                drama = drama.replace('.(NKIRI.COM)', 'SHEMDOE').replace('_(NKIRI.COM)', 'SHEMDOE').replace('.(DRAMAKEY.COM)', 'SHEMDOE').replace('_(DRAMAKEY.COM)', 'SHEMDOE').split('SHEMDOE')[0]
+                drama = drama.replace('.(NKIRI.INK)', 'SHEMDOE').replace('_(NKIRI.INK)', 'SHEMDOE').replace('.(DRAMAKEY.COM)', 'SHEMDOE').replace('_(DRAMAKEY.COM)', 'SHEMDOE').split('SHEMDOE')[0]
                 let epno = drama.split('.').pop()
                 drama = drama.replace(`.${epno}`, '')
                 let n2 = `${epno}.${drama}`.substring(0, 30)
