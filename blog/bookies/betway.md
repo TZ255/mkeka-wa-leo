@@ -5,7 +5,7 @@ date_created: "2025-06-20T12:00:00+03:00"
 date_modified: "2025-09-08T15:00:00+03:00"
 slug: "betway"
 coverImage: "https://mkekawaleo.com/imgs/kampuni/sshot-betwaytz.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "Betway Tanzania, Betway App, Betway promo code, jinsi ya kujisajili Betway, betting Tanzania"
 ---
 

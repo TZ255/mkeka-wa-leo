@@ -5,7 +5,7 @@ date_created: "2025-09-25T15:20:00+03:00"
 date_modified: "2025-10-06T11:24:10+03:00"
 slug: "kubeti-kona-muongozo-na-namna-ya-kubeti"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "kubeti mpira Tanzania, kubeti kona mpira, aina za corner bets, bet builder, mikakati kubeti kona"
 ---
 

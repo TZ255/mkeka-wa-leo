@@ -5,7 +5,7 @@ date_created: "2025-09-09T00:00:00+03:00"
 date_modified: "2025-09-09T01:15:00+03:00"
 slug: "meridianbet"
 coverImage: "https://mkekawaleo.com/imgs/kampuni/meridianbet-screenshot.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "Meridianbet Tanzania, Meridianbet App, Meridianbet promo code, jinsi ya kujisajili Meridianbet, betting Tanzania"
 ---
 

@@ -5,7 +5,7 @@ date_created: "2025-09-25T14:35:00+03:00"
 date_modified: "2025-10-06T11:25:10+03:00"
 slug: "option-nzuri-ya-kubeti"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "kubeti mpira Tanzania, dau rahisi kushinda, BTTS, Over/Under, Draw No Bet, Double Chance"
 ---
 

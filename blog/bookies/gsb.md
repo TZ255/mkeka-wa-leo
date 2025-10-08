@@ -5,7 +5,7 @@ date_created: "2025-06-20T12:00:00+03:00"
 date_modified: "2025-06-20T12:00:00+03:00"
 slug: "gsb"
 coverImage: "https://mkekawaleo.com/imgs/kampuni/sshot-gsbtz.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "Gal Sport Betting Tanzania, GSB App, GSB promo code, jinsi ya kujisajili GSB, betting Tanzania"
 ---
 

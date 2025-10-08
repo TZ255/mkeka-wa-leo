@@ -5,7 +5,7 @@ date_created: "2025-08-29T09:40:10+03:00"
 date_modified: "2025-10-06T11:25:10+03:00"
 slug: "kampuni-za-kubeti-zenye-ofa-kubwa"
 coverImage: "https://mkekawaleo.com/imgs/blog/kampuni-za-kubeti-hero.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "kubeti Tanzania, betting Tanzania, kampuni za kubeti Tanzania, Betway Tanzania, Gal Sport Betting, betpawa, ofa kubeti Tanzania"
 ---
 

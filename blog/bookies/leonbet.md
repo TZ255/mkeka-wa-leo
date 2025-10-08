@@ -5,7 +5,7 @@ date_created: "2025-08-22T12:00:00+03:00"
 date_modified: "2025-09-08T12:30:00+03:00"
 slug: "leonbet"
 coverImage: "https://mkekawaleo.com/imgs/kampuni/leonbet-screenshot.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "Leonbet Tanzania, Leonbet App, Leonbet promo code, jinsi ya kujisajili Leonbet, betting Tanzania"
 ---
 

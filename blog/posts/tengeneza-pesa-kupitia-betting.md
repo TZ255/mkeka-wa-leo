@@ -5,7 +5,7 @@ date_created: "2025-08-23T00:25:10+03:00"
 date_modified: "2025-10-06T11:25:10+03:00"
 slug: "tengeneza-pesa-kupitia-betting"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "Shinda betting, tengeneza pesa kupitia betting, jinsi ya kushinda betting, shinda betpawa"
 ---
 

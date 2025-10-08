@@ -5,7 +5,7 @@ date_created: "2025-09-25T16:15:00+03:00"
 date_modified: "2025-10-06T11:25:10+03:00"
 slug: "mwongozo-kubeti-live-betting-na-faida-zake"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "live betting Tanzania, kubashiri mechi mubashara, cash out, in-play betting, betting kwa faida, odds za live"
 ---
 

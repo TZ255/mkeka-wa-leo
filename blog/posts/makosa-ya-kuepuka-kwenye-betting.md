@@ -5,7 +5,7 @@ date_created: "2025-08-23T18:45:00+03:00"
 date_modified: "2025-10-06T11:25:10+03:00"
 slug: "makosa-ya-kuepuka-kwenye-betting"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "Makosa betting, jinsi ya kushinda betting, bankroll management, betting Tanzania, epuka parlays, over under betting"
 ---
 

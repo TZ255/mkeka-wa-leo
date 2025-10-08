@@ -5,7 +5,7 @@ date_created: "2025-08-24T09:15:10+03:00"
 date_modified: "2025-08-24T09:15:10+03:00"
 slug: "siri-5-jinsi-ya-kushinda-jackpot-tanzania"
 coverImage: "https://mkekawaleo.com/imgs/blog/makala-default.webp"
-author: "By Admin"
+author: "Mr. Paul P.K"
 keywords: "jackpot Tanzania, tips za jackpot, jinsi ya kushinda jackpot, jackpots za soka Tanzania, uchambuzi wa mechi, Sportpesa jackpot, Betpawa jackpot"
 ---
 
