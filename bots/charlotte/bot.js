@@ -524,7 +524,7 @@ const charlotteFn = async (app) => {
                 })
                 console.log(ctx.channelPost.photo)
             }
-            if (chan_id == imp.notfy_d && ctx.channelPost?.text.startsWith('Pata')) {
+            if (chan_id == imp.notfy_d && ctx.channelPost?.text && ctx.channelPost.text.startsWith('Pata')) {
                 //text will either be Pata-1 or Pata+1
                 let idadi = ctx.channelPost.text.split(`Pata`)[1]
                 let url = ''
