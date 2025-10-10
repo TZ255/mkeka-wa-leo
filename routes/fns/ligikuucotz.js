@@ -33,6 +33,8 @@ const countryCodeWrapper = (cc) => {
       return 'Mali';
     case 'nga':
       return 'Nigeria';
+    case 'rsa':
+      return 'South Africa'
     case 'sen':
       return 'Senegal';
     case 'som':
@@ -41,6 +43,8 @@ const countryCodeWrapper = (cc) => {
       return 'Eswatini';
     case 'tan':
       return 'Tanzania';
+    case 'tun':
+      return 'Tunisia'
     case 'tog':
       return 'Togo';
     case 'uga':
