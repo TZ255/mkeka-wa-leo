@@ -1,0 +1,102 @@
+<!-- Wrapper where HTMX swaps fragments -->
+<div id="payment-area" class="container my-4" style="max-width: 560px;">
+  <div class="card shadow-sm border-0" style="border-radius: 12px;">
+    <div class="card-body p-4">
+      <div class="d-flex align-items-center mb-3">
+        <div class="me-2 text-success" style="font-size:1.2rem"><i class="fa-solid fa-wallet"></i></div>
+        <h5 class="m-0">Lipa kwa Simu</h5>
+      </div>
+
+      <form id="@htmx-payment"
+            hx-post="/api/pay"
+            hx-target="#payment-area"
+            hx-swap="innerHTML"
+            hx-disabled-elt="input, button"
+            class="needs-validation"
+            novalidate>
+        <!-- Plan selection -->
+        <div class="mb-4">
+          <label class="form-label small text-muted mb-2"><i class="fa-solid fa-file-zipper"></i> Chagua Kifurushi</label>
+          <div class="row g-2">
+            <div class="col-12">
+              <label class="w-100 border rounded p-2 d-flex flex-column align-items-start" style="cursor:pointer;">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="plan" id="plan-silver" value="silver">
+                  <label class="form-check-label" for="plan-silver">Silver</label>
+                </div>
+                <div class="text-muted small">7,500 / Wiki - (Odds 10+ kila siku)</div>
+              </label>
+            </div>
+            <div class="col-12">
+              <label class="w-100 border rounded p-2 d-flex flex-column align-items-start" style="cursor:pointer;">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="plan" id="plan-gold" value="gold" checked>
+                  <label class="form-check-label" for="plan-gold">Gold</label>
+                </div>
+                <div class="text-muted small">12,500 / Wiki - (Odds 30+ kila siku)</div>
+              </label>
+            </div>
+            <div class="col-12">
+              <label class="w-100 border rounded p-2 d-flex flex-column align-items-start" style="cursor:pointer;">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="plan" id="plan-gold2" value="gold2">
+                  <label class="form-check-label" for="plan-gold2">Gold Pro</label>
+                </div>
+                <div class="text-muted small">35,000 / Mwezi - (Odds 30+ kila siku)</div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone: +255 prefix + 9 digits not starting with 0 -->
+        <div class="mb-4">
+          <label for="payPhone" class="form-label small text-muted mb-1"><i class="fa-solid fa-square-phone"></i> Namba ya Simu</label>
+          <div class="input-group">
+            <span class="input-group-text">+255</span>
+            <input type="text"
+                   class="form-control"
+                   id="payPhone"
+                   name="phone9"
+                   inputmode="numeric"
+                   pattern="[1-9][0-9]{8}"
+                   minlength="9"
+                   maxlength="9"
+                   placeholder="712345678"
+                   autocomplete="tel"
+                   required>
+            <div class="invalid-feedback">Weka tarakimu 9 bila kuanza na 0.</div>
+          </div>
+        </div>
+
+        <!-- Inline feedback area for errors (updated via OOB swap) -->
+        <div id="pay-form-feedback" class="mb-3"></div>
+
+        <button type="submit" class="btn btn-success w-100 d-flex align-items-center justify-content-center gap-2 py-2">
+          <span class="label-text">Tuma Malipo <i class="fa-solid fa-paper-plane ms-2"></i></span>
+          <!-- HTMX loading indicator: spinner only -->
+          <span class="htmx-indicator" style="display:none;">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          </span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal root: HTMX will inject modal HTML here -->
+<div id="modal-root"></div>
+
+<script>
+  // Simple client-side Bootstrap validation (optional)
+  (function () {
+    const form = document.getElementById('@htmx-payment');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      if (!form.checkValidity()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  })();
+</script>

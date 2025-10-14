@@ -1,0 +1,17 @@
+<!-- OOB update: completed state in the same modal -->
+<h5 id="paymentModalTitle" hx-swap-oob="true" class="modal-title text-success">
+  <i class="fa-solid fa-check-circle me-2"></i> Malipo Yamekamilika
+</h5>
+
+<div id="paymentModalBody" hx-swap-oob="true" class="modal-body">
+  <div class="alert alert-success d-flex flex-column align-items-center mb-2">
+    <i class="fa-solid fa-circle-check fs-1 my-3"></i>
+    <div>Hongera! Malipo yamekamilika. <%= message %> Bonyeza "Angalia VIP" kuona mikeka yetu ya VIP</div>
+  </div>
+  <div class="small text-muted">Order ID: <code><%= orderId %></code></div>
+</div>
+
+<div id="paymentModalFooter" hx-swap-oob="true" class="modal-footer">
+  <a href="/mkeka/vip" class="btn btn-success">ANGALIA VIP SASA</a>
+</div>
+

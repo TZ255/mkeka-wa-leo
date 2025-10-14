@@ -26,6 +26,7 @@ const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
 const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
 const { getLessUsedAPIKey } = require('./fns/RAPIDAPI')
+const { makePayment, getTransactionStatus } = require('./fns/zenopay')
 
 
 router.get('/standings', async (req, res) => {
@@ -339,9 +340,11 @@ router.get('/API/testing', async (req, res) => {
     try {
         //UpdateOtherLeagueData(15, 2025)
         // UpdateBongoLeagueData(567, 2025)
-        res.end()
+        // let pymnt = await makePayment()
+        let pymnt = await getTransactionStatus("ORD-mgq8odqf-754920480")
+        res.send(pymnt)
     } catch (error) {
-        res.send(error.message)
+        res.send(error)
     }
 })
 
