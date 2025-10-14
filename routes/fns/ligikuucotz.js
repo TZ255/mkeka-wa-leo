@@ -111,7 +111,7 @@ const wafungajiBoraNBC = async () => {
       const c_code = $(row)
         .find("td.data-name span.player-flag img")
         .attr("alt") || "";
-      const country = countryCodeWrapper(c_code)
+      let country = countryCodeWrapper(c_code)
 
       // 2. Player name
       const playerName = $(row)
