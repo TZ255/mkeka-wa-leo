@@ -130,10 +130,5 @@
         </div>
     </div>
 
-    <div class="m-0 p-0 w-100 <%= autopilot === true ? '' : 'd-none' %>">
-        <%- include('./payment-form.ejs'); %>
-    </div>
-    <div class="m-0 p-0 w-100 <%= autopilot === true ? 'd-none' : '' %>">
-        <%- include('./whatsapp-confirm.ejs'); %>
-    </div>
+    <%- include('./whatsapp-confirm.ejs'); %>
 </div>

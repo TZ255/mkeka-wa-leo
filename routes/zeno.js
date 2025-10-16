@@ -104,7 +104,7 @@ router.post('/api/check-status', async (req, res) => {
         }
 
         // Fail after 3 minutes without update (unless already completed)
-        const threeMinutes = 1000 * 60 * 3;
+        const threeMinutes = 1000 * 60 * 2;
         const lastUpdate = new Date(record.updatedAt || record.createdAt || Date.now()).getTime();
         if ((Date.now() - lastUpdate) > threeMinutes && record.payment_status !== 'COMPLETED') {
             try {
@@ -125,8 +125,8 @@ router.post('/api/check-status', async (req, res) => {
             return res.render('zz-fragments/payment-modal-failed', { orderId, email: record?.email });
         }
 
-        // Compute remaining seconds for countdown (reuse 3-min window and lastUpdate above)
-        const remainingMs = Math.max(0, (1000 * 60 * 3) - (Date.now() - lastUpdate));
+        // Compute remaining seconds for countdown (reuse 2-min window and lastUpdate above)
+        const remainingMs = Math.max(0, (1000 * 60 * 2) - (Date.now() - lastUpdate));
         const remainingSec = Math.ceil(remainingMs / 1000);
         return res.render('zz-fragments/payment-modal-pending', { orderId, note: `Bado tunasubiri uthibitisho wa muamala kwenye namba ${record?.phone}. Tafadhali thibitisha`, remainingSec });
     } catch (error) {

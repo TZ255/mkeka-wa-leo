@@ -22,7 +22,7 @@
 
 <body>
     <%- include('../0-global/header.ejs'); %>
-    <div class="p-2 shadow rounded mx-auto" style="font-size: 10px; width: 98%;">
+    <div class="p-2 shadow-sm rounded mx-auto" style="font-size: 10px; width: 98%;">
         <p class="fs-6 fw-bold d-flex justify-content-between align-items-center px-3 mb-1">
             <span class="d-block">My Info</span>
             <a href="/user/logout" class="d-block text-danger"><i class="fa-solid fa-right-from-bracket"></i></a>
@@ -80,7 +80,7 @@
     </main>
 
     <%- include('./partials/modal.ejs'); %>
-    <%- include('../0-global/footer.ejs'); %>
+   
 
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
@@ -92,5 +92,4 @@
     <%- include('./partials/animation.ejs'); %>
     <% } %>
 </body>
-
 </html>

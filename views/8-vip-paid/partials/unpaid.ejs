@@ -70,11 +70,11 @@
 <div class="malipo-cont my-5 d-none" id="malipo-cont">
     <% const lipanamba = true %>
     
-    <% if (lipanamba === false) { %>
+    <% if (autopilot === true) { %>
      <%- include('./htmx-form.ejs'); %>
     <% } %>
     
-    <% if (lipanamba === true) { %>
+    <% if (autopilot === false) { %>
      <%- include('./lipanamba.ejs'); %>
     <% } %>
 </div>
