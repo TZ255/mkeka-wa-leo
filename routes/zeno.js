@@ -34,7 +34,7 @@ router.post("/api/pay", async (req, res) => {
         // basic validation
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { message: 'Barua pepe si sahihi. Tafadhali jaribu tena.' });
+            return res.render('zz-fragments/payment-form-error', { message: 'Barua pepe si sahihi. Tafadhali login upya.' });
         }
 
         if (!/^([1-9][0-9]{8})$/.test(phone9)) {
@@ -78,6 +78,9 @@ router.post("/api/pay", async (req, res) => {
             meta: { gateway: 'ZenoPay', plan, amount: PLAN_MAP[plan].amount },
             updatedAt: new Date()
         });
+
+        //send initiating message
+        sendLauraNotification(5849160770, `${email} initiated payment for ${plan} plan`, true)
 
         return res.render('zz-fragments/payment-initiated', { orderId: apiResp.order_id || order_id, phone });
     } catch (error) {
@@ -165,6 +168,7 @@ router.post('/api/zenopay-webhook', async (req, res) => {
                 }
                 catch (e) {
                     console.log('grantSubscription webhook error:', e?.message);
+                    sendLauraNotification(5849160770, `❌ Failed to confirm a paid sub for ${record?.email} - ${record?.meta?.plan}. Please confirm manually`)
                 }
             }
         }
