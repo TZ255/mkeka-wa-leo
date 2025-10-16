@@ -161,7 +161,7 @@ router.post('/api/zenopay-webhook', async (req, res) => {
 
                 try {
                     let sub = await grantSubscription(record.email, record?.meta?.plan || 'silver');
-                    sendLauraNotification(741815228, `✅ ${record?.meta?.plan} plan confirmed for ${record?.email}`)
+                    sendLauraNotification(5849160770, `✅ ${record?.meta?.plan} plan confirmed for ${record?.email}`, false)
                 }
                 catch (e) {
                     console.log('grantSubscription webhook error:', e?.message);
