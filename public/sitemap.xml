@@ -33,7 +33,17 @@
        <priority>0.9000</priority>
   </url>
   <url>
+       <loc>https://mkekawaleo.com/mkeka/over-15/kesho</loc>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
        <loc>https://mkekawaleo.com/mkeka/over-25</loc>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
+       <loc>https://mkekawaleo.com/mkeka/over-25/kesho</loc>
        <changefreq>daily</changefreq>
        <priority>0.9000</priority>
   </url>
