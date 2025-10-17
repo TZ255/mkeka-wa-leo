@@ -80,7 +80,7 @@ router.post("/api/pay", async (req, res) => {
         });
 
         //send initiating message
-        sendLauraNotification(5849160770, `${email} initiated payment for ${plan} plan`, true)
+        sendLauraNotification(5849160770, `${email} initiated payment for ${plan} plan with ${phone}`, true)
 
         return res.render('zz-fragments/payment-initiated', { orderId: apiResp.order_id || order_id, phone });
     } catch (error) {
