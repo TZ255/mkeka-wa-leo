@@ -407,51 +407,93 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
 
 })
 
-router.get('/mkeka/over-under-35', async (req, res) => {
+
+//Over/Under 3.5
+router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, res) => {
     try {
-        let nd = new Date()
-        let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        const SEO = {
+            title: 'Over/Under 3.5 Tips Leo | Mkeka wa Leo wa Magoli Juu ya 3.5',
+            description: 'Pata mkeka wa uhakika wa magoli, Over/Under 3.5 (Juu/Chini ya 3.5) kwa siku ya leo Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi zote kubwa za leo za kukusaidia kushinda mikeka yako ya magoli.',
+            keywords: 'Over/Under 3.5 tips, Over/Under 3.5 predictions, mkeka wa leo, mkeka wa Over/Under 3.5, tanzania betting tips',
+            siku: 'Leo',
+            canonical: 'https://mkekawaleo.com/mkeka/over-under-35',
+            trh: {
+                date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
+            }
+        }
+        if (req.path.includes('kesho')) {
+            SEO.title = 'Over/Under 3.5 Tips Kesho | Mkeka wa Kesho wa Magoli Juu ya 3.5'
+            SEO.description = 'Pata mikeka ya kesho ya uhakika ya Over/Under 3.5 (Juu/Chini ya 3.5) Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi kubwa zote za kesho za kukusaidia kushinda mikeka yako ya Over/Under 3.5.'
+            SEO.keywords = 'Over/Under 3.5 tips, Over/Under 3.5 predictions, mkeka wa kesho, mkeka wa Over/Under 3.5, tanzania betting tips, tips za kesho'
+            SEO.siku = 'Kesho'
+            SEO.canonical = 'https://mkekawaleo.com/mkeka/over-under-35/kesho'
+            SEO.trh = {
+                date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
+                day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
+            }
+        }
 
-        //passion35 ya jana
-        let _nd = new Date()
-        _nd.setDate(_nd.getDate() - 1)
-        let _d = _nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let _d_juma = _nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        //over leo
+        let over1 = ['4:2', '4:3', '4:4', '5:0', '5:1', '5:2', '5:3', '5:4']
+        let over2 = ['3:4', '4:4', '0:5', '1:5', '2:5', '3:5', '4:5']
+        let under = ['0:0', '0:1']
+        let less_over = ['4:1', '1:4', '2:4']
+        let less_under = ['1:0', '1:1']
 
-        //passion35 ya juzi
-        let _jd = new Date()
-        _jd.setDate(_jd.getDate() - 2)
-        let _s = _jd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let _s_juma = _jd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        let ou_leo = await correctScoreModel.aggregate([
+            {
+                $match: {
+                    siku: SEO.trh.date, time: { $gte: '12:00' },
+                    tip: { $in: [...over1, ...over2, ...under, ...less_over, ...less_under] }
+                }
+            }, { $sort: { time: 1 } }
+        ]).cache(600);
 
-        //passion35 ya kesho
-        let new_d = new Date()
-        new_d.setDate(new_d.getDate() + 1)
-        let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        let transformedData = ou_leo.map(doc => {
+            let newTip;
+            let odd = 1.88; //default odd for Over 3.5
+            if (over1.includes(doc.tip) || over2.includes(doc.tip) || less_over.includes(doc.tip)) {
+                newTip = 'Over 3.5'
+            } else if (under.includes(doc.tip) || less_under.includes(doc.tip)) {
+                newTip = 'Under 3.5'
+                //random odd from 1.17 to 1.25
+                odd = (Math.random() * (1.25 - 1.17) + 1.17).toFixed(2);
+            }
 
-        let Alltips = await passion35.find({ siku: { $in: [d, kesho, _d, _s] } }).sort('time').select('time league siku match tip matokeo')
+            return {
+                ...doc,
+                date: doc.siku,
+                score: doc.tip,
+                tip: newTip,
+                odd
+            };
+        });
 
-        let ktips = Alltips.filter(doc => doc.siku === kesho)
-        let jtips = Alltips.filter(doc => doc.siku === _s)
-        let ytips = Alltips.filter(doc => doc.siku === _d)
-        let stips = Alltips.filter(doc => doc.siku === d)
+        // check if transformedData length is greater than 20, if so, filter out entries with less_under and less_over tips
+        if (transformedData.length > 20) {
+            transformedData = transformedData.filter(doc => !less_under.includes(doc.score) && !less_over.includes(doc.score));
+        }
 
-        //tarehes
-        let trh = { leo: d, kesho, jana: _d, juzi: _s }
-        let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
+        //multiply all odds
+        let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        if (total_odds > 9999) total_odds = 9999.99
 
-        res.render('10-over35/over35', { stips, ytips, ktips, jtips, trh, jumasiku })
+        res.render('10-over35/over35', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
-        console.error(err)
+        console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
         await axios.post(tgAPI, {
             chat_id: 741815228,
             from_chat_id: -1002634850653, //rtcopyDB
-            message_id: 19
+            message_id: 20
         }).catch(e => console.log(e.message, e))
     }
+
 })
 
 router.get('/mkeka/correct-score', async (req, res) => {
@@ -523,9 +565,9 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
         }
 
         //dc leo
-        let dc_1x = ['2:0', '3:1', '4:2']
-        let dc_x2 = ['0:2', '1:3', '2:4']
-        let dc_12 = ['3:2', '2:3', '3:3', '4:3', '3:4']
+        let dc_1x = ['2:0', '4:2']
+        let dc_x2 = ['0:2', '2:4']
+        let dc_12 = ['1:3', '3:1']
 
         let dc_leo = await correctScoreModel.aggregate([
             {
@@ -541,11 +583,11 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             //random odd from 1.20 to 1.29
             let odd = (Math.random() * (1.29 - 1.20) + 1.20).toFixed(2);
             if (dc_1x.includes(doc.tip)) {
-                newTip = 'Home/Draw'
+                newTip = '1X'
             } else if (dc_x2.includes(doc.tip)) {
-                newTip = 'Draw/Away'
+                newTip = 'X2'
             } else if (dc_12.includes(doc.tip)) {
-                newTip = 'Home/Away'
+                newTip = '12'
                 //random odd from 1.28 to 1.39
                 odd = (Math.random() * (1.39 - 1.28) + 1.28).toFixed(2);
             }
@@ -608,10 +650,10 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
 
 
         //dc leo
-        let btts_1 = ['3:2', '4:3']
-        let btts_2 = ['2:3', '1:3', '2:4', '2:5', '3:5']
-        let nobtts = ['0:0', '1:0']
-        let less_gg = ['4:2', '1:4']
+        let btts_1 = ['3:2', '4:3', '4:2']
+        let btts_2 = ['2:3', '2:4', '2:5', '3:5']
+        let nobtts = ['0:0']
+        let less_gg = ['1:3', '1:4']
 
         let gg_leo = await correctScoreModel.find({
             siku: SEO.trh.date,
@@ -630,10 +672,16 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             return {
                 ...doc,
                 date: doc.siku,
+                score: doc.tip,
                 tip: newTip,
                 odd
             };
         });
+
+        // check if transformedData length is greater than 20, if so, filter out entries with less_gg tips
+        if (transformedData.length > 20) {
+            transformedData = transformedData.filter(doc => !less_gg.includes(doc.score));
+        }
 
 
         //multiply all odds

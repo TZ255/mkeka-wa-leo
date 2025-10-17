@@ -43,6 +43,11 @@
        <priority>0.9000</priority>
   </url>
   <url>
+       <loc>https://mkekawaleo.com/mkeka/over-under-35/kesho</loc>
+       <changefreq>daily</changefreq>
+       <priority>0.9000</priority>
+  </url>
+  <url>
        <loc>https://mkekawaleo.com/mkeka/over-05-first-half</loc>
        <changefreq>daily</changefreq>
        <priority>0.9000</priority>

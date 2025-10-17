@@ -2,51 +2,88 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Mkeka wa Over/Under 3.5 Leo | Tanzania Betting Tips | Pata mikeka ya uhakika ya Over/Under 3.5 hapa kila siku bure. Fungua hapa kuona Over/Under 3.5 Odds za Leo">
-    <link rel="canonical" href="https://mkekawaleo.com/mkeka/over-under-35">
-    <title>Over/Under 3.5 Tips | Mkeka wa Leo</title>
-    <%- include('./partials/style.ejs'); %>
-    <link rel="stylesheet" href="/css/global.css">
-    <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/fonts.ejs'); %>
-    <%- include('../0-global/favicon.ejs') %>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('../0-global/fonts.ejs'); %>
+  <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
+  <meta name="description" content="<%= SEO.description %>">
+  <meta name="keywords" content="<%= SEO.keywords %>">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= SEO.canonical %>">
+  <meta property="og:title" content="<%= SEO.title %>">
+  <meta property="og:description" content="<%= SEO.description %>">
+  <meta property="og:image" content="https://mkekawaleo.com/imgs/mikeka/over35.webp">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="<%= SEO.canonical %>">
+  <meta name="twitter:title" content="<%= SEO.title %>">
+  <meta name="twitter:description" content="<%= SEO.description %>">
+  <meta name="twitter:image" content="https://mkekawaleo.com/imgs/mikeka/over35.webp">
+
+  <title>
+    <%= SEO.title %>
+  </title>
+  <link rel="canonical" href="<%= SEO.canonical %>">
+  <link rel="stylesheet" href="/css/mega.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <%- include('../0-global/google.ejs'); %>
+  <%- include('../0-global/favicon.ejs'); %>
 </head>
 
 <body>
-    <%- include('../0-global/header.ejs'); %>
-    <main>
-        <section class="left">
-            <h1 class="h2" style="font-size: 16px;">Over/Under 3.5 Tips | Mkeka wa Leo</h1>
-            <p class="p">
-                Pata mikeka ya leo ya Over/Under 3.5 (Juu/Chini ya 3.5). Hii ni mikeka yetu ya kila siku iliyochambuliwa
-                na kutoa bashiri za idadi ya mabao/magoli katika mechi husika. Mikeka hii inatoa odds za uhakika za leo
-                na kesho kwa chaguo la <b>Over/Under 3.5</b>
-            </p>
-            <%- include('../0-global/banner.ejs'); %>
-            <%- include('./partials/passion35.ejs'); %>
-            <%- include('../0-global/banner2.ejs'); %><br>
-            <%- include('../0-global/vip.ejs'); %>
-            <hr class="my-5 text-light">
-            <%- include('./partials/maana35.ejs'); %>
-            <br><br>
-            <%- include('./partials/ligi.ejs'); %>
-            <%- include('../0-global/somapia.ejs'); %>
-        </section>
-    </main>
+  <%- include('../0-global/header.ejs'); %>
+  <main>
+    <section class="left">
+      <h1 class="h2" style="font-size: 16px;">
+        Mkeka wa Over/Under 3.5 - <%= SEO.trh.day %>, <%= SEO.trh.month_date %>
+      </h1>
+      <div class="introduction p">
+        <p>
+          Karibu kwenye mkusanyiko wa tabiri bora za <strong>Over/Under 3.5</strong> kwa mashabiki wa betting Tanzania!
+          Hapa tunakuletea utabiri wa <strong>Over/Under 3.5</strong> kwa siku ya <strong>
+            <%= SEO.trh.day %>, <%= SEO.trh.date %></strong>.
+          Siku ya <%= SEO.siku.toLowerCase() %> tumekuletea jumla ya tabiri <strong><%= mikeka.length %></strong> za Over/Under 3.5, zikiwa zimechambuliwa kwa umakini na kwa kutumia data sahihi.
+        </p>
+        <p>
+          Utabiri wa Over/Under 3.5 unamaanisha jumla ya magoli yote yaliyofungwa na timu zote mbili ndani ya mechi ni zaidi ya au chini ya 3.5.
+          Ni aina ya beti inayopendwa sana kwa sababu inatoa odds nzuri na matokeo ya kuvutia, hasa kwenye ligi kubwa barani Ulaya na Afrika.
+        </p>
+        <ul style="list-style: circle;">
+          <li><strong>Over 3.5:</strong> Jumla ya magoli ni zaidi ya 3.5 (manne au zaidi)</li>
+          <li><strong>Under 3.5:</strong> Jumla ya magoli ni chini ya 3.5 (chini ya manne)</li>
+        </ul>
+      </div>
 
-    <%- include('../0-global/footer.ejs'); %>
-    <%- include('./partials/script.ejs'); %>
-    <%- include('../0-global/script.ejs'); %>
-    <%- include('../0-global/modal-leon.ejs'); %>
+      <%- include('../0-global/banner.ejs'); %>
+      <hr class="my-3 text-light">
 
-    <!-- bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-        crossorigin="anonymous"></script>
+      <%- include('./partials/mega.ejs'); %>
+      <hr class="my-5 text-light">
+
+      <%- include('../0-global/vip.ejs'); %>
+      <%- include('../0-global/banner2.ejs'); %>
+      <%- include('./partials/maana.ejs'); %>
+      <%- include('./partials/ligi.ejs'); %>
+      <%- include('../0-global/banner3.ejs'); %>
+      <%- include('../0-global/somapia.ejs'); %>
+    </section>
+
+    <%- include('../0-global/right.ejs'); %>
+  </main>
+
+
+  <%- include('../0-global/footer.ejs'); %>
+
+  <%- include('./partials/script.ejs'); %>
+  <%- include('../0-global/script.ejs'); %>
+  <%- include('../0-global/modal.ejs'); %>
+
+  <!-- bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 </body>
 
 </html>
