@@ -5,40 +5,78 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Mkeka wa Over 2.5 Leo | Tanzania Betting Tips | Pata mikeka ya uhakika ya Over 2.5 hapa kila siku bure. Fungua hapa kuona Over 2.5 Odds za Leo">
-    <link rel="canonical" href="https://mkekawaleo.com/mkeka/over-25">
-    <title>Over 2.5 Tips | Mkeka wa Leo</title>
-    <%- include('./partials/style.ejs'); %>
+    <%- include('../0-global/fonts.ejs'); %>
+    <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
+    <meta name="description" content="<%= SEO.description %>">
+    <meta name="keywords" content="<%= SEO.keywords %>">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<%= SEO.canonical %>">
+    <meta property="og:title" content="<%= SEO.title %>">
+    <meta property="og:description" content="<%= SEO.description %>">
+    <meta property="og:image" content="https://mkekawaleo.com/imgs/mikeka/over25.webp">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<%= SEO.canonical %>">
+    <meta name="twitter:title" content="<%= SEO.title %>">
+    <meta name="twitter:description" content="<%= SEO.description %>">
+    <meta name="twitter:image" content="https://mkekawaleo.com/imgs/mikeka/over25.webp">
+
+    <title>
+        <%= SEO.title %>
+    </title>
+    <link rel="canonical" href="<%= SEO.canonical %>">
+    <link rel="stylesheet" href="/css/mega.css">
     <link rel="stylesheet" href="/css/global.css">
     <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/fonts.ejs'); %>
-    <%- include('../0-global/favicon.ejs') %>
+    <%- include('../0-global/favicon.ejs'); %>
 </head>
 
 <body>
     <%- include('../0-global/header.ejs'); %>
     <main>
         <section class="left">
-            <h1 class="h2" style="font-size: 16px;">Over 2.5 Tips | Mkeka wa Leo</h1>
-            <p class="p">
-                Pata mikeka ya leo ya Over 2.5 (Juu ya 2.5). Over 2.5 Goals au Juu ya Mabao 2.5 ni miongoni mwa mikeka
-                pendwa ya Over/Under (juu/chini ya magoli). Mikeka hii imechambuliwa na kuandaliwa kwa umakini na timu
-                ya <b>Mkeka wa Leo</b> ikiwa na zaidi ya 85% za ushindi.
-            </p>
+            <h1 class="h2" style="font-size: 16px;">
+                Mkeka wa Over 2.5 <%= SEO.siku %> - <%= SEO.trh.day %>, <%= SEO.trh.month_date %>
+            </h1>
+            <div class="introduction p">
+                <p>
+                    Karibu kwenye ukurasa wa <strong>Over 2.5 Tips</strong> – mahali unapopata
+                    <strong>utabiri sahihi wa mechi</strong> kwa mashabiki wa betting hapa Tanzania!
+                </p>
+
+                <p>
+                    Kwa siku ya <%= SEO.siku.toLowerCase() %> <strong><%= SEO.trh.day %>, <%= SEO.trh.date %></strong> tumekuletea mkusanyiko wa tabiri za <strong>Over 2.5</strong> tukiwa na jumla ya mechi
+                    <strong><%= mikeka.length %></strong> zenye uwezekano mkubwa wa
+                    matokeo ya <strong>Over</strong> au <strong>Under 2.5</strong>.
+                    Kila utabiri umechambuliwa kwa umakini kwa kutumia takwimu, historia ya timu,
+                    na hali ya ushindani wa sasa.
+                </p>
+            </div>
+
+
             <%- include('../0-global/banner.ejs'); %>
-            <%- include('./partials/supatips-tables.ejs'); %>
-            <%- include('../0-global/banner2.ejs'); %><br>
-            <%- include('../0-global/vip.ejs'); %>
+            <hr class="my-3 text-light">
+
+            <%- include('./partials/mega.ejs'); %>
             <hr class="my-5 text-light">
-            <%- include('./partials/maana25.ejs'); %>
-            <br><br>
+
+            <%- include('../0-global/vip.ejs'); %>
+            <%- include('../0-global/banner2.ejs'); %>
+            <%- include('./partials/maana.ejs'); %>
             <%- include('./partials/ligi.ejs'); %>
+            <%- include('../0-global/banner3.ejs'); %>
             <%- include('../0-global/somapia.ejs'); %>
         </section>
+
+        <%- include('../0-global/right.ejs'); %>
     </main>
 
+
     <%- include('../0-global/footer.ejs'); %>
+
     <%- include('./partials/script.ejs'); %>
     <%- include('../0-global/script.ejs'); %>
     <%- include('../0-global/modal-leon.ejs'); %>

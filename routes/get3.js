@@ -20,6 +20,7 @@ const { UpdateBongoLeagueData } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherLeagueData } = require('./fns/other-ligi')
+const correctScoreModel = require('../model/cscore')
 
 router.get('/astro/home', async (req, res) => {
     try {
@@ -91,12 +92,14 @@ router.get('/astro/over15', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //over 1.5
-        let over15AllDays = await over15Model.find({ date: { $in: [d, _d, _s, kesho] } }).sort('time')
+        let over1 = ['3:0', '4:0', '4:1', '4:2']
+        let over2 = ['1:4', '2:4']
+        let over15AllDays = await correctScoreModel.find({siku: { $in: [d, _d, _s, kesho] }, tip: { $in: [...over1, ...over2]}, time: { $gte: '12:00' } }).sort('time').lean();
         
-        let over15Leo = over15AllDays.filter(doc => doc.date == d)
-        let over15Kesho = over15AllDays.filter(doc => doc.date == kesho)
-        let over15Juzi = over15AllDays.filter(doc => doc.date == _s)
-        let over15Jana = over15AllDays.filter(doc => doc.date == _d)
+        let over15Leo = over15AllDays.filter(doc => doc.siku == d)
+        let over15Kesho = over15AllDays.filter(doc => doc.siku == kesho)
+        let over15Juzi = over15AllDays.filter(doc => doc.siku == _s)
+        let over15Jana = over15AllDays.filter(doc => doc.siku == _d)
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
@@ -183,48 +186,31 @@ router.get('/astro/ht-15', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        //mikeka ya kuchukua
-        let arr = ['Over 3.5', 'GG & Over 2.5', '2 & GG', '1 & GG', '2 & Over 2.5', '1 & Over 2.5', '12 & GG', 'Under 2.5', 'Under 3.5', 'Under 1.5']
+        //Under 1.5 HT
+        let under = ['0:0', '1:0', '0:1', '1:1']
+        let over = ['4:2', '2:4', '5:1', '5:2']
+        let AllCombined = await correctScoreModel.find({siku: { $in: [d, _d, _s, kesho] }, tip: { $in: [...under, ...over]}, time: { $gt: '12:00' } }).sort('time').lean();
 
-        let [Pp35Tips, MegasOdds] = await Promise.all([
-            passion35.find({
-                siku: { $in: [d, _d, _s, kesho] },
-                tip: { $in: arr }
-            }),
-            mkekadb.find({
-                date: { $in: [d, _d, _s, kesho] },
-                bet: { $in: arr }
-            }),
-        ]);
-
-        //combine arrays, replace the tips and sort with time
-        let AllCombined = [...Pp35Tips, ...MegasOdds]
-        AllCombined.map(doc => {
-            let target = doc.tip || doc.bet
-            let under15 = ['Under 2.5', 'Under 3.5', 'Under 1.5']
-            let over15 = ['Over 3.5', 'GG & Over 2.5', '2 & GG', '1 & GG', '2 & Over 2.5', '1 & Over 2.5', '12 & GG']
-
-            if (under15.includes(target)) {
-                if (doc.tip) doc.tip = 'Under 1.5';
-                if (doc.bet) doc.bet = 'Under 1.5';
-            } else if (over15.includes(target)) {
-                if (doc.tip) doc.tip = 'Over 1.5';
-                if (doc.bet) doc.bet = 'Over 1.5';
+        // map to modify tip field
+        AllCombined = AllCombined.map(doc => {
+            if (under.includes(doc.tip)) {
+                doc.tip = 'Under 1.5 HT'
+            } else if (over.includes(doc.tip)) {
+                doc.tip = 'Over 1.5 HT'
             }
-            return doc;
+            return doc
         })
-        AllCombined.sort((a, b) => a.time.localeCompare(b.time))
-
 
         //tarehes
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
         //filter
-        let ftips = AllCombined.filter(doc => (doc.date === d || doc.siku === d))
-        let ytips = AllCombined.filter(doc => (doc.date === _d || doc.siku === _d))
-        let ktips = AllCombined.filter(doc => (doc.date === kesho || doc.siku === kesho))
-        let jtips = AllCombined.filter(doc => (doc.date === _s || doc.siku === _s))
+        let ftips = AllCombined.filter(doc => (doc.siku === d))
+        let ytips = AllCombined.filter(doc => (doc.siku === _d))
+        let ktips = AllCombined.filter(doc => (doc.siku === kesho))
+        let jtips = AllCombined.filter(doc => (doc.siku === _s))
+
 
         res.status(200).json({mikeka: {ftips, ytips, ktips}, jumasiku, trh})
     } catch (err) {

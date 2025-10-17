@@ -1,9 +1,9 @@
-<section id="over35-tips" class="mega-card card border-0 shadow-sm" itemscope>
-  <div class="btn-group" role="group" aria-label="Over 3.5 Leo na Kesho">
-    <a href="/mkeka/over-under-35#over35-tips" class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Under/Over 3.5" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+<section id="over15-tips" class="mega-card card border-0 shadow-sm" itemscope>
+  <div class="btn-group" role="group" aria-label="Over 1.5 Leo na Kesho">
+    <a href="/mkeka/over-15#over15-tips" class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Leo wa Over 1.5" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
       Leo
     </a>
-    <a href="/mkeka/over-under-35/kesho#over35-tips" class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Under/Over 3.5" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+    <a href="/mkeka/over-15/kesho#over15-tips" class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-muted' %>" title="Mkeka wa Kesho wa Over 1.5" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
       Kesho
     </a>
   </div>
@@ -13,7 +13,7 @@
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <h2 class="mega-card__title m-0 fw-bold fs-3">
           <span class="bullet" aria-hidden="true"></span>
-          Mkeka wa Under/Over 3.5 <%= SEO.siku %>
+          Mkeka wa Over 1.5 <%= SEO.siku %>
         </h2>
         <div class="date-wrap d-flex align-items-center gap-2">
           <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i><%= SEO.trh.day %></span>
@@ -51,7 +51,7 @@
                 <span class="name"><%= _away %></span>
               </div>
             </div>
-            <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.tip %></span></div>
+            <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %></span></div>
           </div>
           <div class="prediction__odds">
             <div class="odds-cta">
@@ -84,7 +84,7 @@
   <!-- If no Tips -->
   <% if (mikeka.length == 0) { %>
   <div class="alert alert-warning mx-1" role="alert">
-    Bado hakuna tips za Under/Over 3.5 kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
+    Bado hakuna tips za Over 1.5 kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
     kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya bure hapa.</a>
   </div>
   <br>
@@ -107,7 +107,7 @@
             <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
             <div class="stat__body">
               <div class="label">Total Odds</div>
-              <div class="value fw-bold fs-5"><%= Number(total_odds) %></div>
+              <div class="value fw-bold fs-5"><%= total_odds %></div>
             </div>
           </div>
         </div>
