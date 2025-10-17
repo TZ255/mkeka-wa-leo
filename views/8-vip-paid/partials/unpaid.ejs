@@ -1,15 +1,5 @@
-<div class="card-body text-center p-2 shadow mx-auto" style="width: 95%;" id="lipia_maelezo">
-    <div class="alert alert-warning p-4 rounded-3 text-center shadow-sm border-start border-danger border-4">
-        <div class="d-flex flex-column align-items-center">
-            <i class="fa-solid fa-circle-exclamation text-danger mb-2" style="font-size: 2.5rem;"></i>
-            <h4 class="text-danger fw-bold mb-3">Huwezi ona VIP Tips za leo</h4>
-        </div>
-        <p class="mt-2 mb-0 fs-6">
-            Ili kuona mikeka yetu ya VIP,
-            bonyeza <strong>"LIPIA VIP"</strong> kufanya malipo yako.
-        </p>
-    </div>
-
+<%- include('./sure3-locked.ejs'); %>
+<div class="card-body text-center p-2 mx-auto" style="width: 95%;" id="lipia_maelezo">
     <!-- Standard plan -->
     <div class="bg-white shadow p-4 rounded border border-secondary my-5">
         <div class="text-center mb-3">
@@ -70,11 +60,11 @@
 <div class="malipo-cont my-5 d-none" id="malipo-cont">
     <% const lipanamba = true %>
     
-    <% if (autopilot === true) { %>
+    <% if (lipanamba === false) { %>
      <%- include('./htmx-form.ejs'); %>
     <% } %>
     
-    <% if (autopilot === false) { %>
+    <% if (lipanamba === true) { %>
      <%- include('./lipanamba.ejs'); %>
     <% } %>
 </div>

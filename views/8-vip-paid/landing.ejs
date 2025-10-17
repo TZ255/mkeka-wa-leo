@@ -48,8 +48,9 @@
         <section class="left mt-5">
             <!-- If user unpaid. Show this header -->
             <% if (user.status !== 'paid') { %>
-            <h2 class="h2 mb-3 fw-bold bg-dark fs-5">VIP TiPS za Siku -
-                <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
+            <h2 class="mb-4 p-3" style="font-size: 1.25rem; font-weight: 700; color: #212529; background: #ebeae7; border-top: 4px solid #daa520; padding: 1.25rem 1.5rem; border-radius: 4px; line-height: 1.3;">
+                Mikeka ya VIP Leo |
+                <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
             </h2>
             <% } %>
             <!-- if user paid -->
