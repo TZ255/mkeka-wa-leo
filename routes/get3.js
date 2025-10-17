@@ -92,9 +92,9 @@ router.get('/astro/over15', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //over 1.5
-        let over1 = ['3:0', '4:0', '4:1', '4:2']
-        let over2 = ['1:4', '2:4']
-        let over15AllDays = await correctScoreModel.find({siku: { $in: [d, _d, _s, kesho] }, tip: { $in: [...over1, ...over2]}, time: { $gte: '12:00' } }).sort('time').lean();
+        let over1 = ['3:0', '3:1', '4:0', '4:1', '4:2', '4:3', '5:0', '5:1', '5:2', '5:3']
+        let over2 = ['0:3', '1:3', '1:4', '2:4', '3:4', '0:4', '1:5', '2:5', '3:5', '0:5']
+        let over15AllDays = await correctScoreModel.find({siku: { $in: [d, _d, _s, kesho] }, tip: { $in: [...over1, ...over2]}, time: { $gt: '12:00' } }).sort('time').lean();
         
         let over15Leo = over15AllDays.filter(doc => doc.siku == d)
         let over15Kesho = over15AllDays.filter(doc => doc.siku == kesho)
@@ -189,7 +189,7 @@ router.get('/astro/ht-15', async (req, res) => {
         //Under 1.5 HT
         let under = ['0:0', '1:0', '0:1', '1:1']
         let over = ['4:2', '2:4', '5:1', '5:2']
-        let AllCombined = await correctScoreModel.find({siku: { $in: [d, _d, _s, kesho] }, tip: { $in: [...under, ...over]}, time: { $gt: '12:00' } }).sort('time').lean();
+        let AllCombined = await correctScoreModel.find({siku: { $in: [d, _d, _s, kesho] }, tip: { $in: [...under, ...over]} }).sort('time').lean();
 
         // map to modify tip field
         AllCombined = AllCombined.map(doc => {
