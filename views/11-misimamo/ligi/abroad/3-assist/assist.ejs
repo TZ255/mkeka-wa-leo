@@ -26,7 +26,7 @@
     <%- include('../../../../0-global/header.ejs'); %>
     <main>
         <section class="left text-align-justify">
-            <h1 class="fs-4 mx-2 my-4">
+            <h1 class="h2">
                 Watoa Assist Bora <%= partials.league_name %> <%= partials.season_long %> - Vinara wa Assist
                 <%= partials.ligi %>
             </h1>
@@ -36,7 +36,6 @@
                     <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
                 </abbr>
             </span>
-            <hr>
             <div class="utangulizi p-2 text-align-justify">
                 <p>
                     Hadi sasa, <%= top_assists[0].player.name %> wa <%= top_assists[0].statistics[0].team.name %> na

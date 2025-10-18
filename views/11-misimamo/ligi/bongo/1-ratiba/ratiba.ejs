@@ -32,11 +32,10 @@
   <%- include('../../../../0-global/header.ejs'); %>
   <main>
     <section class="left">
-      <h1 class="fs-4 mx-2 my-4">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> Msimu wa
+      <h1 class="h2">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> Msimu wa
         <%= partials.season_long %></h1>
       <div>
-        <h2 class="h2 fs-6 mb-3">Utangulizi</h2>
-        <div class="utangulizi p-2 text-align-justify">
+        <div class="utangulizi p text-align-justify">
           <p>
             <%= partials.team_info.team.name %> ni timu inayoshiriki ligi kuu ikiwa inashikilia nafasi ya
             <%= partials.team_info.rank %> katika <a href="/standings/football/tanzania/premier-league" class="text-success">Msimamo
@@ -54,7 +53,7 @@
           </p>
         </div>
         <div class="table-section" itemscope itemtype="https://schema.org/Table">
-          <h2 class="h2 fs-6 mb-3" itemprop="about">Msimamo wa <%= partials.team_info.team.name %> Katika Ligi
+          <h2 class="h2" itemprop="about">Msimamo wa <%= partials.team_info.team.name %> Katika Ligi
             Kuu Tanzania Bara <%= partials.season_long %></h2>
           <table class="table table-striped">
             <thead style="font-size: 13px !important;">
@@ -84,7 +83,7 @@
         <br>
         <hr><br>
         <div class="table-section" itemscope itemtype="https://schema.org/Table">
-          <h2 class="h2 fs-6 mb-3" itemprop="about">Ratiba ya <%= partials.team_info.team.name %> - Mechi za Msimu
+          <h2 class="h2" itemprop="about">Ratiba ya <%= partials.team_info.team.name %> - Mechi za Msimu
             Mzima wa <%= partials.season_long %> Pamoja na Matokeo</h2>
           <table class="table table-striped">
             <thead>

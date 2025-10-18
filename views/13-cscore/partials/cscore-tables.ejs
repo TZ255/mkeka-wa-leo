@@ -62,9 +62,6 @@
             * CORRECT SCORES za <b>Leo: <%= trh.leo %></b> bado ziko kwenye maandalizi. <a href="/">Angalia hapa mikeka ilyotayari</a>
         </div>
         <% } %>
-        <% if (cscoreLeo.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
-        <% } %>
     </div>
 
     <!-- juzi -->
@@ -107,9 +104,6 @@
                 <% }); %>
             </tbody>
         </table>
-        <% if (scoreJuzi.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
-        <% } %>
     </div>
 
     <!-- yesterday -->
@@ -152,9 +146,6 @@
                 <% }); %>
             </tbody>
         </table>
-        <% if (scoreJana.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
-        <% } %>
     </div>
 
 
@@ -203,9 +194,6 @@
             * CORRECT SCORES za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo litakuwa
             tayari.
         </div>
-        <% } %>
-        <% if (cscoreKesho.length > 0) { %>
-        <%- include('../../0-global/aff.ejs'); %>
         <% } %>
     </div>
 </section>

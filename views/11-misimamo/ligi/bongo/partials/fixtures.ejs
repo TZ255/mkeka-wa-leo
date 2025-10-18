@@ -2,7 +2,7 @@
   <!-- recent results -->
   <% if (recent_results.length> 0) { %>
   <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
-    <h2 class="fs-5 ps-2 border-bottom" itemprop="about">
+    <h2 class="h2" itemprop="about">
       Matokeo ya Ligi Kuu NBC <%= partials.season_short %> - Mechi <%= recent_results.length %> za Hivi Karibuni
     </h2>
     <table class="table table-striped">
@@ -53,7 +53,7 @@
 
   <!-- recent fixtures -->
   <div class="rounds-table my-5" itemscope itemtype="https://schema.org/Table">
-    <h2 class="fs-5 ps-2 border-bottom" itemprop="about">
+    <h2 class="h2" itemprop="about">
       Ratiba ya Ligi Kuu NBC <%= partials.season_short %> - Mechi <%= recent_results.length %> za Hivi Karibuni
     </h2>
     <table class="table table-striped">
@@ -103,7 +103,7 @@
 
   <!-- All fixtures -->
   <div class="rounds-table my-5">
-    <h2 class="fs-5 ps-2">Ratiba na Matokeo ya Msimu Mzima wa <%= partials.season_long %></h2>
+    <h2 class="h2">Ratiba na Matokeo ya Msimu Mzima wa <%= partials.season_long %></h2>
     <p class="p">
       Katika msimu huu wa NBC <%= partials.season_long %>, zitachezwa jumla ya mechi <%= standing.season_fixtures?.length %> zitakazohusisha vilabu <%= standing.standing?.length %> kwa michezo ya raundi mbili.
     </p>

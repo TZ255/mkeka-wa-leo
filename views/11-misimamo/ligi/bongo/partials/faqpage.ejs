@@ -1,15 +1,15 @@
 <br>
 <section class="faq">
-    <h2 class="h2 fs-6">Maswali Yalioulizwa Mara kwa Mara</h2>
+    <h2 class="h2">Maswali Yalioulizwa Mara kwa Mara</h2>
     <div class="accordion" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
           <h3 class="accordion-header" id="panelsStayOpen-headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+            <button class="accordion-button text-dark fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
               Ligi Kuu ya NBC Tanzania Bara ina jumla ya timu ngapi?
             </button>
           </h3>
           <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-            <div class="accordion-body">
+            <div class="accordion-body p">
               <p>
                 Ligi kuu ya NBC Tanzania Bara kwa msimu wa <%= partials.season_long %> ina jumla ya timu <%= standing.standing.length %> ambapo kati ya hizo, timu inayoshikilia nafasi ya 1 na ya 2 zitashiriki CAF Champions League na timu inayoshikilia nafasi ya 3 itashiriki CAF Confederation Cup.
               </p>
@@ -18,12 +18,12 @@
         </div>
         <div class="accordion-item">
           <h3 class="accordion-header" id="panelsStayOpen-headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            <button class="accordion-button text-dark fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
               Nini maana ya Relegation na Relegation Playoff kwenye msimamo wa Ligi Kuu Bara?
             </button>
           </h3>
           <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-            <div class="accordion-body">
+            <div class="accordion-body p">
               <p>
                 Katika msimamo wa ligi kuu bara, "<b>Relegation</b>" na "<b>Relegation Play-Off</b>" zinahusiana na kushushwa daraja (au kuepuka kushushwa daraja) kwa timu zilizopo mwishoni mwa msimamo wa ligi. Hizi maana yake ni: 
               </p>
@@ -44,24 +44,24 @@
         </div>
         <div class="accordion-item">
           <h3 class="accordion-header" id="panelsStayOpen-headingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+            <button class="accordion-button text-dark fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
               Msimu wa <%= partials.season_long %> wa NBC Ligi Kuu Bara ulianza lini?
             </button>
           </h3>
           <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-            <div class="accordion-body">
+            <div class="accordion-body p">
               <p>Ratiba ya Ligi Kuu ya NBC Bara <%= partials.season_long %> ilianza <%= new Date( standing.season_fixtures[0].fixture.date).toLocaleString('sw-TZ', { timeZone: 'Africa/Nairobi' }) %> kwa mechi ya ufunguzi kati ya <b><%= standing.season_fixtures[0].teams.home.name %></b> na <b><%= standing.season_fixtures[0].teams.away.name %></b> iliyoisha kwa matokeo ya <b><%= standing.season_fixtures[0].goals.home %>:<%= standing.season_fixtures[0].goals.away %></b></p>
             </div>
           </div>
         </div>
         <div class="accordion-item">
             <h3 class="accordion-header" id="panelsStayOpen-headingFour">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+              <button class="accordion-button text-dark fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
                 Timu zipi ni vinara wa ligi kuu Tanzania Bara mara kwa mara?
               </button>
             </h3>
             <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingFour">
-              <div class="accordion-body">
+              <div class="accordion-body p">
                 <p>Timu mbili vinara wa mara kwa mara kwa ligi kuu Tanzania Bara ni <b>Young Africans (Yanga SC) na Simba SC</b></p>
                 <h4>Mataji ya ligi kuu:</h4>
                 <ul>

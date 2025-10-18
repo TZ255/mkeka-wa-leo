@@ -1,8 +1,18 @@
 <% if (standing.standing[0].points >= 9) { %>
-<p class="p-2" style="text-align: justify;">
-    Katika msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %> wenye jumla ya vilabu <%= standing.standing.length %>, <b><%= standing.standing[0].team.name %></b> inaongoza ikiwa na jumla ya alama <%= standing.standing[0].points %> huku ikiwa imecheza michezo <%= standing.standing[0].all.played %> na kushinda michezo <%= standing.standing[0].all.win %>. Inafuatiwa na <b><%= standing.standing[1].team.name %></b> ambayo ina jumla ya alama <%= standing.standing[1].points %> baada ya kucheza michezo <%= standing.standing[1].all.played %> na kushinda michezo <%= standing.standing[1].all.win %>.
-</p>
-<p class="p-2" style="text-align: justify;">
-    Kwa upande mwingine, timu tatu za mwisho katika msimamo ni <b><%= standing.standing.at(-3).team.name %></b>, <b><%= standing.standing.at(-2).team.name %></b>, na <b><%= standing.standing.at(-1).team.name %></b> ambazo zina alama <%= standing.standing.at(-3).points%>, <%= standing.standing.at(-2).points %>, na <%= standing.standing.at(-1).points %>.
-</p>
+<div class="p">
+    <p>
+        Katika msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %> wenye jumla ya vilabu
+        <%= standing.standing.length %>, <b><%= standing.standing[0].team.name %></b> inaongoza ikiwa na jumla ya alama
+        <%= standing.standing[0].points %> huku ikiwa imecheza michezo <%= standing.standing[0].all.played %> na
+        kushinda michezo <%= standing.standing[0].all.win %>. Inafuatiwa na <b><%= standing.standing[1].team.name %></b>
+        ambayo ina jumla ya alama <%= standing.standing[1].points %> baada ya kucheza michezo
+        <%= standing.standing[1].all.played %> na kushinda michezo <%= standing.standing[1].all.win %>.
+    </p>
+    <p>
+        Kwa upande mwingine, timu tatu za mwisho katika msimamo ni <b><%= standing.standing.at(-3).team.name %></b>,
+        <b><%= standing.standing.at(-2).team.name %></b>, na <b><%= standing.standing.at(-1).team.name %></b> ambazo
+        zina alama <%= standing.standing.at(-3).points%>, <%= standing.standing.at(-2).points %>, na
+        <%= standing.standing.at(-1).points %>.
+    </p>
+</div>
 <% } %>

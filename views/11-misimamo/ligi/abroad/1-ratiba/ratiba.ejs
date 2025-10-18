@@ -29,16 +29,14 @@
     <%- include('../../../../0-global/header.ejs'); %>
     <main>
         <section class="left">
-            <h1 class="fs-4 mx-2 my-4">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> <%= partials.ligi %> Msimu wa
+            <h1 class="h2">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> <%= partials.ligi %> Msimu wa
                 <%= partials.season_long %></h1>
             <div>
-                <h2 class="h2 fs-6 mb-3">Utangulizi</h2>
-                <div class="utangulizi p-2 text-align-justify">
+                <div class="utangulizi p text-align-justify">
                     <p>
                         <%= partials.team_info.team.name %> ni timu inayoshiriki <%= partials.ligi %> <%= partials.season_long %> ikiwa inashikilia nafasi ya
-                        <%= partials.team_info.rank %> katika <a href="/standings/football/<%= partials.path %>" class="text-success">Msimamo
-                            wa <%= partials.ligi %> <%= partials.season_long %></a> na ikiwa na jumla ya <b
-                            class="text-success">points <%= partials.team_info.points %></b>. Hadi sasa imecheza jumla
+                        <%= partials.team_info.rank %> katika <a href="/standings/football/<%= partials.path %>" class="link-dark">Msimamo
+                            wa <%= partials.ligi %> <%= partials.season_long %></a> na ikiwa na jumla ya <strong>points <%= partials.team_info.points %></strong>. Hadi sasa imecheza jumla
                         ya mechi
                         <%= partials.team_info.all.played %>, mechi <%= partials.team_info.home.played %> zikiwa za
                         nyumbani na <%= partials.team_info.away.played %> za ugenini.
