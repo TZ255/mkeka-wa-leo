@@ -289,7 +289,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
         let over1 = ['4:1', '4:2', '5:0', '5:1', '5:2', '5:3', '5:4']
         let over2 = ['2:4', '0:5', '1:5', '2:5', '3:5', '4:5']
         let under = ['0:0']
-        let less_over = [ '1:4', '4:3', '3:4', '4:4']
+        let less_over = ['3:1','1:3', '1:4', '4:3', '3:4', '4:4']
 
         let ou_leo = await correctScoreModel.aggregate([
             {
