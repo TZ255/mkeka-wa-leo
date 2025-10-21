@@ -1,26 +1,30 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 450px;">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">
-                    <b style="font-size: 16px;">🎯 VIP MIKEKA <i class="fa-solid fa-crown"></i></b>
+                    <b style="font-size: 16px;">VIP MIKEKA 🔥🔥🔥</b>
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="text-align: justify;">
-                <p class="p" style="font-size: 16px; line-height: 1.6;">
-                    🔥 <b>Furahia Ushindi wa Kipekee!</b> Jiunge na <b>VIP MIKEKA</b> na upokee mikeka ya uhakika kila
+                <div style="width: 100%; height: fit-content;">
+                    <img src="/imgs/vip-ad.webp" alt="Mkeka wa Leo | VIP Tips" style="width: 100%; border-radius: 4px;"
+                        onclick="window.location.href='/mkeka/vip'">
+                </div>
+                <p class="small">
+                    🔥 <b>Furahia Ushindi wa Kipekee!</b> Jiunge na <strong>VIP MIKEKA</strong> na upokee mikeka ya uhakika kila
                     siku.
                     🚀 Tunakuletea <b>Fixed Matches na VIP Tips</b> zisizopungua <b>10</b> kwa siku!
                     🔐 Pata faida kubwa kwa kutumia utabiri wetu wa kitaalamu.
-                    <br><br>
-                    <a href="/mkeka/vip" id="vip_btn2" class="vip_modal_btn mx-auto d-block rounded fw-bold px-5 py-3"
-                        style="font-family: sans-serif; font-size: 14px;">
-                        <i class="fa-solid fa-crown"></i>
-                        <b>PATA VIP SASA!</b>
-                    </a>
                 </p>
+            </div>
+            <div class="modal-footer">
+                <a href="/mkeka/vip" id="vip_btn2" class="btn btn-warning mx-auto d-block rounded fw-bold px-5 py-3">
+                    <i class="fa-solid fa-crown"></i>
+                    <b>PATA VIP SASA!</b>
+                </a>
             </div>
         </div>
     </div>
@@ -41,7 +45,7 @@
     // Function to start the interval timer
     function startModalInterval() {
         showModal(); // Show immediately first time
-        modalShowInterval = setInterval(showModal, 30000); // Then every 20 seconds
+        modalShowInterval = setInterval(showModal, 60000); // Then every 20 seconds
     }
 
     // Function to handle modal hide event
@@ -51,17 +55,12 @@
             clearInterval(modalShowInterval);
         }
         // Start new interval
-        modalShowInterval = setInterval(showModal, 30000);
+        modalShowInterval = setInterval(showModal, 60000);
     }
 
     // Add event listener for when modal is hidden
     document.getElementById('exampleModal').addEventListener('hidden.bs.modal', handleModalHide);
 
-    // Add event listener to the bet button
-    // document.getElementById('betBtn').addEventListener('click', function () {
-    //     window.open('/betway/register');
-    // });
-
     // Start the initial timer
-    setTimeout(startModalInterval, 10000);
+    setTimeout(startModalInterval, 15000);
 </script>
