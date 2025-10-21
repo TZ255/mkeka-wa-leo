@@ -338,11 +338,8 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        //UpdateOtherLeagueData(15, 2025)
-        // UpdateBongoLeagueData(567, 2025)
-        // let pymnt = await makePayment()
-        let pymnt = await getTransactionStatus("ORD-mgq8odqf-754920480")
-        res.send(pymnt)
+        await sendNormalSMS("+255686784662", "Bernad, Ule mchongo umetiki")
+        res.send('SMS sent')
     } catch (error) {
         res.send(error)
     }

@@ -5,6 +5,7 @@ const { isValidPhoneNumber } = require('tanzanian-phone-validator');
 const { makePayment, getTransactionStatus } = require('./fns/zenopay');
 const { grantSubscription } = require('./fns/grantVIP');
 const { sendLauraNotification } = require('./fns/sendTgNotifications');
+const { sendNormalSMS } = require('./fns/sendSMS');
 
 // helpers
 const WEBHOOK_BASE_DOMAIN = process.env.WEBHOOK_BASE_DOMAIN || process.env.DOMAIN || ''
@@ -165,6 +166,8 @@ router.post('/api/zenopay-webhook', async (req, res) => {
                 try {
                     let sub = await grantSubscription(record.email, record?.meta?.plan || 'silver');
                     sendLauraNotification(5849160770, `✅ ${record?.meta?.plan} plan confirmed for ${record?.email}`, false)
+                    //send SMS
+                    sendNormalSMS(buyer_phone, sub.message)
                 }
                 catch (e) {
                     console.log('grantSubscription webhook error:', e?.message);
