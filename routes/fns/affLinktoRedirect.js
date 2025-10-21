@@ -26,7 +26,7 @@ const LinkToRedirect = async (comp, ip) => {
         switch (comp) {
             case 'gsb':
                 if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
-                return links.gsb
+                return links.leonbet;
             case 'pmatch':
                 return links.pmatch
             case 'betway':
