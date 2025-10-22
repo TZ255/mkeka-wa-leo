@@ -170,15 +170,6 @@ router.post('/api/zenopay-webhook', async (req, res) => {
         const record = await PaymentBin.findOne({ orderId: order_id });
         if (record) {
             if (payment_status === 'COMPLETED') {
-                //ensure it is completed
-                let statusResp = await getTransactionStatus(order_id);
-                const status = statusResp?.data[0].payment_status || statusResp?.payment_status
-                if (status !== "COMPLETED") {
-                    console.log('Webhook status mismatch for', order_id);
-                    sendLauraNotification(5849160770, `⚠️ ZenoPay webhook status mismatch for order ${order_id}: webhook=${payment_status} vs status-api=${status}`, false)
-                    return res.sendStatus(200)
-                }
-
                 // Update user
                 record.payment_status = payment_status || record.payment_status;
                 record.reference = reference || record.reference;
