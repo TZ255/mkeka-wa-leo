@@ -24,9 +24,9 @@ const PLAN_MAP = {
 // Serve the HTMX payment form (to be loaded inside the modal)
 router.get('/api/pay-form', async (req, res) => {
     try {
-        return res.render('zz-fragments/htmx-form', { layout: false });
+        return res.render('zz-fragments/htmx-form', { layout: false, user: req?.user || '' });
     } catch (error) {
-        res.render('zz-fragments/payment-error', { layout: false, message: 'Imeshindikana kupakia fomu ya malipo.' });
+        res.render('zz-fragments/payment-error', { layout: false, user: req?.user || '', message: 'Imeshindikana kupakia fomu ya malipo.' });
     }
 });
 
@@ -44,24 +44,24 @@ router.post("/api/pay", async (req, res) => {
         // basic validation
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Barua pepe si sahihi. Tafadhali login upya.' });
+            return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: 'Barua pepe si sahihi. Tafadhali login upya.' });
         }
 
         if (!/^([1-9][0-9]{8})$/.test(phone9)) {
             res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Namba ya simu si sahihi. Weka tarakimu 9 bila kuanza na 0' });
+            return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: 'Namba ya simu si sahihi. Weka tarakimu 9 bila kuanza na 0' });
         }
 
         const phone = `255${phone9}`;
         if (!isValidPhoneNumber(phone)) {
             res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Namba ya simu si sahihi. Weka namba sahihi bila kuanza na 0' });
+            return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: 'Namba ya simu si sahihi. Weka namba sahihi bila kuanza na 0' });
         }
 
         const user = await mkekaUsersModel.findOne({ email })
         if (!user) {
             res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Tumeshindwa pata taarifa zako. Tafadhali login upya.' });
+            return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: 'Tumeshindwa pata taarifa zako. Tafadhali login upya.' });
         }
 
         const order_id = generateOrderId(phone9);
@@ -93,20 +93,20 @@ router.post("/api/pay", async (req, res) => {
         // Expecting success payload: { status: 'success', resultcode:'000', message:'...', order_id:'...' }
         if (!apiResp || apiResp.status !== 'success') {
             res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, message: apiResp?.message || 'Imeshindikana kuanzisha malipo. Jaribu tena.' });
+            return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: apiResp?.message || 'Imeshindikana kuanzisha malipo. Jaribu tena.' });
         }
 
         //send initiating message
         sendLauraNotification(5849160770, `${email} initiated payment for ${plan} plan with ${phone}`, true)
 
-        return res.render('zz-fragments/payment-initiated', { layout: false, orderId: apiResp.order_id || order_id, phone });
+        return res.render('zz-fragments/payment-initiated', { layout: false, user: req?.user || '', orderId: apiResp.order_id || order_id, phone });
     } catch (error) {
         console.log('PAY error:', error?.message);
         res.set('HX-Reswap', 'none');
         if(error?.message && error.message.includes('timed out')) {
-            return res.render('zz-fragments/payment-timedout', { layout: false });
+            return res.render('zz-fragments/payment-timedout', { layout: false, user: req?.user || '' });
         }
-        return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Hitilafu imetokea. Tafadhali jaribu tena au wasiliana nasi.' });
+        return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: 'Hitilafu imetokea. Tafadhali jaribu tena au wasiliana nasi.' });
     }
 });
 
@@ -115,7 +115,7 @@ router.post('/api/check-status', async (req, res) => {
     try {
         const orderId = String(req.body.orderId || '').trim();
         if (!orderId) {
-            return res.render('zz-fragments/payment-modal-pending', { layout: false, orderId: '', note: 'Hakuna orderId. Jaribu tena.' });
+            return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId: '', note: 'Hakuna orderId. Jaribu tena.' });
         }
 
         console.log('Checking Order status:', req.body)
@@ -123,7 +123,7 @@ router.post('/api/check-status', async (req, res) => {
         const record = await PaymentBin.findOne({ orderId });
         if (!record) {
             // Keep same modal, inform pending state
-            return res.render('zz-fragments/payment-modal-pending', { layout: false, orderId, note: 'Hatukupata kumbukumbu ya malipo. Tafadhali jaribu tena' });
+            return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId, note: 'Hatukupata kumbukumbu ya malipo. Tafadhali jaribu tena' });
         }
 
         // Fail after 2 minutes without update (unless already completed)
@@ -135,7 +135,7 @@ router.post('/api/check-status', async (req, res) => {
                 record.updatedAt = new Date();
                 await record.save();
             } catch (e) { console.log('Mark FAILED error:', e?.message); }
-            return res.render('zz-fragments/payment-modal-failed', { layout: false, orderId, email: record?.email });
+            return res.render('zz-fragments/payment-modal-failed', { layout: false, user: req?.user || '', orderId, email: record?.email });
         }
 
         if (record.payment_status === 'COMPLETED') {
@@ -145,17 +145,17 @@ router.post('/api/check-status', async (req, res) => {
         }
 
         if (record.payment_status === 'FAILED') {
-            return res.render('zz-fragments/payment-modal-failed', { layout: false, orderId, email: record?.email });
+            return res.render('zz-fragments/payment-modal-failed', { layout: false, user: req?.user || '', orderId, email: record?.email });
         }
 
         // Compute remaining seconds for countdown (reuse 3-min window and lastUpdate above)
         const remainingMs = Math.max(0, (1000 * 60 * 3) - (Date.now() - lastUpdate));
         const remainingSec = Math.ceil(remainingMs / 1000);
-        return res.render('zz-fragments/payment-modal-pending', { layout: false, orderId, note: `Bado tunasubiri uthibitisho wa muamala kwenye namba ${record?.phone}. Tafadhali thibitisha`, remainingSec });
+        return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId, note: `Bado tunasubiri uthibitisho wa muamala kwenye namba ${record?.phone}. Tafadhali thibitisha`, remainingSec });
     } catch (error) {
         console.log('CHECK-STATUS error:', error?.message, error);
         // keep modal; provide a conservative countdown
-        return res.render('zz-fragments/payment-modal-pending', { layout: false, orderId: req.body?.orderId, note: 'Imeshindikana kuthibitisha sasa. Subiri kidogo...', remainingSec: 180 });
+        return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId: req.body?.orderId, note: 'Imeshindikana kuthibitisha sasa. Subiri kidogo...', remainingSec: 180 });
     }
 });
 
