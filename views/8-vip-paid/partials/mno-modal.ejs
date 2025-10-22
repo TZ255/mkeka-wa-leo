@@ -1,0 +1,51 @@
+<!-- MNO Modal -->
+<div class="modal fade" id="MNO_Modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+    data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width:600px">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h5 id="vodaModalTitle" class="modal-title">
+                    <i class="fa-solid fa-wallet me-1"></i> Malipo Tanzania 🇹🇿
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="mobileModalBody" class="modal-body">
+                <ul class="nav nav-tabs nav-fill gap-1 mb-3" id="myTab" role="tablist" style="font-size:12px; font-weight: bold;">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active py-1 px-2" id="voda-tab" data-bs-toggle="tab"
+                            data-bs-target="#voda-tab-pane" type="button" role="tab" aria-controls="voda-tab-pane"
+                            aria-selected="true">Voda</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-1 px-2" id="tigo-tab" data-bs-toggle="tab" data-bs-target="#tigo-tab-pane"
+                            type="button" role="tab" aria-controls="tigo-tab-pane" aria-selected="false">Tigo</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-1 px-2" id="airtel-tab" data-bs-toggle="tab" data-bs-target="#airtel-tab-pane"
+                            type="button" role="tab" aria-controls="airtel-tab-pane" aria-selected="false">Airtel</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-1 px-2" id="halotel-tab" data-bs-toggle="tab" data-bs-target="#halotel-tab-pane"
+                            type="button" role="tab" aria-controls="halotel-tab-pane" aria-selected="false">Halotel</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="voda-tab-pane" role="tabpanel" aria-labelledby="voda-tab" tabindex="0">
+                        <%- include('./extras/voda.ejs'); %>
+                    </div>
+                    <div class="tab-pane fade" id="tigo-tab-pane" role="tabpanel" aria-labelledby="tigo-tab" tabindex="0">
+                        <%- include('./extras/tigo.ejs'); %>
+                    </div>
+                    <div class="tab-pane fade" id="airtel-tab-pane" role="tabpanel" aria-labelledby="airtel-tab" tabindex="0">
+                        <%- include('./extras/airtel.ejs'); %>
+                    </div>
+                    <div class="tab-pane fade" id="halotel-tab-pane" role="tabpanel" aria-labelledby="halotel-tab" tabindex="0">
+                        <%- include('./extras/halotel.ejs'); %>
+                    </div>
+                </div>
+                <%- include('./extras/wha-confirm.ejs'); %>
+            </div>
+        </div>
+    </div>
+</div>

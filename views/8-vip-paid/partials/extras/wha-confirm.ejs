@@ -1,0 +1,26 @@
+<!-- Whatsapp confirm -->
+<div class="card mx-auto bg-light border-start border-info border-4 mt-2" id="whatsapp-confirm">
+    <div class="card-body">
+        <h6 class="card-title mb-2">
+            <i class="fa-solid fa-circle-check me-1 text-info"></i>
+            Uthibitisho
+        </h6>
+        <p class="card-text text-muted mb-1" style="font-size: 12px;">
+            Baada ya malipo tutumie screenshot ya muamala pamoja na email yako ili kuthibitishwa na kupata
+            mikeka yetu ya VIP
+        </p>
+
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <span class="text-muted" style="font-size: 12px;">Tutumie hapa 👇👇</span>
+                <h6 class="mb-0 mt-1">
+                    <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email}`) %>"
+                        class="btn btn-success btn-sm rounded px-2">
+                        <i class="fa-brands fa-whatsapp me-1"></i>
+                        WhatsApp: <b>+255 711 935 460</b>
+                    </a>
+                </h6>
+            </div>
+        </div>
+    </div>
+</div>
