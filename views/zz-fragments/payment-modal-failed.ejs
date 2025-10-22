@@ -1,5 +1,7 @@
-<% const subject = `Malipo Yameshindikana - Order ID: ${orderId}` %>
-<% const emailBody = encodeURIComponent(`Habari MikekaTips, nimefanya malipo lakini hayajathibitishwa kwa wakati. \nOrder ID: ${orderId}\nEmail: ${email}\n\nHapa chini nimeambatanisha screenshot ya muamala wangu`) %>
+<% 
+const message_failed = `Email: ${user?.email || ''}\n\nChangamoto ya malipo.`;
+const whatsapp_failed = `https://wa.me/255711935460?text=${encodeURIComponent(message_failed)}`; 
+%>
 
 <!-- OOB update: failed state in the same modal -->
 <h5 id="paymentModalTitle" hx-swap-oob="true" class="modal-title text-danger">
@@ -10,14 +12,15 @@
   <div class="alert alert-danger d-flex flex-column align-items-center mb-2" role="alert">
     <i class="fa-solid fa-triangle-exclamation"></i>
     <div>
-      <p>Hatukupokea uthibitisho wa malipo kwa wakati, tafadhali <strong>anza upya</strong> ikiwa bado hujathibitisha au kupokea menu ya malipo</p>
+      <p>Hatukupokea uthibitisho wa malipo kwa wakati, tafadhali <strong>Anza Upya</strong> ikiwa bado hujathibitisha au
+        kupokea menu ya malipo</p>
       <p>
-        Ikiwa tayari umethibitisha bonyeza <b>Refresh</b> kuona kama malipo yamekamilika au kuwasiliana nasi
+        Ikiwa tayari umethibitisha bonyeza <b>wasiliana nasi</b> WhatsApp kwa kututumia screenshot ya muamala wako
       </p>
     </div>
   </div>
   <div class="small text-muted">Order ID: <code><%= orderId %></code></div>
-  <div class="small text-muted">Email: <code>info.mkekawaleo@gmail.com</code></div>
+  <div class="small text-muted">WhatsApp: <code>+255 711 935 460</code></div>
 
 </div>
 
@@ -26,8 +29,8 @@
     <i class="fa-regular fa-circle-xmark me-1"></i>
     ANZA UPYA
   </button>
-  <button class="btn btn-success d-inline-flex align-items-center" onclick="window.location.reload()">
-    <i class="fa-solid fa-rotate-right me-2"></i>
-    Refresh
-  </button>
+  <a class="btn btn-success d-inline-flex align-items-center" href="<%= whatsapp_failed %>" target="_blank">
+    <i class="fa-brands fa-whatsapp me-2"></i>
+    WASILIANA NASI
+  </a>
 </div>

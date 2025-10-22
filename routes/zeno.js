@@ -66,6 +66,17 @@ router.post("/api/pay", async (req, res) => {
 
         const order_id = generateOrderId(phone9);
 
+        //save order to Bin first, incase makepayment timeout and later user completes the payment webhook can update
+        // Save bin
+        await PaymentBin.create({
+            email,
+            phone,
+            orderId: order_id,
+            payment_status: 'PENDING',
+            meta: { gateway: 'ZenoPay', plan, amount: PLAN_MAP[plan].amount },
+            updatedAt: new Date()
+        });
+
         // build payment payload
         const payload = {
             order_id,
@@ -85,23 +96,16 @@ router.post("/api/pay", async (req, res) => {
             return res.render('zz-fragments/payment-form-error', { layout: false, message: apiResp?.message || 'Imeshindikana kuanzisha malipo. Jaribu tena.' });
         }
 
-        // Save bin
-        await PaymentBin.create({
-            email,
-            phone,
-            orderId: apiResp.order_id || order_id,
-            payment_status: 'PENDING',
-            meta: { gateway: 'ZenoPay', plan, amount: PLAN_MAP[plan].amount },
-            updatedAt: new Date()
-        });
-
         //send initiating message
         sendLauraNotification(5849160770, `${email} initiated payment for ${plan} plan with ${phone}`, true)
 
         return res.render('zz-fragments/payment-initiated', { layout: false, orderId: apiResp.order_id || order_id, phone });
     } catch (error) {
-        console.log('PAY error:', error?.message, error);
+        console.log('PAY error:', error?.message);
         res.set('HX-Reswap', 'none');
+        if(error?.message && error.message.includes('timed out')) {
+            return res.render('zz-fragments/payment-timedout', { layout: false });
+        }
         return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Hitilafu imetokea. Tafadhali jaribu tena au wasiliana nasi.' });
     }
 });
@@ -161,6 +165,8 @@ router.post('/api/zenopay-webhook', async (req, res) => {
         const { order_id, payment_status, buyer_phone, reference, metadata } = req.body || {};
         if (!order_id) return res.sendStatus(200);
 
+        console.log('Received ZenoPay webhook:', req.body);
+        sendLauraNotification(5849160770, `🔔 ZenoPay webhook received for order ${order_id} with status ${payment_status}`, true)
         const record = await PaymentBin.findOne({ orderId: order_id });
         if (record) {
             if (payment_status === 'COMPLETED') {
@@ -169,6 +175,7 @@ router.post('/api/zenopay-webhook', async (req, res) => {
                 const status = statusResp?.data[0].payment_status || statusResp?.payment_status
                 if (status !== "COMPLETED") {
                     console.log('Webhook status mismatch for', order_id);
+                    sendLauraNotification(5849160770, `⚠️ ZenoPay webhook status mismatch for order ${order_id}: webhook=${payment_status} vs status-api=${status}`, false)
                     return res.sendStatus(200)
                 }
 

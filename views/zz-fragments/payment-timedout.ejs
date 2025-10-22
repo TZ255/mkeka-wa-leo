@@ -1,0 +1,34 @@
+<% 
+const message_timeout = `Email: ${user?.email || ''}\n\nNapata changamoto ya kufanya malipo, muamala unashindwa kuanzishwa.`;
+const whatsapp_timeout = `https://wa.me/255711935460?text=${encodeURIComponent(message_timeout)}`; 
+%>
+
+<!-- OOB update: failed state in the same modal -->
+<h5 id="paymentModalTitle" hx-swap-oob="true" class="modal-title text-danger">
+  <i class="fa-regular fa-circle-xmark me-1"></i> Ombi la Malipo Limeshindikana
+</h5>
+
+<div id="paymentModalBody" hx-swap-oob="true" class="modal-body">
+  <div class="alert alert-danger d-flex flex-column align-items-center mb-2" role="alert">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div>
+      <p>Hitilafu imetokea.Tumeshindwa anzisha ombi la malipo moja kwa moja</p>
+      <p>
+        Bonyeza <b>ANZA UPYA</b> kulipa kwa kujaribu tena au <b>Wasiliana nasi</b> kwa msaada zaidi
+      </p>
+    </div>
+  </div>
+  <div class="small text-muted">WhatsApp: <code>+255 711 935 460</code></div>
+
+</div>
+
+<div id="paymentModalFooter" hx-swap-oob="true" class="modal-footer d-flex justify-content-between">
+  <button type="button" class="btn btn-outline-secondary" onclick="window.location.reload()">
+    <i class="fa-solid fa-rotate-right me-1"></i>
+    ANZA UPYA
+  </button>
+  <link class="btn btn-success d-inline-flex align-items-center" href="<%= whatsapp %>" target="_blank">
+    <i class="fa-brands fa-whatsapp me-2"></i>
+    WASILIANA NASI
+</link>
+</div>
