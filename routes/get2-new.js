@@ -338,8 +338,8 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        await sendNormalSMS("+255686784662", "Bernad, Ule mchongo umetiki")
-        res.send('SMS sent')
+        let resp = await getTransactionStatus("ORD-mh243okd-757259678")
+        res.send(resp)
     } catch (error) {
         res.send(error)
     }

@@ -35,9 +35,7 @@ const sendNormalSMS = async (to, message) => {
 
         console.log('SMS sent successfully to:', to);
         const data = response.data;
-        if (!data?.success) {
-            throw new Error(`Failed to send SMS: ${data?.message || 'Unknown error, no success flag'}`);
-        }
+        console.log('SMS Req successfully:', data)
     } catch (error) {
         console.error('Error sending SMS:', error.response?.data || error.message);
         sendLauraNotification(GLOBAL_VARS.donny_tg_id, `Failed to send SMS to ${to}\nError! ${error.response?.data?.message || error?.message}`)

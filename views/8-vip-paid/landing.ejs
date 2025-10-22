@@ -75,20 +75,12 @@
             <% } %>
 
             <!-- if user unpaid and payment is through API -->
-            <% if (user.status !== 'paid' && autopilot === true) { %>
+            <% if (user.status !== 'paid') { %>
             <%- include('./partials/unpaid-pro.ejs'); %>
             <% } %>
-
-            <!-- if user unpaid and payment is through lipa namba -->
-            <% if (user.status !== 'paid' && autopilot === false) { %>
-            <%- include('./partials/unpaid.ejs'); %>
-            <% } %>
-
             <br><br><br><br><br>
         </section>
     </main>
-
-    <%- include('./partials/modal.ejs'); %>
 
 
     <!-- bootstrap -->

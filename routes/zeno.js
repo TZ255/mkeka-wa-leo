@@ -19,6 +19,14 @@ const PLAN_MAP = {
     gold2: { amount: 35000, grant: 'gold2' },
 };
 
+router.get('/api/lipanamba', async (req, res) => {
+    try {
+        return res.render('zz-fragments/Others/lipanamba', { layout: false, user: req?.user || '' });
+    } catch (error) {
+        res.render('zz-fragments/payment-error', { layout: false, user: req?.user || '', message: 'Imeshindikana kupakia fomu ya malipo.' });
+    }
+});
+
 
 // POST /api/pay
 // Serve the HTMX payment form (to be loaded inside the modal)

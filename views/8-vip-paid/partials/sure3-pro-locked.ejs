@@ -28,23 +28,39 @@
             <li><i class="fa-solid fa-circle-check text-success me-2"></i>Jumla ya Odds 30+ kwa siku</li>
             <li><i class="fa-solid fa-circle-check text-success me-2"></i>Unapata kwa wiki nzima</li>
         </ul>
-        <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
+        
+        <% if (autopilot === true) { %>
+         <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
             hx-get="/api/pay-form" hx-target="#paymentModalBody" hx-swap="innerHTML">
             <i class="fa-solid fa-credit-card"></i> LIPIA SASA
         </button>
+        <% } %>
+
+        <% if (autopilot === false) { %>
+         <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
+            hx-get="/api/lipanamba" hx-target="#paymentModalBody" hx-swap="innerHTML">
+            <i class="fa-solid fa-credit-card"></i> LIPIA SASA
+        </button>
+        <% } %>
     </div>
 </div>
 
 <div class="alert alert-secondary mx-auto my-5 small" role="alert" style="width: 98%; max-width: 600px;">
-    <p><i class="fa-solid fa-circle-info"></i> <b>Baada ya malipo, mikeka ya VIP hapo chini itafunguka na utaipata kila siku
-    kwa wiki nzima</b></p>
+    <p><i class="fa-solid fa-circle-info"></i> <b>Baada ya malipo, mikeka ya VIP hapo chini itafunguka na utaipata kila
+            siku
+            kwa wiki nzima</b></p>
 
     <p class="mb-1">Changamoto yoyote ya malipo? Wasiliana nasi:</p>
     <ul class="list-unstyled ms-2">
-        <li><i class="fa-brands fa-whatsapp"></i> WhatsApp: <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email || ''}\n\nNapata changamoto ya kufanya malipo`) %>" class="link-dark"
-                target="_blank" rel="noopener noreferrer">+255 711 935 460</a></li>
-        <li><i class="fa-solid fa-envelope"></i> Email: <a href="mailto:info.mkekawaleo@gmail.com"
-                class="link-dark">info.mkekawaleo@gmail.com</a></li>
+        <li>
+            <i class="fa-brands fa-whatsapp"></i> WhatsApp: <a
+                href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email || ''}\n\nNapata changamoto ya kufanya malipo`) %>"
+                class="link-dark" target="_blank" rel="noopener noreferrer">+255 711 935 460</a>
+        </li>
+        <li>
+            <i class="fa-solid fa-envelope"></i> Email: <a href="mailto:info.mkekawaleo@gmail.com"
+                class="link-dark">info.mkekawaleo@gmail.com</a>
+        </li>
     </ul>
 </div>
 
