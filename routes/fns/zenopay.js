@@ -7,18 +7,25 @@ const STATUS_URL = 'https://zenoapi.com/api/payments/order-status';
 // Params: { order_id, buyer_name, buyer_phone, buyer_email, amount, webhook_url, metadata }
 const makePayment = async (payload) => {
     const apiKey = process.env.ZENO_API_KEY || process.env.ZENOPAY_API_KEY || "";
+    const TIMEOUT = 15000; // 15 seconds
+
     try {
         const res = await axios.post(PAY_URL, payload, {
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-key': apiKey
-            }
+            },
+            timeout: TIMEOUT
         });
         return res.data;
     } catch (error) {
+        if (error.code === 'ECONNABORTED') {
+            throw new Error('Payment request timed out. Please try again.');
+        }
         throw error;
     }
-}
+};
+
 
 // Get transaction status by order_id
 const getTransactionStatus = async (order_id) => {

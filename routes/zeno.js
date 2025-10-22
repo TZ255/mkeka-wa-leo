@@ -102,7 +102,7 @@ router.post("/api/pay", async (req, res) => {
     } catch (error) {
         console.log('PAY error:', error?.message, error);
         res.set('HX-Reswap', 'none');
-        return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Hitilafu imetokea. Tafadhali jaribu tena.' });
+        return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Hitilafu imetokea. Tafadhali jaribu tena au wasiliana nasi.' });
     }
 });
 
