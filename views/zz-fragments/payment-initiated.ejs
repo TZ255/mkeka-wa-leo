@@ -1,33 +1,21 @@
-<!-- Inform user and auto-open modal -->
-<div class="alert alert-info d-flex align-items-center" role="alert">
-  <i class="fa-solid fa-mobile-screen me-2"></i>
-  <div>Ombi la malipo limetumwa. Thibitisha kwenye simu yako.</div>
-  <div class="ms-auto small text-muted">Order: <%= orderId %></div>
-  <input type="hidden" id="_orderId" value="<%= orderId %>">
-  <span class="visually-hidden" aria-hidden="true"></span>
+<!-- OOB updates to reuse the already-open modal -->
+<h5 id="paymentModalTitle" hx-swap-oob="true" class="modal-title">
+  <i class="fa-solid fa-wallet me-2"></i> Thibitisha Malipo
+</h5>
+
+<div id="paymentModalBody" hx-swap-oob="true" class="modal-body">
+  <p class="mb-2">Ombi la malipo limetumwa. Thibitisha kwenye simu yako. Tunasubiri uthibitisho kutoka namba <%= phone %></p>
+  <div class="small text-muted">Order ID: <code><%= orderId %></code></div>
 </div>
 
-<!-- Bootstrap Modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 id="paymentModalTitle" class="modal-title"><i class="fa-solid fa-wallet me-2"></i> Thibitisha Malipo</h5>
-      </div>
-      <div id="paymentModalBody" class="modal-body">
-        <p class="mb-2">Thibitisha malipo kwenye simu yako. Tunasubiri uthibitisho kutoka namba <%= phone %></p>
-        <div class="small text-muted">Order ID: <code><%= orderId %></code></div>
-      </div>
-      <div id="paymentModalFooter" class="modal-footer">
-        <a href="/mkeka/vip" class="btn btn-outline-secondary"><i class="fa-regular fa-circle-xmark"></i> CANCEL</a>
-        <!-- Poll for status every 10s; OOB fragments will update modal content -->
-        <form hx-post="/api/check-status" hx-trigger="every 10s" hx-swap="none" class="d-none">
-          <input type="hidden" name="orderId" value="<%= orderId %>">
-        </form>
-      </div>
-    </div>
-  </div>
-  
+<div id="paymentModalFooter" hx-swap-oob="true" class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" onclick="window.location.reload()">
+    <i class="fa-regular fa-circle-xmark me-1"></i> CANCEL
+  </button>
+  <!-- Poll for status every 10s; OOB fragments will update modal content -->
+  <form hx-post="/api/check-status" hx-trigger="every 10s" hx-swap="none" class="d-none">
+    <input type="hidden" name="orderId" value="<%= orderId %>">
+  </form>
 </div>
 
 <script>
@@ -35,7 +23,7 @@
     try {
       var modalEl = document.getElementById('paymentModal');
       if (modalEl && window.bootstrap) {
-        var modal = new window.bootstrap.Modal(modalEl, { backdrop: 'static', keyboard: false });
+        var modal = window.bootstrap.Modal.getOrCreateInstance(modalEl, { backdrop: 'static', keyboard: false });
         modal.show();
       }
     } catch (e) {}

@@ -1,25 +1,33 @@
+<% const subject = `Malipo Yameshindikana - Order ID: ${orderId}` %>
+<% const emailBody = encodeURIComponent(`Habari MikekaTips, nimefanya malipo lakini hayajathibitishwa kwa wakati. \nOrder ID: ${orderId}\nEmail: ${email}\n\nHapa chini nimeambatanisha screenshot ya muamala wangu`) %>
+
 <!-- OOB update: failed state in the same modal -->
 <h5 id="paymentModalTitle" hx-swap-oob="true" class="modal-title text-danger">
-  <i class="fa-solid fa-circle-xmark me-2"></i> Malipo Yameshindikana
+  <i class="fa-solid fa-circle-xmark me-1"></i> Muda Umekwisha
 </h5>
 
 <div id="paymentModalBody" hx-swap-oob="true" class="modal-body">
   <div class="alert alert-danger d-flex flex-column align-items-center mb-2" role="alert">
-    <i class="fa-solid fa-triangle-exclamation fs-1 my-3"></i>
+    <i class="fa-solid fa-triangle-exclamation"></i>
     <div>
-      Hatukupokea uthibitisho wa malipo kwa wakati, tafadhali <strong>anza upya.</strong> Ikiwa umelipia lakini haijathibitishwa, wasiliana nasi WhatsApp kwa kututumia screeshot au ujumbe wa muamala wako.
+      <p>Hatukupokea uthibitisho wa malipo kwa wakati, tafadhali <strong>anza upya</strong> ikiwa bado hujathibitisha au kupokea menu ya malipo</p>
+      <p>
+        Ikiwa tayari umethibitisha bonyeza <code>Refresh Page</code> kuona kama malipo yamekamilika, ikiwa yamekamilika utaona mikeka yetu ya premium.
+      </p>
     </div>
   </div>
   <div class="small text-muted">Order ID: <code><%= orderId %></code></div>
-  <div class="small text-muted">WhatsApp: <strong>+255 711 935 460</strong></div>
-  
+  <div class="small text-muted">Email Yetu: <code>info.mkekawaleo@gmail.com</code></div>
+
 </div>
 
 <div id="paymentModalFooter" hx-swap-oob="true" class="modal-footer d-flex justify-content-between">
-  <a href="/mkeka/vip" class="btn btn-outline-secondary"><i class="fa-regular fa-circle-xmark"></i> ANZA UPYA</a>
-  <a class="btn btn-success d-inline-flex align-items-center" target="_blank" rel="noopener noreferrer"
-     href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Habari Mkeka wa Leo, nimelipia VIP lakini haijathibitishwa. \nOrder ID: ${orderId}\nEmail: ${email}`) %>">
-    <i class="fa-brands fa-whatsapp me-2"></i>
-    WhatsApp
-  </a>
+  <button type="button" class="btn btn-outline-secondary" hx-post="/">
+    <i class="fa-regular fa-circle-xmark me-1"></i>
+    ANZA UPYA
+  </button>
+  <button class="btn btn-success d-inline-flex align-items-center" onclick="window.location.reload()">
+    <i class="fa-solid fa-rotate-right me-1"></i>
+    Refresh Page
+  </button>
 </div>

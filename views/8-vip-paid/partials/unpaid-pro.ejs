@@ -1,0 +1,31 @@
+<div id="lipia_maelezo"></div>
+<%- include('./sure3-pro-locked.ejs'); %>
+<br><br>
+<section class="bg-light rounded-top border border-dark pt-3 shadow-lg rounded pb-5 mx-auto mt-4">
+    <h2 class="text-dark text-center">Angalia Shindi Zetu za Jana</h2>
+    <%- include('./shindi-za-nyuma.ejs'); %>
+</section>
+
+
+<!-- Global Payment Modal (shared by HTMX fragments) -->
+<div class="modal fade" id="globalPaymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+    data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="paymentModalTitle" class="modal-title">
+                    <i class="fa-solid fa-wallet me-1"></i> Malipo
+                </h5>
+            </div>
+            <div id="paymentModalBody" class="modal-body">
+                <!-- HTMX will inject the payment form here -->
+            </div>
+            <div id="paymentModalFooter" class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" onclick="window.location.reload()">
+                    <i class="fa-regular fa-circle-xmark me-1"></i>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

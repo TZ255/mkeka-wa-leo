@@ -10,8 +10,10 @@
     <link rel="stylesheet" href="/css/global.css">
 
     <!-- htmx -->
-     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ" crossorigin="anonymous"></script>
-     
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
+        integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ"
+        crossorigin="anonymous"></script>
+
     <%- include('../0-global/sure3-styles.ejs'); %>
     <%- include('../0-global/google.ejs'); %>
     <%- include('../0-global/fonts.ejs'); %>
@@ -48,7 +50,8 @@
         <section class="left mt-5">
             <!-- If user unpaid. Show this header -->
             <% if (user.status !== 'paid') { %>
-            <h2 class="mb-4 p-3" style="font-size: 1.25rem; font-weight: 700; color: #212529; background: #ebeae7; border-top: 4px solid #daa520; padding: 1.25rem 1.5rem; border-radius: 4px; line-height: 1.3;">
+            <h2 class="mb-4 p-3"
+                style="font-size: 1.25rem; font-weight: 700; color: #212529; background: #ebeae7; border-top: 4px solid #daa520; padding: 1.25rem 1.5rem; border-radius: 4px; line-height: 1.3;">
                 Mikeka ya VIP Leo |
                 <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
             </h2>
@@ -71,8 +74,13 @@
             <% } %>
             <% } %>
 
-            <!-- if user unpaid -->
-            <% if (user.status !== 'paid') { %>
+            <!-- if user unpaid and payment is through API -->
+            <% if (user.status !== 'paid' && autopilot === true) { %>
+            <%- include('./partials/unpaid-pro.ejs'); %>
+            <% } %>
+
+            <!-- if user unpaid and payment is through lipa namba -->
+            <% if (user.status !== 'paid' && autopilot === false) { %>
             <%- include('./partials/unpaid.ejs'); %>
             <% } %>
 
@@ -81,7 +89,7 @@
     </main>
 
     <%- include('./partials/modal.ejs'); %>
-   
+
 
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
@@ -93,4 +101,5 @@
     <%- include('./partials/animation.ejs'); %>
     <% } %>
 </body>
+
 </html>
