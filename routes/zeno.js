@@ -166,6 +166,7 @@ router.post('/api/zenopay-webhook', async (req, res) => {
         if (!order_id) return res.sendStatus(200);
 
         console.log('Received ZenoPay webhook:', req.body);
+        console.log('Headers:', req.headers)
         sendLauraNotification(5849160770, `🔔 ZenoPay webhook received for order ${order_id} with status ${payment_status}`, true)
         const record = await PaymentBin.findOne({ orderId: order_id });
         if (record) {
