@@ -156,7 +156,8 @@ router.post('/api/check-status', async (req, res) => {
         // Compute remaining seconds for countdown (reuse 3-min window and lastUpdate above)
         const remainingMs = Math.max(0, (1000 * 60 * 3) - (Date.now() - lastUpdate));
         const remainingSec = Math.ceil(remainingMs / 1000);
-        return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId, note: `Bado tunasubiri uthibitisho wa muamala kwenye namba ${record?.phone}. Tafadhali thibitisha`, remainingSec });
+        const pending_msg = `Ombi la muamala limetumwa kwenye namba ${record?.phone}. Utapokea menu ya malipo hivi punde... tafadhali thibitisha`
+        return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId, note: ``, remainingSec });
     } catch (error) {
         console.log('CHECK-STATUS error:', error?.message, error);
         // keep modal; provide a conservative countdown
