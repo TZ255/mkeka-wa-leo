@@ -7,7 +7,7 @@ const STATUS_URL = 'https://zenoapi.com/api/payments/order-status';
 // Params: { order_id, buyer_name, buyer_phone, buyer_email, amount, webhook_url, metadata }
 const makePayment = async (payload) => {
     const apiKey = process.env.ZENO_API_KEY || process.env.ZENOPAY_API_KEY || "";
-    const TIMEOUT = 60000; // 60 seconds
+    const TIMEOUT = 90000; // 90 seconds
 
     try {
         const res = await axios.post(PAY_URL, payload, {
