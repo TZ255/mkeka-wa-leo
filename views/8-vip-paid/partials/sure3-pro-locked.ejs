@@ -22,22 +22,22 @@
         <i class="fa-solid fa-circle-exclamation lock-icon"></i>
         <h3 class="fw-bold mt-3 text-light">Huwezi Ona Mikeka ya VIP</h3>
         <p class="text-secondary">Lipia sasa ili kufungua mikeka yetu ya <br> <strong>VIP - Gold Plan</strong></p>
-        <h5 class="text-warning fw-bold">Tsh. 12,500 / Wiki</h5>
+        <h5 class="text-warning fw-bold">Tsh. 12,500 <span class="text-secondary">/ wiki</span></h5>
         <ul class="text-start text-light small mt-3 mb-4 list-unstyled">
             <li><i class="fa-solid fa-circle-check text-success me-2"></i>Mikeka mitatu ya VIP kila siku</li>
             <li><i class="fa-solid fa-circle-check text-success me-2"></i>Jumla ya Odds 30+ kwa siku</li>
             <li><i class="fa-solid fa-circle-check text-success me-2"></i>Unapata kwa wiki nzima</li>
         </ul>
-        
+
         <% if (autopilot === true) { %>
-         <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
+        <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
             hx-get="/api/pay-form" hx-target="#paymentModalBody" hx-swap="innerHTML">
             <i class="fa-solid fa-credit-card"></i> LIPIA SASA
         </button>
         <% } %>
 
         <% if (autopilot === false) { %>
-         <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#MNO_Modal">
+        <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#MNO_Modal">
             <i class="fa-solid fa-credit-card"></i> LIPIA SASA
         </button>
         <% } %>
@@ -94,8 +94,11 @@
                         <%= String(mch.match).replace(' vs ', ' - ') %>
                     </div>
 
-                    <div class="match-tip">
-                        Tip: Locked <i class="fa-solid fa-lock"></i>
+                    <div class="progress w-50" style="height: 30px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark text-muted fw-bold"
+                            role="progressbar" style="width: 100%;">
+                            Tip Locked
+                        </div>
                     </div>
                 </td>
                 <td class="odds-data">
@@ -155,8 +158,11 @@
                         <%= String(mch.match).replace(' vs ', ' - ') %>
                     </div>
 
-                    <div class="match-tip">
-                        Tip: Locked <i class="fa-solid fa-lock"></i>
+                    <div class="progress w-50" style="height: 30px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark text-muted fw-bold"
+                            role="progressbar" style="width: 100%;">
+                            Tip Locked
+                        </div>
                     </div>
                 </td>
                 <td class="odds-data">
@@ -210,9 +216,13 @@
                     <div class="match-details text-center mb-3">
                         <h5 class="mb-3 fw-bold"><%= String(match.match).replace(' vs ', ' - ') %></h5>
                     </div>
-                    <div class="text-center mb-2">
-                        <span class="prediction-badge prediction-badge-gold fw-light"
-                            onclick="scrollToArticleGate()">Locked <i class="fa-solid fa-ban"></i></span>
+                    <div class="text-center mb-2 px-lg-5">
+                        <div class="progress w-75 mx-auto rounded-5" style="height: 40px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-dark text-muted fw-bold"
+                                role="progressbar" style="width: 100%;">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
