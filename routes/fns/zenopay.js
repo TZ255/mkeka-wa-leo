@@ -17,6 +17,7 @@ const makePayment = async (payload) => {
             },
             timeout: TIMEOUT
         });
+        console.log('Payment req sent:', res.data)
         return res.data;
     } catch (error) {
         if (error.code === 'ECONNABORTED') {

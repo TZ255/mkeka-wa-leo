@@ -1,25 +1,18 @@
 <% 
-const message_failed = `Email: ${user?.email || ''}\n\nChangamoto ya malipo.`;
+const message_failed = `- Email: ${user?.email || ''}\n- Order: ${orderId || ''}\n\nChangamoto ya malipo.`;
 const whatsapp_failed = `https://wa.me/255711935460?text=${encodeURIComponent(message_failed)}`; 
 %>
 
 <!-- OOB update: failed state in the same modal -->
-<h5 id="paymentModalTitle" hx-swap-oob="true" class="modal-title text-danger">
-  <i class="fa-solid fa-circle-xmark me-1"></i> Muda Umekwisha
-</h5>
-
 <div id="paymentModalBody" hx-swap-oob="true" class="modal-body">
-  <div class="alert alert-danger d-flex flex-column align-items-center mb-2" role="alert">
-    <i class="fa-solid fa-triangle-exclamation"></i>
+  <div class="alert alert-secondary mb-2" role="alert">
     <div>
-      <p>Hatukupokea uthibitisho wa malipo kwa wakati, tafadhali <strong>Anza Upya</strong> ikiwa bado hujathibitisha au
-        kupokea menu ya malipo</p>
+      <p>Maombi ya malipo yametumwa kwenye namba <%= phone %>. Thibitisha kwa kuweka PIN yako. Ikiwa bado hujapokea menu ya malipo au umeweka namba isiyo sahihi, bonyeza <strong>Anza Upya</strong></p>
       <p>
-        Ikiwa tayari umethibitisha bonyeza <b>wasiliana nasi</b> WhatsApp kwa kututumia screenshot ya muamala wako
+        Ikiwa tayari umethibitisha, endelea kusubiri utapokea ujumbe mfupi wa kuthibitisha malipo yako hivi punde
       </p>
     </div>
   </div>
-  <div class="small text-muted">Order ID: <code><%= orderId %></code></div>
   <div class="small text-muted">WhatsApp: <code>+255 711 935 460</code></div>
 
 </div>
@@ -31,6 +24,6 @@ const whatsapp_failed = `https://wa.me/255711935460?text=${encodeURIComponent(me
   </button>
   <a class="btn btn-success d-inline-flex align-items-center" href="<%= whatsapp_failed %>" target="_blank">
     <i class="fa-brands fa-whatsapp me-2"></i>
-    WASILIANA NASI
+    MSAADA
   </a>
 </div>

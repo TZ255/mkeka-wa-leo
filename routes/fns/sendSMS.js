@@ -3,7 +3,7 @@ const { sendLauraNotification } = require("./sendTgNotifications");
 const { GLOBAL_VARS } = require("./global-var");
 
 const sendNormalSMS = async (to, message) => {
-    if (process.env.local === 'true') return console.log('I cant send SMS in local environment');
+    if (process.env.local === 'true' || !message) return console.log('I cant send SMS in local environment or message body is null');
 
     const API_KEY = process.env.SMS_API_KEY;
     const DEVICE_ID = "68f7e5c96a418a16ecf96056";

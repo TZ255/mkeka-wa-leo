@@ -137,25 +137,22 @@ router.post('/api/check-status', async (req, res) => {
         // Fail after 2 minutes without update (unless already completed)
         const threeMinutes = 1000 * 60 * 3;
         const lastUpdate = new Date(record.updatedAt || record.createdAt || Date.now()).getTime();
+
         if ((Date.now() - lastUpdate) > threeMinutes && record.payment_status !== 'COMPLETED') {
-            try {
-                record.payment_status = 'FAILED';
-                record.updatedAt = new Date();
-                await record.save();
-            } catch (e) { console.log('Mark FAILED error:', e?.message); }
-            return res.render('zz-fragments/payment-modal-failed', { layout: false, user: req?.user || '', orderId, email: record?.email });
+            return res.render('zz-fragments/payment-modal-failed', { layout: false, user: req?.user || '', orderId, email: record?.email, phone: record?.phone || 'yako' });
         }
 
         if (record.payment_status === 'COMPLETED') {
             let user = await mkekaUsersModel.findOne({ email: record?.email })
-            let message = `Malipo yako yamewezeshwa hadi ${new Date(user?.pay_until).toLocaleString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Africa/Nairobi' })}`
+            let message = `Malipo yako ya VIP MIKEKA Gold Plan yamewezeshwa hadi ${new Date(user?.pay_until).toLocaleString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Africa/Nairobi' })}`
             return res.render('zz-fragments/payment-modal-complete', { orderId, message });
         }
 
-        if (record.payment_status === 'FAILED') {
-            return res.render('zz-fragments/payment-modal-failed', { layout: false, user: req?.user || '', orderId, email: record?.email });
-        }
+        // if (record.payment_status === 'FAILED') {
+        //     return res.render('zz-fragments/payment-modal-failed', { layout: false, user: req?.user || '', orderId, email: record?.email });
+        // }
 
+        // IF STILL PENDING
         // Compute remaining seconds for countdown (reuse 3-min window and lastUpdate above)
         const remainingMs = Math.max(0, (1000 * 60 * 3) - (Date.now() - lastUpdate));
         const remainingSec = Math.ceil(remainingMs / 1000);
@@ -189,7 +186,7 @@ router.post('/api/zenopay-webhook', async (req, res) => {
                     let sub = await grantSubscription(record.email, record?.meta?.plan || 'silver');
                     sendLauraNotification(5849160770, `✅ ${record?.meta?.plan} plan confirmed for ${record?.email}`, false)
                     //send SMS
-                    sendNormalSMS(buyer_phone, sub.message)
+                    sendNormalSMS(buyer_phone, sub?.message_sms || null)
                 }
                 catch (e) {
                     console.log('grantSubscription webhook error:', e?.message);
