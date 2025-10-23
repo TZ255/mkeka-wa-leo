@@ -157,7 +157,7 @@ router.post('/api/check-status', async (req, res) => {
         const remainingMs = Math.max(0, (1000 * 60 * 3) - (Date.now() - lastUpdate));
         const remainingSec = Math.ceil(remainingMs / 1000);
         const pending_msg = `Ombi la muamala limetumwa kwenye namba ${record?.phone}. Utapokea menu ya malipo hivi punde... tafadhali thibitisha`
-        return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId, note: ``, remainingSec });
+        return res.render('zz-fragments/payment-modal-pending', { layout: false, user: req?.user || '', orderId, note: pending_msg, remainingSec });
     } catch (error) {
         console.log('CHECK-STATUS error:', error?.message, error);
         // keep modal; provide a conservative countdown
