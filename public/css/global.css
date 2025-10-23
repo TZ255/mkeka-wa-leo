@@ -43,8 +43,8 @@ header {
 
 .brand-text {
     font-weight: 700;
-    font-size: 1.2rem;
-    font-family: 'Palette Mosaic', cursive;
+    font-size: 1.1rem;
+    font-family: 'Chango', sans-serif;
     background: linear-gradient(45deg, #28a745, #20c997);
     background-clip: text;
     -webkit-background-clip: text;
@@ -55,7 +55,7 @@ header {
 }
 
 .navbar-brand span {
-    font-size: .875rem;
+    font-size: .83rem;
     display: block;
     font-family: Caveat, cursive;
     color: #f8f9fa;
