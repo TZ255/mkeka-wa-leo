@@ -385,84 +385,69 @@
 <!-- Locked Pro Betslip Styles -->
 <!-- Locked Pro Betslip Styles -->
 
+
+
+
+<!-- Scratch Card Styles -->
+<!-- Scratch Card Styles -->
+<!-- Scratch Card Styles -->
+<!-- Scratch Card Styles -->
 <style>
-    .article-gate {
+    .scratch-bar {
         position: relative;
-        overflow: hidden;
-        border-radius: 12px;
-        background: #121212;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        width: 98%;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .gate-article-content {
-        position: relative;
-        height: 460px;
-        overflow: hidden;
-    }
-
-    .gate-article-content::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.65);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        z-index: 5;
-    }
-
-    .gate-article-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 10;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7) 60%, transparent);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 3rem 1.5rem;
+        display: inline-block;
+        cursor: not-allowed;
+        user-select: none;
+        padding: 4px 12px;
+        min-width: 150px;
         text-align: center;
     }
 
-    .lock-icon {
-        font-size: 4rem;
-        color: #dc3545;
-        filter: drop-shadow(0 0 10px rgba(220, 53, 69, 0.5));
-        animation: moving 2s ease-in-out infinite;
+    .scratch-bar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+            repeating-linear-gradient(45deg,
+                #a0a0a0,
+                #a0a0a0 2px,
+                #b8b8b8 2px,
+                #b8b8b8 4px);
+        border-radius: 3px;
+        box-shadow:
+            inset 0 1px 3px rgba(0, 0, 0, 0.3),
+            0 1px 0 rgba(255, 255, 255, 0.5);
+        pointer-events: none;
+        z-index: 1;
     }
 
-    @keyframes moving {
-
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 0.95;
-        }
-
-        50% {
-            transform: scale(1.05);
-            opacity: 1;
-        }
+    .scratch-bar:hover::before {
+        background:
+            repeating-linear-gradient(45deg,
+                #909090,
+                #909090 2px,
+                #a8a8a8 2px,
+                #a8a8a8 4px);
     }
 
-    .gate-subscribe-btn {
-        background: linear-gradient(135deg, #ffd700, #ffa500);
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        color: #121212;
-        font-weight: bold;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
-        transition: transform 0.2s, box-shadow 0.2s;
-        width: 80%;
-    }
-
-    .gate-subscribe-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(255, 165, 0, 0.6);
+    /* Locked label with FontAwesome icon */
+    .scratch-bar::after {
+        content: '\f023  LOCKED';
+        font-family: 'Font Awesome 6 Free', Arial, sans-serif;
+        font-weight: 900;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #333;
+        font-size: 11px;
+        letter-spacing: 1px;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        pointer-events: none;
+        z-index: 2;
     }
 </style>
 
