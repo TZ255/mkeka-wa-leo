@@ -18,9 +18,9 @@
                 <th scope="col">Odds</th>
             </tr>
         </thead>
-        <% if (sure5.length > 0) { %>
+        <% if (betslip2.length > 0) { %>
         <tbody>
-            <% sure5.forEach(mch => { %>
+            <% betslip2.forEach(mch => { %>
             <tr>
                 <td class="match-data">
                     <div class="match-meta">
@@ -71,23 +71,23 @@
             <tr class="slip-summary">
                 <td>
                     <div class="stake">Stake: 35,000 TZS</div>
-                    <div class="win-amount">Win: <%= Number(Number(sure5Odds)*35000).toLocaleString('en-US') %> TZS</div>
+                    <div class="win-amount">Win: <%= Number(Number(total_odds?.betslip2)*35000).toLocaleString('en-US') %> TZS</div>
                     <div class="booking-code">
                         <div><u>Booking Code:</u></div>
-                        <div class="provider"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= codes.slip2 %></b></div>
+                        <div class="provider"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= booking_codes?.betslip2 %></b></div>
                     </div>
                     <div class="register-prompt">
                          Huna account Gal Sport?. <a href="/gsb/register" target="_blank">Jisajili Hapa!</a>
                     </div>
                 </td>
                 <td class="total-odds">
-                    <%= sure5Odds %>
+                    <%= total_odds?.betslip2 %>
                 </td>
             </tr>
         </tbody>
         <% } %>
     </table>
-    <% if (sure5.length < 1) { %>
+    <% if (betslip2.length < 1) { %>
     <p class="empty-slip">* Betslip ya Siku (Multigoals) kwa tarehe <%= d %> haipo</p>
     <% } %>
 </div>

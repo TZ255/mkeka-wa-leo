@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <!-- Updating Sure 3 & 5 results -->
                     <ul class="list-group bg-warning py-3 mb-2">
-                        <% sure3.forEach(match => { %>
+                        <% betslip1.forEach(match => { %>
                         <li class="list-group-item" id="<%= match._id %>">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="fw-bold"><%= match.match %></span>
@@ -32,27 +32,51 @@
                         <% }) %>
                         <!-- -------VIP 2 Sure------------ -->
                         <hr>
-                        <% sure5.forEach(match => { %>
-                            <li class="list-group-item" id="<%= match._id %>">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="fw-bold"><%= match.match %></span>
-                                    <span
-                                        class="badge <%= match.status === 'won' ? 'bg-success' : (match.status === 'lose' ? 'bg-danger' : 'bg-light') %> rounded-pill">
-                                        <%= match.status %>
-                                        <%= match.result %>
-                                    </span>
-                                </div>
-                                <p class="mb-2">Tip: <b><%= match.tip %></b></p>
-                                <form class="d-flex gap-2 mt-2" method="post" action="/update/vip/<%= match._id %>"
-                                    target="_blank">
-                                    <input type="text" name="scores" class="form-control form-control-sm"
-                                        placeholder="Scores" required>
-                                    <input type="text" name="status" class="form-control form-control-sm"
-                                        placeholder="won, lose, postponed" required>
-                                    <button class="btn btn-sm btn-primary" type="submit">Submit</button>
-                                </form>
-                            </li>
-                            <% }) %>
+                        <% betslip2.forEach(match => { %>
+                        <li class="list-group-item" id="<%= match._id %>">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold"><%= match.match %></span>
+                                <span
+                                    class="badge <%= match.status === 'won' ? 'bg-success' : (match.status === 'lose' ? 'bg-danger' : 'bg-light') %> rounded-pill">
+                                    <%= match.status %>
+                                    <%= match.result %>
+                                </span>
+                            </div>
+                            <p class="mb-2">Tip: <b><%= match.tip %></b></p>
+                            <form class="d-flex gap-2 mt-2" method="post" action="/update/vip/<%= match._id %>"
+                                target="_blank">
+                                <input type="text" name="scores" class="form-control form-control-sm"
+                                    placeholder="Scores" required>
+                                <input type="text" name="status" class="form-control form-control-sm"
+                                    placeholder="won, lose, postponed" required>
+                                <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+                            </form>
+                        </li>
+                        <% }) %>
+
+                        <!-- -------VIP 3 Sure------------ -->
+                        <hr>
+                        <% betslip3.forEach(match => { %>
+                        <li class="list-group-item" id="<%= match._id %>">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold"><%= match.match %></span>
+                                <span
+                                    class="badge <%= match.status === 'won' ? 'bg-success' : (match.status === 'lose' ? 'bg-danger' : 'bg-light') %> rounded-pill">
+                                    <%= match.status %>
+                                    <%= match.result %>
+                                </span>
+                            </div>
+                            <p class="mb-2">Tip: <b><%= match.tip %></b></p>
+                            <form class="d-flex gap-2 mt-2" method="post" action="/update/vip/<%= match._id %>"
+                                target="_blank">
+                                <input type="text" name="scores" class="form-control form-control-sm"
+                                    placeholder="Scores" required>
+                                <input type="text" name="status" class="form-control form-control-sm"
+                                    placeholder="won, lose, postponed" required>
+                                <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+                            </form>
+                        </li>
+                        <% }) %>
                     </ul>
                     <!-- Updating VIP results -->
                     <ul class="list-group">
@@ -96,7 +120,7 @@
                 <div class="card-body">
                     <!-- updating sure 3 matches -->
                     <ul class="list-group py-3 bg-warning mb-2">
-                        <% sure3.forEach(match => { %>
+                        <% betslip1.forEach(match => { %>
                         <li class="list-group-item" id="<%= match._id %>">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
@@ -125,37 +149,68 @@
                             </form>
                         </li>
                         <% }) %>
-                        <!-- vip5 tips updating -->
+                        <!-- vip2 tips updating -->
                         <hr>
-                        <% sure5.forEach(match => { %>
-                            <li class="list-group-item" id="<%= match._id %>">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
+                        <% betslip2.forEach(match => { %>
+                        <li class="list-group-item" id="<%= match._id %>">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
+                            </div>
+                            <form class="d-flex flex-column mt-2" method="post"
+                                action="/update/vip/match-data/<%= match._id %>" target="_blank">
+                                <div class="d-flex">
+                                    <input type="text" name="time" class="form-control form-control-sm" required
+                                        value="<%= match.time %>">
+                                    <input type="text" name="league" class="form-control form-control-sm" required
+                                        value="<%= match.league %>">
                                 </div>
-                                <form class="d-flex flex-column mt-2" method="post"
-                                    action="/update/vip/match-data/<%= match._id %>" target="_blank">
-                                    <div class="d-flex">
-                                        <input type="text" name="time" class="form-control form-control-sm" required
-                                            value="<%= match.time %>">
-                                        <input type="text" name="league" class="form-control form-control-sm" required
-                                            value="<%= match.league %>">
-                                    </div>
-    
-                                    <input type="text" name="game" class="form-control form-control-sm" required
-                                        value="<%= match.match %>">
-    
-                                    <div class="d-flex">
-                                        <input type="text" name="tip" class="form-control form-control-sm" required
-                                            value="<%= match.tip %>">
-    
-                                        <input type="text" name="odd" class="form-control form-control-sm" required
-                                            value="<%= match.odd %>">
-                                    </div>
-    
-                                    <button class="btn btn-sm btn-primary d-block" type="submit">Submit</button>
-                                </form>
-                            </li>
-                            <% }) %>
+
+                                <input type="text" name="game" class="form-control form-control-sm" required
+                                    value="<%= match.match %>">
+
+                                <div class="d-flex">
+                                    <input type="text" name="tip" class="form-control form-control-sm" required
+                                        value="<%= match.tip %>">
+
+                                    <input type="text" name="odd" class="form-control form-control-sm" required
+                                        value="<%= match.odd %>">
+                                </div>
+
+                                <button class="btn btn-sm btn-primary d-block" type="submit">Submit</button>
+                            </form>
+                        </li>
+                        <% }) %>
+                        <!-- vip3 tips updating -->
+                        <hr>
+                        <% betslip3.forEach(match => { %>
+                        <li class="list-group-item" id="<%= match._id %>">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
+                            </div>
+                            <form class="d-flex flex-column mt-2" method="post"
+                                action="/update/vip/match-data/<%= match._id %>" target="_blank">
+                                <div class="d-flex">
+                                    <input type="text" name="time" class="form-control form-control-sm" required
+                                        value="<%= match.time %>">
+                                    <input type="text" name="league" class="form-control form-control-sm" required
+                                        value="<%= match.league %>">
+                                </div>
+
+                                <input type="text" name="game" class="form-control form-control-sm" required
+                                    value="<%= match.match %>">
+
+                                <div class="d-flex">
+                                    <input type="text" name="tip" class="form-control form-control-sm" required
+                                        value="<%= match.tip %>">
+
+                                    <input type="text" name="odd" class="form-control form-control-sm" required
+                                        value="<%= match.odd %>">
+                                </div>
+
+                                <button class="btn btn-sm btn-primary d-block" type="submit">Submit</button>
+                            </form>
+                        </li>
+                        <% }) %>
                     </ul>
                     <!-- List of items with individual forms -->
                     <ul class="list-group">
@@ -190,13 +245,13 @@
     </div>
 </div>
 <hr class="my-5">
-<h2 class="text-center" id="postSlip2">Posting Betlsip VIP 2</h2>
+<h2 class="text-center" id="postSlip2">Posting Betlsips</h2>
 <div class="container py-5 d-none" id="postSlip2Cont">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Betslip VIP #2 Form</h3>
+                    <h3 class="mb-0">Betslip VIP Post Form</h3>
                 </div>
                 <div class="card-body">
                     <form method="post" action="/posting/betslip-vip2" target="_blank">
@@ -250,21 +305,6 @@
     </div>
 </div>
 <hr class="my-5">
-<h2 class="text-center" id="spinSure3">Spinning Sure 3</h2>
-<div class="p-3 d-none" id="spinSure3Cont">
-    <form action="/spinning/sure3" method="post">
-        <div class="mb-3">
-            <input type="date" class="form-control py-2" name="siku" required value="">
-        </div>
-        <div class="text-center mt-4">
-            <button type="submit" class="bg-success text-light py-3 px-4 border-0 rounded">
-                Spinning ⏳ &nbsp; &nbsp;
-                <i class="fa-solid fa-right-long"></i>
-            </button>
-        </div>
-    </form>
-</div>
-<hr class="my-5">
 <!-- Posting Booking Codes -->
 <h2 class="text-center" id="postBookingCode">Posting Booking Code</h2>
 <div class="container py-5 d-none" id="postBookingCodeCont">
@@ -282,19 +322,23 @@
                                 <input type="date" class="form-control" name="date" required>
                             </div>
                         </div>
-                        
+
                         <div class="row mb-3">
                             <div class="col-8">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-key"></i></span>
-                                    <input type="text" class="form-control" name="code" placeholder="Booking Code" required>
+                                    <input type="text" class="form-control" name="code" placeholder="Booking Code"
+                                        required>
                                 </div>
                             </div>
                             <div class="col-4">
-                                <input type="number" class="form-control" id="digit" name="slip_no" placeholder="0-9" min="0" max="9" maxlength="1" oninput="if(this.value.length > 1) this.value = this.value.slice(0,1); if(this.value < 0) this.value = 0; if(this.value > 9) this.value = 9;" required>
+                                <input type="number" class="form-control" id="digit" name="slip_no" placeholder="0-9"
+                                    min="0" max="9" maxlength="1"
+                                    oninput="if(this.value.length > 1) this.value = this.value.slice(0,1); if(this.value < 0) this.value = 0; if(this.value > 9) this.value = 9;"
+                                    required>
                             </div>
                         </div>
-                        
+
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -307,23 +351,19 @@
 <br><br><br><br><br>
 
 <script>
-    document.getElementById('postBookingCode').addEventListener('click', ()=> {
+    document.getElementById('postBookingCode').addEventListener('click', () => {
         document.getElementById('postBookingCodeCont').classList.toggle('d-none')
     })
 
-    document.getElementById('spinSure3').addEventListener('click', ()=> {
-        document.getElementById('spinSure3Cont').classList.toggle('d-none')
-    })
-
-    document.getElementById('postSlip2').addEventListener('click', ()=> {
+    document.getElementById('postSlip2').addEventListener('click', () => {
         document.getElementById('postSlip2Cont').classList.toggle('d-none')
     })
 
-    document.getElementById('updatingMatches').addEventListener('click', ()=> {
+    document.getElementById('updatingMatches').addEventListener('click', () => {
         document.getElementById('updatingMatchesCont').classList.toggle('d-none')
     })
 
-    document.getElementById('updatingScores').addEventListener('click', ()=> {
+    document.getElementById('updatingScores').addEventListener('click', () => {
         document.getElementById('updatingScoresCont').classList.toggle('d-none')
     })
 </script>

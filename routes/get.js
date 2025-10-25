@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         //multiply all odds of betslip
-        let slipOdds = await betslip.find({ date: d, status: { $ne: 'deleted' } }).cache(600)
+        let slipOdds = await betslip.find({ date: d, vip_no: {$in: [1,2]}, status: { $ne: 'deleted' } }).cache(600)
         slipOdds = slipOdds.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //Over 1.5 SUPA Tips
@@ -190,7 +190,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let slip = await betslip.find({ date: d, vip_no: 1 }).sort('-odd').limit(3)
 
         //multiply all odds
-        const docs = await betslip.find({ date: d, status: { $ne: 'deleted' } });
+        const docs = await betslip.find({ date: d, status: { $ne: 'deleted' }, vip_no: {$in: [1,2]} });
         const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //tarehes

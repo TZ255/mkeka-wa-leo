@@ -1,7 +1,7 @@
 <div class="betslipCont mb-3 mt-5" id="betslipCont">
     <div class="cap">
         <h2 id="betslip-ya-leo">
-            Betslip ya Siku | SUPA 3
+            Betslip ya Siku | VIP #3
             <span class="slip-siku">
                 <i class="fa-solid fa-calendar-days"></i>
                 <span>
@@ -18,9 +18,9 @@
                 <th scope="col">Odds</th>
             </tr>
         </thead>
-        <% if (sure3.length > 0) { %>
+        <% if (betslip3.length > 0) { %>
         <tbody>
-            <% sure3.forEach(mch => { %>
+            <% betslip3.forEach(mch => { %>
             <tr>
                 <td class="match-data">
                     <div class="match-meta">
@@ -71,23 +71,23 @@
             <tr class="slip-summary">
                 <td>
                     <div class="stake">Stake: 35,000 TZS</div>
-                    <div class="win-amount">Win: <%= Number(Number(slipOdds)*35000).toLocaleString('en-US') %> TZS</div>
+                    <div class="win-amount">Win: <%= Number(Number(total_odds?.betslip3)*35000).toLocaleString('en-US') %> TZS</div>
                     <div class="booking-code">
                         <div><u>Booking Code:</u></div>
-                        <div class="provider"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= codes.slip1 %></b></div>
+                        <div class="provider"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= booking_codes?.betslip3 %></b></div>
                     </div>
                     <div class="register-prompt">
                          Huna account Gal Sport?. <a href="/gsb/register" target="_blank">Jisajili Hapa!</a>
                     </div>
                 </td>
                 <td class="total-odds">
-                    <%= slipOdds %>
+                    <%= total_odds?.betslip3 %>
                 </td>
             </tr>
         </tbody>
         <% } %>
     </table>
-    <% if (sure3.length < 1) { %>
-    <p class="empty-slip">* Betslip ya Siku (SUPA 3) kwa tarehe <%= d %> haipo</p>
+    <% if (betslip3.length < 1) { %>
+    <p class="empty-slip">* Betslip ya Siku (Multigoals) kwa tarehe <%= d %> haipo</p>
     <% } %>
 </div>

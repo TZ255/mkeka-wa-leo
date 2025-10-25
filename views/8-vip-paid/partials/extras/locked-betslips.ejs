@@ -1,102 +1,4 @@
-<!-- VIP Paywall Card Component - Self-contained with scoped styles -->
-<div class="vip-paywall-component">
-    <div class="article-gate" id="article-gate">
-        <div class="gate-article-content">
-            <div class="betslipCont mb-3 mt-5">
-                <div class="cap d-flex justify-content-between align-items-center px-3">
-                    <h2 class="m-0">
-                        VIP MIKEKA - Gold Plan
-                        <span class="slip-siku ms-2">
-                            <i class="fa-solid fa-calendar-days text-warning"></i>
-                            <span>
-                                <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', {
-                                    day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi'
-                                }) %>
-                            </span>
-                        </span>
-                    </h2>
-                </div>
-                <div style="height: 300px;"></div>
-            </div>
-        </div>
-
-        <div class="gate-article-overlay">
-            <div class="premium-badge">
-                <i class="fa-solid fa-crown"></i> VIP Gold
-            </div>
-
-            <div class="lock-icon-container">
-                <i class="fa-solid fa-lock lock-icon"></i>
-            </div>
-
-            <h3 class="gate-title">Fungua Mikeka ya VIP</h3>
-            <p class="gate-subtitle">
-                Pata ushindi mkubwa na mikeka yetu ya <strong>VIP Gold Plan</strong><br>
-                Odds za juu, ushindi wa kila siku!
-            </p>
-
-            <div class="price-container">
-                <span class="price-main">Tsh 12,500</span>
-                <span class="price-period">/ wiki</span>
-            </div>
-
-            <ul class="features-list" style="margin-left: 50%;">
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Mikeka Mitatu ya VIP</strong> kila siku</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Jumla ya Odds 30+</strong> kwa siku</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Kwa wiki nzima</strong> utaipata</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Msaada wa haraka</strong> 24/7</span>
-                </li>
-            </ul>
-
-            <% if (autopilot === true) { %>
-            <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
-                hx-get="/api/pay-form" hx-target="#paymentModalBody" hx-swap="innerHTML">
-                <i class="fa-solid fa-credit-card"></i> LIPIA SASA
-            </button>
-            <% } %>
-            <% if (autopilot === false) { %>
-            <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#MNO_Modal">
-                <i class="fa-solid fa-credit-card"></i> LIPIA SASA
-            </button>
-            <% } %>
-
-            <div class="trust-badge">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>Malipo salama na ya haraka</span>
-            </div>
-        </div>
-    </div>
-</div>
-<br>
-<div class="alert alert-light shadow-sm border-secondary mx-auto my-5 small rounded-3" role="alert"
-    style="width: 98%; max-width: 600px;">
-    <p><i class="fa-solid fa-circle-info"></i> <b>Baada ya malipo, mikeka ya VIP hapo chini itafunguliwa na utaipata
-            kila
-            siku
-            kwa wiki nzima</b></p>
-
-    <p class="mb-1">Changamoto yoyote ya malipo? Wasiliana nasi:</p>
-    <ul class="list-unstyled ms-2">
-        <li>
-            <i class="fa-brands fa-whatsapp text-success"></i> WhatsApp: <a
-                href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email || ''}\n\nNapata changamoto ya kufanya malipo`) %>"
-                class="link-success" target="_blank" rel="noopener noreferrer">+255 711 935 460</a>
-        </li>
-    </ul>
-</div>
-
-<!-- Supa 3 Locked -->
+<!-- Betslip1 Locked -->
 <div class="betslipCont mb-3 mx-auto" id="betslipCont" style="max-width: 600px;">
     <div class="cap">
         <h2 id="betslip-ya-leo">
@@ -117,9 +19,9 @@
                 <th scope="col">Odds</th>
             </tr>
         </thead>
-        <% if (sure3.length > 0) { %>
+        <% if (betslip1.length > 0) { %>
         <tbody>
-            <% sure3.forEach(mch => { %>
+            <% betslip1.forEach(mch => { %>
             <tr>
                 <td class="match-data">
                     <div class="match-meta">
@@ -149,7 +51,7 @@
         </tbody>
         <% } %>
     </table>
-    <% if (sure3.length < 1) { %>
+    <% if (betslip1.length < 1) { %>
     <p class="empty-slip">* Betslip ya Siku (SUPA 3) kwa tarehe <%= d %> haipo</p>
     <% } %>
 </div>
@@ -157,7 +59,7 @@
 
 <hr class="my-5 text-secondary">
 
-<!-- Multigoals Locked -->
+<!-- Betslip2 Locked -->
 <div class="betslipCont mb-3 mt-5 mx-auto" id="betslipCont" style="max-width: 600px;">
     <div class="cap">
         <h2 id="betslip-ya-leo">
@@ -178,9 +80,9 @@
                 <th scope="col">Odds</th>
             </tr>
         </thead>
-        <% if (sure5.length > 0) { %>
+        <% if (betslip2.length > 0) { %>
         <tbody>
-            <% sure5.forEach(mch => { %>
+            <% betslip2.forEach(mch => { %>
             <tr>
                 <td class="match-data">
                     <div class="match-meta">
@@ -210,7 +112,65 @@
         </tbody>
         <% } %>
     </table>
-    <% if (sure5.length < 1) { %>
+    <% if (betslip2.length < 1) { %>
+    <p class="empty-slip">* Betslip ya Siku (Multigoals) kwa tarehe <%= d %> haipo</p>
+    <% } %>
+</div>
+
+<!-- Betslip3 Locked -->
+<div class="betslipCont mb-3 mt-5 mx-auto" id="betslipCont" style="max-width: 600px;">
+    <div class="cap">
+        <h2 id="betslip-ya-leo">
+            Betslip ya Siku | VIP #3
+            <span class="slip-siku">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>
+                    <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
+                </span>
+            </span>
+        </h2>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Matches</th>
+                <th scope="col">Odds</th>
+            </tr>
+        </thead>
+        <% if (betslip3.length > 0) { %>
+        <tbody>
+            <% betslip3.forEach(mch => { %>
+            <tr>
+                <td class="match-data">
+                    <div class="match-meta">
+                        <%= mch.time %> | <%= mch.league %>
+                    </div>
+
+                    <div class="match-name">
+                        <i class="fa-regular fa-futbol"></i>
+                        <%= String(mch.match).replace(' vs ', ' - ') %>
+                    </div>
+
+                    <div class="scratch-bar">
+                        Locked
+                    </div>
+                </td>
+                <td class="odds-data">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </td>
+            </tr>
+            <% }) %>
+
+            <tr class="slip-summary" onclick="scrollToArticleGate()">
+                <td class="text-center small text-muted" colspan="2">
+                    Lipia kufungua mkeka huu <i class="fa-solid fa-arrow-up"></i>
+                </td>
+            </tr>
+        </tbody>
+        <% } %>
+    </table>
+    <% if (betslip3.length < 1) { %>
     <p class="empty-slip">* Betslip ya Siku (Multigoals) kwa tarehe <%= d %> haipo</p>
     <% } %>
 </div>

@@ -76,11 +76,15 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //find sure3 betslip
-            let sure3 = await betslip.find({ date: d, vip_no: 1, status: { $ne: 'deleted' } }).sort('time')
-            let sure5 = await betslip.find({ date: d, vip_no: 2, status: { $ne: 'deleted' } }).sort('time')
+            let betslip1 = await betslip.find({ date: d, vip_no: 1, status: { $ne: 'deleted' } }).sort('time')
+            let betslip2 = await betslip.find({ date: d, vip_no: 2, status: { $ne: 'deleted' } }).sort('time')
+            let betslip3 = await betslip.find({ date: d, vip_no: 3, status: { $ne: 'deleted' } }).sort('time')
 
-            let slipOdds = sure3.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
-            let sure5Odds = sure5.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+            const total_odds = {
+                betslip1: betslip1.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+                betslip2: betslip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+                betslip3: betslip3.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+            }
 
 
             //find VIP Slips
@@ -103,10 +107,11 @@ router.get('/mkeka/vip', async (req, res) => {
             //Booking Codes
             let today_codes = await BookingCodesModel.find({ date: d });
 
-            let slip1 = today_codes.find((slip) => slip.slip_no === 1)?.code || '---';
-            let slip2 = today_codes.find((slip) => slip.slip_no === 2)?.code || '---';
-
-            let codes = { slip1, slip2 };
+            const booking_codes = {
+                betslip1: today_codes.find((slip) => slip.slip_no === 1)?.code || '---',
+                betslip2: today_codes.find((slip) => slip.slip_no === 2)?.code || '---',
+                betslip3: today_codes.find((slip) => slip.slip_no === 3)?.code || '---',
+            }
 
             //autopilot
             let aff = await affAnalyticsModel.findOne({ pid: 'shemdoe' }).select('autopilot')
@@ -118,7 +123,7 @@ router.get('/mkeka/vip', async (req, res) => {
                 else if (req.query.auto === '0') autopilot = false;
             }
 
-            return res.render(`8-vip-paid/landing`, { sure3, sure5, slipOdds, sure5Odds, slips, user, d, won_slips, codes, siku, autopilot })
+            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, total_odds, booking_codes, slips, user, d, won_slips, siku, autopilot })
         }
         res.render('8-vip/vip')
     } catch (err) {
@@ -287,8 +292,16 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
         }
 
         if (String(tip).toLowerCase() === 'shift-3') {
-            await paidVipModel.create({
+            await betslip.create({
                 match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 3, expl: match.expl
+            })
+            await match.constructor.deleteOne({ _id: match._id });
+            return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
+        }
+
+        if (String(tip).toLowerCase() === 'shift-4') {
+            await paidVipModel.create({
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 4, expl: match.expl
             })
             await match.constructor.deleteOne({ _id: match._id });
             return res.status(200).json({ ok: "✅ Match Status Shifted to PaidVIP", match });
@@ -319,7 +332,7 @@ router.post('/posting/betslip-vip2', async (req, res) => {
         const { date, time, league, match, tip, odd, vip_no } = req.body;
 
         // Create new betslip entry if its VIP #2 Gold
-        if (Number(vip_no) === 3) {
+        if (Number(vip_no) === 4) {
             let newPaidVip = new paidVipModel({
                 time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, vip_no, expl: matchExplanation(tip)
             })
@@ -352,29 +365,6 @@ router.post('/posting/betslip-vip2', async (req, res) => {
     }
 });
 
-//spinning sure 3
-router.post('/spinning/sure3', async (req, res) => {
-    try {
-        if (!req.isAuthenticated()) {
-            res.cookie('error_msg', 'Not authenticated')
-            return res.redirect('/user/login')
-        }
-        let user = req.user
-        if (user.role !== 'admin') {
-            return res.send('Not authorized')
-        }
-
-        let siku = req.body.siku
-        let date = String(siku).split('-').reverse().join('/')
-
-        await betslip.deleteMany({ date, vip_no: 1 })
-        await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
-        res.redirect(`/mkeka/vip?date=${siku}`)
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-})
-
 //Posting Booking Code
 router.post('/post/vip/code', async (req, res) => {
     try {
@@ -404,28 +394,6 @@ router.post('/post/vip/code', async (req, res) => {
     } catch (error) {
         console.error("Error saving betslip:", error);
         res.status(500).json({ error: error.message });
-    }
-});
-
-router.post('/user/confirm-payment', async (req, res) => {
-    const { phone, email } = req.body;
-
-    if (!phone || !/^0\d{9}$/.test(phone) || !req.isAuthenticated()) {
-        return res.status(400).json({
-            status: "failed",
-            message: "Namba ya simu si sahihi au hujalogin kwenye account yako."
-        });
-    }
-
-    //notify req
-    sendLauraNotification(GLOBAL_VARS.laura_logs_channel, `${phone} is trying to confirm payment`, true)
-
-    try {
-        const result = await autoConfirmVIP(phone, String(email).toLocaleLowerCase())
-        res.status(200).json(result)
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ status: 'failed', message: 'Server Error!' })
     }
 });
 

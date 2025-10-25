@@ -1,0 +1,93 @@
+<div class="betslipCont mb-3 mt-5" id="betslipCont">
+    <div class="cap">
+        <h2 id="betslip-ya-leo">
+            Betslip ya Siku | SUPA 3
+            <span class="slip-siku">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>
+                    <%= new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
+                </span>
+            </span>
+        </h2>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Matches</th>
+                <th scope="col">Odds</th>
+            </tr>
+        </thead>
+        <% if (betslip1.length > 0) { %>
+        <tbody>
+            <% betslip1.forEach(mch => { %>
+            <tr>
+                <td class="match-data">
+                    <div class="match-meta">
+                        <%= mch.time %> | <%= mch.league %>
+                    </div>
+
+                    <div class="match-name">
+                        <i class="fa-regular fa-futbol"></i>
+                        <%= String(mch.match).replace(' vs ', ' - ') %>
+                    </div>
+                    
+                    <div class="match-tip">
+                        <%= String(mch.tip) %>
+                    </div>
+                    
+                    <% if (mch?.expl && mch.expl.length > 5) { %>
+                    <div class="match-explanation">
+                        <%= mch.expl %>
+                    </div>
+                    <% } %>
+                    
+                    <% if (mch.status === 'won') { %>
+                    <div class="status-indicator won">
+                        <i class="fa-regular fa-circle-check"></i> WON <%= mch.result %>
+                    </div>
+                    <% } %>
+                    
+                    <% if (mch.status === 'lose') { %>
+                    <div class="status-indicator lost">
+                        <i class="fa-regular fa-circle-xmark"></i> LOSE <%= mch.result %>
+                    </div>
+                    <% } %>
+                </td>
+                <td class="odds-data">
+                    <span class="odds-value <%= mch.status === 'won' ? 'won' : (mch.status === 'lose' ? 'lost' : '') %>">
+                        <%= String(mch.odd).padEnd(4, '0') %>
+                    </span>
+                    <% if (mch.status === 'won') { %>
+                    <i class="status-icon fa-regular fa-circle-check"></i>
+                    <% } %>
+                    <% if (mch.status === 'lose') { %>
+                    <i class="status-icon fa-regular fa-circle-xmark"></i>
+                    <% } %>
+                </td>
+            </tr>
+            <% }) %>
+
+            <tr class="slip-summary">
+                <td>
+                    <div class="stake">Stake: 35,000 TZS</div>
+                    <div class="win-amount">Win: <%= Number(Number(total_odds?.betslip1)*35000).toLocaleString('en-US') %> TZS</div>
+                    <div class="booking-code">
+                        <div><u>Booking Code:</u></div>
+                        <div class="provider"><i class="fa-regular fa-circle-right"></i> Gal Sport: <b><%= booking_codes?.betslip1 %></b></div>
+                    </div>
+                    <div class="register-prompt">
+                         Huna account Gal Sport?. <a href="/gsb/register" target="_blank">Jisajili Hapa!</a>
+                    </div>
+                </td>
+                <td class="total-odds">
+                    <%= total_odds?.betslip1 %>
+                </td>
+            </tr>
+        </tbody>
+        <% } %>
+    </table>
+    <% if (betslip1.length < 1) { %>
+    <p class="empty-slip">* Betslip ya Siku (SUPA 3) kwa tarehe <%= d %> haipo</p>
+    <% } %>
+</div>
