@@ -73,21 +73,21 @@ const checking3MkekaBetslip = async (d) => {
         // }
 
         //############## slip 2 (over 1.5 ft) #############################
-        // let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
-        // if (vip2.length < 1 && allPaidVIP < 5) {
-        //     //find random 3 from over 1.5
-        //     let copies = await Over15MikModel.aggregate([
-        //         { $match: { date: d } },
-        //         { $sample: { size: 2 } }
-        //     ])
+        let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
+        if (vip2.length < 1 && allPaidVIP < 5) {
+            let btts = ['2:3', '2:4', '2:5', '3:5'];
+            let copies = await correctScoreModel.aggregate([
+                { $match: { siku: d, tip: { $in: [...btts] } } },
+                { $sample: { size: 4 } }
+            ])
 
-        //     //add them to betslip database
-        //     for (let c of copies) {
-        //         await paidVipModel.create({
-        //             date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
-        //         })
-        //     }
-        // }
+            //add them to betslip database
+            for (let c of copies) {
+                await paidVipModel.create({
+                    date: c.siku, time: c.time, league: c.league, tip: 'GG - Yes', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 2
+                })
+            }
+        }
 
         //############### slip 3 (Under 3.5 from Cscore 0:0) ############################
         let vip3 = await paidVipModel.find({ date: d, vip_no: 3 })
@@ -177,7 +177,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 10 }
+                    $sample: { size: 7 }
                 }
             ]);
 
