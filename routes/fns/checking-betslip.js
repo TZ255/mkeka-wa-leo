@@ -75,7 +75,7 @@ const checking3MkekaBetslip = async (d) => {
         //############## slip 2 (over 1.5 ft) #############################
         let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
         if (vip2.length < 1 && allPaidVIP < 5) {
-            let btts = ['2:3', '2:4', '2:5', '3:5'];
+            let btts = ['1:3', '2:3', '2:4', '2:5', '3:5'];
             let copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, tip: { $in: [...btts] } } },
                 { $sample: { size: 4 } }
@@ -110,7 +110,7 @@ const checking3MkekaBetslip = async (d) => {
         //################ slip 4 (Direct win - match.today) #########################
         let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
         if (vip4.length < 1 && allPaidVIP < 5) {
-            let direct_home = ['3:0', '4:0', '4:1', '5:0', '5:1']
+            let direct_home = ['3:1', '3:0', '4:0', '4:1', '5:0', '5:1']
             let direct_away = ['0:3', '0:4', '1:4', '0:5', '1:5']
 
             let matches = await correctScoreModel.aggregate([
