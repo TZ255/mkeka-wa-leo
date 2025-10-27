@@ -34,29 +34,63 @@
                 Bonyeza <strong>LIPIA SASA</strong> kufanya malipo yako <br> na uweze kupata mikeka yetu ya VIP wiki nzima
             </p>
 
-            <div class="price-container">
-                <span class="price-main">Tsh 12,500</span>
-                <span class="price-period">/ wiki</span>
+            <!-- Primary package: Gold Plan (Tsh 12,500 / wiki) -->
+            <div class="alt-plan-card alt-gold-card" aria-label="Gold Plan">
+                <div class="alt-plan-head">
+                    <div class="alt-badge">
+                        <i class="fa-solid fa-crown"></i> Gold Plan
+                    </div>
+                    <div class="alt-price">
+                        <span class="main">Tsh 12,500</span>
+                        <span class="period">/ wiki</span>
+                    </div>
+                </div>
+                <ul class="alt-features">
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Mikeka Minne ya VIP</strong> kila siku</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Jumla ya Odds 30+</strong> kwa siku</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Kwa wiki nzima</strong> inapatikana</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Msaada wa haraka</strong> 24/7</span>
+                    </li>
+                </ul>
             </div>
 
-            <ul class="features-list">
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Mikeka Minne ya VIP</strong> kila siku</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Jumla ya Odds 30+</strong> kwa siku</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Kwa wiki nzima</strong> inapatikana</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Msaada wa haraka</strong> 24/7</span>
-                </li>
-            </ul>
+            <!-- Secondary package: Silver Plan (Tsh 7,500 / wiki) -->
+            <div class="alt-plan-card mb-4" aria-label="Silver Plan">
+                <div class="alt-plan-head">
+                    <div class="alt-badge">
+                        <i class="fa-regular fa-star"></i> Silver Plan
+                    </div>
+                    <div class="alt-price">
+                        <span class="main">Tsh 7,500</span>
+                        <span class="period">/ wiki</span>
+                    </div>
+                </div>
+                <ul class="alt-features">
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Mikeka Miwili</strong> kila siku</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Jumla ya Odds 10+</strong> kwa siku</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Kwa wiki nzima</strong> inapatikana</span>
+                    </li>
+                </ul>
+            </div>
 
             <% if (autopilot === true) { %>
             <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
