@@ -3,12 +3,12 @@
         style="width: 98%; background: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; max-width: 520px;">
         <div class="d-flex justify-content-between align-items-center px-4 py-3"
             style="background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
-            <span class="fw-bold" style="font-size: 1.05rem; color: #212529;">
+            <span class="fw-bold" style="font-size: 0.95rem; color: #212529;">
                 <i class="fa-solid fa-id-card me-2 text-success"></i>
                 My Account
             </span>
             <a href="/user/logout" class="text-danger"
-                style="font-size: 0.95rem; font-weight: 600; text-decoration: none;">
+                style="font-size: 0.9rem; font-weight: 600; text-decoration: none;">
                 <i class="fa-solid fa-right-from-bracket me-1"></i>
                 Logout
             </a>
@@ -16,19 +16,19 @@
         <div class="p-0">
             <div class="d-flex justify-content-between align-items-center px-4 py-3"
                 style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.9rem;">Name</span>
+                <span style="color: #6c757d; font-size: 0.8rem;">Name</span>
                 <span class="fw-bold text-capitalize"
-                    style="color: #212529; font-size: 0.9rem;"><%= user?.name %></span>
+                    style="color: #212529; font-size: 0.8rem;"><%= user?.name %></span>
             </div>
             <div class="d-flex justify-content-between align-items-center px-4 py-3"
                 style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.9rem;">Email</span>
-                <span class="fw-bold" style="color: #212529; font-size: 0.9rem;"><%= user.email %></span>
+                <span style="color: #6c757d; font-size: 0.8rem;">Email</span>
+                <span class="fw-bold" style="color: #212529; font-size: 0.8rem;"><%= user.email %></span>
             </div>
             <div class="d-flex justify-content-between align-items-center px-4 py-3"
                 style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.9rem;">Status</span>
-                <span class="text-capitalize" style="color: #212529; font-size: 0.9rem;">
+                <span style="color: #6c757d; font-size: 0.8rem;">Status</span>
+                <span class="text-capitalize" style="color: #212529; font-size: 0.8rem;">
                     <span class="badge"
                         style="background: #198754; color: #ffffff; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px;"><%= String(user.status).replace('unpaid', 'Not Paid') %></span>
                     (<%= user?.plan %>)
@@ -37,14 +37,14 @@
             <% if (user.status === 'paid') { %>
             <div class="d-flex justify-content-between align-items-center px-4 py-3"
                 style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.9rem;">Paid On</span>
+                <span style="color: #6c757d; font-size: 0.8rem;">Paid On</span>
                 <span class="fw-bold"
-                    style="color: #212529; font-size: 0.9rem;"><%= new Date(user.payments[0].paidOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
+                    style="color: #212529; font-size: 0.8rem;"><%= new Date(user.payments[0].paidOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
             </div>
             <div class="d-flex justify-content-between align-items-center px-4 py-3">
-                <span style="color: #6c757d; font-size: 0.9rem;">End On</span>
+                <span style="color: #6c757d; font-size: 0.8rem;">End On</span>
                 <span class="fw-bold"
-                    style="color: #212529; font-size: 0.9rem;"><%= new Date(user.payments[0].endedOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
+                    style="color: #212529; font-size: 0.8rem;"><%= new Date(user.payments[0].endedOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
             </div>
             <% } %>
         </div>
