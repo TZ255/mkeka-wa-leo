@@ -357,6 +357,27 @@ router.post('/posting/betslip-vip2', async (req, res) => {
     }
 });
 
+//spinning sure 3
+router.post('/spinning/sure3', async (req, res) => {
+    try {
+        if (!req.isAuthenticated()) {
+            res.cookie('error_msg', 'Not authenticated')
+            return res.redirect('/user/login')
+        }
+        let user = req.user
+        if (user.role !== 'admin') {
+            return res.send('Not authorized')
+        }
+        let siku = req.body.siku
+        let date = String(siku).split('-').reverse().join('/')
+        await betslip.deleteMany({ date, vip_no: 1 })
+        await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
+        res.redirect(`/mkeka/vip?date=${siku}`)
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
+
 //Posting Booking Code
 router.post('/post/vip/code', async (req, res) => {
     try {
