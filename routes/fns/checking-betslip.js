@@ -12,47 +12,47 @@ const checking3MkekaBetslip = async (d) => {
     try {
         let allPaidVIP = await paidVipModel.countDocuments({date: d})
         //checking super 3 betslip
-        // let slip = await betslip.find({ date: d, vip_no: 1 })
-        // if (slip.length < 1) {
-        //     const copies = await correctScoreModel.aggregate([
-        //         { $match: { siku: d, time: { $gte: '14:00' } } },
-        //         // Add a field that splits the tip string and calculates total goals
-        //         {
-        //             $addFields: {
-        //                 totalGoals: {
-        //                     $let: {
-        //                         vars: {
-        //                             scores: { $split: ["$tip", ":"] }
-        //                         },
-        //                         in: {
-        //                             $add: [
-        //                                 { $toInt: { $arrayElemAt: ["$$scores", 0] } },
-        //                                 { $toInt: { $arrayElemAt: ["$$scores", 1] } }
-        //                             ]
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         },
-        //         // Filter for matches with 5 or more total goals
-        //         {
-        //             $match: {
-        //                 totalGoals: { $gte: 5 }
-        //             }
-        //         },
-        //         // Get random documents using sample
-        //         {
-        //             $sample: { size: 3 }
-        //         }
-        //     ]);
+        let slip = await betslip.find({ date: d, vip_no: 1 })
+        if (slip.length < 1) {
+            const copies = await correctScoreModel.aggregate([
+                { $match: { siku: d, time: { $gte: '14:00' } } },
+                // Add a field that splits the tip string and calculates total goals
+                {
+                    $addFields: {
+                        totalGoals: {
+                            $let: {
+                                vars: {
+                                    scores: { $split: ["$tip", ":"] }
+                                },
+                                in: {
+                                    $add: [
+                                        { $toInt: { $arrayElemAt: ["$$scores", 0] } },
+                                        { $toInt: { $arrayElemAt: ["$$scores", 1] } }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                // Filter for matches with 5 or more total goals
+                {
+                    $match: {
+                        totalGoals: { $gte: 5 }
+                    }
+                },
+                // Get random documents using sample
+                {
+                    $sample: { size: 3 }
+                }
+            ]);
 
-        //     //add them to betslip database
-        //     for (let c of copies) {
-        //         await betslip.create({
-        //             date: c.siku, time: c.time, league: c.league, tip: 'Over 2.5', odd: '1.52', match: c.match.replace(/ - /g, ' vs '), vip_no: 1
-        //         })
-        //     }
-        // }
+            //add them to betslip database
+            for (let c of copies) {
+                await betslip.create({
+                    date: c.siku, time: c.time, league: c.league, tip: 'Over 2.5', odd: '1.52', match: c.match.replace(/ - /g, ' vs '), vip_no: 1
+                })
+            }
+        }
 
         //CHECKING VIP SLIPS ##############################################################
         // ###################### slip 1 (normal betslip - other than free) ###############
@@ -75,16 +75,16 @@ const checking3MkekaBetslip = async (d) => {
         //############## slip 2 (over 1.5 ft) #############################
         let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
         if (vip2.length < 1 && allPaidVIP < 5) {
-            let btts = ['1:3', '2:3', '2:4', '2:5', '3:5'];
-            let copies = await correctScoreModel.aggregate([
-                { $match: { siku: d, tip: { $in: [...btts] } } },
-                { $sample: { size: 4 } }
+            //find random 3 from over 1.5
+            let copies = await Over15MikModel.aggregate([
+                { $match: { date: d } },
+                { $sample: { size: 2 } }
             ])
 
             //add them to betslip database
             for (let c of copies) {
                 await paidVipModel.create({
-                    date: c.siku, time: c.time, league: c.league, tip: 'GG - Yes', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 2
+                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
                 })
             }
         }
@@ -110,7 +110,7 @@ const checking3MkekaBetslip = async (d) => {
         //################ slip 4 (Direct win - match.today) #########################
         let vip4 = await paidVipModel.find({ date: d, vip_no: 4 });
         if (vip4.length < 1 && allPaidVIP < 5) {
-            let direct_home = ['3:1', '3:0', '4:0', '4:1', '5:0', '5:1']
+            let direct_home = ['3:0', '4:0', '4:1', '5:0', '5:1']
             let direct_away = ['0:3', '0:4', '1:4', '0:5', '1:5']
 
             let matches = await correctScoreModel.aggregate([
@@ -120,7 +120,7 @@ const checking3MkekaBetslip = async (d) => {
                         tip: { $in: [...direct_away, ...direct_home] }
                     }
                 },
-                { $sample: { size: 7 } }
+                { $sample: { size: 5 } }
             ]);
 
             let transformedData = matches.map(doc => {
@@ -177,7 +177,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 7 }
+                    $sample: { size: 13 }
                 }
             ]);
 
@@ -194,19 +194,19 @@ const checking3MkekaBetslip = async (d) => {
         }
 
         //################# slip 6 (Correct score double cha) ###################################
-        // let multikeka = await betslip.find({ date: d, vip_no: 2 });
-        // if (multikeka.length < 1) {
-        //     let copies = await mkekadb.aggregate([
-        //         { $match: { date: d, $expr: { $gt: [{ $toDouble: "$odds" }, 1.39] }} },
-        //         { $sample: { size: 4 } }
-        //     ])
+        let multikeka = await betslip.find({ date: d, vip_no: 2 });
+        if (multikeka.length < 1) {
+            let copies = await mkekadb.aggregate([
+                { $match: { date: d, $expr: { $gt: [{ $toDouble: "$odds" }, 1.39] }} },
+                { $sample: { size: 4 } }
+            ])
 
-        //     for (let c of copies) {
-        //         await betslip.create({
-        //             date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
-        //         })
-        //     }
-        // }
+            for (let c of copies) {
+                await betslip.create({
+                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
+                })
+            }
+        }
     } catch (error) {
         sendNotification(741815228, `❌ Updating VIP Slips \n${error?.message}`)
         console.error(error)
