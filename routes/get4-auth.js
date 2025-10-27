@@ -292,14 +292,6 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
         }
 
         if (String(tip).toLowerCase() === 'shift-3') {
-            await betslip.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 3, expl: match.expl
-            })
-            await match.constructor.deleteOne({ _id: match._id });
-            return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
-        }
-
-        if (String(tip).toLowerCase() === 'shift-4') {
             await paidVipModel.create({
                 match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 4, expl: match.expl
             })

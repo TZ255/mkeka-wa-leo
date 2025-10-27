@@ -11,7 +11,7 @@ const {sendNotification, sendLauraNotification} = require('./sendTgNotifications
 const checking3MkekaBetslip = async (d) => {
     try {
         let allPaidVIP = await paidVipModel.countDocuments({date: d})
-        //checking super 3 betslip
+        //checking Betslip1
         let slip = await betslip.find({ date: d, vip_no: 1 })
         if (slip.length < 1) {
             const copies = await correctScoreModel.aggregate([
@@ -54,23 +54,61 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        //CHECKING VIP SLIPS ##############################################################
-        // ###################### slip 1 (normal betslip - other than free) ###############
-        // let vip1 = await paidVipModel.find({ date: d, vip_no: 1 })
-        // if (vip1.length < 1) {
-        //     //find random 3 from mkekadb
-        //     let copies = await mkekadb.aggregate([
-        //         { $match: { date: d } },
-        //         { $sample: { size: 1 } }
-        //     ])
+        //Checking Betslip2
+        let multikeka = await betslip.find({ date: d, vip_no: 2 });
+        if (multikeka.length < 1) {
+            let copies = await mkekadb.aggregate([
+                { $match: { date: d, $expr: { $gt: [{ $toDouble: "$odds" }, 1.39] }} },
+                { $sample: { size: 4 } }
+            ])
 
-        //     //add them to betslip database
-        //     for (let c of copies) {
-        //         await paidVipModel.create({
-        //             date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 1
-        //         })
-        //     }
-        // }
+            for (let c of copies) {
+                await betslip.create({
+                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
+                })
+            }
+        }
+
+        //checking Betslip3
+        let betslip3 = await betslip.find({ date: d, vip_no: 3 })
+        if (betslip3.length < 1) {
+            let home13 = ['2:1'];
+            let away13 = ['1:2']
+            let ht_dc = ['3:1']
+            let copies = await correctScoreModel.aggregate([
+                { $match: { siku: d, tip: { $in: [...home13, ...away13, ...ht_dc] } } },
+                { $sample: { size: 5 } }
+            ])
+
+            let transformedData = copies.map(doc => {
+                let newTip;
+                let odd;
+                if (home13.includes(doc.tip)) {
+                    newTip = 'Home Multigoals: 1 - 3'
+                    odd = '1.33'
+                } else if (away13.includes(doc.tip)) {
+                    newTip = 'Away Multigoals: 1 - 3'
+                    odd = '1.33'
+                } else if (ht_dc.includes(doc.tip)) {
+                    newTip = 'HT Double Chance: 12'
+                    odd = '1.42'
+                }
+
+                return {
+                    date: doc.siku,
+                    time: doc.time,
+                    tip: newTip,
+                    vip_no: 3,
+                    odd,
+                    match: doc.match.replace(/ - /g, ' vs '),
+                    league: doc.league,
+                    expl: matchExplanation(newTip)
+                };
+            });
+
+            //add them to betslip database
+            if(transformedData.length > 0) await betslip.insertMany(transformedData);
+        }
 
         //############## slip 2 (over 1.5 ft) #############################
         let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
@@ -190,21 +228,6 @@ const checking3MkekaBetslip = async (d) => {
                         date: c.siku, time: c.time, league: c.league, tip: 'Over 2.5', odd: '1', match: c.match.replace(/ - /g, ' vs '), vip_no: 5
                     })
                 }
-            }
-        }
-
-        //################# slip 6 (Correct score double cha) ###################################
-        let multikeka = await betslip.find({ date: d, vip_no: 2 });
-        if (multikeka.length < 1) {
-            let copies = await mkekadb.aggregate([
-                { $match: { date: d, $expr: { $gt: [{ $toDouble: "$odds" }, 1.39] }} },
-                { $sample: { size: 4 } }
-            ])
-
-            for (let c of copies) {
-                await betslip.create({
-                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
-                })
             }
         }
     } catch (error) {

@@ -24,9 +24,12 @@
 
 <body>
     <%- include('../0-global/header.ejs'); %>
-    <%- include('./partials/account-info.ejs'); %>
+    
     <main>
-        <section class="left mt-5">
+        <section class="right">
+            <%- include('./partials/account-info.ejs'); %>
+        </section>
+        <section class="left">
             <!-- If user unpaid. Show this header -->
             <% if (user.status !== 'paid') { %>
             <%- include('./partials/header.ejs'); %>
@@ -40,8 +43,6 @@
             <%- include('./partials/betslip2.ejs'); %>
             <hr class="my-5 text-light">
             <%- include('./partials/betslip3.ejs'); %>
-            <hr class="my-5 text-light">
-            <%- include('./partials/betslip4.ejs'); %>
             <%- include('./partials/the-end.ejs'); %>
             <% if (user.role === 'admin') { %>
             <%- include('./partials/form-prev.ejs'); %>
