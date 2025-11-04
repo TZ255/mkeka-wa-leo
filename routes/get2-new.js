@@ -27,6 +27,7 @@ const { GLOBAL_VARS } = require('./fns/global-var')
 const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
 const { getLessUsedAPIKey } = require('./fns/RAPIDAPI')
 const { makePayment, getTransactionStatus } = require('./fns/zenopay')
+const { nkiriFunction } = require('../bots/charlotte/functions/nkiri')
 
 
 router.get('/standings', async (req, res) => {
@@ -338,8 +339,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/API/testing', async (req, res) => {
     try {
-        let resp = await getTransactionStatus("ORD-mh243okd-757259678")
-        res.send(resp)
+        res.end()
     } catch (error) {
         res.send(error)
     }
