@@ -183,7 +183,7 @@ router.get('/admin/posting', async (req, res) => {
 router.get('/mkeka/betslip-ya-leo', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let d_juma = d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
+        let d_juma = new Date().toLocaleString('sw-TZ', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         let month_date_leo = new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
 
         //find random 3
@@ -196,7 +196,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         //tarehes
         let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
         let trh = { leo: month_date_leo, created }
-        let jumasiku = { leo: WeekDayFn(d_juma) }
+        let jumasiku = { leo: d_juma }
 
         res.render('3-landing/landing', { slip, slipOdds, jumasiku, trh })
     } catch (err) {
