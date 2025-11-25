@@ -344,34 +344,45 @@ const lauraMainFn = async (app) => {
         const admins = [imp.rtmalipo, imp.shemdoe];
 
         try {
-            // Validate admin access
-            if (!ctx.match || !admins.includes(ctx.chat.id)) {
+            if (!ctx.match || !admins.includes(ctx.from?.id)) {
                 return await ctx.reply('Unauthorized access or wrong command format');
             }
 
-            // Parse command parameters
-            let match = ctx.match
+            // Raw params after the command
+            let raw = ctx.match.trim();
 
-            let [param, email] = match.split(' ');
+            // Remove "email:" / "Email:" if present, with or without extra spaces
+            // e.g. "gold Email: example@gmail.com" or "gold email:example@gmail.com"
+            raw = raw.replace(/email:\s*/i, '').trim();
 
-            if (!['silver', 'gold', 'gold2', 'one'].includes(param.toLowerCase().trim())) {
-                return await ctx.reply('Invalid match... Use: /grant <silver|gold|gold2|one> <email>');
+            // Split by any amount of whitespace
+            const [paramRaw, emailRaw] = raw.split(/\s+/);
+
+            const param = paramRaw?.toLowerCase().trim();
+            const email = emailRaw?.toLowerCase().trim();
+
+            // Validate subscription type
+            const allowedTypes = ['silver', 'gold', 'gold2', 'one'];
+            if (!param || !allowedTypes.includes(param)) {
+                return await ctx.reply(
+                    'Invalid match... Use: /grant <silver|gold|gold2|one> <email>'
+                );
             }
 
-            if(email.includes('mail: ')) email = email.split('mail: ')[1].trim();
-
-            if (!email || !param) {
+            if (!email) {
                 return await ctx.reply('Please provide both email and subscription type');
             }
-            email = String(email).toLowerCase()
 
-            let result = await grantSubscription(email, param)
-            return await ctx.reply(result.message)
+            const result = await grantSubscription(email, param);
+            return await ctx.reply(result.message);
         } catch (error) {
             console.error('Grant command error:', error);
-            await ctx.reply('An error occurred while processing your request. Please try again.');
+            await ctx.reply(
+                'An error occurred while processing your request. Please try again.'
+            );
         }
     });
+
 
     bot.command('vip_rev', async ctx => {
         try {
@@ -384,8 +395,8 @@ const lauraMainFn = async (app) => {
 
     bot.command('autopilot', async ctx => {
         try {
-            if(![imp.shemdoe, imp.rtmalipo].includes(ctx.chat.id)) return await ctx.reply('Not authorized');
-            
+            if (![imp.shemdoe, imp.rtmalipo].includes(ctx.chat.id)) return await ctx.reply('Not authorized');
+
             //get autopilot status, if true, set it to false, if false, set it to true
             let aff = await affAnalyticsModel.findOne({ pid: 'shemdoe' })
             if (!aff) return await ctx.reply('Affiliate analytics not found');
@@ -400,14 +411,14 @@ const lauraMainFn = async (app) => {
 
     bot.command('api_usage', async ctx => {
         try {
-            let apis = await RapidKeysModel.find().sort({times_used: 1})
+            let apis = await RapidKeysModel.find().sort({ times_used: 1 })
             let text = `<b>Rapid API Keys usage</b>\n\n`
             for (let api of apis) {
                 let key = api.key
                 let usage = api.times_used
                 text = text + `- ${key}: ${usage}\n\n`
             }
-            await ctx.reply(text, {parse_mode: 'HTML'})
+            await ctx.reply(text, { parse_mode: 'HTML' })
         } catch (error) {
             await ctx.reply(error?.message).catch(e => console.log(e?.message, e))
         }
