@@ -340,7 +340,7 @@ const lauraMainFn = async (app) => {
         }
     })
 
-    bot.command('grant', async (ctx) => {
+    bot.command(['grant', 'g'], async (ctx) => {
         const admins = [imp.rtmalipo, imp.shemdoe];
 
         try {
@@ -351,9 +351,14 @@ const lauraMainFn = async (app) => {
 
             // Parse command parameters
             let match = ctx.match
-            if(match.includes('mail: ')) match = match.split('mail: ')[1].trim();
 
-            let [email, param] = match.split(' ');
+            let [param, email] = match.split(' ');
+
+            if (!['silver', 'gold', 'gold2', 'one'].includes(param.toLowerCase().trim())) {
+                return await ctx.reply('Invalid match... Use: /grant <silver|gold|gold2|one> <email>');
+            }
+
+            if(email.includes('mail: ')) email = email.split('mail: ')[1].trim();
 
             if (!email || !param) {
                 return await ctx.reply('Please provide both email and subscription type');
