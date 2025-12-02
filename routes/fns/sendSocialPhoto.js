@@ -62,7 +62,7 @@ async function repostToMkekaLeo(dateStr) {
 async function replySocialWin(repostMessageId, resultText) {
     if (!repostMessageId) throw new Error('repost_message_id haijapatikana');
 
-    const text = resultText ? `✅✅✅ WON (${resultText})` : '✅✅✅ WON';
+    const text = `[WON ${resultText}] ✅✅✅`;
     return bot.api.sendMessage(mkekawaleo, text, {
         reply_parameters: { message_id: repostMessageId }
     }).catch(() => { throw new Error('Kushindwa kutuma reply ya WON') });

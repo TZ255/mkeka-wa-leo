@@ -439,8 +439,6 @@ router.get('/mkeka/vip/social', isAuth, async (req, res) => {
             .sort({ createdAt: -1 })
             .lean();
 
-        console.log(posted_matches.length, 'posted matches for', selectedDate);
-
         res.render('8-vip/social', { matches, message: req.query?.msg || '', selectedDate, todayNairobi, posted_matches });
     } catch (error) {
         console.error('social route error:', error?.message);
@@ -510,7 +508,7 @@ router.post('/mkeka/vip/social', isAuth, upload.single('cover_photo'), async (re
 router.post('/mkeka/vip/social/:id/result', isAuth, async (req, res) => {
     if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
     const { id } = req.params;
-    const { result, status, redirect_date } = req.body;
+    const { result, status } = req.body;
 
     try {
         if (!['won', 'lost'].includes((status || '').toLowerCase())) {
