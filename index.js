@@ -164,7 +164,7 @@ setInterval(() => {
         //angalia betslip & repost social tip kila baada ya dakika 15
         if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
-            repostToMkekaLeo(d_date)
+            if (hours >= 8) repostToMkekaLeo(d_date);
         }
 
         //reset resend email count at 03:05 -- check matchdays
