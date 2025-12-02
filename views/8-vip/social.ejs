@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Correct Score Hub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/global.css">
+  <%- include('../0-global/google.ejs'); %>
+  <%- include('../0-global/fonts.ejs'); %>
+  <%- include('../0-global/favicon.ejs') %>
+  <style>
+    body {
+      background: #f7f8fa;
+      color: #111;
+    }
+
+    .page-title {
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .card {
+      border: 1px solid #e6e8ee;
+      box-shadow: 0 6px 20px rgba(17, 34, 68, 0.05);
+    }
+
+    .card h5 {
+      color: #0d1b2a;
+    }
+
+    .badge-tip {
+      background: #0d6efd;
+      color: #fff;
+    }
+
+    .meta {
+      color: #6c757d;
+    }
+
+    .form-control {
+      border-color: #d8dce6;
+    }
+
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+    }
+
+    .btn-save {
+      background: #28a745;
+      border: none;
+      color: #fff;
+      font-weight: 700;
+    }
+    .btn-save:hover,
+    .btn-save:active {
+      background: #218838 !important;
+      color: #fff !important;
+    }
+
+    .empty {
+      background: #fff;
+      border: 1px dashed #d8dce6;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    a.link-light {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+
+    a.link-light:hover {
+      text-decoration: underline;
+    }
+
+    .card-body {
+      padding: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('../0-global/header.ejs'); %>
+  <main class="container my-4 d-flex flex-column">
+    <section class="navigation d-flex flex-column justify-content-center align-items-center mb-4">
+      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
+        <div>
+          <h2 class="page-title mb-1">Social Correct Score</h2>
+          <p class="meta mb-0">Pick matches from 13:00 and prep the social copy.</p>
+        </div>
+        <% if (message) { %>
+        <span class="badge bg-success text-dark px-3 py-2">✅ <%= message %></span>
+        <% } %>
+      </div>
+
+      <form class="mb-3" action="/mkeka/vip/social" method="GET">
+        <div class="d-flex flex-wrap align-items-end gap-2">
+          <div>
+            <label class="form-label mb-1">Select date</label>
+            <input type="date" name="date" class="form-control" value="<%= selectedDate || todayNairobi %>" max="<%= todayNairobi %>" required>
+          </div>
+          <button type="submit" class="btn btn-save mt-2">Load tips</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="row g-3">
+      <% if (matches && matches.length) { %>
+      <% matches.forEach(function(match) { %>
+      <div class="col-12 col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <h5 class="card-title mb-1"><%= match.match %></h5>
+                <div class="meta"><%= match.league || 'N/A' %></div>
+              </div>
+              <span class="badge badge-tip"><%= match.tip %></span>
+            </div>
+            <div class="meta mb-2"><b>Time:</b> <%= match.time || '--:--' %> · <b>Date:</b> <%= match.siku || match.date || '--/--/----' %></div>
+            <% if (match.prediction_url) { %>
+            <div class="mb-3"><a class="link-warning text-decoration-none" href="<%= match.prediction_url %>" target="_blank" rel="noopener">Prediction source</a></div>
+            <% } %>
+
+            <form action="/mkeka/vip/social" method="POST" target="_blank" enctype="multipart/form-data" class="mt-2">
+              <input type="hidden" name="cscoreId" value="<%= match._id %>">
+              <div class="row g-2">
+                <div class="col-md-5">
+                  <label class="form-label">Social tip</label>
+                  <input type="text" name="tip" class="form-control" placeholder="e.g. Over 2.5" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Booking code</label>
+                  <input type="text" name="booking_code" class="form-control" placeholder="enter code" required>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Odds</label>
+                  <input type="number" step="0.01" min="1" name="odds" class="form-control" placeholder="eg 1.72">
+                </div>
+              </div>
+              <div class="mt-2 mb-3">
+                <label class="form-label">Cover photo</label>
+                <input type="file" name="cover_photo" accept="image/*" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-save w-100">Save social tip</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+      <% } else { %>
+      <div class="col-12">
+        <div class="empty text-center">
+          <p class="mb-1 fw-semibold">No matches ≥ 13:00 right now.</p>
+          <p class="meta mb-0">Check back later for eligible correct scores.</p>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </main>
+
+  <%- include('../0-global/footer.ejs'); %>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

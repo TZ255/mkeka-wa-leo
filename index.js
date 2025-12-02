@@ -37,6 +37,7 @@ const { identity } = require('lodash');
 const { getAllFixtures } = require('./routes/fns/fixtures');
 const removeTrailingSlash = require('./routes/fns/removeTrailingSlash');
 const RapidKeysModel = require('./model/rapid_keys');
+const { repostToMkekaLeo } = require('./routes/fns/sendSocialPhoto');
 
 const app = express()
 
@@ -160,9 +161,10 @@ setInterval(() => {
         let hours = Number(hh)
         let mins = Number(mm)
 
-        //angalia betslip, getAllFixtures kila baada ya dakika 15
+        //angalia betslip & repost social tip kila baada ya dakika 15
         if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
+            repostToMkekaLeo(d_date)
         }
 
         //reset resend email count at 03:05 -- check matchdays

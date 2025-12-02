@@ -14,9 +14,6 @@ const cscoreSchema = new Schema({
     match: {
         type: String
     },
-    league: {
-        type: String
-    },
     tip: {
         type: String,
     },
@@ -38,6 +35,10 @@ const cscoreSchema = new Schema({
     status: {
         type: String,
         default: 'pending'
+    },
+    prediction_url: {
+        type: String,
+        default: 'unknown'
     }
 }, {strict: false, timestamps: true })
 

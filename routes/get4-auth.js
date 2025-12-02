@@ -16,6 +16,14 @@ const { autoConfirmVIP } = require('./fns/autoConfirmVIP');
 const { sendLauraNotification } = require('./fns/sendTgNotifications');
 const { GLOBAL_VARS } = require('./fns/global-var');
 const affAnalyticsModel = require('../model/affiliates-analytics');
+const correctScoreModel = require('../model/cscore');
+const SocialTipModel = require('../model/social-tip');
+const { extractKeyFacts } = require('./fns/extractKeyFacts');
+const { generateSocialDescription } = require('./fns/generateSocialDescription');
+const { sendSocialPhoto } = require('./fns/sendSocialPhoto');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+
 
 router.get('/mkeka/vip', async (req, res) => {
     try {
@@ -407,6 +415,89 @@ router.post('/post/vip/code', async (req, res) => {
     } catch (error) {
         console.error("Error saving betslip:", error);
         res.status(500).json({ error: error.message });
+    }
+});
+
+const ALLOWED_CORRECT_SCORE_TIPS = ['3:0', '3:1', '4:0', '4:1', '4:2', '4:3', '5:0', '5:1', '5:2', '5:3', '0:3', '1:3', '3:3', '1:4', '2:4', '3:4', '0:5', '1:5', '2:5', '3:5'];
+
+// Social correct score helper
+router.get('/mkeka/vip/social', isAuth, async (req, res) => {
+    if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
+    try {
+        const todayNairobi = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Nairobi' }).format(new Date());
+        const selectedDate = (req.query?.date || todayNairobi).trim();
+        const matches = await correctScoreModel.find({
+            tip: { $in: ALLOWED_CORRECT_SCORE_TIPS },
+            jsDate: selectedDate,
+            time: { $gte: '13:00' },
+            prediction_url: { $nin: [null, '', 'unknown'] }
+        })
+            .sort({ jsDate: 1, time: 1 })
+            .lean();
+
+        res.render('8-vip/social', { matches, message: req.query?.msg || '', selectedDate, todayNairobi });
+    } catch (error) {
+        console.error('social route error:', error?.message);
+        res.status(500).send('Hitilafu imetokea');
+    }
+});
+
+router.post('/mkeka/vip/social', isAuth, upload.single('cover_photo'), async (req, res) => {
+    if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
+    const { cscoreId, tip, booking_code, odds } = req.body;
+    if (!cscoreId) return res.status(400).send('Hakuna mechi imechaguliwa');
+
+    const affiliate_url = `https://bet-link.top/gsb/register`;
+
+    try {
+        const csDoc = await correctScoreModel.findOne({ _id: cscoreId });
+        if (!csDoc) return res.status(404).send('Mechi haijapatikana au tip si sahihi');
+
+        const enteredTip = String(tip || csDoc.tip || '').trim();
+        const bookingCode = String(booking_code || '').trim();
+        const postedOdds = odds ? Number(odds) : undefined;
+        const photoBuffer = req?.file?.buffer;
+        if (!photoBuffer) return res.status(400).send('Tafadhali weka picha ya cover');
+
+        // fetch key facts + generate swahili description
+        const facts = await extractKeyFacts(csDoc.prediction_url);
+        const description = await generateSocialDescription({
+            facts,
+            match: csDoc.match,
+            league: csDoc.league,
+            tip: enteredTip || csDoc.tip,
+        });
+
+        const caption = `🕛 ${csDoc.time}  |  ${csDoc.siku} \n🏆 ${csDoc.league} \n<b><a href="${affiliate_url}">⚽ ${csDoc.match}</a></b> \n\n<b>🎯 Tip: ${enteredTip} ✅ \n#️⃣ Odds: ${odds}</b> \n\n<b>📠 Booking Code:</b> <code>${bookingCode}</code> \n<b>🎰 Kampuni:</b> Gal Sport Betting \n\n<blockquote>${description}</blockquote> \n<blockquote>Ofa ya 100% kwenye deposit ya kwanza. Weka 10,000 upate 10,000 BURE!</blockquote> \n<b>Jisajili & Weka Beti 👇 \n<a href="${affiliate_url}">https://gsb.co.tz/#user/register</a></b>`;
+
+        const tgResp = await sendSocialPhoto(photoBuffer, caption);
+
+        await SocialTipModel.findOneAndUpdate(
+            { cscoreId: csDoc._id },
+            {
+                $set: {
+                    match: csDoc.match,
+                    league: csDoc.league,
+                    date: csDoc.siku,
+                    time: csDoc.time,
+                    tip: csDoc.tip,
+                    social_tip: enteredTip,
+                    booking_code: bookingCode,
+                    odds: postedOdds,
+                    prediction_url: csDoc.prediction_url,
+                    facts,
+                    description,
+                    createdBy: req?.user?.email || '',
+                    message_id: tgResp?.message_id
+                }
+            },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+
+        res.status(200).send('✅ Taarifa zimehifadhiwa kikamilifu kwenye database na kutumwa Telegram.');
+    } catch (error) {
+        console.error('social save error:', error?.message);
+        res.status(500).send(error?.message || 'Imeshindikana kuhifadhi taarifa');
     }
 });
 

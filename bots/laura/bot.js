@@ -6,6 +6,7 @@
 const affAnalyticsModel = require('../../model/affiliates-analytics')
 const mkekaUsersModel = require('../../model/mkeka-users')
 const RapidKeysModel = require('../../model/rapid_keys')
+const SocialTipModel = require('../../model/social-tip')
 const { grantSubscription } = require('../../routes/fns/grantVIP')
 const sendEmail = require('../../routes/fns/sendemail')
 
@@ -51,7 +52,8 @@ const lauraMainFn = async (app) => {
         rtcopyDB: -1002634850653,
         scrapin: -1001858785908,
         muvikaDB: -1001802963728,
-        muvikaReps: -1002045676919
+        muvikaReps: -1002045676919,
+        mikekaDB: -1001696592315
     }
 
     //set webhook
@@ -428,10 +430,15 @@ const lauraMainFn = async (app) => {
         try {
             let chan_id = ctx.channelPost.chat.id
             if (chan_id == imp.muvikaReps && ctx.channelPost.video) {
-                await ctx.reply(`<code>reply-${ctx.channelPost.message_id}</code>`, {
+                return await ctx.reply(`<code>reply-${ctx.channelPost.message_id}</code>`, {
                     parse_mode: 'HTML',
                     reply_to_message_id: ctx.channelPost.message_id
                 })
+            }
+
+            if (chan_id == imp.mikekaDB && ctx.channelPost.reply_to_message && ctx.channelPost.text && ctx.channelPost.text.startsWith('/delete')) {
+                await SocialTipModel.deleteOne({ message_id: ctx.channelPost.reply_to_message.message_id })
+                return await ctx.deleteMessage();
             }
 
         } catch (err) {
