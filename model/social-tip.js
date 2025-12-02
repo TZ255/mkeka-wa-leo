@@ -13,9 +13,12 @@ const socialTipSchema = new Schema({
     odds: { type: Number },
     prediction_url: { type: String },
     message_id: { type: Number },
+    repost_message_id: { type: Number, default: null },
     isPosted: { type: Boolean, default: false },
     facts: [{ type: String }],
     description: { type: String },
+    status: { type: String, default: 'pending' },
+    result: { type: String, default: '-:-' },
     createdBy: { type: String },
 }, { strict: false, timestamps: true });
 

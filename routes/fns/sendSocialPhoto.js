@@ -45,10 +45,7 @@ async function repostToMkekaLeo(dateStr) {
 
         await bot.api.deleteMessage(mikekaDB, doc.message_id).catch(() => {});
 
-        doc.isPosted = true;
-        doc.repost_message_id = copyResp?.message_id;
-        await doc.save();
-
+        await doc.updateOne({ $set: { isPosted: true, repost_message_id: copyResp?.message_id || null } });
         return copyResp;
     } catch (error) {
         const msg = `repostToMkekaLeo error: ${error?.message || error}`;
@@ -57,4 +54,18 @@ async function repostToMkekaLeo(dateStr) {
     }
 }
 
-module.exports = { sendSocialPhoto, repostToMkekaLeo };
+/**
+ * Reply to a reposted message on mkekawaleo channel marking it as WON.
+ * @param {number} repostMessageId
+ * @param {string} resultText
+ */
+async function replySocialWin(repostMessageId, resultText) {
+    if (!repostMessageId) throw new Error('repost_message_id haijapatikana');
+
+    const text = resultText ? `✅✅✅ WON (${resultText})` : '✅✅✅ WON';
+    return bot.api.sendMessage(mkekawaleo, text, {
+        reply_parameters: { message_id: repostMessageId }
+    }).catch(() => { throw new Error('Kushindwa kutuma reply ya WON') });
+}
+
+module.exports = { sendSocialPhoto, repostToMkekaLeo, replySocialWin };

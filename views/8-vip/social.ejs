@@ -160,6 +160,57 @@
       </div>
       <% } %>
     </div>
+
+    <section class="mt-5">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3">
+        <h4 class="page-title mb-1">Posted matches</h4>
+        <p class="meta mb-0">Update results once games end.</p>
+      </div>
+
+      <% if (posted_matches && posted_matches.length) { %>
+      <div class="row g-3">
+        <% posted_matches.forEach(function(post) { %>
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h6 class="mb-1"><%= post.match %></h6>
+                  <div class="meta">Tip: <%= post.social_tip || post.tip || '--' %> · Time: <%= post.time || '--:--' %></div>
+                  <div class="meta">Status: <span class="text-uppercase"><%= post.status || 'pending' %></span> · Result: <%= post.result || '-:-' %></div>
+                </div>
+              </div>
+              <form class="mt-3" action="/mkeka/vip/social/<%= post._id %>/result" method="POST">
+                <input type="hidden" name="redirect_date" value="<%= selectedDate %>">
+                <div class="row g-2 align-items-end">
+                  <div class="col-sm-6">
+                    <label class="form-label mb-1">Result</label>
+                    <input type="text" name="result" class="form-control" value="<%= post.result || '' %>" placeholder="eg 2-1" required>
+                  </div>
+                  <div class="col-sm-4">
+                    <label class="form-label mb-1">Status</label>
+                    <select name="status" class="form-select" required>
+                      <option value="won" <%= post.status === 'won' ? 'selected' : '' %>>Won</option>
+                      <option value="lost" <%= post.status === 'lost' ? 'selected' : '' %>>Lost</option>
+                    </select>
+                  </div>
+                  <div class="col-sm-2 d-grid">
+                    <button type="submit" class="btn btn-save">Save</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% } else { %>
+      <div class="empty text-center">
+        <p class="mb-1 fw-semibold">Hakuna social tips zilizowekwa tarehe hii.</p>
+        <p class="meta mb-0">Zitaonekana hapa baada ya ku-post kwenye channel.</p>
+      </div>
+      <% } %>
+    </section>
   </main>
 
   <%- include('../0-global/footer.ejs'); %>

@@ -20,7 +20,7 @@ const correctScoreModel = require('../model/cscore');
 const SocialTipModel = require('../model/social-tip');
 const { extractKeyFacts } = require('./fns/extractKeyFacts');
 const { generateSocialDescription } = require('./fns/generateSocialDescription');
-const { sendSocialPhoto } = require('./fns/sendSocialPhoto');
+const { sendSocialPhoto, replySocialWin } = require('./fns/sendSocialPhoto');
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -435,7 +435,13 @@ router.get('/mkeka/vip/social', isAuth, async (req, res) => {
             .sort({ jsDate: 1, time: 1 })
             .lean();
 
-        res.render('8-vip/social', { matches, message: req.query?.msg || '', selectedDate, todayNairobi });
+        const posted_matches = await SocialTipModel.find({ date: selectedDate.split('-').reverse().join('/'), repost_message_id: { $exists: true } })
+            .sort({ createdAt: -1 })
+            .lean();
+
+        console.log(posted_matches.length, 'posted matches for', selectedDate);
+
+        res.render('8-vip/social', { matches, message: req.query?.msg || '', selectedDate, todayNairobi, posted_matches });
     } catch (error) {
         console.error('social route error:', error?.message);
         res.status(500).send('Hitilafu imetokea');
@@ -498,6 +504,39 @@ router.post('/mkeka/vip/social', isAuth, upload.single('cover_photo'), async (re
     } catch (error) {
         console.error('social save error:', error?.message);
         res.status(500).send(error?.message || 'Imeshindikana kuhifadhi taarifa');
+    }
+});
+
+router.post('/mkeka/vip/social/:id/result', isAuth, async (req, res) => {
+    if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
+    const { id } = req.params;
+    const { result, status, redirect_date } = req.body;
+
+    try {
+        if (!['won', 'lost'].includes((status || '').toLowerCase())) {
+            return res.status(400).send('Chagua status sahihi (won au lost)');
+        }
+
+        const doc = await SocialTipModel.findById(id);
+        if (!doc) return res.status(404).send('Social tip haijapatikana');
+
+        const finalResult = (result || '').trim() || doc.result || '';
+        doc.result = finalResult;
+        doc.status = status.toLowerCase();
+        await doc.save();
+
+        if (doc.status === 'won' && doc.repost_message_id) {
+            try {
+                await replySocialWin(doc.repost_message_id, finalResult);
+            } catch (err) {
+                return res.status(500).send(`Hitilafu wakati wa kutuma reply ya WON kwenye Telegram: ${err?.message || err}`);
+            }
+        }
+
+        res.status(200).send(`✅ Matokeo ya social tip yamehifadhiwa kikamilifu kama "${doc.status.toUpperCase()}"`);
+    } catch (error) {
+        console.error('social result update error:', error?.message || error);
+        return res.status(500).send(error?.message || 'Hitilafu wakati wa kusave matokeo');
     }
 });
 
