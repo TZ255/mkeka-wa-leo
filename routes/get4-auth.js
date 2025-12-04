@@ -472,7 +472,7 @@ router.post('/mkeka/vip/social', isAuth, upload.single('cover_photo'), async (re
             tip: enteredTip || csDoc.tip,
         });
 
-        const caption = `<b><a href="${affiliate_url}">⚽ ${csDoc.match}</a></b> \n<b>🎯 Tip: ${enteredTip} ✅ \n#️⃣ Odds: ${odds}</b> \n\n🕛 ${csDoc.time}  |  ${csDoc.siku} \n🏆 ${csDoc.league} \n\n<blockquote>${description}</blockquote> \n<b>📠 Booking Code:</b> <code>${bookingCode}</code> \n<b>🎰 Kampuni:</b> Gal Sport Betting \n\nOfa ya 100% kwenye deposit ya kwanza. Weka 10,000 upate 10,000 BURE! \n\n<b>Jisajili 👇 \n<a href="${affiliate_url}">https://gsb.co.tz/#user/register</a></b>`;
+        const caption = `<b><a href="${affiliate_url}">⚽ ${csDoc.match}</a></b> \n<b>🎯 Tip: ${enteredTip} ✅ \n#️⃣ Odds: ${odds}</b> \n\n🕛 ${csDoc.time}  |  ${csDoc.siku} \n🏆 ${csDoc.league} \n\n<blockquote>${description}</blockquote> \n<b>📠 Booking Code:</b> <code>${bookingCode}</code> \n<b>🎰 Kampuni:</b> Gal Sport Betting \n\nOfa ya 100% kwenye deposit ya kwanza. Weka 10,000 upate 10,000 BURE! \n\n<b>Jisajili Hapa 👇 \n<a href="${affiliate_url}">https://gsb.co.tz/#user/register</a></b>`;
 
         const tgResp = await sendSocialPhoto(photoBuffer, caption);
 
