@@ -203,12 +203,6 @@ setInterval(() => {
         if (mins === 1 && [0, 5, 18, 20].includes(hours)) {
             getAllFixtures()
         }
-
-        //Build MikekayaUhakika every hour
-        if (mins === 0) {
-            axios.post(`https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/ae249406-125e-4e1a-a6fd-e58e7799db52`)
-                .catch(e => console.log(e?.message))
-        }
     }
 }, 1000 * 59)
 

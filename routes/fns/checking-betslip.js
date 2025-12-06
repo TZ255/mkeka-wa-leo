@@ -10,10 +10,11 @@ const {sendNotification, sendLauraNotification} = require('./sendTgNotifications
 
 const checking3MkekaBetslip = async (d) => {
     try {
+        const tzHour = +new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', hour: '2-digit', hour12: false });
         let allPaidVIP = await paidVipModel.countDocuments({date: d})
         //checking Betslip1
         let slip = await betslip.find({ date: d, vip_no: 1 })
-        if (slip.length < 1) {
+        if (slip.length < 1 && tzHour === 3) { //no slip and time is 03:xx, create new slip
             const copies = await correctScoreModel.aggregate([
                 { $match: { siku: d, time: { $gte: '14:00' } } },
                 // Add a field that splits the tip string and calculates total goals
@@ -69,46 +70,6 @@ const checking3MkekaBetslip = async (d) => {
             }
         }
 
-        //checking Betslip3
-        let betslip3 = await betslip.find({ date: d, vip_no: 3 })
-        if (betslip3.length < 1) {
-            let home13 = ['2:1'];
-            let away13 = ['1:2']
-            let ht_dc = ['3:1']
-            let copies = await correctScoreModel.aggregate([
-                { $match: { siku: d, tip: { $in: [...home13, ...away13, ...ht_dc] } } },
-                { $sample: { size: 5 } }
-            ])
-
-            let transformedData = copies.map(doc => {
-                let newTip;
-                let odd;
-                if (home13.includes(doc.tip)) {
-                    newTip = 'Home Multigoals: 1 - 3'
-                    odd = '1.33'
-                } else if (away13.includes(doc.tip)) {
-                    newTip = 'Away Multigoals: 1 - 3'
-                    odd = '1.33'
-                } else if (ht_dc.includes(doc.tip)) {
-                    newTip = 'HT Double Chance: 12'
-                    odd = '1.42'
-                }
-
-                return {
-                    date: doc.siku,
-                    time: doc.time,
-                    tip: newTip,
-                    vip_no: 3,
-                    odd,
-                    match: doc.match.replace(/ - /g, ' vs '),
-                    league: doc.league,
-                    expl: matchExplanation(newTip)
-                };
-            });
-
-            //add them to betslip database
-            if(transformedData.length > 0) await betslip.insertMany(transformedData);
-        }
 
         //############## slip 2 (over 1.5 ft) #############################
         let vip2 = await paidVipModel.find({ date: d, vip_no: 2 })
@@ -215,7 +176,7 @@ const checking3MkekaBetslip = async (d) => {
                 },
                 // Get random documents using sample
                 {
-                    $sample: { size: 13 }
+                    $sample: { size: 15 }
                 }
             ]);
 
