@@ -394,7 +394,7 @@ router.post('/checking/one-m/1', async (req, res) => {
     try {
         let thisYear = new Date().getFullYear()
         let collection = []
-        let for_over15 = ['over 2.5', 'over 3.5', 'over 1.5', 'btts', 'yes', 'gg', '1 & Over 1.5', '1 & Over 2.5', '1 & Over 3.5', '2 & Over 1.5', '2 & Over 2.5', '2 & Over 3.5', '1 & GG', '2 & GG', 'X & GG', '1/1', '2/2', '1X & GG', 'X2 & GG', '12 & GG']
+        let for_over15 = ['over 2.5', 'over 3.5', 'over 1.5', 'btts', 'yes', 'btts: yes', 'gg', '1 & Over 1.5', '1 & Over 2.5', '1 & Over 3.5', '2 & Over 1.5', '2 & Over 2.5', '2 & Over 3.5', '1 & GG', '2 & GG', 'X & GG', '1/1', '2/2', '1X & GG', 'X2 & GG', '12 & GG']
 
         let bulkdata = req.body.data
         let secret = req.body.secret
@@ -410,7 +410,7 @@ router.post('/checking/one-m/1', async (req, res) => {
                     date: filterdArr[0].split(' ')[0].trim() + `/${thisYear}`,
                     league: filterdArr[1].trim(),
                     match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
-                    bet: filterdArr[4].trim().replace('.5 Goals', '.5'),
+                    bet: filterdArr[4].trim().replace('.5 Goals', '.5').replace('Total goals: +', 'Over '),
                     odds: Number(filterdArr[5].trim()),
                     jsDate: '',
                     weekday: ''
