@@ -22,6 +22,7 @@ const { extractKeyFacts } = require('./fns/extractKeyFacts');
 const { generateSocialDescription } = require('./fns/generateSocialDescription');
 const { sendSocialPhoto, replySocialWin } = require('./fns/sendSocialPhoto');
 const multer = require('multer');
+const yaUhakikaVipModel = require('../model/ya-uhakika/vip-yauhakika');
 const upload = multer({ storage: multer.memoryStorage() });
 
 
@@ -305,6 +306,16 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
             })
             await match.constructor.deleteOne({ _id: match._id });
             return res.status(200).json({ ok: "✅ Match Status Shifted to PaidVIP", match });
+        }
+
+        if (String(tip).toLowerCase() === 'copy-y @') {
+            let odd = tip.split('@')[1] ? Number(tip.split('@')[1].trim()) : null;
+
+            await yaUhakikaVipModel.create({
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending'
+            })
+            
+            return res.status(200).json({ ok: "✅ Match Copied to Ya Uhakika VIP", match });
         }
 
         if (match.time !== time) match.time = time;
