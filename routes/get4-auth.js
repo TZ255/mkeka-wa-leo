@@ -308,7 +308,7 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
             return res.status(200).json({ ok: "✅ Match Status Shifted to PaidVIP", match });
         }
 
-        if (String(tip).toLowerCase() === 'copy-y @') {
+        if (String(tip).toLowerCase().startsWith('copy-y @')) {
             let odd = tip.split('@')[1] ? Number(tip.split('@')[1].trim()) : null;
 
             await yaUhakikaVipModel.create({
