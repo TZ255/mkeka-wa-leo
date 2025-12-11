@@ -1,91 +1,73 @@
 const Over15Mik = require('../../model/ove15mik');
-const supatips = require('../../model/supatips')
+const supatips = require('../../model/supatips');
+const { sortByMajorLeagues } = require('./sortByMajorLeague');
 
 const processSupatips = async (jsDate) => {
-    // First get the aggregated results
-    const allMatches = await supatips.aggregate([
-        // Match documents for specific dates
-        { $match: { jsDate } },
+    // Simply find all matches for the date
+    const matches = await supatips.find({ jsDate }).lean().cache(600); //10 minutes
+    
+    // Transform and group matches
+    const groupedMatches = {};
+    
+    matches.forEach(match => {
+        // Parse siku from dd/mm/yyyy to yyyy-mm-dd
+        const [day, month, year] = match.siku.split('/');
+        const dateStr = `${year}-${month}-${day}`;
         
-        // Add calculated fields for schema
-        { $addFields: {
-            startDate: {
-                $concat: [
-                    { $arrayElemAt: [{ $split: ["$siku", "/"] }, 2] }, "-",
-                    { $arrayElemAt: [{ $split: ["$siku", "/"] }, 1] }, "-",
-                    { $arrayElemAt: [{ $split: ["$siku", "/"] }, 0] }, "T",
-                    "$time",
-                    "+03:00"
-                ]
-            },
-            matchTeams: {
-                $split: ["$match", " - "]
-            }
-        }},
+        // Create startDate: yyyy-mm-ddTHH:MM+03:00
+        const startDate = `${dateStr}T${match.time}+03:00`;
         
-        // Add endDate (2 hours after start)
-        { $addFields: {
-            endDate: {
-                $dateToString: {
-                    format: "%Y-%m-%dT%H:%M",
-                    date: {
-                        $add: [
-                            { $dateFromString: { 
-                                dateString: "$startDate",
-                            } },
-                            7200000 // 2 hours in milliseconds
-                        ]
-                    },
-                }
-            }
-        }},
+        // Create endDate (2 hours after start)
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(startDateObj.getTime() + 7200000); // 2 hours
         
-        // Add endDate timezone suffix
-        { $addFields: {
-            endDate: {
-                $concat: ["$endDate", "+03:00"]
-            }
-        }},
+        // Format endDate in Nairobi timezone
+        const endDateFormatted = endDateObj.toLocaleString('sv-SE', { 
+            timeZone: 'Africa/Nairobi', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false
+        }).replace(' ', 'T');
         
-        // Group by league and date
-        { $group: {
-            _id: {
-                league: "$league",
-                siku: "$siku"
-            },
-            matches: {
-                $push: {
-                    time: "$time",
-                    match: "$match",
-                    tip: "$tip",
-                    siku: "$siku",
-                    startDate: "$startDate",
-                    endDate: "$endDate",
-                    homeTeam: { $arrayElemAt: ["$matchTeams", 0] },
-                    awayTeam: { $arrayElemAt: ["$matchTeams", 1] },
-                    matokeo: "$matokeo",
-                    league: "$league"
-                }
-            }
-        }},
+        const endDate = `${endDateFormatted}+03:00`;
         
-        // Sort by time within groups
-        { $addFields: {
-            matches: {
-                $sortArray: {
-                    input: "$matches",
-                    sortBy: { time: 1 }
-                }
-            }
-        }},
+        // Split teams
+        const [homeTeam, awayTeam] = match.match.split(' - ');
         
-        // Sort groups by league names A-Z and by time within groups
-        { $sort: {
-            "_id.league": 1,
-            "matches.0.time": 1
-        }}
-    ]).cache(600) //10 minutes
-
+        // Create group key
+        const groupKey = `${match.league}|${match.siku}`;
+        
+        if (!groupedMatches[groupKey]) {
+            groupedMatches[groupKey] = {
+                _id: {
+                    league: match.league,
+                    siku: match.siku
+                },
+                matches: []
+            };
+        }
+        
+        groupedMatches[groupKey].matches.push({
+            time: match.time,
+            match: match.match,
+            tip: match.tip,
+            siku: match.siku,
+            startDate,
+            endDate,
+            homeTeam: homeTeam?.trim(),
+            awayTeam: awayTeam?.trim(),
+            matokeo: match.matokeo,
+            league: match.league
+        });
+    });
+    
+    // Convert to array and sort matches within each group by time
+    const allMatches = Object.values(groupedMatches);
+    
+    allMatches.forEach(group => {
+        group.matches.sort((a, b) => a.time.localeCompare(b.time));
+    });
+    
+    //sort by majorleagues
+    sortByMajorLeagues(allMatches)
+    
     return allMatches;
 };
 
