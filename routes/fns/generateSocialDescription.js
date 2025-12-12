@@ -19,7 +19,7 @@ async function generateSocialDescription({ facts = [], match = '', league = '', 
         const matchLabel = match || 'Mechi husika';
         
         const res = await client.responses.create({
-            model: 'gpt-5.1',
+            model: 'gpt-5.2',
             input: [
                 {
                     role: 'system',
