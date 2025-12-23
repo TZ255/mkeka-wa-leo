@@ -424,6 +424,19 @@ router.post('/checking/one-m/1', async (req, res) => {
                 matchDoc.weekday = GetDayFromDateString(matchDoc.date)
                 matchDoc.jsDate = GetJsDate(matchDoc.date)
 
+                //check tips and correct them
+                switch (matchDoc.bet) {
+                    case "1":
+                        matchDoc.bet = `${filterdArr[2].trim()} Win`
+                        break;
+                    case "2":
+                        matchDoc.bet = `${filterdArr[3].trim()} Win`
+                        break;
+                    case "X":
+                        matchDoc.bet = 'Draw'
+                        break;
+                }
+
                 //check odds to correct them - check if integer i.e no decimal
                 if (Number.isInteger(matchDoc.odds)) {
                     matchDoc.odds = matchDoc.odds + 0.01
