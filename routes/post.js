@@ -427,10 +427,10 @@ router.post('/checking/one-m/1', async (req, res) => {
                 //check tips and correct them
                 switch (matchDoc.bet) {
                     case "1":
-                        matchDoc.bet = `${filterdArr[2].trim()} Win`
+                        matchDoc.bet = `Home Win`
                         break;
                     case "2":
-                        matchDoc.bet = `${filterdArr[3].trim()} Win`
+                        matchDoc.bet = `Away Win`
                         break;
                     case "X":
                         matchDoc.bet = 'Draw'
