@@ -607,9 +607,9 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
         }
 
         //dc leo
-        let dc_1x = ['2:0', '4:2']
-        let dc_x2 = ['0:2', '2:4']
-        let dc_12 = ['1:3', '3:1']
+        let dc_1x = ['2:0', '3:0', '3:1', '4:1']
+        let dc_x2 = ['0:2', '0:3', '1:3', '1:4']
+        let dc_12 = ['2:2', '4:2', '2:4']
 
         let dc_leo = await correctScoreModel.aggregate([
             {
