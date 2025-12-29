@@ -13,7 +13,7 @@
         <div class="">
             <div class="tamaa p-2 mb-3 text-dark" style="font-size: 13px;">
                 <i class="fa-solid fa-triangle-exclamation"></i>
-                <span class="fw-bold">Michezo ya nyongeza:</span> <br> Ikiwa mtaji wako ni mdogo, tafadhali chukua mechi 2 au 3 hapa chini kuongeza wingi wa odds au tengeneza mikeka mingine kupitia tips hizi
+                <span class="fw-bold">Michezo ya nyongeza:</span> <br> Chagua <%= slips?.length >= 10 ? 'mechi 4 hadi 5' : 'mechi 3 hadi 4' %> hapa chini kutengeneza mkeka namba 3
             </div>
             <% slips.forEach(match => { %>
             <div class="mb-5">
