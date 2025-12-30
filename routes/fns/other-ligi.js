@@ -416,6 +416,15 @@ const LeagueNameToSwahili = (league_id, season) => {
                     short: `${season}/${String(Number(season) + 1).slice(-2)}`
                 }
             };
+        case 276:
+            return {
+                ligi: 'Ligi Kuu ya Kenya',
+                path: 'kenya/premier-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
+            };
         case 186:
             return {
                 ligi: 'Ligi Kuu ya Algeria',

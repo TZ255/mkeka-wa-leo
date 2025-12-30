@@ -12,6 +12,7 @@ const LinkToRedirect = async (comp, ip) => {
         bet22: `https://welcome.toptrendyinc.com/redirect.aspx?pid=77675&bid=1634`,
         ke_1xbet: `https://refpa4293501.top/L?tag=d_2869291m_2528c_&site=2869291&ad=2528`,
         tz_888: `https://tracking.888africa.com/visit/?bta=356&nci=5354`,
+        mz_888: `https://tracking.888africa.com/visit/?bta=356&brand=888mozambique`,
         betwinner: `https://bw-prm.com/bonus-100-01/?p=%2Fregistration%2F&lang=en&id=29lf`,
         betway_casino: `https://www.betway.co.tz/lobby/casino/all/?register=1&btag=P94949-PR37903-CM111051-TS2045159`,
         betway_arsenal: `https://www.betway.co.tz/Arsenal-Xclusives?btag=P94949-PR37833-CM109867-TS2034255`,
@@ -23,14 +24,15 @@ const LinkToRedirect = async (comp, ip) => {
     }
     try {
         let locationData = await getUserLocation(ip)
+        if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
+        if (locationData?.status == 'success' && locationData?.c_code == "MZ") return links.mz_888;
+
         switch (comp) {
             case 'gsb':
-                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
                 return links.gsb;
             case 'pmatch':
                 return links.pmatch
             case 'betway':
-                if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
                 return links.betway
             case 'betway-casino':
                 return links.betway_casino
