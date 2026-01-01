@@ -367,7 +367,7 @@ const lauraMainFn = async (app) => {
             const allowedTypes = ['silver', 'gold', 'gold2', 'one', 'unpaid'];
             if (!param || !allowedTypes.includes(param)) {
                 return await ctx.reply(
-                    'Invalid match... Use: /grant <silver|gold|gold2|one> <email>'
+                    'Invalid match... Use: /grant <silver|gold|gold2|one|unpaid> <email>'
                 );
             }
 
