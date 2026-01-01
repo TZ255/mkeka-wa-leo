@@ -364,7 +364,7 @@ const lauraMainFn = async (app) => {
             const email = emailRaw?.toLowerCase().trim();
 
             // Validate subscription type
-            const allowedTypes = ['silver', 'gold', 'gold2', 'one'];
+            const allowedTypes = ['silver', 'gold', 'gold2', 'one', 'unpaid'];
             if (!param || !allowedTypes.includes(param)) {
                 return await ctx.reply(
                     'Invalid match... Use: /grant <silver|gold|gold2|one> <email>'
