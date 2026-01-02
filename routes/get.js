@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         //multiply all odds of betslip
-        let slipOdds = await betslip.find({ date: d, vip_no: {$in: [1,2]}, status: { $ne: 'deleted' } }).cache(600)
+        let slipOdds = await betslip.find({ date: d, vip_no: { $in: [1, 2] }, status: { $ne: 'deleted' } }).cache(600)
         slipOdds = slipOdds.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //Over 1.5 SUPA Tips
@@ -73,6 +73,8 @@ router.get('/', async (req, res) => {
         let trh = { leo: month_date_leo, kesho, jana: _d, juzi: _s, siku: 'leo', created }
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
+        //cache response
+        res.set('Cache-Control', 'public, max-age=600');
 
         res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds, trh, jumasiku })
     } catch (err) {
@@ -110,7 +112,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         let trh = { kesho: month_date, siku: 'kesho', created }
         let jumasiku = { kesho: WeekDayFn(k_juma) }
 
-
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('1-home-kesho/index', { megaOdds, mikeka, ktips, trh, jumasiku })
     } catch (err) {
         console.log(err.message, err)
@@ -125,18 +127,8 @@ router.get('/mkeka/kesho', async (req, res) => {
 })
 
 router.get('/mkeka', (req, res) => {
+    res.set('Cache-Control', 'public, max-age=600');
     res.render('1-mikeka-sub/mikeka')
-})
-
-//clearing db - change date
-router.get('/clear/clear', async (req, res) => {
-    try {
-        await supatips.deleteMany({ createdAt: { $lt: new Date('2024-01-25') } })
-        res.send('deleted')
-        console.log('deleted')
-    } catch (error) {
-        console.log(error.message)
-    }
 })
 
 router.get('/:comp/register', async (req, res) => {
@@ -190,7 +182,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let slip = await betslip.find({ date: d, vip_no: 1 }).sort('-odd').limit(3)
 
         //multiply all odds
-        const docs = await betslip.find({ date: d, status: { $ne: 'deleted' }, vip_no: {$in: [1,2]} });
+        const docs = await betslip.find({ date: d, status: { $ne: 'deleted' }, vip_no: { $in: [1, 2] } });
         const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
         //tarehes
@@ -198,6 +190,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let trh = { leo: month_date_leo, created }
         let jumasiku = { leo: d_juma }
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('3-landing/landing', { slip, slipOdds, jumasiku, trh })
     } catch (err) {
         console.log(err.message)
@@ -237,11 +230,14 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
         let mikeka = await over15Mik.find({ date: SEO.trh.date }).sort('time').lean().cache(600)
 
         // random odd for each tip between 1.20 to 1.28, tips has no odd field
-        let total_odds = mikeka.reduce((product, doc) => { {
-            let randomOdd = (Math.random() * (1.28 - 1.20) + 1.20).toFixed(2)
-            return product * parseFloat(randomOdd)
-        } }, 1).toFixed(2)
+        let total_odds = mikeka.reduce((product, doc) => {
+            {
+                let randomOdd = (Math.random() * (1.28 - 1.20) + 1.20).toFixed(2)
+                return product * parseFloat(randomOdd)
+            }
+        }, 1).toFixed(2)
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('5-over15/over15', { total_odds, mikeka, SEO })
     } catch (err) {
         console.log(err.message, err)
@@ -289,7 +285,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
         let over1 = ['4:1', '4:2', '5:0', '5:1', '5:2', '5:3', '5:4']
         let over2 = ['2:4', '0:5', '1:5', '2:5', '3:5', '4:5']
         let under = ['0:0']
-        let less_over = ['3:1','1:3', '1:4', '4:3', '3:4', '4:4']
+        let less_over = ['3:1', '1:3', '1:4', '4:3', '3:4', '4:4']
 
         let ou_leo = await correctScoreModel.aggregate([
             {
@@ -327,6 +323,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
         let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('6-over25/over25', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
         console.log(err.message, err)
@@ -374,6 +371,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
         let Alltips = await mkekadb.find({ date: SEO.trh.date }).sort('time').select('time league date match bet odds createdAt')
         let total_odds = Alltips.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('7-mega/mega', { mikeka: Alltips, SEO, total_odds })
     } catch (err) {
         console.error(err)
@@ -436,6 +434,7 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
         let total_odds = Math.pow(1.24, magoli.length).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('9-over05/over05', { total_odds, mikeka: magoli, SEO })
     } catch (err) {
         console.log(err.message, err)
@@ -525,6 +524,7 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, r
         let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('10-over35/over35', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
         console.log(err.message, err)
@@ -567,6 +567,7 @@ router.get('/mkeka/correct-score', async (req, res) => {
         let trh = { leo: d, kesho, jana: _d, juzi: _s }
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('13-cscore/cscore', { cscoreLeo, scoreJana, scoreJuzi, cscoreKesho, trh, jumasiku })
     } catch (error) {
         console.error(error.message)
@@ -646,6 +647,7 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
         let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('10-dc/index', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
         console.log(err.message, err)
@@ -730,6 +732,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
         let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
+        res.set('Cache-Control', 'public, max-age=600');
         res.render('10-gg/index', { total_odds, mikeka: transformedData, SEO })
     } catch (err) {
         console.log(err.message, err)
@@ -763,6 +766,7 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
                 prevNext: DetermineNextPrev(weekday)
             }
 
+            res.set('Cache-Control', 'public, max-age=600');
             res.render('12-mikeka-week/weekday', { matchDays, partials });
         }
     } catch (err) {
@@ -786,10 +790,12 @@ router.get('/article/:path', async (req, res) => {
 
         switch (path) {
             case 'mbinu-za-kushinda-betting':
+                res.set('Cache-Control', 'public, max-age=600');
                 res.render('4-articles/mbinu/mbinu');
                 break;
 
             case 'kampuni-bora-za-kubet-tanzania':
+                res.set('Cache-Control', 'public, max-age=600');
                 res.render('4-articles/kampuni/kampuni', { dt })
                 break;
 

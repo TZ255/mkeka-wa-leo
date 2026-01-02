@@ -46,6 +46,7 @@ router.get('/standings/football/tanzania/premier-league', async (req, res, next)
             updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
         }
 
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/bongo/index', { standing, partials })
     } catch (error) {
         console.log(error?.message)
@@ -149,6 +150,7 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
             updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
         }
 
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/bongo/bongo-season-fixtures', { standing, agg: groupedFixtures, partials, recent_results, recent_fixtures })
     } catch (error) {
         console.log(error?.message, error)
@@ -196,6 +198,7 @@ router.get('/football/fixtures/tanzania/premier-league/:teamid', async (req, res
                 break;
         }
 
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/bongo/1-ratiba/ratiba', { ratiba, standing, partials })
     } catch (error) {
         console.error(error?.message, error)
@@ -226,6 +229,7 @@ router.get('/football/top-scorers/tanzania/premier-league', async (req, res, nex
             updatedAt: league.update_top_players
         }
 
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/bongo/2-scorer/scorer', { top_scorers, partials })
     } catch (error) {
         console.error(error?.message, error)
@@ -256,6 +260,7 @@ router.get('/football/top-assists/tanzania/premier-league', async (req, res, nex
             updatedAt: league.update_top_players
         }
 
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/bongo/3-assist/assist', { top_assists, partials })
     } catch (error) {
         console.error(error?.message, error)

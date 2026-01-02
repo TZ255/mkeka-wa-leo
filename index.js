@@ -56,7 +56,8 @@ cachegoose(mongoose, {
 app.set('view engine', 'ejs')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(__dirname + '/public'))
+// set static path with cache immutable (file will never change for 7d)
+app.use(express.static(__dirname + '/public', {maxAge: '7d', immutable: true}))
 app.set('trust proxy', true) //our app is hosted on server using proxy to pass user request
 app.use(requestIp.mw())
 

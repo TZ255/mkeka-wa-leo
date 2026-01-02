@@ -36,7 +36,8 @@ router.get('/standings', async (req, res) => {
     }
 
     try {
-        let leagues_others = await OtherStandingLigiKuuModel.find().sort('country').cache(600);
+        let leagues_others = await OtherStandingLigiKuuModel.find().sort('country').cache(3600);
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/standings', { jumasiku, leagues_others })
     } catch (error) {
         console.log(error?.message)
@@ -77,6 +78,7 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
         };
 
         //abroad leagues
+        res.set('Cache-Control', 'public, max-age=3600');
         return res.render('11-misimamo/ligi/abroad/index', { standing, partials });
     } catch (error) {
         console.error(`Error in standings route: ${error?.message || 'Unknown error'}`);
@@ -145,6 +147,7 @@ router.get('/football/fixtures/:nation/:ligi_name', async (req, res, next) => {
         };
 
         // abroad leagues
+        res.set('Cache-Control', 'public, max-age=3600');
         return res.render('11-misimamo/ligi/abroad/season-fixtures', {
             standing,
             agg: groupedFixtures, // using new sorted and grouped data
@@ -198,6 +201,7 @@ router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, nex
         };
 
         // Render the appropriate template
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/abroad/1-ratiba/ratiba', { ratiba, partials, standing })
 
     } catch (error) {
@@ -239,6 +243,7 @@ router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) =>
             updatedAt: league.standing[0]?.update || league.standing[0][0]?.update
         }
 
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/abroad/2-scorer/scorer', { top_scorers, partials })
     } catch (error) {
         console.error(error?.message, error)
@@ -277,6 +282,7 @@ router.get('/football/top-assists/:nation/:ligi_name', async (req, res, next) =>
             updatedAt: league.standing[0]?.update || league.standing[0][0]?.update
         }
 
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/ligi/abroad/3-assist/assist', { top_assists, partials })
     } catch (error) {
         console.error(error?.message, error)
@@ -327,7 +333,7 @@ router.get('/mechi/:siku', async (req, res) => {
         }
         //set last modified headers
         res.set('Last-Modified', new Date(partials.update[siku]).toUTCString())
-
+        res.set('Cache-Control', 'public, max-age=3600');
         res.render(`14-fixtures/${siku}`, { allMatches, trh, jumasiku, day, partials })
     } catch (error) {
         console.error(error.message)
