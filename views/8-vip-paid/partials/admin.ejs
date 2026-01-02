@@ -253,8 +253,13 @@
 <h2 class="text-center" id="spinSure3">Spinning Sure 3</h2>
 <div class="p-3 d-none" id="spinSure3Cont">
     <form action="/spinning/sure3" method="post">
-        <div class="mb-3">
-            <input type="date" class="form-control py-2" name="siku" required value="">
+        <div class="mb-3 row">
+            <div class="col">
+                <input type="date" class="form-control py-2" name="siku" required>
+            </div>
+            <div class="col">
+                <input type="number" class="form-control py-2" name="vip_no" required value="0">
+            </div>
         </div>
         <div class="text-center mt-4">
             <button type="submit" class="bg-success text-light py-3 px-4 border-0 rounded">

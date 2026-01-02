@@ -314,7 +314,7 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
             await yaUhakikaVipModel.create({
                 match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending'
             })
-            
+
             return res.status(200).json({ ok: "✅ Match Copied to Ya Uhakika VIP", match });
         }
 
@@ -388,9 +388,19 @@ router.post('/spinning/sure3', async (req, res) => {
             return res.send('Not authorized')
         }
         let siku = req.body.siku
+        let vip_no = Number(req.body?.vip_no) || 1
+
+        if (vip_no === 0) return res.send('❌ Invalid VIP Number')
+
         let date = String(siku).split('-').reverse().join('/')
-        await betslip.deleteMany({ date, vip_no: 1 })
-        await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
+
+        if (vip_no <= 2 && vip_no > 0) {
+            await betslip.deleteMany({ date, vip_no })
+            await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
+        } else if (vip_no === 3) {
+            await paidVipModel.deleteMany({ date })
+            await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
+        }
         res.redirect(`/mkeka/vip?date=${siku}`)
     } catch (error) {
         res.status(500).json({ error: error.message });
