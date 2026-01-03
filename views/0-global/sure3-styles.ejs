@@ -1,136 +1,194 @@
 <style>
-/* Card shell */
-#sure3_betslip_card {
-  position: relative;
-  max-width: 460px;
-  margin: 24px auto;
-  border-bottom: 2px solid #10b98173;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-}
+  /* Removed global reset (*) and body styles ... those will break host page */
 
-/* Visible header */
-#sure3_betslip_card .betslip-header {
-  background: linear-gradient(135deg, #2c3034, #2c3034);
-  color: #fff;
-  padding: 14px 16px;
-  text-align: center;
-  font-weight: 700;
-  font-size: 1.1rem;
-}
+  .vip-card-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    max-width: 480px;
+  }
 
-/* Matches container... only this region gets an overlay blur */
-#sure3_betslip_card .matches-locked {
-  position: relative;
-}
+  .vip-promo-card {
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
 
-/* Matches list */
-#sure3_betslip_card .betslip-body {
-  padding: 8px 4px;
-}
-#sure3_betslip_card .match {
-  border: 1px solid #f1f3f5;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 6px;
-  background: #fff;
-}
-#sure3_betslip_card .match .league {
-  font-size: .8rem;
-  color: #6c757d;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-#sure3_betslip_card .match .teams {
-  font-weight: 600;
-  margin-top: 4px;
-}
-#sure3_betslip_card .match .line {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-}
-#sure3_betslip_card .pill {
-  min-width: 84px;
-  text-align: right;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #f8f9fa;
-  border: 1px dashed #dee2e6;
-  font-weight: 600;
-}
+  .vip-promo-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+  }
 
-/* Locked overlay — keeps text original quality (no blur) */
-#sure3_betslip_card .frost-lock {
-  position: absolute;
-  inset: 0;
-  background: #10b98173;
-  z-index: 5;
+  .card-header {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    padding: 24px;
+    text-align: center;
+    position: relative;
+  }
 
-  /* Centered lock message */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  text-align: center;
+  .vip-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 8px;
+  }
 
-  border-radius: inherit; /* match parent card radius */
-  font-weight: 600;
-  color: #333;
-}
-#sure3_betslip_card .overlay-card {
-  background: #ffffff;
-  border: none;
-  border-radius: 16px;
-  padding: 18px 20px;
-  max-width: 300px;
-  cursor: pointer;
-}
-#sure3_betslip_card .overlay-card .lock {
-  width: 52px; height: 52px;
-  display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 999px;
-  background: #eef4ff; color: #daa520; font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-#sure3_betslip_card .overlay-card .heading { font-weight: 700; font-size: .98rem; }
-#sure3_betslip_card .overlay-card .subtxt { font-size: .80rem; color: #6c757d; }
-#sure3_betslip_card .overlay-card .btn { margin-top: 12px; }
+  /* Slip preview */
+  .slip-preview {
+    position: relative;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transform: rotate(-1.2deg);
+    transition: transform 220ms ease;
+  }
 
-/* Visible summary... no blur here */
-#sure3_betslip_card .summary {
-  background: #f8f9fa;
-  border-top: 1px solid #e9ecef;
-  padding: 14px 16px;
-  font-size: .95rem;
-  border-left: 1px solid #10b98173;
-  border-right: 1px solid #10b98173;
-}
-#sure3_betslip_card .summary .row-line {
-  display: flex;
-  justify-content: space-between;
-  padding: 3px 0;
-}
-#sure3_betslip_card .summary .value { font-weight: 500; }
+  /* Alternate tilt for a "stack of slips" feel */
+  .slip-preview:nth-of-type(2) {
+    transform: rotate(1deg);
+  }
+  .slip-preview:nth-of-type(3) {
+    transform: rotate(-0.6deg);
+  }
 
-/* Visible footer */
-#sure3_betslip_card .betslip-footer {
-  background: #f8f9fa;
-  border-top: 1px solid #e9ecef;
-  border-left: 1px solid #10b98173;
-  border-right: 1px solid #10b98173;
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#sure3_betslip_card .betslip-footer .btn {
-  border-radius: 999px;
-  font-weight: 700;
-  padding: 8px 14px;
-}
+  .slip-preview:hover {
+    transform: rotate(0deg) translateY(-2px);
+  }
+
+  .slip-blur {
+    filter: blur(0.4px);
+  }
+
+  .slip-lock {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 5px 10px;
+    color: #dc2626;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .slip-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .stat-box {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  .stat-label {
+    color: #6b7280;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    color: #111827;
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .win-box {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .win-box .stat-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .win-box .stat-value {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 900;
+  }
+
+  .benefits {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .benefit-check {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .unlock-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);
+  }
+
+  .unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.45);
+  }
+
+  .unlock-btn:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 500px) {
+    .card-header {
+      padding: 20px;
+    }
+
+    .slip-preview {
+      padding: 16px;
+    }
+
+    .stat-value {
+      font-size: 0.95rem;
+    }
+
+    .win-box .stat-value {
+      font-size: 1.3rem;
+    }
+  }
 </style>

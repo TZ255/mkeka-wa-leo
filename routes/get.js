@@ -56,14 +56,17 @@ router.get('/', async (req, res) => {
 
         //check if there is no any slip
         //find random 3
-        let slip = await betslip.find({ date: d, vip_no: 1 }).sort('-odd').limit(3).cache(600)
+        let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
+        let slip2 = await betslip.find({ date: d, vip_no: 2 }).cache(600)
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         //multiply all odds of betslip
-        let slipOdds = await betslip.find({ date: d, vip_no: { $in: [1, 2] }, status: { $ne: 'deleted' } }).cache(600)
-        slipOdds = slipOdds.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        const slipOdds = {
+            slip: slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+            slip2: slip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+        }
 
         //Over 1.5 SUPA Tips
         const { stips, ytips, jtips, ktips } = await processOver15(d, _d, _s, kesho)
@@ -76,7 +79,7 @@ router.get('/', async (req, res) => {
         //cache response
         res.set('Cache-Control', 'public, max-age=600');
 
-        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slipOdds, trh, jumasiku })
+        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slip2, slipOdds, trh, jumasiku })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -178,12 +181,15 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let d_juma = new Date().toLocaleString('sw-TZ', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         let month_date_leo = new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
 
-        //find random 3
-        let slip = await betslip.find({ date: d, vip_no: 1 }).sort('-odd').limit(3)
+        //vip tips
+        let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
+        let slip2 = await betslip.find({ date: d, vip_no: 2 }).cache(600)
 
-        //multiply all odds
-        const docs = await betslip.find({ date: d, status: { $ne: 'deleted' }, vip_no: { $in: [1, 2] } });
-        const slipOdds = docs.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        //multiply all odds of betslip
+        const slipOdds = {
+            slip: slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+            slip2: slip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+        }
 
         //tarehes
         let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
@@ -191,7 +197,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let jumasiku = { leo: d_juma }
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('3-landing/landing', { slip, slipOdds, jumasiku, trh })
+        res.render('3-landing/landing', { slip, slip2, slipOdds, jumasiku, trh })
     } catch (err) {
         console.log(err.message)
     }

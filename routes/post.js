@@ -410,7 +410,7 @@ router.post('/checking/one-m/1', async (req, res) => {
                     date: filterdArr[0].split(' ')[0].trim() + `/${thisYear}`,
                     league: filterdArr[1].trim(),
                     match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
-                    bet: filterdArr[4].trim().replace('.5 Goals', '.5').replace('Total goals: +', 'Over '),
+                    bet: filterdArr[4].trim().replace('.5 Goals', '.5').replace('Total goals: +', 'Over ').replace('Total goals: -', 'Under '),
                     odds: Number(filterdArr[5].trim()),
                     jsDate: '',
                     weekday: ''
@@ -434,6 +434,9 @@ router.post('/checking/one-m/1', async (req, res) => {
                         break;
                     case "X":
                         matchDoc.bet = 'Draw'
+                        break;
+                    case "BTTS: yes":
+                        matchDoc.bet = "BTTS: Yes"
                         break;
                 }
 
