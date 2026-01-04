@@ -380,25 +380,11 @@ const charlotteFn = async (app) => {
                     let rpId = ctx.channelPost.reply_to_message.message_id
                     let cdata = ctx.channelPost.text
                     let tangazo = false
-                    //replace all newlines and tabs from original caption
-                    let orgCap = ctx.channelPost.reply_to_message.caption.replace(/\s+/g, ' ').trim()
-                    console.log(orgCap)
-                    let [cap_data, casts] = orgCap.split(' - With ')
-                    let [date, title] = cap_data.split('🎥')
-                    let size = cdata.split('&size=')[1].split('&dur')[0]
-                    let seconds = cdata.split('&dur=')[1]
-                    let dakika = Math.trunc(Number(seconds) / 60)
 
                     //rekebisha cdata kama ni tangazo
                     if (cdata.includes(' >> tangazo')) {
                         cdata = cdata.replace(' >> tangazo', '').trim()
                         tangazo = true
-                    } else {
-                        //save the trailer to database
-                        await gifsModel.create({
-                            nano: cdata.split('&size=')[0],
-                            gifId: rpId
-                        })
                     }
 
                     //bot links
@@ -414,22 +400,6 @@ const charlotteFn = async (app) => {
 
                     //kama sio tangazo, ni trailer ya kawaida, edit na post pilau zone
                     if (tangazo == false) {
-                        //contents for caption
-                        let cap_content = '<b>Get Full Video 👇👇</b>'
-                        let dateHash = `<blockquote><b>${date.trim()}</b></blockquote>`
-                        let caption = `${dateHash}\n\n<b>🎥 Title: </b>${title.trim()}\n<b>👥 Cast: </b>${casts.trim()}\n\n<blockquote><b>📁  Size: </b>${size} MB   |   🕝  ${dakika} minutes</blockquote>\n${cap_content}`
-
-                        //edit trailer captions
-                        await bot.api.editMessageCaption(imp.replyDb, rpId, {
-                            caption: caption,
-                            parse_mode: 'HTML',
-                        })
-
-                        //copy stickers
-                        for (let p of [imp.rt4i4n2, imp.newRT]) {
-                            await bot.api.copyMessage(p, imp.replyDb, 4573)
-                        }
-                        await delay(1000)
                         await bot.api.copyMessage(imp.rt4i4n2, imp.replyDb, rpId, {
                             reply_markup: rp_pl
                         })
