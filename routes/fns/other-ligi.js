@@ -416,10 +416,28 @@ const LeagueNameToSwahili = (league_id, season) => {
                     short: `${season}/${String(Number(season) + 1).slice(-2)}`
                 }
             };
-        case 276:
+        case 400:
             return {
-                ligi: 'Ligi Kuu ya Kenya',
-                path: 'kenya/premier-league',
+                ligi: 'Ligi Kuu ya Zambia',
+                path: 'zambia/super-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
+            };
+        case 363:
+            return {
+                ligi: 'Ligi Kuu ya Ethiopia',
+                path: 'ethiopia/super-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
+            };
+        case 585:
+            return {
+                ligi: 'Ligi Kuu ya Uganda',
+                path: 'uganda/premier-league',
                 msimu: {
                     long: `${season}/${Number(season) + 1}`,
                     short: `${season}/${String(Number(season) + 1).slice(-2)}`
