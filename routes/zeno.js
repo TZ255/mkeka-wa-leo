@@ -8,7 +8,7 @@ const { sendLauraNotification } = require('./fns/sendTgNotifications');
 const { sendNormalSMS } = require('./fns/sendSMS');
 
 // helpers
-const WEBHOOK_BASE_DOMAIN = process.env.WEBHOOK_BASE_DOMAIN || process.env.DOMAIN || ''
+const WEBHOOK_BASE_DOMAIN = process.env.DOMAIN || ''
 const webhook_url = `https://${WEBHOOK_BASE_DOMAIN}/api/zenopay-webhook`
 const generateOrderId = (phone) => `ORD-${Date.now().toString(36)}-${phone}`;
 
