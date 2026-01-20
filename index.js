@@ -62,7 +62,7 @@ app.set('trust proxy', true) //our app is hosted on server using proxy to pass u
 app.use(requestIp.mw())
 
 //Attached webhook Bots Goes Here
-if (process.env.local != 'true') {
+if (process.env.local !== 'true') {
     zambiaBotsSourceCodes.myBotsFn(app)
     helenSourceCodes.bot(app)
     CharlloteSourceCodes.bot(app)
