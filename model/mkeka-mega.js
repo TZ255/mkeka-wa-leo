@@ -11,6 +11,8 @@ const megaSchema = new Schema({
     date: {type: String},
     bet: {type: String},
     status: {type: String, default: 'Pending'},
+    isSocial: {type: Boolean, default: false},
+    telegram_message_id: {type: Number, default: null},
     weekday: {type: String, default: 'unknown'},
     jsDate: {type: String, default: 'unknown'},
 }, {strict: false, timestamps: true})

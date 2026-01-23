@@ -37,7 +37,7 @@ const { identity } = require('lodash');
 const { getAllFixtures } = require('./routes/fns/fixtures');
 const removeTrailingSlash = require('./routes/fns/removeTrailingSlash');
 const RapidKeysModel = require('./model/rapid_keys');
-const { repostToMkekaLeo } = require('./routes/fns/sendSocialPhoto');
+const { repostToMkekaLeo, postMegaToMkekaLeo } = require('./routes/fns/sendSocialPhoto');
 
 const app = express()
 
@@ -162,10 +162,19 @@ setInterval(() => {
         let hours = Number(hh)
         let mins = Number(mm)
 
-        //angalia betslip & repost social tip kila baada ya dakika 15
+        //angalia betslip
         if (mins % 15 === 0) {
             checking3MkekaBetslip(d_date)
-            if (hours >= 7) repostToMkekaLeo(d_date);
+        }
+
+        if (mins % 5 === 0 && hours >= 7 && hours <= 17) {
+            if (hours >= 7) {
+                //repost social tip
+                // repostToMkekaLeo(d_date);
+
+                //post to mega to mkeka leo
+                postMegaToMkekaLeo(d_date)
+            }
         }
 
         //reset resend email count at 03:05 -- check matchdays

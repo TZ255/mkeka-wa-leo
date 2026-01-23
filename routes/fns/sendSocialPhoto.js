@@ -1,5 +1,6 @@
 const { Bot, InputFile } = require('grammy');
 const SocialTipModel = require('../../model/social-tip');
+const mkekaDB = require('../../model/mkeka-mega');
 
 const mikekaDB = -1001696592315;
 const mkekawaleo = -1001733907813;
@@ -25,6 +26,48 @@ async function sendSocialPhoto(buffer, caption) {
     });
     return { message_id: resp?.message_id };
 }
+
+/**
+ * Repost the first unposted social tip for a given date (DD/MM/YYYY) to another channel, add inline button, then delete the original.
+ * @param {string} dateStr format DD/MM/YYYY
+ */
+async function postMegaToMkekaLeo(dateStr) {
+    try {
+        if (!dateStr) throw new Error('date haijapokelewa (DD/MM/YYYY)');
+
+        const doc = await mkekaDB.findOne({ date: dateStr, isSocial: false }).sort({ time: 1 });
+        if (!doc) return null;
+
+        const tgPost = await bot.api.sendPoll(
+            mkekawaleo,
+            `${doc.time} | ${doc.date} | ${doc.league}\n⚽ ${doc.match.replace(' - ', ' vs ')}\n🎯 Tip: ${doc.bet}`,
+            [
+                '✅ Nakubaliana',
+                '❌ Sikubaliani'
+            ],
+            {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Beti Sasa | 100% Bonus',
+                                url: 'https://bet-link.top/gsb/register'
+                            }
+                        ]
+                    ]
+                }
+            }
+        )
+
+        await doc.updateOne({ $set: { isSocial: true, telegram_message_id: tgPost?.message_id || null } });
+        return tgPost;
+    } catch (error) {
+        const msg = `repostToMkekaLeo error: ${error?.message || error}`;
+        await bot.api.sendMessage(mikekaDB, msg).catch(() => { });
+        return null;
+    }
+}
+
 
 /**
  * Repost the first unposted social tip for a given date (DD/MM/YYYY) to another channel, add inline button, then delete the original.
@@ -68,4 +111,4 @@ async function replySocialWin(repostMessageId, resultText) {
     }).catch(() => { throw new Error('Kushindwa kutuma reply ya WON') });
 }
 
-module.exports = { sendSocialPhoto, repostToMkekaLeo, replySocialWin };
+module.exports = { sendSocialPhoto, repostToMkekaLeo, replySocialWin, postMegaToMkekaLeo };

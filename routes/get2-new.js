@@ -28,6 +28,8 @@ const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
 const { getLessUsedAPIKey } = require('./fns/RAPIDAPI')
 const { makePayment, getTransactionStatus } = require('./fns/zenopay')
 const { nkiriFunction } = require('../bots/charlotte/functions/nkiri')
+const mkekaDB = require('../model/mkeka-mega')
+const { postMegaToMkekaLeo } = require('./fns/sendSocialPhoto')
 
 
 router.get('/standings', async (req, res) => {
@@ -345,7 +347,9 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-       // UpdateOtherLeagueData(363, 2025)
+        //const isSocial = await mkekaDB.updateMany({ isSocial: { $exists: false } }, { $set: { isSocial: false } })
+        //return res.send(`Updated ${isSocial.modifiedCount} documents to set isSocial field.`)
+        // await postMegaToMkekaLeo('24/01/2026')
         res.end()
     } catch (error) {
         res.send(error)
