@@ -30,7 +30,7 @@ const { default: axios } = require('axios')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz');
 const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
 const affAnalyticsModel = require('./model/affiliates-analytics');
-const {sendNotification, sendLauraNotification} = require('./routes/fns/sendTgNotifications');
+const { sendNotification, sendLauraNotification } = require('./routes/fns/sendTgNotifications');
 const mkekaUsersModel = require('./model/mkeka-users');
 const BetslipModel = require('./model/betslip');
 const { identity } = require('lodash');
@@ -57,7 +57,7 @@ app.set('view engine', 'ejs')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 // set static path with cache immutable (file will never change for 7d)
-app.use(express.static(__dirname + '/public', {maxAge: '7d', immutable: true}))
+app.use(express.static(__dirname + '/public', { maxAge: '7d', immutable: true }))
 app.set('trust proxy', true) //our app is hosted on server using proxy to pass user request
 app.use(requestIp.mw())
 
@@ -168,13 +168,11 @@ setInterval(() => {
         }
 
         if (mins % 5 === 0 && hours >= 7 && hours <= 17) {
-            if (hours >= 7) {
-                //repost social tip
-                // repostToMkekaLeo(d_date);
+            //repost social tip
+            // repostToMkekaLeo(d_date);
 
-                //post to mega to mkeka leo
-                postMegaToMkekaLeo(d_date)
-            }
+            //post to mega to mkeka leo
+            postMegaToMkekaLeo(d_date)
         }
 
         //reset resend email count at 03:05 -- check matchdays
@@ -205,7 +203,7 @@ setInterval(() => {
         }
 
         //update other leagues once a day at 01:10
-        if (mins === 10 && (hours ===  1)) {
+        if (mins === 10 && (hours === 1)) {
             UpdateMatchDayLeagueData();
         }
 
