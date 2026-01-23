@@ -167,7 +167,7 @@ setInterval(() => {
             checking3MkekaBetslip(d_date)
         }
 
-        if (mins % 5 === 0 && hours >= 7 && hours <= 17) {
+        if (mins % 3 === 0 && hours >= 0 && hours <= 13) {
             //repost social tip
             // repostToMkekaLeo(d_date);
 

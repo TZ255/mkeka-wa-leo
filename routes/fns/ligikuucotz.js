@@ -85,7 +85,7 @@ const wafungajiBoraNBC = async () => {
 
     if (!heading.length) {
       let error = `Could not find scorers heading. Tried: ${scorerHeadings.join(", ")}`
-      sendNotification(shemdoe_id, error)
+      sendNotification(shemdoe_id, error, true)
       return console.log(error);
     }
 
@@ -179,7 +179,7 @@ const assistBoraNBC = async () => {
 
     if (!heading.length) {
       let error = `Could not find assists heading. Tried: ${assistHeadings.join(", ")}`
-      sendNotification(shemdoe_id, error)
+      sendNotification(shemdoe_id, error, true)
       return console.log(error);
     }
 
