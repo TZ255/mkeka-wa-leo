@@ -40,7 +40,7 @@ async function postMegaToMkekaLeo(dateStr) {
 
         const tgPost = await bot.api.sendPoll(
             mkekawaleo,
-            `${doc.time} | ${doc.date} | ${doc.league}\n⚽ ${doc.match.replace(' - ', ' vs ')}\n🎯 Tip: ${doc.bet}`,
+            `${doc.date.split('/20')[0]} ${doc.time} | ${doc.league}\n⚽ ${doc.match.replace(' - ', ' vs ')}\n🎯 Tip: ${doc.bet}`,
             [
                 '✅ Nakubaliana',
                 '❌ Sikubaliani'
@@ -50,7 +50,7 @@ async function postMegaToMkekaLeo(dateStr) {
                     inline_keyboard: [
                         [
                             {
-                                text: 'Beti Sasa | 100% Bonus',
+                                text: 'Beti Sasa | 100% Bonus 🤑',
                                 url: 'https://bet-link.top/gsb/register'
                             }
                         ]
