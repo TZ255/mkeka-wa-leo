@@ -374,7 +374,9 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             }
         }
 
-        let Alltips = await mkekadb.find({ date: SEO.trh.date }).sort('time').select('time league date match bet odds createdAt')
+        let Alltips = await mkekadb.find({ date: SEO.trh.date }).sort('-accuracy').sort('time').select('date time league match bet odds accuracy weekday jsDate').sort('-accuracy').sort('time').lean().cache(600)
+
+        //multiply all odds
         let total_odds = Alltips.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
 
         res.set('Cache-Control', 'public, max-age=600');
@@ -712,11 +714,11 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
         }).sort({ time: 1 }).lean().cache(600);
 
         let transformedData = gg_leo.map(doc => {
-            let newTip = 'GG - Yes'
+            let newTip = 'BTTS: Yes'
             //random odd from 1.50 to 1.64
             let odd = (Math.random() * (1.64 - 1.50) + 1.50).toFixed(2);
             if (nobtts.includes(doc.tip)) {
-                newTip = 'NG'
+                newTip = 'BTTS: No'
             }
 
             return {
