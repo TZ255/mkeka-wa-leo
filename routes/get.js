@@ -52,7 +52,7 @@ router.get('/', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
-        let mikeka = await mkekadb.find({ date: d, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate').sort('time').cache(600) //10 minutes
+        let mikeka = await mkekadb.find({ date: d, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate').sort('-accuracy').sort('time').limit(20).cache(600) //10 minutes
 
         //check if there is no any slip
         //find random 3
@@ -102,7 +102,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
-        let mikeka = await mkekadb.find({ date: kesho, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate').sort('time').cache(600) //10 minutes
+        let mikeka = await mkekadb.find({ date: kesho, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate').sort('-accuracy').sort('time').limit(20).cache(600) //10 minutes
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
