@@ -52,7 +52,20 @@ router.get('/', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
-        let mikeka = await mkekadb.find({ date: d, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate').sort('-accuracy').sort('time').limit(20).cache(600) //10 minutes
+        let mikeka = await mkekadb
+            .find({ date: d, status: { $ne: "vip" } })
+            .select("date time league match bet odds accuracy weekday jsDate")
+            .sort({ accuracy: -1 })   // pick the best 20 first
+            .limit(20)
+            .cache(600)
+
+        // now reorder ONLY those 20 by time asc
+        const toMinutes = (t = "") => {
+            const [h, m] = t.split(":").map(Number)
+            return (h || 0) * 60 + (m || 0)
+        }
+
+        mikeka.sort((a, b) => toMinutes(a.time) - toMinutes(b.time))
 
         //check if there is no any slip
         //find random 3
@@ -102,7 +115,18 @@ router.get('/mkeka/kesho', async (req, res) => {
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
-        let mikeka = await mkekadb.find({ date: kesho, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate').sort('-accuracy').sort('time').limit(20).cache(600) //10 minutes
+        let mikeka = await mkekadb
+            .find({ date: kesho, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate')
+            .sort({ accuracy: -1 })
+            .limit(20)
+            .cache(600)
+
+        // now reorder ONLY those 20 by time asc
+        const toMinutes = (t = "") => {
+            const [h, m] = t.split(":").map(Number)
+            return (h || 0) * 60 + (m || 0)
+        }
+        mikeka.sort((a, b) => toMinutes(a.time) - toMinutes(b.time))
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -374,7 +398,10 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             }
         }
 
-        let Alltips = await mkekadb.find({ date: SEO.trh.date }).sort('-accuracy').sort('time').select('date time league match bet odds accuracy weekday jsDate').sort('-accuracy').sort('time').lean().cache(600)
+        let Alltips = await mkekadb
+            .find({ date: SEO.trh.date }).sort('time')
+            .select('date time league match bet odds accuracy weekday jsDate')
+            .cache(600)
 
         //multiply all odds
         let total_odds = Alltips.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
