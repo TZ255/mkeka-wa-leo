@@ -5,6 +5,8 @@ const megaSchema = new Schema({
     match: {type: String},
     league: {type: String},
     odds: {type: Number, default: 1},
+    accuracy: {type: Number, default: 0},
+    facts: {type: String, default: null},
     time: {type: String},
     date: {type: String},
     bet: {type: String},

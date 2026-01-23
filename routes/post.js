@@ -401,6 +401,14 @@ router.post('/checking/one-m/1', async (req, res) => {
         bulkdata = bulkdata.split('==')
 
         if (secret == "5654") {
+            //deleting if body.data has delete - <date>
+            if (bulkdata[0].toLowerCase().includes('delete - ')) {
+                let del_date = bulkdata[0].toLowerCase().split('delete - ')[1].trim()
+                let del = await mikekaDb.deleteMany({ date: del_date })
+                return res.send(`Deleted ${del.deletedCount} matches from ${del_date}`)
+            }
+
+            //continue if not deleting
             for (let bd of bulkdata) {
                 let dataArr = bd.trim().split('\n')
                 // Use filter to remove empty strings
@@ -412,6 +420,8 @@ router.post('/checking/one-m/1', async (req, res) => {
                     match: `${filterdArr[2].trim()} - ${filterdArr[3].trim()}`,
                     bet: filterdArr[4].trim().replace('.5 Goals', '.5').replace('Total goals: +', 'Over ').replace('Total goals: -', 'Under '),
                     odds: Number(filterdArr[5].trim()),
+                    accuracy: Number(filterdArr[6]?.trim()?.replace('%', '')) || 0,
+                    facts: filterdArr[7]?.trim() || null,
                     jsDate: '',
                     weekday: ''
                 }
@@ -423,6 +433,7 @@ router.post('/checking/one-m/1', async (req, res) => {
                 //update date fields
                 matchDoc.weekday = GetDayFromDateString(matchDoc.date)
                 matchDoc.jsDate = GetJsDate(matchDoc.date)
+                matchDoc?.facts?.toLowerCase() === 'null' ? matchDoc.facts = null : null
 
                 //check tips and correct them
                 switch (matchDoc.bet) {
@@ -434,6 +445,15 @@ router.post('/checking/one-m/1', async (req, res) => {
                         break;
                     case "X":
                         matchDoc.bet = 'Draw'
+                        break;
+                    case "1X": case "DC: 1X":
+                        matchDoc.bet = "Double Chance: 1X"
+                        break;
+                    case "X2": case "DC: X2":
+                        matchDoc.bet = "Double Chance: X2"
+                        break;
+                    case "12": case "DC: 12":
+                        matchDoc.bet = "Double Chance: 12"
                         break;
                     case "BTTS: yes":
                         matchDoc.bet = "BTTS: Yes"
@@ -474,50 +494,6 @@ router.post('/checking/one-m/1', async (req, res) => {
     }
 })
 
-// router.post('/checking/afootballreport', async (req, res) => {
-//     try {
-//         let thisYear = new Date().getFullYear()
-//         let collection = []
-
-//         let bulkdata = req.body.data
-//         let secret = req.body.secret
-//         bulkdata = bulkdata.split('==')
-
-//         if (secret == "5654") {
-//             for (let bd of bulkdata) {
-//                 let dataArr = bd.trim().split('\n')
-//                 // Use filter to remove empty strings
-//                 let filterdArr = dataArr.filter(d => d !== "")
-//                 let matchDoc = {
-//                     date: `${filterdArr[0].trim().split('/')[1]}/${filterdArr[0].trim().split('/')[0]}/${thisYear}`,
-//                     time: filterdArr[1].trim(),
-//                     league: filterdArr[2].trim(),
-//                     match: `${filterdArr[3].trim()}`,
-//                     bet: filterdArr[4].trim().replace('BTTS', 'YES'),
-//                     expl: filterdArr[5].trim()
-//                 }
-//                 //check if year included
-//                 if (filterdArr[0].trim().length > 7) {
-//                     matchDoc.date = filterdArr[0].trim()
-//                 }
-
-//                 //search if in database dont push
-//                 let check_match = await bttsModel.findOne({ date: matchDoc.date, match: matchDoc.match })
-//                 if (!check_match) {
-//                     collection.push(matchDoc)
-//                 }
-//             }
-//             let savedDocs = await bttsModel.insertMany(collection)
-//             res.send(savedDocs)
-//         } else {
-//             res.send('Not authorized')
-//         }
-
-//     } catch (error) {
-//         console.error(error)
-//         res.send(error.message)
-//     }
-// })
 
 router.post('/checking/afootballreport', async (req, res) => {
     try {

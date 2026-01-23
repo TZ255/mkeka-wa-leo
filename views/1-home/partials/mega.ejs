@@ -61,7 +61,7 @@
           <div class="prediction__odds">
             <div class="odds-cta">
               <span class="odds-chip" aria-label="Odds">
-                <%= String(el.odds).padEnd(4, ' 0') %>
+                <%= el?.accuracy && Number(el.accuracy) > 1 ? `${el.accuracy}%` : String(el.odds).padEnd(4, ' 0') %>
               </span>
               <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet now on Betway">
                 BET <i class="fa-solid fa-circle-right"></i>
