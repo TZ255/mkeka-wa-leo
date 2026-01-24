@@ -439,90 +439,21 @@ router.post('/post/vip/code', async (req, res) => {
     }
 });
 
-const ALLOWED_CORRECT_SCORE_TIPS = ['3:0', '3:1', '4:0', '4:1', '4:2', '4:3', '5:0', '5:1', '5:2', '5:3', '0:3', '1:3', '3:3', '1:4', '2:4', '3:4', '0:5', '1:5', '2:5', '3:5'];
-
 // Social correct score helper
 router.get('/mkeka/vip/social', isAuth, async (req, res) => {
     if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
     try {
         const todayNairobi = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Nairobi' }).format(new Date());
         const selectedDate = (req.query?.date || todayNairobi).trim();
-        const matches = await correctScoreModel.find({
-            tip: { $in: ALLOWED_CORRECT_SCORE_TIPS },
-            jsDate: selectedDate,
-            time: { $gte: '13:00' },
-            prediction_url: { $nin: [null, '', 'unknown'] }
-        })
-            .sort({ jsDate: 1, time: 1 })
-            .lean();
+        const matches = await mkekaDB.find({
+            isSocial: true,
+            jsDate: selectedDate
+        }).sort({ jsDate: 1, time: 1 }).lean();
 
-        const posted_matches = await SocialTipModel.find({ date: selectedDate.split('-').reverse().join('/'), repost_message_id: { $exists: true } })
-            .sort({ createdAt: -1 })
-            .lean();
-
-        res.render('8-vip/social', { matches, message: req.query?.msg || '', selectedDate, todayNairobi, posted_matches });
+        res.render('8-vip/social', { matches, message: req.query?.msg || '', selectedDate, todayNairobi });
     } catch (error) {
         console.error('social route error:', error?.message);
         res.status(500).send('Hitilafu imetokea');
-    }
-});
-
-router.post('/mkeka/vip/social', isAuth, upload.single('cover_photo'), async (req, res) => {
-    if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
-    const { cscoreId, tip, booking_code, odds } = req.body;
-    if (!cscoreId) return res.status(400).send('Hakuna mechi imechaguliwa');
-
-    const affiliate_url = `https://bet-link.top/gsb/register`;
-
-    try {
-        const csDoc = await correctScoreModel.findOne({ _id: cscoreId });
-        if (!csDoc) return res.status(404).send('Mechi haijapatikana au tip si sahihi');
-
-        const enteredTip = String(tip || csDoc.tip || '').trim();
-        const bookingCode = String(booking_code || '').trim();
-        const postedOdds = odds ? Number(odds) : undefined;
-        const photoBuffer = req?.file?.buffer;
-        if (!photoBuffer) return res.status(400).send('Tafadhali weka picha ya cover');
-
-        // fetch key facts + generate swahili description
-        const facts = await extractKeyFacts(csDoc.prediction_url);
-        const description = await generateSocialDescription({
-            facts,
-            match: csDoc.match,
-            league: csDoc.league,
-            tip: enteredTip || csDoc.tip,
-        });
-
-        const caption = `<b><a href="${affiliate_url}">⚽ ${csDoc.match}</a></b> \n<b>🎯 Tip: ${enteredTip} ✅ \n#️⃣ Odds:</b> ${odds} \n\n🕛 ${csDoc.time}  |  ${csDoc.siku} \n🏆 ${csDoc.league} \n\n<blockquote>${description}</blockquote> \n<b>📠 Booking Code:</b> <code>${bookingCode}</code> \n<b>🎰 Kampuni:</b> Gal Sport Betting \n\nOfa ya 100% kwenye deposit ya kwanza. Weka 10,000 upate 10,000 BURE! \n\n<b>Jisajili Hapa 👇 \n<a href="${affiliate_url}">https://gsb.co.tz/#user/register</a></b>`;
-
-        const tgResp = await sendSocialPhoto(photoBuffer, caption);
-
-        await SocialTipModel.findOneAndUpdate(
-            { cscoreId: csDoc._id },
-            {
-                $set: {
-                    match: csDoc.match,
-                    league: csDoc.league,
-                    date: csDoc.siku,
-                    time: csDoc.time,
-                    tip: csDoc.tip,
-                    social_tip: enteredTip,
-                    booking_code: bookingCode,
-                    odds: postedOdds,
-                    prediction_url: csDoc.prediction_url,
-                    facts,
-                    description,
-                    createdBy: req?.user?.email || '',
-                    message_id: tgResp?.message_id
-                }
-            },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
-        );
-
-        res.status(200).send(`<h3>✅ Social tip imehifadhiwa kikamilifu na kutumwa kwenye channel ya Telegram.</h3> <p>${description}</p>`);
-    } catch (error) {
-        console.error('social save error:', error?.message);
-        res.status(500).send(error?.message || 'Imeshindikana kuhifadhi taarifa');
     }
 });
 
@@ -536,7 +467,7 @@ router.post('/mkeka/vip/social/:id/result', isAuth, async (req, res) => {
             return res.status(400).send('Chagua status sahihi (won au lost)');
         }
 
-        const doc = await SocialTipModel.findById(id);
+        const doc = await mkekaDB.findById(id);
         if (!doc) return res.status(404).send('Social tip haijapatikana');
 
         const finalResult = (result || '').trim() || doc.result || '';
@@ -544,9 +475,9 @@ router.post('/mkeka/vip/social/:id/result', isAuth, async (req, res) => {
         doc.status = status.toLowerCase();
         await doc.save();
 
-        if (doc.status === 'won' && doc.repost_message_id) {
+        if (doc.status === 'won' && doc.telegram_message_id) {
             try {
-                await replySocialWin(doc.repost_message_id, finalResult);
+                await replySocialWin(doc.telegram_message_id, finalResult);
             } catch (err) {
                 return res.status(500).send(`Hitilafu wakati wa kutuma reply ya WON kwenye Telegram: ${err?.message || err}`);
             }

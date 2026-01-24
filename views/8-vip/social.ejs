@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Social Correct Score Hub</title>
+  <title>Social Tip Hub</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/global.css">
   <%- include('../0-global/google.ejs'); %>
@@ -88,8 +88,8 @@
     <section class="navigation d-flex flex-column justify-content-center align-items-center mb-4">
       <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
         <div>
-          <h2 class="page-title mb-1">Social Correct Score</h2>
-          <p class="meta mb-0">Pick matches from 13:00 and prep the social copy.</p>
+          <h2 class="page-title mb-1">Social Tips Score Update</h2>
+          <p class="meta mb-0">Pick matches date to update result.</p>
         </div>
         <% if (message) { %>
         <span class="badge bg-success text-dark px-3 py-2">✅ <%= message %></span>
@@ -107,75 +107,21 @@
       </form>
     </section>
 
-    <div class="row g-3">
-      <% if (matches && matches.length) { %>
-      <% matches.forEach(function(match) { %>
-      <div class="col-12 col-lg-6">
-        <div class="card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <div>
-                <h5 class="card-title mb-1"><%= match.match %></h5>
-                <div class="meta"><%= match.league || 'N/A' %></div>
-              </div>
-              <span class="badge badge-tip"><%= match.tip %></span>
-            </div>
-            <div class="meta mb-2"><b>Time:</b> <%= match.time || '--:--' %> · <b>Date:</b> <%= match.siku || match.date || '--/--/----' %></div>
-            <% if (match.prediction_url) { %>
-            <div class="mb-3"><a class="link-warning text-decoration-none" href="<%= match.prediction_url %>" target="_blank" rel="noopener">Prediction source</a></div>
-            <% } %>
-
-            <form action="/mkeka/vip/social" method="POST" target="_blank" enctype="multipart/form-data" class="mt-2">
-              <input type="hidden" name="cscoreId" value="<%= match._id %>">
-              <div class="row g-2">
-                <div class="col-md-5">
-                  <label class="form-label">Social tip</label>
-                  <input type="text" name="tip" class="form-control" placeholder="e.g. Over 2.5" required>
-                </div>
-                <div class="col-md-4">
-                  <label class="form-label">Booking code</label>
-                  <input type="text" name="booking_code" class="form-control" placeholder="enter code" required>
-                </div>
-                <div class="col-md-3">
-                  <label class="form-label">Odds</label>
-                  <input type="number" step="0.01" min="1" name="odds" class="form-control" placeholder="eg 1.72">
-                </div>
-              </div>
-              <div class="mt-2 mb-3">
-                <label class="form-label">Cover photo</label>
-                <input type="file" name="cover_photo" accept="image/*" class="form-control" required>
-              </div>
-              <button type="submit" class="btn btn-save w-100">Save social tip</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <% }) %>
-      <% } else { %>
-      <div class="col-12">
-        <div class="empty text-center">
-          <p class="mb-1 fw-semibold">No matches ≥ 13:00 right now.</p>
-          <p class="meta mb-0">Check back later for eligible correct scores.</p>
-        </div>
-      </div>
-      <% } %>
-    </div>
-
     <section class="mt-5">
       <div class="mb-3">
         <h4 class="page-title mb-1">Posted matches <%= selectedDate %></h4>
       </div>
 
-      <% if (posted_matches && posted_matches.length) { %>
+      <% if (matches && matches.length) { %>
       <div class="row g-3">
-        <% posted_matches.forEach(function(post) { %>
+        <% matches.forEach(function(post) { %>
         <div class="col-12 col-md-6">
-          <div class="card h-100">
+          <div class="card h-100 <%= post.status === 'won' ? 'border border-success border-3' : '' %>">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-start">
                 <div>
                   <h6 class="mb-1"><%= post.match %></h6>
-                  <div class="meta">Tip: <%= post.social_tip %> · Time: <%= post.time %></div>
+                  <div class="meta">Tip: <%= post.bet %> · Time: <%= post.time %></div>
                   <div class="meta">Status: <span class="text-uppercase"><%= post.status %></span> · Result: <%= post.result || '-:-' %></div>
                 </div>
               </div>

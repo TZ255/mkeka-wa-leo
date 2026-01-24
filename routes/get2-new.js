@@ -347,10 +347,9 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-        //const isSocial = await mkekaDB.updateMany({ isSocial: { $exists: false } }, { $set: { isSocial: false } })
-        //return res.send(`Updated ${isSocial.modifiedCount} documents to set isSocial field.`)
-        // await postMegaToMkekaLeo('24/01/2026')
-        res.end()
+        //const update = await mkekaDB.updateMany({ result: { $exists: false } }, { $set: { result: '-:-' } })
+        //res.send(`updated ${update.modifiedCount} documents`)
+        res.send('Testing API endpoint')
     } catch (error) {
         res.send(error)
     }

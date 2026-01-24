@@ -168,10 +168,6 @@ setInterval(() => {
         }
 
         if (mins % 3 === 0 && hours >= 0 && hours <= 13) {
-            //repost social tip
-            // repostToMkekaLeo(d_date);
-
-            //post to mega to mkeka leo
             postMegaToMkekaLeo(d_date)
         }
 

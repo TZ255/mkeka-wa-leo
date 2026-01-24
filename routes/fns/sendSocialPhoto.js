@@ -102,12 +102,17 @@ async function repostToMkekaLeo(dateStr) {
  * @param {number} repostMessageId
  * @param {string} resultText
  */
-async function replySocialWin(repostMessageId, resultText) {
-    if (!repostMessageId) throw new Error('repost_message_id haijapatikana');
+async function replySocialWin(telegram_message_id, resultText) {
+    if (!telegram_message_id) throw new Error('telegram_message_id haijapatikana');
 
-    const text = `[WON ${resultText}] ✅✅✅`;
+    const doc = await mkekaDB.findOne({ telegram_message_id });
+    if (!doc) throw new Error('Social tip haijapatikana kwenye mkekaDB kwa telegram_message_id hii');
+
+    const text = `⚽ ${doc.match.replace(' - ', ' vs ')}\n<b>🎯 Tip: ${doc.bet} \n🥅 Result: ${resultText} ✅ (WON)</b>`
     return bot.api.sendMessage(mkekawaleo, text, {
-        reply_parameters: { message_id: repostMessageId }
+        parse_mode: 'HTML',
+        disable_notification: true,
+        reply_parameters: { message_id: telegram_message_id }
     }).catch(() => { throw new Error('Kushindwa kutuma reply ya WON') });
 }
 
