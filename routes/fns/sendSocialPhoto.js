@@ -36,7 +36,14 @@ async function postMegaToMkekaLeo(dateStr) {
         if (!dateStr) throw new Error('date haijapokelewa (DD/MM/YYYY)');
 
         const doc = await mkekaDB.findOne({ date: dateStr, isSocial: false }).sort({ time: 1 });
+        const socialCount = await mkekaDB.countDocuments({ date: dateStr, isSocial: true });
         if (!doc) return null;
+
+        //if there is no social tip yet and false socials are available, send message to mkekawaleo to notify that soon social tip will be posted
+        if (socialCount === 0 && doc) {
+            const notifyMsg = `<b>Habari wawekezaji!</b> \n\nMechi za leo ${dateStr} tunazipost hivi punde kwa mfumo wa <b>poll</b>. Piga kura yako ukiwa unakubaliana na utabiri (✅) au hukubaliani nao (❌). \n\nWekeza kwenye tabiri zenye kura nyingi za kukubaliana (✅)`;
+            return await bot.api.sendMessage(mkekawaleo, notifyMsg).catch(() => { });
+        }
 
         const tgPost = await bot.api.sendPoll(
             mkekawaleo,
