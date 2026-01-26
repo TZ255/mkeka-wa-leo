@@ -41,8 +41,8 @@ async function postMegaToMkekaLeo(dateStr) {
 
         //if there is no social tip yet and false socials are available, send message to mkekawaleo to notify that soon social tip will be posted
         if (socialCount === 0 && doc) {
-            const notifyMsg = `<b>Habari wawekezaji!</b> \n\nMechi za leo ${dateStr} tunazipost hivi punde kwa mfumo wa <b>poll</b>. Piga kura yako ukiwa unakubaliana na utabiri (✅) au hukubaliani nao (❌). \n\nWekeza kwenye tabiri zenye kura nyingi za kukubaliana (✅)`;
-            return await bot.api.sendMessage(mkekawaleo, notifyMsg).catch(() => { });
+            const notifyMsg = `<b>Habari wawekezaji!</b> \n\nMechi za leo ${dateStr} tunazipost kwa mfumo wa <b>poll</b>. Piga kura yako ukiwa unakubaliana na utabiri (✅) au hukubaliani nao (❌). \n\nWekeza kwenye tabiri zenye kura nyingi za kukubaliana (✅)`;
+            await bot.api.sendMessage(mkekawaleo, notifyMsg, {parse_mode: 'HTML'}).catch(() => { });
         }
 
         const tgPost = await bot.api.sendPoll(

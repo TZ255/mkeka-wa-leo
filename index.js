@@ -167,7 +167,7 @@ setInterval(() => {
             checking3MkekaBetslip(d_date)
         }
 
-        if (mins % 3 === 0 && hours >= 0 && hours <= 13) {
+        if (mins % 1 === 0 && hours >= 8 && hours <= 15) { //every 1 minute between 8am and 3pm
             postMegaToMkekaLeo(d_date)
         }
 
