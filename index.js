@@ -30,7 +30,7 @@ const { default: axios } = require('axios')
 const { wafungajiBoraNBC, assistBoraNBC } = require('./routes/fns/ligikuucotz');
 const checking3MkekaBetslip = require('./routes/fns/checking-betslip');
 const affAnalyticsModel = require('./model/affiliates-analytics');
-const { sendNotification, sendLauraNotification } = require('./routes/fns/sendTgNotifications');
+const { sendNotification, sendLauraNotification, notifyMkekaLeoForUpcomingTips } = require('./routes/fns/sendTgNotifications');
 const mkekaUsersModel = require('./model/mkeka-users');
 const BetslipModel = require('./model/betslip');
 const { identity } = require('lodash');
@@ -167,8 +167,9 @@ setInterval(() => {
             checking3MkekaBetslip(d_date)
         }
 
-        if (mins % 1 === 0 && hours >= 8 && hours <= 15) { //every 1 minute between 8am and 3pm
-            postMegaToMkekaLeo(d_date)
+        if (mins % 1 === 0 && hours >= 0 && hours <= 15) {
+            if (time === "00:05") notifyMkekaLeoForUpcomingTips(d_date, false); // Notify upcoming tips at 00:05
+            if (hours >= 7 && hours <= 15) postMegaToMkekaLeo(d_date); // Post mega to mkeka leo between 07:00 and 15:59
         }
 
         //reset resend email count at 03:05 -- check matchdays
