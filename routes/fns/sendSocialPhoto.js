@@ -35,7 +35,7 @@ async function postMegaToMkekaLeo(dateStr) {
     try {
         if (!dateStr) throw new Error('date haijapokelewa (DD/MM/YYYY)');
 
-        const doc = await mkekaDB.findOne({ date: dateStr, isSocial: false }).sort({ time: 1 });
+        const doc = await mkekaDB.findOne({ date: dateStr, isSocial: false, time: { $gte: '10:00' } }).sort({ time: 1 });
         const socialCount = await mkekaDB.countDocuments({ date: dateStr, isSocial: true });
         if (!doc) return null;
 
