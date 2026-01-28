@@ -65,7 +65,7 @@ const checking3MkekaBetslip = async (d) => {
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         if (multikeka.length < 1) {
             let copies = await mkekadb.aggregate([
-                { $match: { date: d, time: { $gte: '14:00' }, $expr: { $gt: [{ $toDouble: "$odds" }, 1.2] } } },
+                { $match: { date: d, time: { $gte: '14:00' }, bet: { $in: ['Home Win', 'Away Win', '1', '2'] } } },
                 { $sample: { size: 4 } }
             ])
 
