@@ -405,7 +405,8 @@ router.post('/checking/one-m/1', async (req, res) => {
             if (bulkdata[0].toLowerCase().includes('delete - ')) {
                 let del_date = bulkdata[0].toLowerCase().split('delete - ')[1].trim()
                 let del = await mikekaDb.deleteMany({ date: del_date })
-                return res.send(`Deleted ${del.deletedCount} matches from ${del_date}`)
+                let del_over15 = await over15Mik.deleteMany({ date: del_date })
+                return res.send(`Deleted ${del.deletedCount} of Mega matches and ${del_over15.deletedCount} of Over 15 matches from ${del_date}`)
             }
 
             //continue if not deleting
@@ -455,7 +456,7 @@ router.post('/checking/one-m/1', async (req, res) => {
                     case "12": case "DC: 12":
                         matchDoc.bet = "Double Chance: 12"
                         break;
-                    case "BTTS: yes":
+                    case "BTTS: yes": case "BTTS": case "GG":
                         matchDoc.bet = "BTTS: Yes"
                         break;
                 }
