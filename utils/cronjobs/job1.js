@@ -49,9 +49,9 @@ module.exports = () => {
   }, { timezone: tz });
 
   // ------------------------------------
-  // 01:10 notify upcoming tips
+  // 01:20 notify upcoming tips
   // ------------------------------------
-  cron.schedule('10 1 * * *', () => {
+  cron.schedule('20 1 * * *', () => {
     runLocked('notify-upcoming', () =>
       notifyMkekaLeoForUpcomingTips(getDate(), false)
     );

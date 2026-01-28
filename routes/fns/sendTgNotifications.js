@@ -28,7 +28,7 @@ const notifyMkekaLeoForUpcomingTips = async (dateStr, disable_notification = fal
 
         const matches = await mkekaDB.countDocuments({ date: dateStr, time: { $gte: '10:00' } });
         const socialCount = await mkekaDB.countDocuments({ date: dateStr, isSocial: true });
-        if (!doc) return null;
+        if (!matches) return null;
 
         //if there is no social tip yet and false socials are available, send message to mkekawaleo to notify that soon social tip will be posted
         if (socialCount === 0 && matches > 0) {
