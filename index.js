@@ -152,64 +152,8 @@ app.get('*', (req, res) => {
     res.status(404).send('Page not found')
 })
 
-//updating ligis
-setInterval(() => {
-    if (process.env.local != 'true') {
-        let d_date = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let d_time = new Date().toLocaleTimeString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let [hh, mm, ss] = d_time.split(":")
-        let time = `${hh}:${mm}`
-        let hours = Number(hh)
-        let mins = Number(mm)
-
-        //angalia betslip
-        if (mins % 15 === 0) {
-            checking3MkekaBetslip(d_date)
-        }
-
-        if (mins % 1 === 0 && hours >= 0 && hours <= 15) {
-            if (time === "00:05") notifyMkekaLeoForUpcomingTips(d_date, false); // Notify upcoming tips at 00:05
-            if (hours >= 7 && hours <= 15) postMegaToMkekaLeo(d_date); // Post mega to mkeka leo between 07:00 and 15:59
-        }
-
-        //reset resend email count at 03:05 -- check matchdays
-        if (hours === 3 && mins === 5) {
-            //reset email count sendig
-            affAnalyticsModel.findOneAndUpdate({ pid: 'shemdoe' }, { $set: { email_count: 0 } })
-                .then(() => sendNotification(741815228, '✅ Email count set to 0'))
-                .catch(e => sendNotification(741815228, e?.message));
-
-            //reset rapid apis
-            RapidKeysModel.updateMany({}, { $set: { times_used: 0 } }).catch(e => console.log(e?.message, e))
-
-            //check matchdays active true or false -- date format is YYYY-MM-DD
-            UpdateOtherLeagueMatchDay(d_date.split('/').reverse().join('-'))
-        }
-
-        //update bongo Every 35 and 5 minutes
-        if ((mins === 35 || mins == 5) && (hours >= 14 || hours < 5)) {
-            wafungajiBoraNBC() //scrape ligikuu.co.tz
-            setTimeout(() => {
-                assistBoraNBC() //scrape ligikuu.co.tz
-            }, 5000)
-        }
-
-        //update bongo league two times a day at 22:01 and 03:01
-        if (mins === 1 && [3, 19, 22].includes(hours)) {
-            UpdateBongoLeagueData(567, 2025)
-        }
-
-        //update other leagues once a day at 01:10
-        if (mins === 10 && (hours === 1)) {
-            UpdateMatchDayLeagueData();
-        }
-
-        //fixtures once a day at 00:01, 05:01, 18:01 20:01
-        if (mins === 1 && [0, 5, 18, 20].includes(hours)) {
-            getAllFixtures()
-        }
-    }
-}, 1000 * 59)
+// schedule cron jobs
+require('./utils/cronjobs/job1')()
 
 app.listen(process.env.PORT || 3000, () => console.log('Running on port 3000'))
 

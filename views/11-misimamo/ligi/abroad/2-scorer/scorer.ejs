@@ -39,11 +39,13 @@
                 </abbr>
             </span>
             <div class="utangulizi p-2 text-align-justify">
-                <p>
+                <% if (top_scorers?.length > 1) { %>
+                 <p>
                     Hadi sasa, <strong><%= top_scorers[0].player.name %></strong> wa <%= top_scorers[0].statistics[0].team.name %> na
                     <strong><%= top_scorers[1].player.name %></strong> wa <%= top_scorers[1].statistics[0].team.name %> wanaongoza kwa
                     magoli <%= partials.ligi %> msimu huu. <strong><%= top_scorers[0].player.name %></strong> akiwa na magoli <%= top_scorers[0].statistics[0].goals.total %> na <strong><%= top_scorers[1].player.name %></strong> akiwa na magoli <%= top_scorers[1].statistics[0].goals.total %>.
                 </p>
+                <% } %>
             </div>
             <br>
             <div>

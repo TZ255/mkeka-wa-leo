@@ -37,11 +37,13 @@
                 </abbr>
             </span>
             <div class="utangulizi p-2 text-align-justify">
-                <p>
+                <% if (top_assists?.length > 1) { %>
+                 <p>
                     Hadi sasa, <%= top_assists[0].player.name %> wa <%= top_assists[0].statistics[0].team.name %> na
                     <%= top_assists[1].player.name %> wa <%= top_assists[1].statistics[0].team.name %> wanaongoza kwa
                     utoaji assist <%= partials.league_name %> msimu huu.
                 </p>
+                <% } %>
             </div>
             <div class="table-section" itemscope itemtype="https://schema.org/Table">
                 <meta itemprop="about"
