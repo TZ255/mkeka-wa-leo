@@ -30,6 +30,7 @@ const { makePayment, getTransactionStatus } = require('./fns/zenopay')
 const { nkiriFunction } = require('../bots/charlotte/functions/nkiri')
 const mkekaDB = require('../model/mkeka-mega')
 const { postMegaToMkekaLeo } = require('./fns/sendSocialPhoto')
+const { oddToWinPercent } = require('../utils/odd-to-percent')
 
 
 router.get('/standings', async (req, res) => {

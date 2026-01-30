@@ -20,6 +20,7 @@ const { grantSubscription } = require('./fns/grantVIP')
 const { autoConfirmVIP } = require('./fns/autoConfirmVIP')
 const { sendLauraNotification } = require('./fns/sendTgNotifications')
 const { GLOBAL_VARS } = require('./fns/global-var')
+const { oddToWinPercent } = require('../utils/odd-to-percent')
 
 let imp = {
     replyDb: -1001608248942,
@@ -435,6 +436,11 @@ router.post('/checking/one-m/1', async (req, res) => {
                 matchDoc.weekday = GetDayFromDateString(matchDoc.date)
                 matchDoc.jsDate = GetJsDate(matchDoc.date)
                 matchDoc?.facts?.toLowerCase() === 'null' ? matchDoc.facts = null : null
+
+                // calculate accuracy if it is 0 or missing
+                if (matchDoc.accuracy === 0 && matchDoc.odds > 1) {
+                    matchDoc.accuracy = oddToWinPercent(matchDoc.odds)
+                }
 
                 //check tips and correct them
                 switch (matchDoc.bet) {
