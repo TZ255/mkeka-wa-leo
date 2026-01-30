@@ -40,13 +40,15 @@ const reqEpisodeAxios = async (Origin, referer, formData) => {
         }
     });
 
-    return response.headers['location'] || response.headers.location;
+    //old way of getting redirect link
+    //return response.headers['location'] || response.headers.location;
 
-    // const final_download_page = response.data
+    //new way of getting redirect link
+    const final_download_page = response.data
 
-    // let $ = cheerio.load(final_download_page)
-    // let ddl = $('a:has(.downloadbtn)[href$=".mkv"], a:has(.downloadbtn)[href$=".mp4"]').attr("href");
-    // return ddl
+    let $ = cheerio.load(final_download_page)
+    let ddl = $('a:has(.downloadbtn)[href$=".mkv"], a:has(.downloadbtn)[href$=".mp4"]').attr("href");
+    return ddl
 }
 
 
