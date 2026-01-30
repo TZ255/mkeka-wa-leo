@@ -55,10 +55,17 @@
           </div>
           <div class="prediction__odds">
             <div class="odds-cta">
-              <span class="odds-chip" aria-label="Odds">
-                -:-
+              <span class="odds-chip" aria-label="Odds" style="height: 50px;">
+                <% if (el?.accuracy && Number(el.accuracy) > 1) { %>
+                  <span><%= `${el.accuracy}%` %></span>
+                  <small style="font-size: 0.65rem;">Kushinda</small>
+                <% } %>
+                <% if (!el?.accuracy || Number(el.accuracy) === 0) { %>
+                  <small style="font-size: 0.65rem;">Odds</small>
+                  <span><%= String(el.odds).padEnd(4, ' 0') %></span>
+                <% } %>
               </span>
-              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet now on Betway">
+              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet now on Betway" style="height: 50px;">
                 BET <i class="fa-solid fa-circle-right"></i>
               </button>
             </div>

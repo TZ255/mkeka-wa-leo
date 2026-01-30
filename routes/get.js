@@ -259,10 +259,10 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
 
         let mikeka = await over15Mik.find({ date: SEO.trh.date }).sort('time').lean().cache(600)
 
-        // random odd for each tip between 1.20 to 1.28, tips has no odd field
+        // random odd for each tip between 1.18 to 1.25, tips has no odd field
         let total_odds = mikeka.reduce((product, doc) => {
             {
-                let randomOdd = (Math.random() * (1.28 - 1.20) + 1.20).toFixed(2)
+                let randomOdd = (Math.random() * (1.25 - 1.18) + 1.18).toFixed(2)
                 return product * parseFloat(randomOdd)
             }
         }, 1).toFixed(2)
