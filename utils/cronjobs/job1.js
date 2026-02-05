@@ -1,5 +1,5 @@
 const cron = require('node-cron');
-const { notifyMkekaLeoForUpcomingTips, sendNotification } = require('../../routes/fns/sendTgNotifications');
+const { notifyMkekaLeoForUpcomingTips, sendNotification, postAdToMkekaLeo } = require('../../routes/fns/sendTgNotifications');
 const checking3MkekaBetslip = require('../../routes/fns/checking-betslip');
 const { postMegaToMkekaLeo } = require('../../routes/fns/sendSocialPhoto');
 const affAnalyticsModel = require('../../model/affiliates-analytics');
@@ -49,20 +49,29 @@ module.exports = () => {
   }, { timezone: tz });
 
   // ------------------------------------
-  // 01:20 notify upcoming tips
+  // 07:01 notify upcoming tips
   // ------------------------------------
-  cron.schedule('20 1 * * *', () => {
+  cron.schedule('1 7 * * *', () => {
     runLocked('notify-upcoming', () =>
       notifyMkekaLeoForUpcomingTips(getDate(), false)
     );
   }, { timezone: tz });
 
   // ------------------------------------
-  // 07:00–15:59 post mega
+  // 08:00–15:59 post mega
   // ------------------------------------
-  cron.schedule('* 7-15 * * *', () => {
+  cron.schedule('* 8-15 * * *', () => {
     runLocked('post-mega', () =>
       postMegaToMkekaLeo(getDate())
+    );
+  }, { timezone: tz });
+
+  // ------------------------------------
+  // 11:00 send random ad to mkeka leo channel
+  // ------------------------------------
+  cron.schedule('0 11 * * *', () => {
+    runLocked('post-ad', () =>
+      postAdToMkekaLeo()
     );
   }, { timezone: tz });
 

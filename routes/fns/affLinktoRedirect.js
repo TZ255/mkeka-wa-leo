@@ -20,11 +20,12 @@ const LinkToRedirect = async (comp, ip) => {
         winner_ethiopia: `https://track.africabetpartners.com/visit/?bta=35468&nci=6055`,
         betlion_ke: `https://tracking.888africa.com/visit/?bta=356&nci=5362`,
         leonbet: `https://k56thc2itt.com/?serial=44835&creative_id=1061&anid=`,
-        jpcity: 'https://en.jackpotcitycasino.co.tz/?register=1&btag=P110231-PR38119-CM113317-TS2071433'
+        jpcity: 'https://en.jackpotcitycasino.co.tz/?register=1&btag=P110231-PR38119-CM113317-TS2071433',
+        yellowbet_ke: `https://track.africabetpartners.com/visit/?bta=35468&nci=6607`
     }
     try {
         let locationData = await getUserLocation(ip)
-        if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.betwinner;
+        if (locationData?.status == 'success' && locationData?.c_code == "KE") return links.yellowbet_ke;
         if (locationData?.status == 'success' && locationData?.c_code == "MZ") return links.mz_888;
 
         switch (comp) {
@@ -56,8 +57,8 @@ const LinkToRedirect = async (comp, ip) => {
                 return links.jpcity
 
             //bots redirects
-            case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet': case 'betlion-ke':
-                return links.betwinner
+            case 'betika-ke': case '22bet-ke': case '1xbet': case '22bet': case 'betlion-ke': case 'yellowbet-ke':
+                return links.yellowbet_ke
             case 'gsb-tz':
                 return links.gsb
             case 'gsb-ug':
