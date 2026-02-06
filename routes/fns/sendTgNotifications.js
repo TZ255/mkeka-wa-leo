@@ -4,6 +4,7 @@ const bot = new Bot(process.env.ERROR_BOT)
 const botLaura = new Bot(process.env.LAURA_TOKEN)
 
 const mkekawaleo = -1001733907813;
+const mikekaDB_channel = -1001696592315;
 
 const sendNotification = async (chatid, err_msg, disable_notification = false) => {
     try {
@@ -33,10 +34,10 @@ const notifyMkekaLeoForUpcomingTips = async (dateStr, disable_notification = fal
 
         //if there is no social tip yet and false socials are available, send message to mkekawaleo to notify that soon social tip will be posted
         if (socialCount === 0 && matches > 0) {
-            await botLaura.api.copyMessage(mkekawaleo, mkekaDB, 10434)
+            await botLaura.api.copyMessage(mkekawaleo, mikekaDB_channel, 10434)
             const notifyMsg = `<b>Habari wadau!</b> \n\nMechi za leo ${dateStr} tutazipost kuanzia 08:00 AM kwa mfumo wa <b>poll</b>. Piga kura yako ukiwa unakubaliana na utabiri (✅) au hukubaliani nao (❌). \n\nWekeza kwenye tabiri zenye kura nyingi za kukubaliana (✅)`;
             await botLaura.api.sendMessage(mkekawaleo, notifyMsg, { parse_mode: 'HTML', disable_notification }).catch(() => { });
-            await botLaura.api.copyMessage(mkekawaleo, mkekaDB, 10435)
+            await botLaura.api.copyMessage(mkekawaleo, mikekaDB_channel, 10435)
         }
     } catch (error) {
         console.error(error)
