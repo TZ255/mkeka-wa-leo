@@ -50,7 +50,7 @@ const postAdToMkekaLeo = async () => {
 
         const promos = [10437, 10438, 10439]; //message ids of promotional posts in mkekaDB channel
         const randomPromoId = promos[Math.floor(Math.random() * promos.length)];
-        await botLaura.api.copyMessage(mkekawaleo, mkekaDB, randomPromoId)
+        await botLaura.api.copyMessage(mkekawaleo, mikekaDB_channel, randomPromoId)
     } catch (error) {
         console.error(error)
     }

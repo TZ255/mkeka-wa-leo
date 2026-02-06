@@ -2,7 +2,7 @@ const { Bot, InputFile } = require('grammy');
 const SocialTipModel = require('../../model/social-tip');
 const mkekaDB = require('../../model/mkeka-mega');
 
-const mikekaDB = -1001696592315;
+const mikekaDB_channel = -1001696592315;
 const mkekawaleo = -1001733907813;
 
 const token = process.env.LAURA_TOKEN;
@@ -20,7 +20,7 @@ const bot = new Bot(token);
 async function sendSocialPhoto(buffer, caption) {
     if (!buffer || !Buffer.isBuffer(buffer)) throw new Error('Photo buffer haipo');
 
-    const resp = await bot.api.sendPhoto(mikekaDB, new InputFile(buffer, 'social-tip.jpg'), {
+    const resp = await bot.api.sendPhoto(mikekaDB_channel, new InputFile(buffer, 'social-tip.jpg'), {
         caption,
         parse_mode: 'HTML',
     });
@@ -63,7 +63,7 @@ async function postMegaToMkekaLeo(dateStr) {
         return tgPost;
     } catch (error) {
         const msg = `repostToMkekaLeo error: ${error?.message || error}`;
-        await bot.api.sendMessage(mikekaDB, msg).catch(() => { });
+        await bot.api.sendMessage(mikekaDB_channel, msg).catch(() => { });
         return null;
     }
 }
@@ -80,19 +80,19 @@ async function repostToMkekaLeo(dateStr) {
         const doc = await SocialTipModel.findOne({ date: dateStr, isPosted: false, message_id: { $exists: true } }).sort({ createdAt: 1 });
         if (!doc) return null;
 
-        const copyResp = await bot.api.copyMessage(mkekawaleo, mikekaDB, doc.message_id, {
+        const copyResp = await bot.api.copyMessage(mkekawaleo, mikekaDB_channel, doc.message_id, {
             reply_markup: {
                 inline_keyboard: [[{ text: '🎁 10,000 TZS BURE!', url: 'https://bet-link.top/gsb/register' }]]
             }
         });
 
-        await bot.api.deleteMessage(mikekaDB, doc.message_id).catch(() => {});
+        await bot.api.deleteMessage(mikekaDB_channel, doc.message_id).catch(() => {});
 
         await doc.updateOne({ $set: { isPosted: true, repost_message_id: copyResp?.message_id || null } });
         return copyResp;
     } catch (error) {
         const msg = `repostToMkekaLeo error: ${error?.message || error}`;
-        await bot.api.sendMessage(mikekaDB, msg).catch(() => {});
+        await bot.api.sendMessage(mikekaDB_channel, msg).catch(() => {});
         return null;
     }
 }
