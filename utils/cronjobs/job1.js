@@ -69,7 +69,7 @@ module.exports = () => {
   // ------------------------------------
   // 11:00 send random ad to mkeka leo channel
   // ------------------------------------
-  cron.schedule('45 12 * * *', () => {
+  cron.schedule('0 13 * * *', () => {
     runLocked('post-ad', () =>
       postAdToMkekaLeo()
     );
