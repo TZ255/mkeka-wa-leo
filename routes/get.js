@@ -27,6 +27,7 @@ const { processCScoreTips } = require('./fns/cscoreCollection')
 const supatipsModel = require('../model/supatips')
 const { LinkToRedirect } = require('./fns/affLinktoRedirect')
 const correctScoreModel = require('../model/cscore')
+const yaUhakikaVipModel = require('../model/ya-uhakika/vip-yauhakika')
 
 router.get('/', async (req, res) => {
     try {
@@ -69,8 +70,11 @@ router.get('/', async (req, res) => {
 
         //check if there is no any slip
         //find random 3
-        let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
-        let slip2 = await betslip.find({ date: d, vip_no: 2 }).cache(600)
+        let [slip, slip2, slip3] = await Promise.all([
+            betslip.find({ date: d, vip_no: 1 }).cache(600),
+            betslip.find({ date: d, vip_no: 2 }).cache(600),
+            betslip.find({ date: d, vip_no: 3 }).cache(600)
+        ])
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -79,6 +83,7 @@ router.get('/', async (req, res) => {
         const slipOdds = {
             slip: slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
             slip2: slip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+            slip3: slip3.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
         }
 
         //Over 1.5 SUPA Tips
@@ -92,7 +97,7 @@ router.get('/', async (req, res) => {
         //cache response
         res.set('Cache-Control', 'public, max-age=600');
 
-        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slip2, slipOdds, trh, jumasiku })
+        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slip2, slip3, slipOdds, trh, jumasiku })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -208,11 +213,13 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         //vip tips
         let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
         let slip2 = await betslip.find({ date: d, vip_no: 2 }).cache(600)
+        let slip3 = await yaUhakikaVipModel.find({ date: d }).cache(600)
 
         //multiply all odds of betslip
         const slipOdds = {
             slip: slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
             slip2: slip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+            slip3: slip3.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
         }
 
         //tarehes
@@ -221,7 +228,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let jumasiku = { leo: d_juma }
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('3-landing/landing', { slip, slip2, slipOdds, jumasiku, trh })
+        res.render('3-landing/landing', { slip, slip2, slip3, slipOdds, jumasiku, trh })
     } catch (err) {
         console.log(err.message)
     }

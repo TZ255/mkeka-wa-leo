@@ -1,137 +1,99 @@
-<div class="vip-card-wrapper mx-auto">
+<% const trh = new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
+<% const toNumber = (value) => Number(value || 1); %>
+<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) * toNumber(total_odds?.betslip3)).toFixed(2); %>
+<% const splitTeams = (matchValue = "") => { %>
+<%   const normalized = String(matchValue || "").replace(" vs ", " - "); %>
+<%   const parts = normalized.split(" - "); %>
+<%   const home = (parts.shift() || normalized).trim(); %>
+<%   const away = parts.length ? parts.join(" - ").trim() : ""; %>
+<%   return { home, away }; %>
+<% }; %>
+
+<div class="vip-card-wrapper vip-showcase mx-auto">
   <div class="vip-promo-card">
-    <div class="card-body p-4">
-      <!-- SLIP 1 -->
-      <div class="slip-preview">
-        <div class="slip-blur">
-          <div class="slip-top d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
-            <div class="slip-info d-flex align-items-center gap-2">
-              <div class="slip-emoji fs-3">
-                <i class="fa-solid fa-shield-halved"></i>
+    <div class="card-header vip-showcase-header">
+      <div class="vip-badge">VIP TIPS - <%= trh %></div>
+      <h2 class="mb-1 fw-extrabold text-white" style="font-weight: 800;">MIKEKA YA VIP LEO</h2>
+      <p class="mb-0 text-white-50 fw-semibold">Mikeka mitatu ya VIP - Jumla ya Odds: <%= totalVipOdds %></p>
+    </div>
+
+    <div class="card-body vip-showcase-body p-4">
+      <div class="vip-slip-card">
+        <div class="vip-slip-head">
+          <div>
+            <div class="vip-slip-title">VIP Slip #3 - Today's Banker</div>
+            <div class="vip-slip-sub">Mkeka wa Uhakika Leo 💯🔥</div>
+          </div>
+          <div class="vip-slip-lock">
+            <i class="fa-solid fa-lock"></i>
+            <span>Locked</span>
+          </div>
+        </div>
+
+        <div class="vip-slip-matches">
+          <% if (betslip3 && betslip3.length > 0) { %>
+          <% betslip3.forEach(match => { %>
+          <div class="vip-slip-row">
+            <div class="vip-row-left">
+              <div class="vip-row-meta">
+                <span class="vip-pill">
+                  <i class="fa-regular fa-calendar"></i>
+                  <%= match?.date || '--/--/----' %>
+                </span>
+                <span class="vip-pill">
+                  <i class="fa-regular fa-clock"></i>
+                  <%= match?.time || '--:--' %>
+                </span>
+                <span class="vip-pill vip-pill-league">
+                  <i class="fa-solid fa-trophy"></i>
+                  <%= match?.league || 'League' %>
+                </span>
               </div>
-              <div class="slip-meta">
-                <h3 class="mb-0 fw-bold text-dark fs-5">VIP #1</h3>
-                <p class="mb-0 text-uppercase fw-semibold text-secondary" style="font-size: .7rem; letter-spacing: .5px;">
-                  Mkeka wa magoli
-                </p>
+              <% const teams = splitTeams(match?.match); %>
+              <div class="vip-row-match">
+                <div class="vip-team"><%= teams.home || '-' %></div>
+                <% if (teams.away) { %>
+                <div class="vip-team vip-team-away"><%= teams.away %></div>
+                <% } %>
+              </div>
+              <div class="vip-tip-pill">
+                <i class="fa-solid fa-eye-slash"></i>
+                Tip Locked
               </div>
             </div>
 
-            <div class="slip-lock d-inline-flex align-items-center gap-1">
-              <i class="fa-solid fa-lock" style="font-size: .75rem;"></i>
-              <span>Locked</span>
+            <div class="vip-row-odds">
+              <span class="vip-odds-pill" title="Odds Locked">
+                <i class="fa-solid fa-eye-slash"></i>
+              </span>
             </div>
           </div>
-
-          <div class="slip-stats">
-            <div class="stat-box">
-              <div class="stat-label">Mechi</div>
-              <div class="stat-value"><%= betslip1?.length || 0 %></div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Odds</div>
-              <div class="stat-value"><%= total_odds?.betslip1 || 1 %></div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Stake</div>
-              <div class="stat-value">35,000</div>
-            </div>
+          <% }) %>
+          <div class="vip-slip-row vip-slip-total">
+            <div class="vip-total-label">Jumla ya VIP Odds (VIP 1,2 & 3)</div>
+            <div class="vip-total-value"><%= totalVipOdds %></div>
           </div>
-
-          <div class="win-box">
-            <div class="stat-label">UWEZEKANO WA USHINDI</div>
-            <div class="stat-value">TSh <%= Number(total_odds?.betslip1 * 35000).toLocaleString('sw-TZ') || 0.00 %></div>
-          </div>
+          <% } else { %>
+          <div class="vip-empty">Hakuna mechi za VIP #3 kwa sasa.</div>
+          <% } %>
         </div>
       </div>
 
-      <!-- SLIP 2 -->
-      <div class="slip-preview">
-        <div class="slip-blur">
-          <div class="slip-top d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
-            <div class="slip-info d-flex align-items-center gap-2">
-              <div class="slip-emoji fs-3">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-              <div class="slip-meta">
-                <h3 class="mb-0 fw-bold text-dark fs-5">VIP #2</h3>
-                <p class="mb-0 text-uppercase fw-semibold text-secondary" style="font-size: .7rem; letter-spacing: .5px;">
-                  Direct Win
-                </p>
-              </div>
-            </div>
-
-            <div class="slip-lock d-inline-flex align-items-center gap-1">
-              <i class="fa-solid fa-lock" style="font-size: .75rem;"></i>
-              <span>Locked</span>
-            </div>
-          </div>
-
-          <div class="slip-stats">
-            <div class="stat-box">
-              <div class="stat-label">Mechi</div>
-              <div class="stat-value"><%= betslip2?.length || 0 %></div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Odds</div>
-              <div class="stat-value"><%= total_odds?.betslip2 || 1 %></div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Stake</div>
-              <div class="stat-value">35,000</div>
-            </div>
-          </div>
-
-          <div class="win-box">
-            <div class="stat-label">UWEZEKANO WA USHINDI</div>
-            <div class="stat-value">TSh <%= Number(total_odds?.betslip2 * 35000).toLocaleString('sw-TZ') || 0.00 %></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SLIP 3 -->
-      <div class="slip-preview">
-        <div class="slip-blur">
-          <div class="slip-top d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
-            <div class="slip-info d-flex align-items-center gap-2">
-              <div class="slip-emoji fs-3">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-              <div class="slip-meta">
-                <h3 class="mb-0 fw-bold text-dark fs-5">VIP #3</h3>
-                <p class="mb-0 text-uppercase fw-semibold text-secondary" style="font-size: .7rem; letter-spacing: .5px;">
-                  Mchanganyiko
-                </p>
-              </div>
-            </div>
-
-            <div class="slip-lock d-inline-flex align-items-center gap-1">
-              <i class="fa-solid fa-lock" style="font-size: .75rem;"></i>
-              <span>Locked</span>
-            </div>
-          </div>
-
-          <div class="slip-stats">
-            <div class="stat-box">
-              <div class="stat-label">Mechi</div>
-              <div class="stat-value">5+</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Odds</div>
-              <div class="stat-value">35+</div>
-            </div>
-            <div class="stat-box">
-              <div class="stat-label">Stake</div>
-              <div class="stat-value">15,000</div>
-            </div>
-          </div>
-
-          <div class="win-box">
-            <div class="stat-label">UWEZEKANO WA USHINDI</div>
-            <div class="stat-value">TSh 525,000</div>
-          </div>
-        </div>
-      </div>
+      <% if (autopilot === true) { %>
+       <button class="unlock-btn vip-unlock-btn d-flex align-items-center justify-content-center gap-2"
+        data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
+                hx-get="/api/pay-form" hx-target="#paymentModalBody" hx-swap="innerHTML">
+                <i class="fa-solid fa-credit-card"></i> LIPIA SASA
+      </button>
+      <% } %>
+      
+      <% if (autopilot === false) { %>
+       <button class="unlock-btn vip-unlock-btn d-flex align-items-center justify-content-center gap-2"
+        data-bs-toggle="modal" data-bs-target="#MNO_Modal">
+        <i class="fa-solid fa-credit-card"></i> LIPIA SASA
+      </button>
+      <div style="font-size: 0.85rem; margin-top: 4px; text-align: center;">12,500/wiki • Odds 35+ kila siku</div>
+      <% } %>
     </div>
   </div>
 </div>

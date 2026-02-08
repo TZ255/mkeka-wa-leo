@@ -1,3 +1,9 @@
+<% const toNumber = (value) => Number(value || 1); %>
+<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) * toNumber(total_odds?.betslip3)).toFixed(2); %>
+
+<div class="alert alert-info shadow-sm" style="font-size: 0.85rem;">
+    Jumla ya Odds: <%= total_odds?.betslip1 %> x <%= total_odds?.betslip2 %> x <%= total_odds?.betslip3 %> = <strong><%= totalVipOdds %></strong>
+ </div>
 <br><br>
 <div class="kesho_count container my-5 p-4 rounded shadow bg-dark text-light"
     style="max-width: 600px; background-color: rgba(25, 135, 84, 0.08);">

@@ -174,6 +174,252 @@
     transform: translateY(0);
   }
 
+  /* VIP Slip #3 showcase (home) */
+  .vip-showcase {
+    max-width: 640px;
+  }
+
+  .vip-showcase .vip-promo-card {
+    background: #fffdf7;
+    border: 1px solid #f1e5d3;
+    box-shadow: 0 18px 40px rgba(17, 24, 39, 0.12);
+    position: relative;
+  }
+
+  .vip-showcase .vip-promo-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 45%),
+      radial-gradient(circle at bottom left, rgba(14, 116, 144, 0.12), transparent 45%);
+    pointer-events: none;
+  }
+
+  .vip-showcase .card-header,
+  .vip-showcase .vip-showcase-body {
+    position: relative;
+    z-index: 1;
+  }
+
+  .vip-showcase .card-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1f2937 55%, #b45309 120%);
+    text-align: left;
+    padding: 26px;
+  }
+
+  .vip-showcase .card-header h2 {
+    letter-spacing: 0.4px;
+  }
+
+  .vip-showcase .vip-badge {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .vip-slip-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .vip-slip-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .vip-slip-title {
+    font-weight: 800;
+    color: #0f172a;
+    font-size: 1.05rem;
+  }
+
+  .vip-slip-sub {
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .vip-slip-lock {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .vip-slip-matches {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .vip-slip-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 110px;
+    gap: 12px;
+    padding: 12px 8px;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+
+  .vip-slip-row:last-child {
+    border-bottom: none;
+  }
+
+  .vip-row-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .vip-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .vip-pill-league {
+    background: #ecfeff;
+    border-color: #a5f3fc;
+    color: #0e7490;
+  }
+
+  .vip-row-match {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .vip-team {
+    font-weight: 800;
+    color: #111827;
+    font-size: 1rem;
+  }
+
+  .vip-team-away {
+    color: #334155;
+    font-weight: 700;
+  }
+
+  .vip-tip-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: #fff7ed;
+    border: 1px dashed #fed7aa;
+    color: #9a3412;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    width: fit-content;
+  }
+
+  .vip-row-odds {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vip-odds-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+  }
+
+  .vip-empty {
+    text-align: center;
+    color: #64748b;
+    font-weight: 600;
+    padding: 14px;
+  }
+
+  .vip-slip-total {
+    background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(245, 158, 11, 0.12));
+    border-radius: 10px;
+    border: 1px solid rgba(15, 118, 110, 0.2);
+    margin-top: 10px;
+  }
+
+  .vip-slip-total .vip-total-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #334155;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    align-self: center;
+  }
+
+  .vip-slip-total .vip-total-value {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #0f766e;
+    text-align: center;
+    align-self: center;
+  }
+
+  .vip-showcase .vip-unlock-btn {
+    margin-top: 18px;
+  }
+
+  .vip-showcase .unlock-btn {
+    background: linear-gradient(135deg, #0f766e 0%, #22c55e 100%);
+    box-shadow: 0 6px 20px rgba(15, 118, 110, 0.35);
+  }
+
+  .vip-showcase .unlock-btn:hover {
+    box-shadow: 0 10px 26px rgba(15, 118, 110, 0.4);
+  }
+
+  @media (max-width: 600px) {
+    .vip-showcase {
+      max-width: 100%;
+    }
+
+    .vip-slip-row {
+      grid-template-columns: minmax(0, 1fr) 88px;
+    }
+
+    .vip-row-odds {
+      align-items: center;
+    }
+  }
+
   @media (max-width: 500px) {
     .card-header {
       padding: 20px;

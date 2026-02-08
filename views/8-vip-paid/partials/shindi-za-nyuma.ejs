@@ -23,7 +23,7 @@
                 </div>
                 <div class="text-center mb-2">
                     <span class="prediction-badge prediction-badge-gold"
-                        onclick="OpenAff('gsb')"><%= String(match.tip).replace('Home Win', '1').replace('Away Win', '2') %></span>
+                        onclick="OpenAff('gsb')"><%= String(match?.tip || match?.bet).replace('Home Win', '1').replace('Away Win', '2') %></span>
                 </div>
                 <% if (match?.expl && match.expl.length > 5) { %>
                 <div class="text-dark text-center p-1" style="font-size: 10px;">

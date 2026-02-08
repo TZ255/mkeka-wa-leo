@@ -100,7 +100,7 @@ router.get('/mkeka/vip', async (req, res) => {
             let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time').sort('match')
 
             //find yesterday won, combine and sort by time
-            let gold_won = await paidVipModel.find({ status: 'won', date: jana }).cache(600)
+            let free_won = await mkekaDB.find({ status: 'won', date: jana }).cache(600)
             let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(600)
 
             const parseTime = (t) => {
@@ -109,7 +109,7 @@ router.get('/mkeka/vip', async (req, res) => {
                 return (isNaN(h) || isNaN(m)) ? 0 : h * 60 + m;
             };
 
-            const won_slips = [...gold_won, ...supa_won].sort((a, b) => {
+            const won_slips = [...free_won, ...supa_won].sort((a, b) => {
                 return parseTime(a.time) - parseTime(b.time);
             });
 
@@ -227,13 +227,7 @@ router.post('/update/vip/:id', async (req, res) => {
         let status = req.body.status;
 
         // Find match in either collection
-        const [vipMatch, sure3Match] = await Promise.all([
-            paidVipModel.findById(id),
-            betslip.findById(id)
-        ]);
-
-        // Use the first non-null match found
-        let match = vipMatch || sure3Match;
+        const match = await betslip.findById(id)
 
         if (!match) {
             return res.status(404).json({ error: "Match not found" });
@@ -268,15 +262,10 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
         let { time, league, game, tip, odd } = req.body
 
         // Find match in either collection
-        const [vipMatch, sure3Match] = await Promise.all([
-            paidVipModel.findById(id),
-            betslip.findById(id),
-        ]);
-
-        let match = vipMatch || sure3Match;
+        const match = await betslip.findById(id);
 
         if (!match) {
-            return res.status(404).json({ error: "Match not found on both vip and sure 3" });
+            return res.status(404).json({ error: "Match not found on VIP" });
         }
 
         if (String(tip).toLowerCase() === 'deleted') {
@@ -284,35 +273,21 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
             return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
-        if (String(tip).toLowerCase() === 'shift-1') {
+        if (String(tip).toLowerCase().includes('shift-')) {
+            let vip_no = tip.split('-')[1].trim();
             await betslip.create({
                 match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 1, expl: match.expl
             })
             await match.constructor.deleteOne({ _id: match._id });
-            return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
+            return res.status(200).json({ ok: `✅ Match Status Shifted to ${vip_no}`, match });
         }
 
-        if (String(tip).toLowerCase() === 'shift-2') {
-            await betslip.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 2, expl: match.expl
-            })
-            await match.constructor.deleteOne({ _id: match._id });
-            return res.status(200).json({ ok: "✅ Match Status Shifted to Sure 3", match });
-        }
-
-        if (String(tip).toLowerCase() === 'shift-3') {
-            await paidVipModel.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 4, expl: match.expl
-            })
-            await match.constructor.deleteOne({ _id: match._id });
-            return res.status(200).json({ ok: "✅ Match Status Shifted to PaidVIP", match });
-        }
 
         if (String(tip).toLowerCase().startsWith('copy-y @')) {
             let odd = tip.split('@')[1] ? Number(tip.split('@')[1].trim()) : null;
 
-            await yaUhakikaVipModel.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending'
+            await betslip.create({
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 3, expl: match.expl
             })
 
             return res.status(200).json({ ok: "✅ Match Copied to Ya Uhakika VIP", match });
@@ -341,20 +316,6 @@ router.post('/posting/betslip-vip2', async (req, res) => {
 
         // Extract form data
         const { date, time, league, match, tip, odd, vip_no } = req.body;
-
-        // Create new betslip entry if its VIP #2 Gold
-        if (Number(vip_no) === 3) {
-            let newPaidVip = new paidVipModel({
-                time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, vip_no, expl: matchExplanation(tip)
-            })
-            let savedPaidSlip = await newPaidVip.save()
-
-            //end req with return
-            return res.status(201).json({
-                message: "Betslip created successfully",
-                betslip: savedPaidSlip
-            });
-        }
 
         // Create new betslip entry if its VIP #1
         const newBetslip = new betslip({
@@ -394,13 +355,8 @@ router.post('/spinning/sure3', async (req, res) => {
 
         let date = String(siku).split('-').reverse().join('/')
 
-        if (vip_no <= 2 && vip_no > 0) {
-            await betslip.deleteMany({ date, vip_no })
-            await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
-        } else if (vip_no === 3) {
-            await paidVipModel.deleteMany({ date })
-            await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
-        }
+        await betslip.deleteMany({ date, vip_no })
+        await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
         res.redirect(`/mkeka/vip?date=${siku}`)
     } catch (error) {
         res.status(500).json({ error: error.message });

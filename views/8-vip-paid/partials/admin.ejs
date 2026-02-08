@@ -159,29 +159,34 @@
                     </ul>
                     <!-- List of items with individual forms -->
                     <ul class="list-group">
-                        <% slips.forEach(match => { %>
+                        <% betslip3.forEach(match => { %>
                         <li class="list-group-item" id="<%= match._id %>">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
-                            </div>
-                            <form class="d-flex flex-column mt-2" method="post"
-                                action="/update/vip/match-data/<%= match._id %>" target="_blank">
-                                <div class="d-flex">
-                                    <input type="text" name="time" class="form-control form-control-sm" required
-                                        value="<%= match.time %>">
-                                    <input type="text" name="league" class="form-control form-control-sm" required
-                                        value="<%= match.league %>">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold"><%= match.time %> | <%= match.league %></span>
                                 </div>
-
-                                <input type="text" name="game" class="form-control form-control-sm" required
-                                    value="<%= match.match %>">
-
-                                <input type="text" name="tip" class="form-control form-control-sm" required
-                                    value="<%= match.tip %>">
-
-                                <button class="btn btn-sm btn-primary d-block" type="submit">Submit</button>
-                            </form>
-                        </li>
+                                <form class="d-flex flex-column mt-2" method="post"
+                                    action="/update/vip/match-data/<%= match._id %>" target="_blank">
+                                    <div class="d-flex">
+                                        <input type="text" name="time" class="form-control form-control-sm" required
+                                            value="<%= match.time %>">
+                                        <input type="text" name="league" class="form-control form-control-sm" required
+                                            value="<%= match.league %>">
+                                    </div>
+    
+                                    <input type="text" name="game" class="form-control form-control-sm" required
+                                        value="<%= match.match %>">
+    
+                                    <div class="d-flex">
+                                        <input type="text" name="tip" class="form-control form-control-sm" required
+                                            value="<%= match.tip %>">
+    
+                                        <input type="text" name="odd" class="form-control form-control-sm" required
+                                            value="<%= match.odd %>">
+                                    </div>
+    
+                                    <button class="btn btn-sm btn-primary d-block" type="submit">Submit</button>
+                                </form>
+                            </li>
                         <% }) %>
                     </ul>
                 </div>
@@ -190,7 +195,7 @@
     </div>
 </div>
 <hr class="my-5">
-<h2 class="text-center" id="postSlip2">Posting Betlsip VIP 2</h2>
+<h2 class="text-center" id="postSlip2">Posting VIP Betlsip</h2>
 <div class="container py-5 d-none" id="postSlip2Cont">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
