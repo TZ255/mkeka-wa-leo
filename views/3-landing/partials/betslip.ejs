@@ -17,19 +17,18 @@
     </div>
 
     <div class="card-body vip-showcase-body p-4">
-      <div class="vip-slip-card">
-        <div class="vip-slip-head">
-          <div>
-            <div class="vip-slip-title">VIP Slip #3 - Today's Banker</div>
-            <div class="vip-slip-sub">Mkeka wa Uhakika Leo 💯🔥</div>
-          </div>
-          <div class="vip-slip-lock">
-            <i class="fa-solid fa-lock"></i>
-            <span>Locked</span>
-          </div>
+      <div class="vip-slip-head">
+        <div>
+          <div class="vip-slip-title">VIP Slip #3 - Today's Banker</div>
+          <div class="vip-slip-sub">Mkeka wa Uhakika Leo 💯🔥</div>
         </div>
+        <div class="vip-slip-lock">
+          <i class="fa-solid fa-lock"></i>
+          <span>Locked</span>
+        </div>
+      </div>
 
-        <div class="vip-slip-matches">
+      <div class="vip-slip-matches">
           <% if (slip3 && slip3.length > 0) { %>
           <% slip3.forEach(match => { %>
           <div class="vip-slip-row">
@@ -75,7 +74,6 @@
           <% } else { %>
           <div class="vip-empty">Hakuna mechi za VIP #3 kwa sasa.</div>
           <% } %>
-        </div>
       </div>
 
       <button class="unlock-btn vip-unlock-btn d-flex align-items-center justify-content-center gap-2"

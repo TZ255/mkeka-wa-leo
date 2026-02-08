@@ -216,14 +216,6 @@
     background: rgba(255, 255, 255, 0.2);
   }
 
-  .vip-slip-card {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  }
-
   .vip-slip-head {
     display: flex;
     align-items: center;
@@ -264,6 +256,7 @@
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 12px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
   }
 
   .vip-slip-row {
@@ -412,11 +405,100 @@
     }
 
     .vip-slip-row {
-      grid-template-columns: minmax(0, 1fr) 88px;
+      grid-template-columns: minmax(0, 1fr) 72px;
     }
 
     .vip-row-odds {
       align-items: center;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .vip-showcase .card-header {
+      padding: 20px;
+    }
+
+    .vip-slip-matches {
+      padding: 10px;
+    }
+
+    .vip-slip-head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .vip-slip-title {
+      font-size: 0.95rem;
+    }
+
+    .vip-slip-sub {
+      font-size: 0.75rem;
+    }
+
+    .vip-pill {
+      font-size: 0.6rem;
+      padding: 3px 8px;
+    }
+
+    .vip-row-match {
+      gap: 2px;
+    }
+
+    .vip-team {
+      font-size: 0.9rem;
+    }
+
+    .vip-team-away {
+      font-size: 0.85rem;
+    }
+
+    .vip-tip-pill {
+      font-size: 0.6rem;
+      padding: 5px 8px;
+    }
+
+    .vip-odds-pill {
+      width: 30px;
+      height: 30px;
+      font-size: 0.7rem;
+    }
+
+    .vip-slip-row {
+      grid-template-columns: minmax(0, 1fr) 60px;
+      padding: 10px 6px;
+    }
+
+    .vip-slip-total .vip-total-label {
+      font-size: 0.65rem;
+    }
+
+    .vip-slip-total .vip-total-value {
+      font-size: 1rem;
+    }
+
+    .vip-showcase .unlock-btn {
+      padding: 14px;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .vip-slip-row {
+      grid-template-columns: minmax(0, 1fr) 54px;
+    }
+
+    .vip-pill {
+      font-size: 0.55rem;
+      letter-spacing: 0.2px;
+    }
+
+    .vip-team {
+      font-size: 0.85rem;
+    }
+
+    .vip-team-away {
+      font-size: 0.8rem;
     }
   }
 
@@ -426,15 +508,27 @@
     }
 
     .slip-preview {
-      padding: 16px;
+      padding: 14px;
     }
 
     .stat-value {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
     }
 
     .win-box .stat-value {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
+    }
+
+    .slip-stats {
+      gap: 8px;
+    }
+
+    .stat-box {
+      padding: 10px 6px;
+    }
+
+    .stat-label {
+      font-size: 0.6rem;
     }
   }
 </style>
