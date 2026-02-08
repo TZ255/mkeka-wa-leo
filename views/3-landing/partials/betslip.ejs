@@ -12,22 +12,11 @@
   <div class="vip-promo-card">
     <div class="card-header vip-showcase-header">
       <div class="vip-badge">VIP TIPS - <%= trh.leo %></div>
-      <h2 class="mb-1 fw-extrabold text-white" style="font-weight: 800;">MIKEKA YA VIP LEO</h2>
-      <p class="mb-0 text-white-50 fw-semibold">Mikeka mitatu ya VIP - Jumla ya Odds: <%= totalVipOdds %></p>
+      <h2 class="mb-1 fw-extrabold text-white" style="font-weight: 800;">MKEKA WA VIP LEO</h2>
+      <p class="mb-0 text-white-50 fw-semibold">Wenye nafasi ya juu kabisa ya ushindi!</p>
     </div>
 
-    <div class="card-body vip-showcase-body p-4">
-      <div class="vip-slip-head">
-        <div>
-          <div class="vip-slip-title">VIP Slip #3 - Today's Banker</div>
-          <div class="vip-slip-sub">Mkeka wa Uhakika Leo 💯🔥</div>
-        </div>
-        <div class="vip-slip-lock">
-          <i class="fa-solid fa-lock"></i>
-          <span>Locked</span>
-        </div>
-      </div>
-
+    <div class="card-body vip-showcase-body py-4 px-2 py-md-4 px-md-4">
       <div class="vip-slip-matches">
           <% if (slip3 && slip3.length > 0) { %>
           <% slip3.forEach(match => { %>
@@ -68,7 +57,7 @@
           </div>
           <% }) %>
           <div class="vip-slip-row vip-slip-total">
-            <div class="vip-total-label">Jumla ya VIP Odds (VIP 1,2 & 3)</div>
+            <div class="vip-total-label">Jumla ya VIP Odds</div>
             <div class="vip-total-value"><%= totalVipOdds %></div>
           </div>
           <% } else { %>

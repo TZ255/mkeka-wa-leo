@@ -13,85 +13,72 @@
   <div class="vip-promo-card">
     <div class="card-header vip-showcase-header">
       <div class="vip-badge">VIP TIPS - <%= trh %></div>
-      <h2 class="mb-1 fw-extrabold text-white" style="font-weight: 800;">MIKEKA YA VIP LEO</h2>
-      <p class="mb-0 text-white-50 fw-semibold">Mikeka mitatu ya VIP - Jumla ya Odds: <%= totalVipOdds %></p>
+      <h2 class="mb-1 fw-extrabold text-white" style="font-weight: 800;">MKEKA WA VIP LEO</h2>
+      <p class="mb-0 text-white-50 fw-semibold">Wenye nafasi ya juu kabisa ya ushindi!</p>
     </div>
 
-    <div class="card-body vip-showcase-body p-4">
-      <div class="vip-slip-head">
-        <div>
-          <div class="vip-slip-title">VIP Slip #3 - Today's Banker</div>
-          <div class="vip-slip-sub">Mkeka wa Uhakika Leo 💯🔥</div>
-        </div>
-        <div class="vip-slip-lock">
-          <i class="fa-solid fa-lock"></i>
-          <span>Locked</span>
-        </div>
-      </div>
-
+    <div class="card-body vip-showcase-body py-4 px-2 py-md-4 px-md-4">
       <div class="vip-slip-matches">
-          <% if (betslip3 && betslip3.length > 0) { %>
-          <% betslip3.forEach(match => { %>
-          <div class="vip-slip-row">
-            <div class="vip-row-left">
-              <div class="vip-row-meta">
-                <span class="vip-pill">
-                  <i class="fa-regular fa-calendar"></i>
-                  <%= match?.date || '--/--/----' %>
-                </span>
-                <span class="vip-pill">
-                  <i class="fa-regular fa-clock"></i>
-                  <%= match?.time || '--:--' %>
-                </span>
-                <span class="vip-pill vip-pill-league">
-                  <i class="fa-solid fa-trophy"></i>
-                  <%= match?.league || 'League' %>
-                </span>
-              </div>
-              <% const teams = splitTeams(match?.match); %>
-              <div class="vip-row-match">
-                <div class="vip-team"><%= teams.home || '-' %></div>
-                <% if (teams.away) { %>
-                <div class="vip-team vip-team-away"><%= teams.away %></div>
-                <% } %>
-              </div>
-              <div class="vip-tip-pill">
-                <i class="fa-solid fa-eye-slash"></i>
-                Tip Locked
-              </div>
-            </div>
-
-            <div class="vip-row-odds">
-              <span class="vip-odds-pill" title="Odds Locked">
-                <i class="fa-solid fa-eye-slash"></i>
+        <% if (betslip3 && betslip3.length > 0) { %>
+        <% betslip3.forEach(match => { %>
+        <div class="vip-slip-row">
+          <div class="vip-row-left">
+            <div class="vip-row-meta">
+              <span class="vip-pill">
+                <i class="fa-regular fa-calendar"></i>
+                <%= match?.date || '--/--/----' %>
+              </span>
+              <span class="vip-pill">
+                <i class="fa-regular fa-clock"></i>
+                <%= match?.time || '--:--' %>
+              </span>
+              <span class="vip-pill vip-pill-league">
+                <i class="fa-solid fa-trophy"></i>
+                <%= match?.league || 'League' %>
               </span>
             </div>
+            <% const teams = splitTeams(match?.match); %>
+            <div class="vip-row-match">
+              <div class="vip-team"><%= teams.home || '-' %></div>
+              <% if (teams.away) { %>
+              <div class="vip-team vip-team-away"><%= teams.away %></div>
+              <% } %>
+            </div>
+            <div class="vip-tip-pill">
+              <i class="fa-solid fa-eye-slash"></i>
+              Tip Locked
+            </div>
           </div>
-          <% }) %>
-          <div class="vip-slip-row vip-slip-total">
-            <div class="vip-total-label">Jumla ya VIP Odds</div>
-            <div class="vip-total-value"><%= totalVipOdds %></div>
+
+          <div class="vip-row-odds">
+            <span class="vip-odds-pill" title="Odds Locked">
+              <i class="fa-solid fa-eye-slash"></i>
+            </span>
           </div>
-          <% } else { %>
-          <div class="vip-empty">Hakuna mechi za VIP #3 kwa sasa.</div>
-          <% } %>
+        </div>
+        <% }) %>
+        <div class="vip-slip-row vip-slip-total">
+          <div class="vip-total-label">Jumla ya VIP Odds</div>
+          <div class="vip-total-value"><%= totalVipOdds %></div>
+        </div>
+        <% } else { %>
+        <div class="vip-empty">Hakuna mechi za VIP #3 kwa sasa.</div>
+        <% } %>
       </div>
 
-      <% if (autopilot === true) { %>
-       <button class="unlock-btn vip-unlock-btn d-flex align-items-center justify-content-center gap-2"
-        data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
-                hx-get="/api/pay-form" hx-target="#paymentModalBody" hx-swap="innerHTML">
-                <i class="fa-solid fa-credit-card"></i> LIPIA SASA
+      <button class="unlock-btn vip-unlock-btn d-flex align-items-center justify-content-center gap-2" onclick="ScrollToLipiaBtn()">
+        LIPIA VIP <i class="fa-solid fa-arrow-up ms-2"></i>
       </button>
-      <% } %>
-      
-      <% if (autopilot === false) { %>
-       <button class="unlock-btn vip-unlock-btn d-flex align-items-center justify-content-center gap-2"
-        data-bs-toggle="modal" data-bs-target="#MNO_Modal">
-        <i class="fa-solid fa-credit-card"></i> LIPIA SASA
-      </button>
-      <div style="font-size: 0.85rem; margin-top: 4px; text-align: center;">12,500/wiki • Odds 35+ kila siku</div>
-      <% } %>
     </div>
   </div>
 </div>
+
+
+<script>
+  function ScrollToLipiaBtn() {
+    const lipiaSection = document.getElementById('article-gate');
+    if (lipiaSection) {
+      lipiaSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+</script>
