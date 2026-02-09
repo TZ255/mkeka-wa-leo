@@ -350,7 +350,6 @@ router.get('/api/testing', async (req, res) => {
     try {
         //const update = await mkekaDB.updateMany({ result: { $exists: false } }, { $set: { result: '-:-' } })
         //res.send(`updated ${update.modifiedCount} documents`)
-        await stopPolls()
         res.send('Testing API endpoint')
     } catch (error) {
         res.send(error)
