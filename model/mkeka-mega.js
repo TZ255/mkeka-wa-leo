@@ -14,6 +14,7 @@ const megaSchema = new Schema({
     result: {type: String, default: '-:-'},
     isSocial: {type: Boolean, default: false},
     telegram_message_id: {type: Number, default: null},
+    isPollClosed: {type: Boolean, default: false},
     weekday: {type: String, default: 'unknown'},
     jsDate: {type: String, default: 'unknown'},
 }, {strict: false, timestamps: true})

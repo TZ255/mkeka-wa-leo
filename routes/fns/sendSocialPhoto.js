@@ -51,7 +51,8 @@ async function postMegaToMkekaLeo(dateStr) {
                         [
                             {
                                 text: 'Beti Sasa | 100% Bonus 🤑',
-                                url: 'https://bet-link.top/gsb/register'
+                                url: 'https://bet-link.top/gsb/register',
+                                style: 'danger'
                             }
                         ]
                     ]
@@ -115,7 +116,10 @@ async function replySocialWin(telegram_message_id, resultText) {
 
     if (!poll_res || agreeVotes + disagreeVotes === 0) throw new Error(`Tatizo kwenye stopPoll au 0 votes: ${poll_res ? JSON.stringify(poll_res) : 'no response'}`);
 
-    const text = `⚽ ${doc.match.replace(' - ', ' vs ')}\n<b>🎯 Tip: ${doc.bet}</b> \n📈 Vote: ${agreeVotes} 👍 / ${disagreeVotes} 👎 \n<b>🥅 Result: ${resultText} ✅ (WON)</b>`
+    // mark the poll as closed in the database
+    await doc.updateOne({ $set: { isPollClosed: true } });
+
+    const text = `⚽ ${doc.match.replace(' - ', ' vs ')}\n<b>🎯 Tip: ${doc.bet}</b> \n📈 Votes: ${agreeVotes} 👍 / ${disagreeVotes} 👎 \n<b>🥅 Result: ${resultText} ✅ (WON)</b>`
     return bot.api.sendMessage(mkekawaleo, text, {
         parse_mode: 'HTML',
         disable_notification: true,

@@ -20,7 +20,7 @@ const mkekaUsersModel = require('../model/mkeka-users')
 const { getAllFixtures, getFixturePredictions } = require('./fns/fixtures')
 const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
 const moment = require('moment-timezone')
-const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotifications')
+const { sendNotification, sendLauraNotification, stopPolls } = require('./fns/sendTgNotifications')
 const { on } = require('form-data')
 const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
@@ -350,6 +350,7 @@ router.get('/api/testing', async (req, res) => {
     try {
         //const update = await mkekaDB.updateMany({ result: { $exists: false } }, { $set: { result: '-:-' } })
         //res.send(`updated ${update.modifiedCount} documents`)
+        await stopPolls()
         res.send('Testing API endpoint')
     } catch (error) {
         res.send(error)
