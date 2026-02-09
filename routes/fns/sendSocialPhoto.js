@@ -42,8 +42,8 @@ async function postMegaToMkekaLeo(dateStr) {
             mkekawaleo,
             `${doc.date.split('/20')[0]} ${doc.time} | ${doc.league}\n⚽ ${doc.match.replace(' - ', ' vs ')}\n🎯 Tip: ${doc.bet}`,
             [
-                '✅ Nakubaliana',
-                '❌ Sikubaliani'
+                '👍 I Agree',
+                '👎 I Disagree'
             ],
             {
                 reply_markup: {
@@ -108,7 +108,14 @@ async function replySocialWin(telegram_message_id, resultText) {
     const doc = await mkekaDB.findOne({ telegram_message_id });
     if (!doc) throw new Error('Social tip haijapatikana kwenye mkekaDB kwa telegram_message_id hii');
 
-    const text = `⚽ ${doc.match.replace(' - ', ' vs ')}\n<b>🎯 Tip: ${doc.bet} \n🥅 Result: ${resultText} ✅ (WON)</b>`
+    // stop the poll and get the final results
+    const poll_res = await bot.api.stopPoll(mkekawaleo, telegram_message_id).catch(() => { });
+    const agreeVotes = poll_res?.options?.[0]?.voter_count || 0;
+    const disagreeVotes = poll_res?.options?.[1]?.voter_count || 0;
+
+    if (!poll_res || agreeVotes + disagreeVotes === 0) throw new Error(`Tatizo kwenye stopPoll au 0 votes: ${poll_res ? JSON.stringify(poll_res) : 'no response'}`);
+
+    const text = `⚽ ${doc.match.replace(' - ', ' vs ')}\n<b>🎯 Tip: ${doc.bet}</b> \n📈 Vote: ${agreeVotes} 👍 / ${disagreeVotes} 👎 \n<b>🥅 Result: ${resultText} ✅ (WON)</b>`
     return bot.api.sendMessage(mkekawaleo, text, {
         parse_mode: 'HTML',
         disable_notification: true,
