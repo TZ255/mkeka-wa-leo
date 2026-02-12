@@ -38,6 +38,7 @@ const { getAllFixtures } = require('./routes/fns/fixtures');
 const removeTrailingSlash = require('./routes/fns/removeTrailingSlash');
 const RapidKeysModel = require('./model/rapid_keys');
 const { repostToMkekaLeo, postMegaToMkekaLeo } = require('./routes/fns/sendSocialPhoto');
+const { KenyaSafeBots } = require('./bots/zambias/bot-safe');
 
 const app = express()
 
@@ -64,6 +65,7 @@ app.use(requestIp.mw())
 //Attached webhook Bots Goes Here
 if (process.env.local !== 'true') {
     zambiaBotsSourceCodes.myBotsFn(app)
+    KenyaSafeBots(app)
     helenSourceCodes.bot(app)
     CharlloteSourceCodes.bot(app)
     lauraSourceCodes.bot(app)

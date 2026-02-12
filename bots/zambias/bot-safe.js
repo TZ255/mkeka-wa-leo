@@ -9,7 +9,7 @@ const { mkeka1, mkeka3 } = require('./functions/mikeka')
 const { makeConvo, makeCPAConvo } = require('./functions/convo')
 
 
-const myBotsFn = async (app) => {
+const KenyaSafeBots = async (app) => {
     //delaying
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -269,5 +269,5 @@ const myBotsFn = async (app) => {
 
 
 module.exports = {
-    myBotsFn
+    KenyaSafeBots
 }
