@@ -5,7 +5,7 @@ const { autoRetry } = require('@grammyjs/auto-retry')
 const usersModel = require('./database/users')
 const listModel = require('./database/botlist')
 const mkekaMega = require('./database/mkeka-mega')
-const mkekaReq = require('./functions/mikeka')
+const { mkeka1, mkeka3 } = require('./functions/mikeka')
 const { makeConvo, makeCPAConvo } = require('./functions/convo')
 
 
@@ -17,13 +17,15 @@ const myBotsFn = async (app) => {
     const imp = {
         halot: 1473393723,
         shemdoe: 741815228,
-        rtcopyDB: -1002634850653
+        rtcopyDB: -1002634850653,
+        mikekaDB: -1001696592315,
+
     }
 
     const SAFE_BOTS = ["Kenya_Kuma_Kutombana_Bot", "Kuma_Kinembe_Nairobi_Kisumu_Bot"]
 
     try {
-        const tokens = await listModel.find({botname: {$nin: SAFE_BOTS}})
+        const tokens = await listModel.find({botname: {$in: SAFE_BOTS}})
 
         for (let tk of tokens) {
             const bot = new Bot(tk.token)
@@ -42,8 +44,24 @@ const myBotsFn = async (app) => {
                 const ctx = err.ctx;
                 console.error(`(${tk.botname}): ${err.message}`, err);
             });
-
+            
             bot.command('start', async ctx => {
+                try {
+                    return ctx.reply(`Hi! My name is Caroline but you can call me Karoo 😂. Anyway, I am your daily source of motivation and entertainment. I share the best of the best content to keep you entertained and motivated. Stay tuned for daily updates!\n\nIf you don't want a future update from me you can send /stop and I won't bother you again.`)
+                } catch (error) {
+                    console.log('Error on /start:', error?.message)
+                }
+            })
+
+            bot.command('stop', async ctx => {
+                try {
+                    return ctx.reply(`You won't get any update from me again... Bye! 👋`)
+                } catch (error) {
+                    console.log('Error on /stop:', error?.message)
+                }
+            })
+
+            bot.command('utamu', async ctx => {
                 try {
                     let chatid = ctx.chat.id
                     let first_name = ctx.chat.first_name
@@ -121,9 +139,17 @@ const myBotsFn = async (app) => {
                 }
             })
 
-            bot.command(['betslip', 'slip'], async ctx => {
+            bot.command(['betslip', 'slip', 'betslip1'], async ctx => {
                 try {
-                    await mkekaReq.mkeka3(ctx, delay, bot, imp)
+                    await mkeka1(ctx, delay, bot, imp)
+                } catch (err) {
+                    console.log(err.message)
+                }
+            })
+
+            bot.command(['betslip3', 'slip3', 'mkeka3'], async ctx => {
+                try {
+                    await mkeka3(ctx, delay, bot, imp)
                 } catch (err) {
                     console.log(err.message)
                 }
@@ -150,7 +176,7 @@ const myBotsFn = async (app) => {
                 makeConvo(bot, ctx, imp)
             })
 
-            bot.command('convo', async ctx => {
+            bot.command('cpa_convo', async ctx => {
                 makeCPAConvo(bot, ctx, imp)
             })
 
@@ -202,9 +228,9 @@ const myBotsFn = async (app) => {
                             await ctx.reply(final)
                         }
                     } else {
-                        switch (ctx.message.text) {
-                            case '💰 BET OF THE DAY (🔥)': case '💰 MONEY 🔥':
-                                await mkekaReq.mkeka3(ctx, delay, bot, imp);
+                        switch (ctx.message?.text.toLowerCase()) {
+                            case '💰 bet of the day 🔥': case '💰 money 🔥': case 'slip': case 'betslip': case 'mkeka':
+                                await mkeka1(ctx, delay, bot, imp);
                                 break;
 
                             case 'Token': case 'token': case 'TOKEN':
@@ -212,6 +238,8 @@ const myBotsFn = async (app) => {
                                 break;
 
                             default:
+                                return await ctx.reply('Andika neno "mkeka" kupata betslip ya leo');
+
                                 let url = 'https://scbfile.com/1584699'
                                 let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\n<code>Join NOW! 👇👇</code>`
                                 let rpm = {
