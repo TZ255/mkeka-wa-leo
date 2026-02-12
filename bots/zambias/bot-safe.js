@@ -230,12 +230,10 @@ const KenyaSafeBots = async (app) => {
                     } else {
                         switch (ctx.message?.text.toLowerCase()) {
                             case '💰 bet of the day 🔥': case '💰 money 🔥': case 'slip': case 'slip1': case 'betslip': case 'mkeka':
-                                await mkeka1(ctx, delay, bot, imp);
-                                break;
+                                return await mkeka1(ctx, delay, bot, imp);
 
                             case 'slip3': case 'betslip3': case 'mkeka3':
-                                await mkeka3(ctx, delay, bot, imp);
-                                break;
+                                return await mkeka3(ctx, delay, bot, imp);
 
                             case "groups":
                                 let url = 'https://scbfile.com/1584699'
@@ -251,7 +249,7 @@ const KenyaSafeBots = async (app) => {
                                         ]
                                     ]
                                 }
-                                await ctx.reply(txt, { reply_markup: rpm, parse_mode: 'HTML' })
+                                return await ctx.reply(txt, { reply_markup: rpm, parse_mode: 'HTML' })
 
                             default:
                                 return await ctx.reply('Andika neno "mkeka" kupata betslip ya leo');
