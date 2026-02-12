@@ -8,6 +8,18 @@ const makeConvo = async (bot, ctx, imp) => {
         "Kuma_Kinembe_Nairobi_Kisumu_Bot"
     ];
 
+    let defaultReplyMkp = {
+        keyboard: [
+            [
+                { text: "SLIP 1", style: 'danger' },
+                { text: "GROUPS", style: 'primary' },
+                { text: "SLIP 3", style: 'danger' },
+            ]
+        ],
+        is_persistent: true,
+        resize_keyboard: true
+    }
+
     const admins = [imp.halot, imp.shemdoe];
 
     if (!admins.includes(ctx.chat.id) || !ctx.match) {
@@ -31,7 +43,7 @@ const makeConvo = async (bot, ctx, imp) => {
             await Promise.all(batch.map(async (user) => {
                 const chatid = user.chatid;
                 try {
-                    await bot.api.copyMessage(chatid, mikekaDB, msg_id);
+                    await bot.api.copyMessage(chatid, mikekaDB, msg_id, {reply_markup: defaultReplyMkp});
                 } catch (err) {
                     const errorMsg = err?.message?.toLowerCase() || '';
                     console.log(err?.message || 'Unknown error');
@@ -108,4 +120,4 @@ const makeCPAConvo = async (bot, ctx, imp) => {
     }
 };
 
-module.exports = {makeCPAConvo, makeConvo};
+module.exports = { makeCPAConvo, makeConvo };

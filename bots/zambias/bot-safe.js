@@ -25,7 +25,7 @@ const KenyaSafeBots = async (app) => {
     const SAFE_BOTS = ["Kenya_Kuma_Kutombana_Bot", "Kuma_Kinembe_Nairobi_Kisumu_Bot"]
 
     try {
-        const tokens = await listModel.find({botname: {$in: SAFE_BOTS}})
+        const tokens = await listModel.find({ botname: { $in: SAFE_BOTS } })
 
         for (let tk of tokens) {
             const bot = new Bot(tk.token)
@@ -44,7 +44,7 @@ const KenyaSafeBots = async (app) => {
                 const ctx = err.ctx;
                 console.error(`(${tk.botname}): ${err.message}`, err);
             });
-            
+
             bot.command('start', async ctx => {
                 try {
                     return ctx.reply(`Hi! My name is Caroline but you can call me Karoo 😂. Anyway, I am your daily source of motivation and entertainment. I share the best of the best content to keep you entertained and motivated. Stay tuned for daily updates!\n\nIf you don't want a future update from me you can send /stop and I won't bother you again.`)
@@ -101,11 +101,11 @@ const KenyaSafeBots = async (app) => {
                         {
                             $group: {
                                 _id: "$botname",
-                                idadi: {$sum: 1}
+                                idadi: { $sum: 1 }
                             }
                         },
                         {
-                            $sort: {idadi: -1}
+                            $sort: { idadi: -1 }
                         }
                     ])
 
@@ -229,17 +229,15 @@ const KenyaSafeBots = async (app) => {
                         }
                     } else {
                         switch (ctx.message?.text.toLowerCase()) {
-                            case '💰 bet of the day 🔥': case '💰 money 🔥': case 'slip': case 'betslip': case 'mkeka':
+                            case '💰 bet of the day 🔥': case '💰 money 🔥': case 'slip': case 'slip1': case 'betslip': case 'mkeka':
                                 await mkeka1(ctx, delay, bot, imp);
                                 break;
 
-                            case 'Token': case 'token': case 'TOKEN':
-                                console.log('Token message received')
+                            case 'slip3': case 'betslip3': case 'mkeka3':
+                                await mkeka3(ctx, delay, bot, imp);
                                 break;
 
-                            default:
-                                return await ctx.reply('Andika neno "mkeka" kupata betslip ya leo');
-
+                            case "groups":
                                 let url = 'https://scbfile.com/1584699'
                                 let txt = `Hi, <b>${ctx.chat.first_name}</b>\n\nUnlock the Largest Free Library of Premium African Pono 🔞, Leaked Sex tapes, and Exclusive Private Groups for <b>Escorts and Hookups 🍑</b>! \n\n<code>Join NOW! 👇👇</code>`
                                 let rpm = {
@@ -255,6 +253,8 @@ const KenyaSafeBots = async (app) => {
                                 }
                                 await ctx.reply(txt, { reply_markup: rpm, parse_mode: 'HTML' })
 
+                            default:
+                                return await ctx.reply('Andika neno "mkeka" kupata betslip ya leo');
                         }
                     }
                 } catch (err) {
