@@ -213,7 +213,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         //vip tips
         let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
         let slip2 = await betslip.find({ date: d, vip_no: 2 }).cache(600)
-        let slip3 = await yaUhakikaVipModel.find({ date: d }).cache(600)
+        let slip3 = await betslip.find({ date: d, vip_no: 3 }).cache(600)
 
         //multiply all odds of betslip
         const slipOdds = {
