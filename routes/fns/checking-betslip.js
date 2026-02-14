@@ -1,5 +1,6 @@
 const betslip = require('../../model/betslip')
 const correctScoreModel = require('../../model/cscore')
+const MikekaTipsVIPModel = require('../../model/mikekatips-vip')
 const mkekadb = require('../../model/mkeka-mega')
 const paidVipModel = require('../../model/paid-vips')
 const supatipsModel = require('../../model/supatips')
@@ -71,6 +72,22 @@ const checking3MkekaBetslip = async (d) => {
             for (let c of copies) {
                 await betslip.create({
                     date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
+                })
+            }
+        }
+
+        // checking betslip3, pull 7 random docs from mikekatips VIP
+        const todaysbanker = await betslip.find({ date: d, vip_no: 3 })
+        if (todaysbanker.length < 1) {
+            let date = String(d).split('/').reverse().join('-');
+            let copies = await MikekaTipsVIPModel.aggregate([
+                { $match: { date, time: { $gte: '14:00' } } },
+                { $sample: { size: 7 } }
+            ])
+
+            for (let c of copies) {
+                await betslip.create({
+                    date: d, time: c.time, league: c.league, tip: c.tip, odd: "1", match: c.match.replace(/ - /g, ' vs '), vip_no: 3
                 })
             }
         }

@@ -101,7 +101,11 @@ router.get('/mkeka/vip', async (req, res) => {
 
             //find yesterday won, combine and sort by time
             let free_won = await mkekaDB.find({ status: 'won', date: jana }).cache(600)
+
+            //fetch won betslips, avoid duplicates
             let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(600)
+            supa_won = [...new Map(supa_won.map(d => [d.match, d])).values()];
+            let supa_won_total_odds = supa_won.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
 
             const parseTime = (t) => {
                 if (!t || !t.includes(':')) return 0;
@@ -132,7 +136,7 @@ router.get('/mkeka/vip', async (req, res) => {
                 else if (req.query.auto === '0') autopilot = false;
             }
 
-            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, total_odds, booking_codes, slips, user, d, won_slips, siku, autopilot })
+            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, total_odds, booking_codes, slips, user, d, jana, supa_won, supa_won_total_odds, won_slips, siku, autopilot })
         }
         res.render('8-vip/vip')
     } catch (err) {
@@ -269,17 +273,17 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
         }
 
         if (String(tip).toLowerCase() === 'deleted') {
-            await match.constructor.deleteOne({ _id: match._id });
+            await match.deleteOne()
             return res.status(200).json({ ok: "✅ Match Status Deleted" });
         }
 
         if (String(tip).toLowerCase().includes('shift-')) {
-            let vip_no = tip.split('-')[1].trim();
+            let vip_no = Number(tip.split('-')[1].trim());
             await betslip.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no: 1, expl: match.expl
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no, expl: match.expl
             })
-            await match.constructor.deleteOne({ _id: match._id });
-            return res.status(200).json({ ok: `✅ Match Status Shifted to ${vip_no}`, match });
+            await match.deleteOne();
+            return res.status(200).json({ ok: `✅ Match Status Shifted to VIP ${vip_no}`, match });
         }
 
 
