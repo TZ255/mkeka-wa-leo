@@ -57,7 +57,8 @@ const updateUserSubscription = async (user, endDate, now, plan) => {
 async function grantSubscription(email, param) {
     try {
         // Find user
-        const user = await mkekaUsersModel.findOne({ email });
+        const user_email = email?.toLowerCase();
+        const user = await mkekaUsersModel.findOne({ email: user_email });
         if (!user) {
             return {
                 success: true,
@@ -101,12 +102,12 @@ async function grantSubscription(email, param) {
             const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name, user, subscriptionType.plan);
 
             // Send email
-            sendEmail(email.toLowerCase(), 'Malipo yako yamethibitishwa 🎉', messages.html)
+            sendEmail(user_email, 'Malipo yako yamethibitishwa 🎉', messages.html)
                 .catch(e => console.log(e?.message, e));
 
             // Update analytics if user is not admin
             const adminEmails = ['georgehmariki@gmail.com', 'janjatzblog@gmail.com', 'shmdgrg@gmail.com'];
-            if (!adminEmails.includes(email.toLowerCase())) {
+            if (!adminEmails.includes(user_email)) {
                 await affAnalyticsModel.findOneAndUpdate(
                     { pid: 'shemdoe' },
                     { $inc: { vip_revenue: subscriptionType.amount } }

@@ -16,7 +16,7 @@ const oldLeagueRedirects = require('./routes/old-ligi-redirects')
 const getRouter3 = require('./routes/get3')
 const blogRouter = require('./routes/blog')
 const routeAuth = require('./routes/get4-auth')
-const zenoRouter = require('./routes/zeno')
+const paymentRouter = require('./routes/clickpesa')
 const resetAuth = require('./routes/fns/Auth/reset')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
@@ -147,7 +147,7 @@ app.use((req, res, next) => {
 
 app.use(routeAuth)
 app.use(resetAuth)
-app.use(zenoRouter)
+app.use(paymentRouter)
 
 //wrong url, redirect to home
 app.get('*', (req, res) => {
