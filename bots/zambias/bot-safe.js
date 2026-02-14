@@ -229,10 +229,10 @@ const KenyaSafeBots = async (app) => {
                         }
                     } else {
                         switch (ctx.message?.text.toLowerCase()) {
-                            case '💰 bet of the day 🔥': case '💰 money 🔥': case 'slip': case 'slip1': case 'betslip': case 'mkeka':
+                            case '💰 bet of the day 🔥': case '💰 money 🔥': case 'slip': case 'slip 1': case 'betslip': case 'mkeka':
                                 return await mkeka1(ctx, delay, bot, imp);
 
-                            case 'slip3': case 'betslip3': case 'mkeka3':
+                            case 'slip 3': case 'betslip 3': case 'mkeka 3':
                                 return await mkeka3(ctx, delay, bot, imp);
 
                             case "groups":
