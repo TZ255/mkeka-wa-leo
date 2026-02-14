@@ -116,7 +116,7 @@ router.post('/api/payment-webhook', async (req, res) => {
 
         if (payment_status === 'COMPLETED') {
             try {
-                let sub = await grantSubscription(email, "gold");
+                let sub = await grantSubscription(email, "gold", phone);
                 sendLauraNotification(-1003744778123, `✅ WALEO payment confirmed \nEmail: ${email} \nPhone: ${phone}`, false)
                 //send SMS
                 sendNEXTSMS(phone, sub?.message_sms || null)

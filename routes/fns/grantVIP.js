@@ -39,7 +39,7 @@ const generateSubscriptionMessage = (startDate, endDate, type, user, plan) => {
     return {
         text: `Hongera 🎉 \nMalipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia ${formatDate(startDate)} hadi ${formatDate(endDate)}\n\nAccount yako ni:\n📧 Email: ${user.email}\n🔑 Password: ${user.password}\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`,
         html: `<p>Hongera 🎉 <br> Malipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia <b>${formatDate(startDate)}</b> hadi <b>${formatDate(endDate)}</b></p> <p>Kwa mikeka yetu ya VIP kila siku kumbuka kutembelea <br> <a href="https://mkekawaleo.com/mkeka/vip?date=leo" class="text-success">www.mkekawaleo.com/mkeka/vip</a></p>`,
-        sms: `Habari,\nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa ${type} hadi ${formatDate(endDate)}\n\nKwa mikeka yetu ya VIP kila siku kumbuka kutembelea\nhttps://mkekawaleo.com/mkeka/vip`
+        sms: `Habari,\nMalipo ya VIP MIKEKA yamethibitishwa kwa muda wa ${type} hadi ${formatDate(endDate)}\n\nKwa mikeka yetu ya VIP kila siku kumbuka kutembelea\nhttps://mkekawaleo.com/mkeka/vip\n\nAccount Yako: Email: ${user?.email} Password: ${user?.password}`
     };
 };
 
@@ -54,7 +54,7 @@ const updateUserSubscription = async (user, endDate, now, plan) => {
 
 
 // MAIN SUSCRIPTION FUNCTION
-async function grantSubscription(email, param) {
+async function grantSubscription(email, param, phone = null) {
     try {
         // Find user
         const user_email = email?.toLowerCase();
@@ -71,6 +71,7 @@ async function grantSubscription(email, param) {
         if (param === 'unpaid') {
             user.status = 'unpaid';
             user.plan = '0 plan';
+            user.phone = phone;
             await user.save();
             return {
                 success: true,
