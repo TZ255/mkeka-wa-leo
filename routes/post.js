@@ -463,7 +463,7 @@ router.post('/checking/one-m/1', async (req, res) => {
                     case "12": case "DC: 12":
                         matchDoc.bet = "Double Chance: 12"
                         break;
-                    case "BTTS: yes": case "BTTS": case "GG":
+                    case "BTTS: yes": case "BTTS": case "GG": case "BTTS Yes": case "BTTS yes":
                         matchDoc.bet = "BTTS: Yes"
                         break;
                     case "+2.5":
