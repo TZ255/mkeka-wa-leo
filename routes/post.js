@@ -466,6 +466,12 @@ router.post('/checking/one-m/1', async (req, res) => {
                     case "BTTS: yes": case "BTTS": case "GG":
                         matchDoc.bet = "BTTS: Yes"
                         break;
+                    case "+2.5":
+                        matchDoc.bet = "Over 2.5"
+                        break;
+                    case "+1.5":
+                        matchDoc.bet = "Over 1.5"
+                        break;
                 }
 
                 //check odds to correct them - check if integer i.e no decimal
