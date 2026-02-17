@@ -15,7 +15,7 @@ const checking3MkekaBetslip = async (d) => {
         let slip = await betslip.find({ date: d, vip_no: 1 })
         if (slip.length < 1) {
             const home_win = ['2:0', '3:0', '4:0'];
-            const over_25 = ['4:1', '4:2', '4:3', '5:1', '5:2', '5:3'];
+            const over_25 = ['4:1', '4:2', '4:3', '5:1', '5:2', '5:3', '1:4'];
             const btts = ['2:4', '3:4', '2:5', '4:5'];
 
             // Combine all tip patterns
