@@ -113,25 +113,25 @@ module.exports = () => {
   // ------------------------------------
   // Bongo league updates
   // ------------------------------------
-  cron.schedule('1 3,19,22 * * *', () => {
+  cron.schedule('1 0,3,16,17,18,19,20,21,22,23 * * *', () => {
     runLocked('bongo-league', () =>
       UpdateBongoLeagueData(567, 2025)
     );
   }, { timezone: tz });
 
   // ------------------------------------
-  // Other leagues once per day
+  // Other leagues update at 10'
   // ------------------------------------
-  cron.schedule('10 1 * * *', () => {
+  cron.schedule('10 0,1,3,16,18,19,21,23 * * *', () => {
     runLocked('other-leagues', () =>
       UpdateMatchDayLeagueData()
     );
   }, { timezone: tz });
 
   // ------------------------------------
-  // Fixtures updates
+  // Fixtures updates EVERY 30 MINUTES
   // ------------------------------------
-  cron.schedule('1 0,5,18,20 * * *', () => {
+  cron.schedule('*/30 * * * *', () => {
     runLocked('fixtures', () =>
       getAllFixtures()
     );

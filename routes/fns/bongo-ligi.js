@@ -17,17 +17,16 @@ const ErrorFn = async (message) => {
 
 const UpdateBongoLeagueData = async (league_id, season) => {
     try {
-        const RAPID_API_KEY = await getLessUsedAPIKey()
+        const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY
         const options = {
             method: 'GET',
-            url: 'https://api-football-v1.p.rapidapi.com/v3/standings',
+            url: 'https://v3.football.api-sports.io/standings',
             params: {
                 league: `${league_id}`,
                 season: `${season}`
             },
             headers: {
-                'x-rapidapi-key': RAPID_API_KEY,
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+                'x-apisports-key': API_FOOTBALL_KEY,
             }
         };
 
@@ -61,18 +60,17 @@ const UpdateBongoLeagueData = async (league_id, season) => {
 //fixtures
 const UpdateFixuresFn = async (league_id, season) => {
     try {
-        const RAPID_API_KEY = await getLessUsedAPIKey()
+        const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY
         const options = {
             method: 'GET',
-            url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
+            url: 'https://v3.football.api-sports.io/fixtures',
             params: {
                 league: `${league_id}`,
                 season: `${season}`,
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': RAPID_API_KEY,
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+                'x-apisports-key': API_FOOTBALL_KEY,
             }
         };
 
@@ -96,14 +94,14 @@ const UpdateFixuresFn = async (league_id, season) => {
 
 const UpdateCurrentFixture = async (league_id, season) => {
     try {
-        const RAPID_API_KEY = await getLessUsedAPIKey()
+        const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY
         //get current round
         const current_round = await GetCurrentRound(league_id, season)
         if (current_round === null) return
 
         const options = {
             method: 'GET',
-            url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
+            url: 'https://v3.football.api-sports.io/fixtures',
             params: {
                 league: `${league_id}`,
                 season: `${season}`,
@@ -111,8 +109,7 @@ const UpdateCurrentFixture = async (league_id, season) => {
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': RAPID_API_KEY,
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+                'x-apisports-key': API_FOOTBALL_KEY,
             }
         };
 
@@ -134,18 +131,17 @@ const UpdateCurrentFixture = async (league_id, season) => {
 
 const GetCurrentRound = async (league_id, season) => {
     try {
-        const RAPID_API_KEY = await getLessUsedAPIKey()
+        const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY
         const options = {
             method: 'GET',
-            url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures/rounds',
+            url: 'https://v3.football.api-sports.io/fixtures/rounds',
             params: {
                 league: `${league_id}`,
                 season: `${season}`,
                 current: 'true'
             },
             headers: {
-                'x-rapidapi-key': RAPID_API_KEY,
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+                'x-apisports-key': API_FOOTBALL_KEY,
             }
         };
 

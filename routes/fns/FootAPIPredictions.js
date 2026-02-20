@@ -15,17 +15,16 @@ const lessPopularFootballCountries = [
 
 const getAllEligiblePredictions = async (date) => {
     try {
-        const RAPID_API_KEY = await getLessUsedAPIKey()
+        const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY
         const options = {
             method: 'GET',
-            url: 'https://api-football-v1.p.rapidapi.com/v3/fixtures',
+            url: 'https://v3.football.api-sports.io/fixtures',
             params: {
                 date: date,
                 timezone: 'Africa/Nairobi'
             },
             headers: {
-                'x-rapidapi-key': RAPID_API_KEY,
-                'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
+                'x-apisports-key': API_FOOTBALL_KEY,
             }
         };
 
