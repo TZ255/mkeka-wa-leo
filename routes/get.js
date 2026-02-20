@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
 
         //mikeka mega
         let mikeka = await mkekadb
-            .find({ date: d, status: { $ne: "vip" } })
+            .find({ date: d, status: { $ne: "vip" }, bet: { $ne: "Over 1.5" } })
             .select("date time league match bet odds accuracy weekday jsDate")
             .sort({ accuracy: -1 })   // pick the best 20 first
             .limit(20)
