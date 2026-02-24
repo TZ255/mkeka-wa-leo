@@ -78,7 +78,7 @@ module.exports = () => {
   // ------------------------------------
   // 03:05 reset emails + APIs + matchdays
   // ------------------------------------
-  cron.schedule('5 3 * * *', () => {
+  cron.schedule('15 3 * * *', () => {
     runLocked('daily-reset', async () => {
       await affAnalyticsModel.findOneAndUpdate(
         { pid: 'shemdoe' },
@@ -120,9 +120,9 @@ module.exports = () => {
   }, { timezone: tz });
 
   // ------------------------------------
-  // Other leagues update at 10'
+  // Other leagues update at 5'
   // ------------------------------------
-  cron.schedule('10 0,1,3,16,18,19,21,23 * * *', () => {
+  cron.schedule('5 0,1,3,16,18,19,21,23 * * *', () => {
     runLocked('other-leagues', () =>
       UpdateMatchDayLeagueData()
     );
