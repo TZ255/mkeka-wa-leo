@@ -53,6 +53,8 @@ const countryCodeWrapper = (cc) => {
       return 'Zimbabwe';
     case 'zam':
       return 'Zambia';
+    case 'ang':
+      return 'Angola';
     default:
       // Fallback for unexpected codes
       return cc;
