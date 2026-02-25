@@ -82,17 +82,19 @@ router.post('/api/pay', async (req, res) => {
         };
 
         const bkaziServer = "https://baruakazi.co.tz/payment/process/waleo";
-        const apiResp = await axios.post(bkaziServer, payload)
 
-        if (!apiResp) {
-            console.error('PAY error: No response from payment API');
-            return res.render('zz-fragments/payment-error', { layout: false, message: apiResp?.message || 'Imeshindikana kuanzisha malipo. Jaribu tena.' });
-        }
+        try {
+            const apiResp = await axios.post(bkaziServer, payload)
 
-        if (apiResp && apiResp.data?.success !== true) {
-            console.error('PAY error:', apiResp.data?.message || 'Payment API returned unsuccessful response');
-            res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, message: apiResp.data?.message || 'Imeshindikana kuanzisha malipo. Jaribu tena baadaye.' });
+            if (!apiResp) {
+                console.error('PAY error: No response from payment API');
+                return res.render('zz-fragments/payment-error', { layout: false, message: apiResp?.message || 'Imeshindikana kuanzisha malipo. Jaribu tena.' });
+            }
+        } catch (error) {
+            let error_message = error?.data?.message || 'Payment API returned unsuccessful response'
+            console.error('Error from bkazi - failed payment initiation:', error_message);
+            //res.set('HX-Reswap', 'none');
+            return res.render('zz-fragments/Others/lipanamba', { layout: false, user: req?.user || req.session?.user || null});
         }
 
         sendLauraNotification(741815228, `💰 WALEO payment initiated for ${plan} plan \nEmail: ${email} \nPhone: ${phone}`)
