@@ -1,43 +1,40 @@
-<div class="main_cont mx-auto">
-    <div class="mitandao_maelezo shadow rounded mx-auto py-1 px-2">
-        <div class="voda">
-            <div class="card mb-3 bg-light">
-                <div class="card-body py-2">
-                    <small class="text-muted">Lipa kwa mitandao yote</small>
-                    <h6 class=""><i class="fa-solid fa-money-check me-1"></i> Mixx Lipa No. 
-                        <span class="badge bg-dark fw-bold fs-6 px-3 py-2 ms-2 d-inline-block">44342026</span>
-                    </h6>
-                    <h6 class="text-muted"><i class="fa-solid fa-user me-1"></i> Jina: TB PREMIUM SELECTION</h6>
-                </div>
-            </div>
+<div class="voda">
+    <div class="card mb-3 bg-light">
+        <div class="card-body py-2">
+            <small class="text-muted">Lipa kwa mitandao yote</small>
+            <h6 class=""><i class="fa-solid fa-money-check me-1"></i> Lipa Namba
+                <span class="badge bg-dark fw-bold fs-6 px-3 py-2 ms-2 d-inline-block">44342026</span>
+            </h6>
+            <h6 class="text-muted"><i class="fa-solid fa-user me-1"></i> Jina: TB PREMIUM SELECTION</h6>
         </div>
+    </div>
+</div>
 
-        <%- include(`./${network}.ejs`); %>
+<%- include(`./${network}.ejs`); %>
 
-        <!-- Whatsapp confirm -->
-        <div class="card mx-auto bg-light border-start border-info border-4" id="whatsapp-confirm">
-            <div class="card-body">
-                <h6 class="card-title mb-2">
-                    <i class="fa-solid fa-circle-check me-1 text-info"></i>
-                    Uthibitisho
+<!-- Whatsapp confirm -->
+<div class="card mx-auto bg-light border-start border-info border-4 mt-2" id="whatsapp-confirm">
+    <div class="card-body">
+        <h6 class="card-title mb-2">
+            <i class="fa-solid fa-circle-check me-1 text-info"></i>
+            Uthibitisho
+        </h6>
+        <p class="card-text text-muted mb-1" style="font-size: 12px;">
+            Baada ya malipo tutumie screenshot ya muamala pamoja na email yako ili kuthibitishwa na kupata
+            mikeka yetu ya VIP
+        </p>
+
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <span class="text-muted" style="font-size: 13px;">Tutumie hapa 👇👇</span>
+                <h6 class="mb-0 mt-1">
+                    <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email}`) %>"
+                        class="btn btn-success btn-sm rounded py-2 px-3">
+                        <i class="fa-brands fa-whatsapp me-1"></i>
+                        WhatsApp: <b>+255 711 935 460</b>
+                    </a>
                 </h6>
-                <p class="card-text text-muted mb-1" style="font-size: 12px;">
-                    Baada ya malipo tutumie screenshot ya muamala pamoja na email yako ili kuthibitishwa na kupata
-                    mikeka yetu ya VIP
-                </p>
-
-                <div class="d-flex align-items-center">
-                    <div class="me-3">
-                        <span class="text-muted" style="font-size: 12px;">Tutumie hapa 👇👇</span>
-                        <h6 class="mb-0 mt-1">
-                            <a href="https://wa.me/255711935460?text=<%= encodeURIComponent(`Email: ${user?.email}`) %>"
-                                class="btn btn-success rounded px-2">
-                                <i class="fa-brands fa-whatsapp me-1"></i>
-                                WhatsApp: <b>+255 711 935 460</b>
-                            </a>
-                        </h6>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
