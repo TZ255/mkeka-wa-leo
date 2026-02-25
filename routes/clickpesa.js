@@ -3,7 +3,6 @@ const mkekaUsersModel = require("../model/mkeka-users");
 const { default: axios } = require("axios");
 const PaymentBin = require("../model/PaymentBin");
 const { isValidPhoneNumber, getPhoneNumberDetails } = require('tanzanian-phone-validator');
-const { makePayment, getTransactionStatus } = require('./fns/zenopay');
 const { grantSubscription } = require('./fns/grantVIP');
 const { sendLauraNotification } = require('./fns/sendTgNotifications');
 const { sendNormalSMS, sendNEXTSMS } = require('./fns/sendSMS');
@@ -58,10 +57,10 @@ router.post('/api/pay', async (req, res) => {
         }
 
         const phoneNumberDetails = getPhoneNumberDetails(phone);
-        if (phoneNumberDetails.telecomCompanyDetails.brand.toLowerCase() === 'vodacom') {
-            res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Samahani! Malipo kwa Vodacom hayaruhusiwi kwa sasa. Tumia Tigo, Airtel au Halotel.' });
-        }
+        // if (phoneNumberDetails.telecomCompanyDetails.brand.toLowerCase() === 'vodacom') {
+        //     res.set('HX-Reswap', 'none');
+        //     return res.render('zz-fragments/payment-form-error', { layout: false, message: 'Samahani! Malipo kwa Vodacom hayaruhusiwi kwa sasa. Tumia Tigo, Airtel au Halotel.' });
+        // }
 
         // restrict halotel temporary
         // if (phoneNumberDetails.telecomCompanyDetails.brand.toLowerCase() === 'halotel') {
@@ -84,19 +83,25 @@ router.post('/api/pay', async (req, res) => {
         const bkaziServer = "https://baruakazi.co.tz/payment/process/waleo";
 
         try {
-            const apiResp = await axios.post(bkaziServer, payload)
-
-            if (!apiResp) {
-                console.error('PAY error: No response from payment API');
-                return res.render('zz-fragments/payment-error', { layout: false, message: apiResp?.message || 'Imeshindikana kuanzisha malipo. Jaribu tena.' });
+            //if network is vodacom throw an error to be caught inside this try-catch and show the lipanamba info
+            if (phoneNumberDetails.telecomCompanyDetails.brand.toLowerCase() === 'vodacom') {
+                throw new Error('PAY error: Attempted payment with unsupported network - Vodacom');
             }
+
+            //initiate payment by calling the bkazi API
+            const apiResp = await axios.post(bkaziServer, payload);
+            if (!apiResp) throw new Error('PAY error: No response from payment API');
+
         } catch (error) {
-            let error_message = error?.data?.message || 'Payment API returned unsuccessful response'
+            let error_message = error?.response?.data?.message || 'Payment API returned unsuccessful response'
             console.error('Error from bkazi - failed payment initiation:', error_message);
             //res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/Others/lipanamba', { layout: false, user: req?.user || req.session?.user || null});
+            let network = phoneNumberDetails?.telecomCompanyDetails?.brand?.toLowerCase() || 'unknown';
+            if (!['halotel', 'tigo', 'airtel', 'vodacom'].includes(network)) network = 'unknown';
+            return res.render('zz-fragments/Others/lipanamba', { layout: false, user: req?.user || req.session?.user || null, network });
         }
 
+        // Send notification to Laura about the successfully initiated payment
         sendLauraNotification(741815228, `💰 WALEO payment initiated for ${plan} plan \nEmail: ${email} \nPhone: ${phone}`)
 
         return res.render('zz-fragments/payment-initiated', {
