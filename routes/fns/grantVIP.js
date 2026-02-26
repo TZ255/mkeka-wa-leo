@@ -2,7 +2,8 @@ const affAnalyticsModel = require("../../model/affiliates-analytics");
 const mkekaUsersModel = require("../../model/mkeka-users");
 const { GLOBAL_VARS } = require("./global-var");
 const sendEmail = require("./sendemail");
-const { sendNormalSMS } = require("./sendSMS");
+const { sendNormalSMS, sendNEXTSMS } = require("./sendSMS");
+const { sendLauraNotification } = require("./sendTgNotifications");
 
 const SUBSCRIPTION_TYPES = {
     SILVER: {
@@ -40,7 +41,7 @@ const generateSubscriptionMessage = (startDate, endDate, type, user, plan) => {
         text: `Hongera 🎉 \nMalipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia ${formatDate(startDate)} hadi ${formatDate(endDate)}\n\nAccount yako ni:\n📧 Email: ${user.email}\n🔑 Password: ${user.password}\n\nKwa mikeka yetu ya VIP kila siku, fungua \nhttps://mkekawaleo.com/mkeka/vip`,
 
         html: `<p>Hongera 🎉 <br> Malipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia <b>${formatDate(startDate)}</b> hadi <b>${formatDate(endDate)}</b></p> <p>Kwa mikeka yetu ya VIP kila siku kumbuka kutembelea <br> <a href="https://mkekawaleo.com/mkeka/vip?date=leo" class="text-success">www.mkekawaleo.com/mkeka/vip</a></p>`,
-        
+
         sms: `Malipo yako ya VIP MIKEKA yamethibitishwa kwa muda wa ${type} hadi ${formatDate(endDate)}\n\nKwa VIP za kila siku tembelea \nhttps://mkekawaleo.com/mkeka/vip \n\nAccount Yako: \nEmail: ${user?.email} \nPassword: ${user?.password}`
     };
 };
@@ -107,6 +108,12 @@ async function grantSubscription(email, param, phone = null) {
             // Send email
             sendEmail(user_email, 'Malipo yako yamethibitishwa 🎉', messages.html)
                 .catch(e => console.log(e?.message, e));
+
+            // send Laura notification
+            sendLauraNotification(-1003744778123, `✅ WALEO payment confirmed \nEmail: ${email} \nPhone: ${phone || 'Manual Confirmed'}`, false)
+           
+            //send SMS
+            if (phone) sendNEXTSMS(phone, messages.sms);
 
             // Update analytics if user is not admin
             const adminEmails = ['georgehmariki@gmail.com', 'janjatzblog@gmail.com', 'shmdgrg@gmail.com'];
