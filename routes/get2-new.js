@@ -39,7 +39,7 @@ router.get('/standings', async (req, res) => {
     }
 
     try {
-        let leagues_others = await OtherStandingLigiKuuModel.find().sort('country').cache(3600);
+        let leagues_others = await OtherStandingLigiKuuModel.find().sort('country').select('-season_fixtures -current_round_fixtures -top_scorers -top_assists -standing').cache(3600);
         res.set('Cache-Control', 'public, max-age=3600');
         res.render('11-misimamo/standings', { jumasiku, leagues_others })
     } catch (error) {
@@ -348,7 +348,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-        // UpdateMatchDayLeagueData()
+        UpdateOtherLeagueData(40, '2025')
         res.send('Testing API endpoint')
     } catch (error) {
         res.send(error)

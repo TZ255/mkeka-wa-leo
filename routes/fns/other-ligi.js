@@ -58,12 +58,9 @@ const UpdateOtherLeagueData = async (league_id, season) => {
             await UpdateOtherCurrentFixture(league_id, season).catch(e => console.log(e?.message))
             console.log(`${league_id} current fixtures updated`)
 
-            //update top scorers for the same league
+            //update top scorers and assists for the same league
             await UpdateOtherTopScorerFn(league_id, season).catch(e => console.log(e?.message))
-            console.log(`${league_id} top scorers updated`)
-
             await UpdateOtherTopAssistFn(league_id, season).catch(e => console.log(e?.message))
-            console.log(`${league_id} top assists updated`)
         } else {
             ErrorFn(`Error fetching Other Ligi Kuu Data`)
         }
@@ -165,6 +162,7 @@ const UpdateOtherTopScorerFn = async (league_id, season) => {
         if (response.status !== 200) throw new Error(`Error fetching ${league_id} top scorers: ${response.statusText}`);
         if (response.data?.response.length === 0) return console.log(`No top scorers for ${league_id} in season ${season}`);
 
+        console.log(`Top Scoreres for ${league_id} is updated`)
         let top_scorers = response.data.response
         await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
             $set: { top_scorers },
@@ -195,6 +193,7 @@ const UpdateOtherTopAssistFn = async (league_id, season) => {
         if (response.status !== 200) throw new Error(`Error fetching ${league_id} top assists: ${response.statusText}`);
         if (response.data?.response.length === 0) return console.log(`No top assists for ${league_id} in season ${season}`);
 
+        console.log(`Top Assists for ${league_id} is updated`)
         let top_assists = response.data.response
         await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
             $set: { top_assists },
@@ -319,6 +318,15 @@ const LeagueNameToSwahili = (league_id, season) => {
                     short: `${season}/${String(Number(season) + 1).slice(-2)}`
                 }
             };
+        case 40:
+            return {
+                ligi: 'Ligi Daraja la Kwanza Uingereza (Championship)',
+                path: 'england/championship',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
+            };
         case 12:
             return {
                 ligi: 'Club Bingwa Afrika',
@@ -431,6 +439,15 @@ const LeagueNameToSwahili = (league_id, season) => {
             return {
                 ligi: 'Ligi Kuu ya Ethiopia',
                 path: 'ethiopia/super-league',
+                msimu: {
+                    long: `${season}/${Number(season) + 1}`,
+                    short: `${season}/${String(Number(season) + 1).slice(-2)}`
+                }
+            };
+        case 405:
+            return {
+                ligi: 'Ligi Kuu ya Soka ya Rwanda',
+                path: 'rwanda/premier-league',
                 msimu: {
                     long: `${season}/${Number(season) + 1}`,
                     short: `${season}/${String(Number(season) + 1).slice(-2)}`
