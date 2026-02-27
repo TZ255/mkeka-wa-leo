@@ -97,7 +97,7 @@ router.post('/api/pay', async (req, res) => {
             console.error('Error from bkazi - failed payment initiation:', error_message);
             //res.set('HX-Reswap', 'none');
             let network = phoneNumberDetails?.telecomCompanyDetails?.brand?.toLowerCase() || 'unknown';
-            if (!['halotel', 'tigo', 'airtel', 'vodacom'].includes(network)) network = 'unknown';
+            if (!['halotel', 'tigo', 'airtel', 'vodacom', 'smile'].includes(network)) network = 'unknown';
             return res.render('zz-fragments/Others/lipanamba', { layout: false, user: req?.user || req.session?.user || null, network });
         }
 
