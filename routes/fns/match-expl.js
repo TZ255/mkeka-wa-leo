@@ -47,6 +47,12 @@ const matchExplanation = (tip) => {
         case "1st 10 minutes: X":
             return 'Droo dakika 10 za mwanzo wa mechi'
 
+        case "12 & Under 4.5":
+            return 'Timu yoyote kushinda, na jumla ya magoli mechi hii chini ya 4.5'
+
+        case "12 & Over 1.5":
+            return 'Timu yoyote kushinda, na jumla ya magoli mechi hii 2+'
+
         default:
             return ''
     }
