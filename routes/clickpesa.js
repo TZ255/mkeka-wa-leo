@@ -123,7 +123,7 @@ router.post('/api/payment-webhook', async (req, res) => {
 
         if (payment_status === 'COMPLETED') {
             try {
-                let sub = await grantSubscription(email, "gold", phone);
+                let sub = await grantSubscription(email, "auto_gold", phone);
 
                 if(!sub ||!sub?.success || !sub?.grant_success) throw new Error(`Failed to grant subscription: ${sub?.message || 'Unknown error'}`);
             }
