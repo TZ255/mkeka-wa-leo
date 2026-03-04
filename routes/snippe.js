@@ -138,7 +138,7 @@ router.post('/api/pay', async (req, res) => {
                 "lastname": normalizeName(user?.name || null).lastName,
                 "email": `${user._id}@tanzabyte.com`
             },
-            "webhook_url": "https://hhdt2lns-3000.uks1.devtunnels.ms/webhook/snippe",
+            "webhook_url": "https://mkekawaleo.com/webhook/snippe",
             "metadata": {
                 "order_id": orderRef
             }
