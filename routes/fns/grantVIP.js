@@ -54,7 +54,7 @@ const generateSubscriptionMessage = (startDate, endDate, type, user, plan) => {
 
         html: `<p>Hongera 🎉 <br> Malipo ya VIP MIKEKA (${plan}) yamethibitishwa kwa muda wa ${type} kuanzia <b>${formatDate(startDate)}</b> hadi <b>${formatDate(endDate)}</b></p> <p>Kwa mikeka yetu ya VIP kila siku kumbuka kutembelea <br> <a href="https://mkekawaleo.com/mkeka/vip?date=leo" class="text-success">www.mkekawaleo.com/mkeka/vip</a></p>`,
 
-        sms: `Malipo yako ya VIP MIKEKA yamethibitishwa kwa muda wa ${type} hadi ${formatDate(endDate)}\n\nKwa VIP za kila siku tembelea \nhttps://mkekawaleo.com/mkeka/vip \n\nAccount Yako: \nEmail: ${user?.email} \nPassword: ${user?.password}`
+        sms: `Hongera! Malipo yako ya VIP yamethibitishwa kwa muda wa ${type} hadi ${formatDate(endDate)}. \n\nAhsante!`
     };
 };
 
