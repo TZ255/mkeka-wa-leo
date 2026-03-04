@@ -200,7 +200,6 @@ router.post('/webhook/snippe', async (req, res) => {
                 sendLauraNotification(-1003744778123, `❌ Failed to confirm a paid sub for ${email} phone ${phone} - gold plan. Please confirm manually`)
             }
         }
-        return res.sendStatus(200);
     } catch (error) {
         console.error('SNIPPE WEBHOOK error:', error?.message || error);
         sendLauraNotification(-1003744778123, `❌ WALEO Webhook error: ${error?.message || error}`, true);
