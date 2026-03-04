@@ -150,10 +150,11 @@ router.post('/api/pay', async (req, res) => {
             if (!apiResp) throw new Error('PAY error: No response from payment API');
 
         } catch (error) {
-            let error_message = error?.response?.data?.message || 'Payment API returned unsuccessful response'
+            let error_message = error?.message || 'Payment API returned unsuccessful response'
             console.error('Error from snippe - failed payment initiation:', error_message);
-            res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: 'Changamoto imetokea kwenye kuanzisha malipo. Tafadhali jaribu tena baadae au tumia namba ya mtandao mwingine' });
+            // res.set('HX-Reswap', 'none');
+            if (!['halotel', 'tigo', 'airtel', 'vodacom', 'smile'].includes(network)) network = 'unknown';
+            return res.render('zz-fragments/Others/lipanamba', { layout: false, user: req?.user || req.session?.user || null, network });
         }
 
         // Send notification to Laura about the successfully initiated payment
@@ -191,7 +192,7 @@ router.post('/webhook/snippe', async (req, res) => {
             let user_email = user.email;
             let user_phone = String(phone).replace('+', '');
             try {
-                let sub = await grantSubscription(user_email, "auto_gold", user_phone);
+                let sub = await grantSubscription(user_email, "snippe_gold", user_phone);
 
                 if (!sub || !sub?.success || !sub?.grant_success) throw new Error(`Failed to grant subscription: ${sub?.message || 'Unknown error'}`);
             }

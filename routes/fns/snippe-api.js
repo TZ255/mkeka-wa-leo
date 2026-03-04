@@ -27,7 +27,8 @@ const initializeSnippePayment = async (payload) => {
         if (error.code === 'ECONNABORTED') {
             throw new Error('Payment request timed out. Please try again.');
         }
-        throw error;
+        let error_message = error?.response?.data?.message || error?.message || 'Payment API returned unsuccessful response';
+        throw new Error(error_message);
     }
 };
 

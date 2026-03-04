@@ -24,6 +24,12 @@ const SUBSCRIPTION_TYPES = {
         amount: 11500,
         name: 'Siku 7'
     },
+    SNIPPE_GOLD: {
+        days: 7,
+        plan: 'Gold Plan',
+        amount: 12400,
+        name: 'Siku 7'
+    },
     GOLD2: {
         days: 30,
         plan: 'Gold Plan',
@@ -89,11 +95,12 @@ async function grantSubscription(email, param, phone = null) {
         }
 
         // Handle subscriptions
-        if (['silver', 'gold', 'auto_gold', 'gold2', 'one'].includes(param)) {
+        if (['silver', 'gold', 'auto_gold', 'snippe_gold', 'gold2', 'one'].includes(param)) {
             const subscriptionMap = {
                 'silver': SUBSCRIPTION_TYPES.SILVER,
                 'gold': SUBSCRIPTION_TYPES.GOLD,
                 'auto_gold': SUBSCRIPTION_TYPES.AUTO_GOLD,
+                'snippe_gold': SUBSCRIPTION_TYPES.SNIPPE_GOLD,
                 'gold2': SUBSCRIPTION_TYPES.GOLD2,
                 'one': SUBSCRIPTION_TYPES.one,
             };
