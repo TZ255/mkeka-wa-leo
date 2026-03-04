@@ -129,7 +129,7 @@ router.post('/api/pay', async (req, res) => {
         const payload = {
             "payment_type": "mobile",
             "details": {
-                "amount": email === "janjatzblog@gmail.com" ? 500 : PRICE.gold.amount,
+                "amount": email === "janjatzblog@gmail.com" ? 1000 : PRICE.gold.amount,
                 "currency": "TZS"
             },
             "phone_number": phone,
