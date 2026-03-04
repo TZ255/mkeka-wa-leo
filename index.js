@@ -17,6 +17,7 @@ const getRouter3 = require('./routes/get3')
 const blogRouter = require('./routes/blog')
 const routeAuth = require('./routes/get4-auth')
 const paymentRouter = require('./routes/clickpesa')
+const snippeRouter = require('./routes/snippe');
 const resetAuth = require('./routes/fns/Auth/reset')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
@@ -147,7 +148,8 @@ app.use((req, res, next) => {
 
 app.use(routeAuth)
 app.use(resetAuth)
-app.use(paymentRouter)
+// app.use(paymentRouter)
+app.use(snippeRouter)
 
 //wrong url, redirect to home
 app.get('*', (req, res) => {
