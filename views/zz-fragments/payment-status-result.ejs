@@ -1,0 +1,7 @@
+<div id="payment-status-alert" class="alert alert-<%= alertType %> mt-3 mb-3 small text-start" role="alert">
+  <i class="fa-solid <%= alertIcon %> me-1"></i>
+  <%- alertMessage %>
+</div>
+<% if (shouldRedirect) { %>
+  <div hx-get="/api/pay-status-redirect" hx-trigger="load delay:3s" hx-swap="none"></div>
+<% } %>

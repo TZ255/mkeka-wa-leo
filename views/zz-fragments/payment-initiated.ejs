@@ -1,12 +1,49 @@
-<div class="p-3 text-center">
+<div class="py-3 px-2 text-center">
   <div class="mb-2 text-success"><i class="fa-regular fa-circle-check fa-2x"></i></div>
   <h5 class="fw-bold mb-2">Thibitisha Malipo</h5>
   <p class="mb-3">
-    Ombi la malipo limetumwa kwenye namba <strong><%= phone %></strong>.
+    Ombi la malipo limetumwa kwenye namba <strong><%= `+${phone}` %></strong>.
     Thibitisha kwa kuweka PIN yako.
   </p>
-  <div class="alert alert-info mt-3 mb-3 small" role="alert">
-    <i class="fa-solid fa-circle-info me-1"></i>
-    Hakikisha namba yako iko hewani. Baada ya kukamilisha malipo utapokea ujumbe wa uthibitisho na VIP kufunguliwa.
+  <div id="payment-status-area">
+    <div id="payment-status-alert" class="alert alert-info mt-3 mb-3 small" role="alert">
+      <i class="fa-solid fa-circle-info me-1"></i>
+      Hakikisha namba yako iko hewani. Baada ya kukamilisha malipo utapokea ujumbe wa uthibitisho na VIP kufunguliwa.
+    </div>
+  </div>
+  <div class="d-flex justify-content-center align-items-center gap-2">
+    <button type="button" class="btn btn-secondary btn-sm px-4 d-inline-flex align-items-center gap-2"
+      onclick="window.location.reload()">
+      <span><i class="fa-solid fa-xmark me-1"></i>Cancel</span>
+    </button>
+    <button id="pay-status-btn" type="button"
+      class="btn btn-success btn-sm px-4 d-inline-flex align-items-center gap-2" hx-post="/api/pay-status"
+      hx-target="#payment-status-area" hx-swap="innerHTML" hx-disabled-elt="this">
+      <span><i class="fa-solid fa-arrows-rotate me-1"></i>Tayari!</span>
+    </button>
   </div>
 </div>
+
+<script>
+  (function setupPayStatusButton() {
+    const button = document.getElementById('pay-status-btn');
+    const alertArea = document.getElementById('payment-status-alert');
+    if (!button || !alertArea) return;
+
+    const defaultHtml = button.innerHTML;
+
+    function setLoadingState() {
+      button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span><span>Inatafuta...</span>';
+      alertArea.textContent = 'Tafadhali subiri, tunatafuta malipo yako...';
+    }
+
+    function resetState() {
+      button.innerHTML = defaultHtml;
+    }
+
+    button.addEventListener('htmx:beforeRequest', setLoadingState);
+    button.addEventListener('htmx:afterRequest', resetState);
+    button.addEventListener('htmx:responseError', resetState);
+    button.addEventListener('htmx:sendError', resetState);
+  })();
+</script>

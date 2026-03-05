@@ -115,6 +115,56 @@ router.post('/api/pay', async (req, res) => {
     }
 });
 
+router.post('/api/pay-status', async (req, res) => {
+    try {
+        const email = (req.user?.email || req.session?.user?.email || '').trim();
+        if (!email) {
+            return res.render('zz-fragments/payment-status-result', {
+                layout: false,
+                alertType: 'danger',
+                alertIcon: 'fa-circle-exclamation',
+                alertMessage: 'Tafadhali ingia (login) kisha ujaribu tena.',
+                shouldRedirect: false
+            });
+        }
+
+        const user = await mkekaUsersModel.findOne({ email }).select('status').lean();
+        const isPaid = user?.status === 'paid';
+
+        if (!isPaid) {
+            return res.render('zz-fragments/payment-status-result', {
+                layout: false,
+                alertType: 'danger',
+                alertIcon: 'fa-circle-exclamation',
+                alertMessage: 'Bado hatujapokea malipo yako, tafadhali thibitisha kwa kuweka PIN yako. Iwapo tayari umethibitisha, subiri kidogo kisha angalia tena. <br><br> Iwapo hujapokea menu ya malipo au namba si sahihi <b>Cancel</b> kuanza upya',
+                shouldRedirect: false
+            });
+        }
+
+        return res.render('zz-fragments/payment-status-result', {
+            layout: false,
+            alertType: 'success',
+            alertIcon: 'fa-circle-check',
+            alertMessage: 'Malipo yako yamethibitishwa',
+            shouldRedirect: true
+        });
+    } catch (error) {
+        console.error('PAY STATUS error:', error?.message || error);
+        return res.render('zz-fragments/payment-status-result', {
+            layout: false,
+            alertType: 'danger',
+            alertIcon: 'fa-circle-exclamation',
+            alertMessage: 'Hitilafu imetokea. Tafadhali jaribu tena.',
+            shouldRedirect: false
+        });
+    }
+});
+
+router.get('/api/pay-status-redirect', (req, res) => {
+    res.set('HX-Redirect', '/mkeka/vip');
+    return res.status(204).send();
+});
+
 router.post('/api/payment-webhook', async (req, res) => {
     console.log('WEBHOOK received:', req.body);
     try {
