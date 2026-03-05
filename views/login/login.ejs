@@ -11,29 +11,23 @@
 </head>
 
 <body>
-  <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: var(--primary-bg);">
-    <div class="login-form text-light h-auto rounded p-3">
-      <div class="titleform fs-3 text-center mb-5 fw-bold">Login to <span class="hubColor">VIP</span></div>
+  <div class="auth-shell d-flex justify-content-center align-items-center min-vh-100 px-3">
+    <div class="login-form text-light h-auto rounded-4 p-4 p-md-5">
+      <div class="text-center">
+        <div class="auth-pill">VIP ACCESS</div>
+        <div class="titleform fs-3 text-center mt-3 mb-4 fw-bold">Ingia / Jisajili <span class="hubColor">VIP</span></div>
+        <p class="auth-subtitle mb-1">Karibu Mdau!</p>
+        <p class="auth-subtitle mb-4">Tumia Google kuingia (haraka na salama)</p>
+      </div>
       <%- include('../0-global/messages.ejs'); %>
-      <form action="/user/login" method="post">
-        <div class="mb-3">
-          <label for="email" class="form-label"><i class="fa-regular fa-envelope"></i> Email:</label>
-          <input type="email" class="form-control py-2" name="email" required title="Ingiza Email sahihi" placeholder="Email">
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label"><i class="fa-solid fa-key"></i> Password:</label>
-          <input type="password" class="form-control py-2" name="password" required>
-        </div>
-        <div class="text-center mt-4">
-          <button type="submit" class="bataniHub text-dark w-75">
-            Login &nbsp; &nbsp;
-            <i class="fa-solid fa-right-long"></i>
-          </button>
-        </div>
-      </form>
-      <div class="foot text-center mt-3">
-        <p class="mb-5">Huna account? <a href="/user/jisajili" class="hubColor">Jisajili</a> hapa</p>
-        <p><a href="/user/forgot-password" class="hubColor mb-2">Nimesahau password?</a></p>
+      <div class="mt-2">
+        <a href="/auth/google" class="google-btn w-100">
+          <span class="google-icon"><i class="fa-brands fa-google"></i></span>
+          &nbsp; Ingia kwa Google
+        </a>
+      </div>
+      <div class="foot text-center mt-4">
+        <p class="auth-note mb-0" style="font-size: 0.75rem;">Bonyeza button hapo juu kuingia moja kwa moja</p>
       </div>
     </div>
   </div>

@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const cachegoose = require('recachegoose');
 require('dotenv').config()
 const session = require('express-session');
-const flash = require('connect-flash');
 const cookieParser = require('cookie-parser')
 const passport = require('passport');
 const MongoStore = require('connect-mongo');
@@ -15,10 +14,10 @@ const getBongoLigiRouter = require('./routes/get1-bongo-ligi')
 const oldLeagueRedirects = require('./routes/old-ligi-redirects')
 const getRouter3 = require('./routes/get3')
 const blogRouter = require('./routes/blog')
+const googleAuthRouter = require('./routes/google-auth')
 const routeAuth = require('./routes/get4-auth')
 const paymentRouter = require('./routes/clickpesa')
 const snippeRouter = require('./routes/snippe');
-const resetAuth = require('./routes/fns/Auth/reset')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
 const lauraSourceCodes = require('./bots/laura/bot')
@@ -146,8 +145,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(googleAuthRouter)
 app.use(routeAuth)
-app.use(resetAuth)
 // app.use(paymentRouter)
 app.use(snippeRouter)
 

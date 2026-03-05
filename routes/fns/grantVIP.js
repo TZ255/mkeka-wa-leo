@@ -58,11 +58,15 @@ const generateSubscriptionMessage = (startDate, endDate, type, user, plan) => {
     };
 };
 
-const updateUserSubscription = async (user, endDate, now, plan) => {
+const updateUserSubscription = async (user, endDate, now, plan, phone) => {
     user.status = 'paid';
     user.plan = plan
     user.pay_until = endDate;
     user.payments.unshift({ paidOn: now, endedOn: endDate });
+
+    if (phone != null) {   // catches null and undefined
+        user.phone = phone;
+    }
     await user.save();
 };
 
@@ -86,7 +90,6 @@ async function grantSubscription(email, param, phone = null) {
         if (param === 'unpaid') {
             user.status = 'unpaid';
             user.plan = '0 plan';
-            user.phone = phone;
             await user.save();
             return {
                 success: true,
@@ -114,7 +117,7 @@ async function grantSubscription(email, param, phone = null) {
             }
 
             // Update user subscription
-            await updateUserSubscription(user, endDate, now, subscriptionType.plan);
+            await updateUserSubscription(user, endDate, now, subscriptionType.plan, phone);
 
             // Generate and send messages
             const messages = generateSubscriptionMessage(now, endDate, subscriptionType.name, user, subscriptionType.plan);
@@ -125,7 +128,7 @@ async function grantSubscription(email, param, phone = null) {
 
             // send Laura notification
             sendLauraNotification(-1003744778123, `✅ WALEO payment confirmed \nEmail: ${email} \nPhone: ${phone || 'Manual Confirmed'}`, false)
-           
+
             //send SMS
             if (phone) sendNEXTSMS(phone, messages.sms);
 
