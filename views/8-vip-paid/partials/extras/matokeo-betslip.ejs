@@ -51,7 +51,7 @@
 
                     <div class="vip-row-odds">
                         <span class="vip-odds-pill text-success" title="Odds Locked" style="width: fit-content;">
-                            <%= match?.result %>
+                            <%= match?.result?.replace(/[()]/g, '') || '-:-' %>
                         </span>
                     </div>
                 </div>

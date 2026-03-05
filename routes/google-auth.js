@@ -11,7 +11,7 @@ function getGoogleClient(req) {
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
     if (!clientId || !clientSecret) return null;
 
-    const redirectUri = process.env.GOOGLE_REDIRECT_URI || `${req.protocol}://${req.get('host')}/auth/google/callback`;
+    const redirectUri = process.env.GOOGLE_REDIRECT_URI;
     return new OAuth2Client({ clientId, clientSecret, redirectUri });
 }
 
