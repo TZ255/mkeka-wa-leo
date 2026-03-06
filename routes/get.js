@@ -121,7 +121,7 @@ router.get('/mkeka/kesho', async (req, res) => {
 
         //mikeka mega
         let mikeka = await mkekadb
-            .find({ date: kesho, status: { $ne: 'vip' } }).select('date time league match bet odds accuracy weekday jsDate')
+            .find({ date: kesho, status: { $ne: 'vip' }, bet: { $ne: "Over 1.5" } }).select('date time league match bet odds accuracy weekday jsDate')
             .sort({ accuracy: -1 })
             .limit(20)
             .cache(600)

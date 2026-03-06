@@ -60,18 +60,24 @@
           </div>
           <div class="prediction__odds">
             <div class="odds-cta">
-              <span class="odds-chip" aria-label="Odds" style="height: 50px;">
-                <% if (el?.accuracy && Number(el.accuracy) > 1) { %>
-                  <span><%= `${el.accuracy}%` %></span>
+              <% const accuracy = Number(el?.accuracy || 0); %>
+              <% const hasAccuracy = accuracy > 0; %>
+              <% const normalizedAccuracy = Math.max(0, Math.min(100, accuracy)); %>
+              <% const displayAccuracy = Math.round(normalizedAccuracy); %>
+              <% const accuracyState = normalizedAccuracy >= 70 ? 'accuracy--success' : 'accuracy--warning'; %>
+              <span class="odds-chip<%= hasAccuracy ? ` odds-chip--accuracy ${accuracyState}` : '' %>" aria-label="<%= hasAccuracy ? 'Accuracy' : 'Odds' %>" style="height: 50px;<%= hasAccuracy ? ` --accuracy:${normalizedAccuracy};` : '' %>">
+                <% if (hasAccuracy) { %>
+                  <span><%= `${displayAccuracy}%` %></span>
                   <small style="font-size: 0.65rem;">Kushinda</small>
                 <% } %>
-                <% if (!el?.accuracy || Number(el.accuracy) === 0) { %>
+                <% if (!hasAccuracy) { %>
                   <small style="font-size: 0.65rem;">Odds</small>
                   <span><%= String(el.odds).padEnd(4, ' 0') %></span>
                 <% } %>
               </span>
-              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet now on Betway" style="height: 50px;">
-                BET <i class="fa-solid fa-circle-right"></i>
+              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet on Betway" style="height: 50px;">
+                <img src="/imgs/logos/betway-logo.png" alt="" class="bet-btn__logo" loading="lazy" decoding="async">
+                <span class="bet-btn__text">BET <i class="fa-solid fa-arrow-right ms-1 fa-beat"></i></span>
               </button>
             </div>
           </div>
