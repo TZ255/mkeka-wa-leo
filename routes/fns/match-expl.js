@@ -1,18 +1,18 @@
 const matchExplanation = (tip) => {
     switch (tip) {
-        case 'Home Multigoals: 1 - 2': 
+        case 'Home Multigoals: 1 - 2':
         case 'Multigoals Home: 1 - 2':
             return 'Timu ya nyumbani kufunga kati ya goli 1 au 2.';
 
-        case 'Home Multigoals: 1 - 3': 
+        case 'Home Multigoals: 1 - 3':
         case 'Multigoals Home: 1 - 3':
             return 'Timu ya nyumbani kufunga kati ya goli 1 hadi 3.';
 
-        case 'Away Multigoals: 1 - 2': 
+        case 'Away Multigoals: 1 - 2':
         case 'Multigoals Away: 1 - 2':
             return 'Timu ya ugenini kufunga kati ya goli 1 au 2.';
-            
-        case 'Away Multigoals: 1 - 3': 
+
+        case 'Away Multigoals: 1 - 3':
         case 'Multigoals Away: 1 - 3':
             return 'Timu ya ugenini kufunga kati ya goli 1 hadi 3.';
 
@@ -55,6 +55,9 @@ const matchExplanation = (tip) => {
 
         case "1X & Under 3.5":
             return 'Timu ya nyumbani kushinda au kudroo, na jumla ya magoli mechi hii chini ya 3.5'
+
+        case "12 & Under 4.5":
+            return 'Timu yoyote kushinda, na jumla ya magoli mechi hii chini ya 3.5'
 
         case "12 & Over 1.5":
             return 'Timu yoyote kushinda, na jumla ya magoli mechi hii 2+'
