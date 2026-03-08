@@ -147,8 +147,8 @@ app.use((req, res, next) => {
 
 app.use(googleAuthRouter)
 app.use(routeAuth)
-// app.use(paymentRouter)
-app.use(snippeRouter)
+app.use(paymentRouter)
+//app.use(snippeRouter)
 
 //wrong url, redirect to home
 app.get('*', (req, res) => {
