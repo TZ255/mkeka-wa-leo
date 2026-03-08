@@ -53,6 +53,9 @@ const matchExplanation = (tip) => {
         case "1X & Under 4.5":
             return 'Timu ya nyumbani kushinda au kudroo, na jumla ya magoli mechi hii chini ya 4.5'
 
+        case "1X & Under 3.5":
+            return 'Timu ya nyumbani kushinda au kudroo, na jumla ya magoli mechi hii chini ya 3.5'
+
         case "12 & Over 1.5":
             return 'Timu yoyote kushinda, na jumla ya magoli mechi hii 2+'
 
