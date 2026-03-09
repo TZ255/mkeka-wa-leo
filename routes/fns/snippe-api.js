@@ -1,6 +1,7 @@
 const axios = require('axios')
 
 const PAY_URL = 'https://api.snippe.sh/v1/payments';
+const PAYOUT_URL = 'https://api.snippe.sh/v1/payouts/send';
 
 // Create a payment with SNIPPE
 // Params: { order_id, buyer_name, buyer_phone, buyer_email, amount, webhook_url, metadata }

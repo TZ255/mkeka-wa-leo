@@ -16,8 +16,7 @@ const getRouter3 = require('./routes/get3')
 const blogRouter = require('./routes/blog')
 const googleAuthRouter = require('./routes/google-auth')
 const routeAuth = require('./routes/get4-auth')
-const paymentRouter = require('./routes/clickpesa')
-const snippeRouter = require('./routes/snippe');
+const paymentRouter = require('./routes/snippe')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
 const lauraSourceCodes = require('./bots/laura/bot')
@@ -148,7 +147,6 @@ app.use((req, res, next) => {
 app.use(googleAuthRouter)
 app.use(routeAuth)
 app.use(paymentRouter)
-//app.use(snippeRouter)
 
 //wrong url, redirect to home
 app.get('*', (req, res) => {
