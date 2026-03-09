@@ -77,20 +77,20 @@ const checking3MkekaBetslip = async (d) => {
         }
 
         // checking betslip3, pull 4 random docs from mikekatips VIP
-        const todaysbanker = await betslip.find({ date: d, vip_no: 3 })
-        if (todaysbanker.length < 1) {
-            let date = String(d).split('/').reverse().join('-');
-            let copies = await MikekaTipsVIPModel.aggregate([
-                { $match: { date, time: { $gte: '14:00' } } },
-                { $sample: { size: 4 } }
-            ])
+        // const todaysbanker = await betslip.find({ date: d, vip_no: 3 })
+        // if (todaysbanker.length < 1) {
+        //     let date = String(d).split('/').reverse().join('-');
+        //     let copies = await MikekaTipsVIPModel.aggregate([
+        //         { $match: { date, time: { $gte: '14:00' } } },
+        //         { $sample: { size: 4 } }
+        //     ])
 
-            for (let c of copies) {
-                await betslip.create({
-                    date: d, time: c.time, league: c.league, tip: c.tip, odd: "1", match: c.match.replace(/ - /g, ' vs '), vip_no: 3
-                })
-            }
-        }
+        //     for (let c of copies) {
+        //         await betslip.create({
+        //             date: d, time: c.time, league: c.league, tip: c.tip, odd: "1", match: c.match.replace(/ - /g, ' vs '), vip_no: 3
+        //         })
+        //     }
+        // }
 
 
         //############## slip 2 (over 1.5 ft) #############################

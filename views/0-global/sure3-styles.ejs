@@ -194,7 +194,8 @@
   .vip-row-odds {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
+    margin-right: 8px;
   }
 
   .vip-odds-pill {
@@ -242,7 +243,7 @@
     font-size: 1.1rem;
     font-weight: 900;
     color: #0f766e;
-    text-align: center;
+    text-align: end;
     align-self: center;
     min-width: 0;
     overflow-wrap: anywhere;
@@ -266,9 +267,9 @@
       max-width: 100%;
     }
 
-    .vip-slip-row {
+    /* .vip-slip-row {
       grid-template-columns: minmax(0, 1fr) 72px;
-    }
+    } */
 
     .vip-row-odds {
       align-items: center;
@@ -312,10 +313,10 @@
       font-size: 0.85rem;
     }
 
-    .vip-slip-row {
+    /* .vip-slip-row {
       grid-template-columns: minmax(0, 1fr) 60px;
       padding: 10px;
-    }
+    } */
 
     .vip-slip-total .vip-total-label {
       font-size: 0.80rem;
@@ -333,9 +334,9 @@
   }
 
   @media (max-width: 400px) {
-    .vip-slip-row {
+    /* .vip-slip-row {
       grid-template-columns: minmax(0, 1fr) 54px;
-    }
+    } */
 
     .vip-pill {
       font-size: 0.70rem;

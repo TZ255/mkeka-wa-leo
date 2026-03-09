@@ -1,5 +1,7 @@
 <% const toNumber = (value) => Number(value || 1); %>
-<% const totalVipOdds = (toNumber(slipOdds?.slip) * toNumber(slipOdds?.slip2) * toNumber(slipOdds?.slip3)).toFixed(2); %>
+<% const totalVipOdds = (toNumber(slipOdds?.slip) * toNumber(slipOdds?.slip2) + toNumber(slipOdds?.slip3)).toFixed(2); %>
+<% const stake = 35000 %>
+<% const winAmount = Math.trunc(stake * totalVipOdds).toLocaleString('en-US') %>
 <% const splitTeams = (matchValue = "") => { %>
 <%   const normalized = String(matchValue || "").replace(" vs ", " - "); %>
 <%   const parts = normalized.split(" - "); %>
@@ -13,7 +15,7 @@
     <div class="card-header vip-showcase-header">
       <div class="vip-badge">VIP TIPS - <%= trh.leo %></div>
       <h2 class="mb-1 fw-extrabold text-white" style="font-weight: 800;">MKEKA WA VIP LEO</h2>
-      <p class="mb-0 text-white-50 fw-semibold">Wenye nafasi ya juu kabisa ya ushindi!</p>
+      <p class="mb-0 text-white-50 fw-semibold">Nafasi ya juu kabisa ya ushindi!</p>
     </div>
 
     <div class="card-body vip-showcase-body py-4 px-2 py-md-4 px-md-4">
@@ -57,8 +59,12 @@
           </div>
           <% }) %>
           <div class="vip-slip-row vip-slip-total">
-            <div class="vip-total-label">Jumla ya VIP Odds</div>
+            <div class="vip-total-label">Total VIP Odds</div>
             <div class="vip-total-value"><%= totalVipOdds %></div>
+          </div>
+          <div class="vip-slip-row vip-slip-total" style="line-height: 1.8;">
+            <div class="vip-total-label">Stake <br>WIN</div>
+            <div class="vip-total-value" style="font-size: 0.95rem;"><%= stake.toLocaleString('en-US') %> <br> <%= winAmount %></div>
           </div>
           <% } else { %>
           <div class="vip-empty">Hakuna mechi za VIP #3 kwa sasa.</div>

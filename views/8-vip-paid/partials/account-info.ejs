@@ -29,9 +29,10 @@
                 style="border-bottom: 1px solid #f1f3f5;">
                 <span style="color: #6c757d; font-size: 0.8rem;">Status</span>
                 <span class="text-capitalize" style="color: #212529; font-size: 0.8rem;">
-                    <span class="badge"
-                        style="background: #198754; color: #ffffff; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px;"><%= String(user.status).replace('unpaid', 'Not Paid') %></span>
-                    (<%= user?.plan %>)
+                    <span class="badge <%= user?.status?.toLowerCase() === "paid" ? "text-bg-success" : 'text-bg-danger' %>">
+                        <%= String(user.status).replace('unpaid', 'Not Paid') %>
+                    </span>
+                    <span class="plan">(<%= user?.plan %>)</span>
                 </span>
             </div>
             <% if (user.status === 'paid') { %>

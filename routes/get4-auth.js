@@ -208,11 +208,15 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
         if (String(tip).toLowerCase().startsWith('copy-y @')) {
             let odd = tip.split('@')[1] ? Number(tip.split('@')[1].trim()) : null;
 
-            await yaUhakikaVipModel.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending'
+            await betslip.create({
+                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd: match.odd, status: 'pending', vip_no: 3, expl: match.expl
             })
 
-            return res.status(200).json({ ok: "✅ Match Copied to Ya Uhakika VIP", match });
+            // await yaUhakikaVipModel.create({
+            //     match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending'
+            // })
+
+            return res.status(200).json({ ok: "✅ Match Copied to Sure 3", match });
         }
 
         if (match.time !== time) match.time = time;

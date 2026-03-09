@@ -1,9 +1,31 @@
 <% const toNumber = (value) => Number(value || 1); %>
-<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) * toNumber(total_odds?.betslip3)).toFixed(2); %>
+<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) + toNumber(total_odds?.betslip3)).toFixed(2); %>
 
-<div class="alert alert-info shadow-sm" style="font-size: 0.85rem;">
-    Jumla ya Odds: <%= total_odds?.betslip1 %> x <%= total_odds?.betslip2 %> x <%= total_odds?.betslip3 %> = <strong><%= totalVipOdds %></strong>
- </div>
+<div class="alert alert-info shadow-sm border-0" style="font-size: 0.9rem;">
+    <h6 class="mb-2">Mchanganuo wa Odds</h6>
+
+    <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
+            <span>Mkeka #1</span>
+            <strong><%= total_odds?.betslip1 %></strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
+            <span>Mkeka #2</span>
+            <strong><%= total_odds?.betslip2 %></strong>
+        </li>
+        <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
+            <span>Mkeka #3 (Bonus)</span>
+            <strong><%= total_odds?.betslip3 %></strong>
+        </li>
+    </ul>
+
+    <div class="small text-muted mb-1">Hesabu ya jumla</div>
+    <div class="fw-semibold">
+        (<%= total_odds?.betslip1 %> × <%= total_odds?.betslip2 %>) + <%= total_odds?.betslip3 %>
+        = <span class="text-dark"><%= totalVipOdds %></span>
+    </div>
+</div>
+
 <br><br>
 <div class="kesho_count container my-5 p-4 rounded shadow bg-dark text-light"
     style="max-width: 600px; background-color: rgba(25, 135, 84, 0.08);">
