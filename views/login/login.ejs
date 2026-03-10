@@ -21,15 +21,25 @@
       </div>
       <%- include('../0-global/messages.ejs'); %>
       <div class="mt-2">
-        <a href="/auth/google" class="google-btn w-100">
-          <span class="google-icon"><i class="fa-brands fa-google"></i></span>
+        <button class="google-btn w-100" id="login-button">
+          <span class="google-icon"><i class="fa-brands fa-google" id="login-indicator"></i></span>
           &nbsp; Ingia kwa Google
-        </a>
+        </button>
       </div>
       <div class="foot text-center mt-4">
         <p class="auth-note mb-0" style="font-size: 0.75rem;">Bonyeza button hapo juu kuingia moja kwa moja</p>
       </div>
     </div>
   </div>
+
+  <!-- javascript code that will catch the onclick event of the google login button and add a fontawesome rotating class to the icon as well as disable the button to prevent multiple clicks: -->
+  <script>
+    document.getElementById('login-button').addEventListener('click', function() {
+      var loginIndicator = document.getElementById('login-indicator');
+      loginIndicator.classList.add('fa-spin');
+      this.setAttribute('disabled', 'disabled');
+      window.location.href = '/auth/google'; // Redirect to the Google authentication route
+    });
+  </script>
 </body>
 </html>
