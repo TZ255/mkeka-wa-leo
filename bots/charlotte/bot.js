@@ -33,7 +33,7 @@ const charlotteFn = async (app) => {
         bberry: 1101685785,
         airt: 1426255234,
         xzone: -1001740624527,
-        ohmyDB: -1001586042518,
+        ohmyDB: -1002363155302,
         xbongo: -1001263624837,
         rtgrp: -1001899312985,
         rtprem: -1001946174983,
@@ -45,7 +45,7 @@ const charlotteFn = async (app) => {
         newRT: -1002228998665,
         rtcopyDB: -1002634850653,
         notfy_d: -1002079073174,
-        ohmy_backup: -1002363155302
+        ohmy_backup: -1003856489191
     }
 
     const bot = new Bot(process.env.CHARLOTTE_TOKEN)
@@ -194,18 +194,18 @@ const charlotteFn = async (app) => {
 
     const backupFn = async (ctx) => {
         try {
-            let backup = -1002363155302
-            let all = await db.find().skip(3096)
+            let all = await db.find({ backup: { $exists: true } })
 
             for (let vid of all) {
                 //backup file
-                let bckp = await ctx.api.copyMessage(backup, imp.ohmyDB, vid.msgId)
+                let bckp = await ctx.api.copyMessage(imp.ohmy_backup, imp.ohmyDB, vid.backup)
                     .catch(e => console.log(e.message))
 
                 //add backupid to the database
-                await vid.updateOne({ $set: { backup: bckp?.message_id } })
-                    .catch(e => console.log(e.message))
-                console.log(`${vid.msgId} - backed up successfully`)
+                vid.msgId = vid.backup
+                vid.backup = bckp.message_id
+                await vid.save()
+                console.log(`${vid.backup} - backed up again successfully to ${bckp.message_id}`)
             }
         } catch (error) {
             await ctx.reply(error.message)
