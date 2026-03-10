@@ -194,7 +194,7 @@ const charlotteFn = async (app) => {
 
     const backupFn = async (ctx) => {
         try {
-            let all = await db.find({ backup: { $exists: true } })
+            let all = await db.find({ backup: { $exists: true } }).skip(6600)
 
             for (let vid of all) {
                 //backup file
