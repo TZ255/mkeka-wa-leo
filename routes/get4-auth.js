@@ -223,7 +223,7 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
         if (match.league !== league) match.league = league;
         if (match.match !== game) match.match = game;
         if (match.tip !== tip) match.tip = tip;
-        match.expl = matchExplanation(tip);
+        match.expl = matchExplanation(tip, match.match);
         if (odd !== undefined && odd !== null && odd !== "") match.odd = odd;
         await match.save()
 
@@ -245,7 +245,7 @@ router.post('/posting/betslip-vip2', async (req, res) => {
 
         // Create new betslip entry if its VIP #1
         const newBetslip = new betslip({
-            time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: Number(vip_no), expl: matchExplanation(tip)
+            time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: Number(vip_no), expl: matchExplanation(tip, match)
         });
 
         // Save to database

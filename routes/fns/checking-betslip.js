@@ -104,7 +104,7 @@ const checking3MkekaBetslip = async (d) => {
                     tip = '1st Half Multigoals: 1 - 2';
                 }
                 await betslip.create({
-                    date: d, time: c.time, league: c.league, tip: tip, odd: "1.52", match: c.match.replace(/ - /g, ' vs '), vip_no: 3, expl: matchExplanation(tip)
+                    date: d, time: c.time, league: c.league, tip: tip, odd: "1.52", match: c.match.replace(/ - /g, ' vs '), vip_no: 3, expl: matchExplanation(tip, c.match)
                 })
             }
         }

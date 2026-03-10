@@ -1,20 +1,23 @@
-const matchExplanation = (tip) => {
+const matchExplanation = (tip, match = null) => {
+    const mechi = match ? match.replace(' vs ', ' - ') : null;
+    const homeTeam = mechi ? mechi.split(' - ')[0] : 'Timu ya nyumbani';
+    const awayTeam = mechi ? mechi.split(' - ')[1] : 'Timu ya ugenini';
     switch (tip) {
         case 'Home Multigoals: 1 - 2':
         case 'Multigoals Home: 1 - 2':
-            return 'Timu ya nyumbani kufunga kati ya goli 1 au 2.';
+            return `${homeTeam} kufunga kati ya goli 1 au 2.`;
 
         case 'Home Multigoals: 1 - 3':
         case 'Multigoals Home: 1 - 3':
-            return 'Timu ya nyumbani kufunga kati ya goli 1 hadi 3.';
+            return `${homeTeam} kufunga kati ya goli 1 hadi 3.`;
 
         case 'Away Multigoals: 1 - 2':
         case 'Multigoals Away: 1 - 2':
-            return 'Timu ya ugenini kufunga kati ya goli 1 au 2.';
+            return `${awayTeam} kufunga kati ya goli 1 au 2.`;
 
         case 'Away Multigoals: 1 - 3':
         case 'Multigoals Away: 1 - 3':
-            return 'Timu ya ugenini kufunga kati ya goli 1 hadi 3.';
+            return `${awayTeam} kufunga kati ya goli 1 hadi 3.`;
 
         case '1st Half Multigoals: 1 - 2':
         case '1st Half. Multigoals: 1 - 2':
@@ -51,10 +54,10 @@ const matchExplanation = (tip) => {
             return 'Timu yoyote kushinda, na jumla ya magoli mechi hii chini ya 4.5'
 
         case "1X & Under 4.5":
-            return 'Timu ya nyumbani kushinda au kudroo, na jumla ya magoli mechi hii chini ya 4.5'
+            return `${homeTeam} kushinda au kudroo, na jumla ya magoli mechi hii chini ya 4.5`
 
         case "1X & Under 3.5":
-            return 'Timu ya nyumbani kushinda au kudroo, na jumla ya magoli mechi hii chini ya 3.5'
+            return `${homeTeam} kushinda au kudroo, na jumla ya magoli mechi hii chini ya 3.5`
 
         case "12 & Under 3.5":
             return 'Timu yoyote kushinda, na jumla ya magoli mechi hii chini ya 3.5'
