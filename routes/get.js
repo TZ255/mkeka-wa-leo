@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
         //leo
         let nd = new Date()
         let d = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        let month_date_leo = new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+        let month_date_leo = new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
         let d_juma = nd.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         //jana
         let _nd = new Date()
@@ -116,7 +116,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         let new_d = new Date()
         new_d.setDate(new_d.getDate() + 1)
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi', })
-        let month_date = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+        let month_date = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
         //mikeka mega
@@ -208,7 +208,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
     try {
         let d = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let d_juma = new Date().toLocaleString('sw-TZ', { timeZone: 'Africa/Nairobi', weekday: 'long' })
-        let month_date_leo = new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
+        let month_date_leo = new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
 
         //vip tips
         let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
@@ -246,7 +246,7 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -259,7 +259,7 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -300,7 +300,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -313,7 +313,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -386,7 +386,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -400,7 +400,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -438,7 +438,7 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -452,7 +452,7 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -503,7 +503,7 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, r
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -516,7 +516,7 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, r
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -631,7 +631,7 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -644,7 +644,7 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -715,7 +715,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date().toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
@@ -729,7 +729,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
-                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('sw-TZ', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
+                month_date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }),
                 created: `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
             }
         }
