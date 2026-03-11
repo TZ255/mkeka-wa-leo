@@ -80,31 +80,18 @@ const checking3MkekaBetslip = async (d) => {
         const todaysbanker = await betslip.find({ date: d, vip_no: 3 })
         if (todaysbanker.length < 1) {
             console.log('Pulling from MikekaTips VIP for betslip 3...')
-            const home_multi12 = ['2:0']
-            const away_multi12 = ['0:2']
-            const ht_multi12 = ['3:1', '1:3']
             let date = String(d).split('/').reverse().join('-');
             let copies = await MikekaTipsVIPModel.aggregate([
                 {
-                    $match: {
-                        date, time: { $gte: '14:00' },
-                        score: { $in: [...home_multi12, ...away_multi12, ...ht_multi12] }
-                    }
+                    $match: {date, time: { $gte: '14:00' }, isPremium: true}
                 },
                 { $sample: { size: 7 } }
             ])
 
             for (let c of copies) {
-                let tip;
-                if (home_multi12.includes(c.score)) {
-                    tip = 'Home Multigoals: 1 - 2';
-                } else if (away_multi12.includes(c.score)) {
-                    tip = 'Away Multigoals: 1 - 2';
-                } else if (ht_multi12.includes(c.score)) {
-                    tip = '1st Half Multigoals: 1 - 2';
-                }
+                let tip = c.tip
                 await betslip.create({
-                    date: d, time: c.time, league: c.league, tip: tip, odd: "1.52", match: c.match.replace(/ - /g, ' vs '), vip_no: 3, expl: matchExplanation(tip, c.match)
+                    date: d, time: c.time, league: c.league, tip: tip, odd: "1", match: c.match.replace(/ - /g, ' vs '), vip_no: 3, expl: matchExplanation(tip, c.match)
                 })
             }
         }

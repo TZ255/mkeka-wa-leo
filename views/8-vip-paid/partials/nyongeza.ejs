@@ -35,12 +35,12 @@
                     <h6 class="fw-bold text-dark mb-2"><%= item.match %></h6>
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-warning text-dark px-3 py-2">
-                            <i class="fa-solid fa-bolt me-1"></i>
+                        <span class="badge bg-warning text-dark px-3 py-2" style="min-width: 120px;">
+                            <i class="fa-solid fa-bullseye fa-beat me-1"></i>
                             <%= item.tip %>
                         </span>
-                        <span class="fw-bold text-primary fs-5">
-                            <!-- remove item.odds for now -->
+                        <span class="fw-bold text-success <%= item?.status === "won" ? "d-inline-block" : "d-none" %>">
+                            WON <%= item.result %>
                         </span>
                     </div>
                 </div>
