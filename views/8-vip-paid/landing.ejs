@@ -19,7 +19,7 @@
     <%- include('../0-global/fonts.ejs'); %>
     <%- include('../0-global/favicon.ejs') %>
     <%- include('./partials/style.ejs'); %>
-    <%- include('./partials/tip-cards-style.ejs'); %>
+    <%- include('./partials/style-nyongeza.ejs'); %>
 </head>
 
 <body>
@@ -41,8 +41,8 @@
             <%- include('./partials/betslip1.ejs'); %>
             <hr class="my-5 text-light">
             <%- include('./partials/betslip2.ejs'); %>
-            <hr class="my-5 text-light">
-            <%- include('./partials/betslip3.ejs'); %>
+            <hr class="my-5 text-secondary">
+            <%- include('./partials/nyongeza.ejs'); %>
             <hr class="my-3 text-light">
             <%- include('./partials/the-end.ejs'); %>
             <% if (user.role === 'admin') { %>

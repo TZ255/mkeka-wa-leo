@@ -1,7 +1,8 @@
 <% const toNumber = (value) => Number(value || 1); %>
-<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) + toNumber(total_odds?.betslip3)).toFixed(2); %>
+<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) * toNumber(2)).toFixed(2); %>
 
-<div class="alert alert-info shadow-sm border-0" style="font-size: 0.9rem;">
+<br>
+<div class="alert alert-secondary shadow-sm border-0" style="font-size: 0.9rem;">
     <h6 class="mb-2">Mchanganuo wa Odds</h6>
 
     <ul class="list-group list-group-flush mb-3">
@@ -14,14 +15,14 @@
             <strong><%= total_odds?.betslip2 %></strong>
         </li>
         <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
-            <span>Mkeka #3 (Bonus)</span>
-            <strong><%= total_odds?.betslip3 %></strong>
+            <span>Bonus Tips (Mechi 3)</span>
+            <strong>2.00</strong>
         </li>
     </ul>
 
     <div class="small text-muted mb-1">Hesabu ya jumla</div>
     <div class="fw-semibold">
-        (<%= total_odds?.betslip1 %> × <%= total_odds?.betslip2 %>) + <%= total_odds?.betslip3 %>
+        (<%= total_odds?.betslip1 %> × <%= total_odds?.betslip2 %>) x <%= total_odds?.betslip3 %>
         = <span class="text-dark"><%= totalVipOdds %></span>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <% const toNumber = (value) => Number(value || 1); %>
-<% const totalVipOdds = (toNumber(slipOdds?.slip) * toNumber(slipOdds?.slip2) + toNumber(slipOdds?.slip3)).toFixed(2); %>
+<% const totalVipOdds = (toNumber(slipOdds?.slip) * toNumber(slipOdds?.slip2) * toNumber(2.00)).toFixed(2); %>
 <% const stake = 35000 %>
 <% const winAmount = Math.trunc(stake * totalVipOdds).toLocaleString('en-US') %>
 <% const splitTeams = (matchValue = "") => { %>
@@ -20,8 +20,8 @@
 
     <div class="card-body vip-showcase-body py-4 px-2 py-md-4 px-md-4">
       <div class="vip-slip-matches">
-          <% if (slip3 && slip3.length > 0) { %>
-          <% slip3.forEach(match => { %>
+          <% if (slip && slip.length > 0) { %>
+          <% slip.forEach(match => { %>
           <div class="vip-slip-row">
             <div class="vip-row-left">
               <div class="vip-row-meta">

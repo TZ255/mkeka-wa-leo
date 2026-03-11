@@ -21,6 +21,7 @@ const { generateSocialDescription } = require('./fns/generateSocialDescription')
 const { sendSocialPhoto, replySocialWin } = require('./fns/sendSocialPhoto');
 const multer = require('multer');
 const yaUhakikaVipModel = require('../model/ya-uhakika/vip-yauhakika');
+const MikekaTipsVIPModel = require('../model/mikekatips-vip')
 
 
 router.get('/mkeka/vip', async (req, res) => {

@@ -91,7 +91,7 @@ const checking3MkekaBetslip = async (d) => {
                         score: { $in: [...home_multi12, ...away_multi12, ...ht_multi12] }
                     }
                 },
-                { $sample: { size: 4 } }
+                { $sample: { size: 7 } }
             ])
 
             for (let c of copies) {

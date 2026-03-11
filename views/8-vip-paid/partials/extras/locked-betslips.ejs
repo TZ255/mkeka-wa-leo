@@ -1,6 +1,6 @@
 <% const trh = new Date(d.split('/').reverse().join('-')).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' }) %>
 <% const toNumber = (value) => Number(value || 1); %>
-<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) + toNumber(total_odds?.betslip3)).toFixed(2); %>
+<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) * toNumber(2.00)).toFixed(2); %>
 <% const splitTeams = (matchValue = "") => { %>
 <%   const normalized = String(matchValue || "").replace(" vs ", " - "); %>
 <%   const parts = normalized.split(" - "); %>
@@ -19,8 +19,8 @@
 
     <div class="card-body vip-showcase-body py-4 px-2 py-md-4 px-md-4">
       <div class="vip-slip-matches">
-        <% if (betslip3 && betslip3.length > 0) { %>
-        <% betslip3.forEach(match => { %>
+        <% if (betslip1 && betslip1.length > 0) { %>
+        <% betslip1.forEach(match => { %>
         <div class="vip-slip-row">
           <div class="vip-row-left">
             <div class="vip-row-meta">
