@@ -1,6 +1,6 @@
 <% const toNumber = (value) => Number(value || 1); %>
 <% const totalVipOdds = (toNumber(slipOdds?.slip) * toNumber(slipOdds?.slip2) * toNumber(2.00)).toFixed(2); %>
-<% const stake = 35000 %>
+<% const stake = 15000 %>
 <% const winAmount = Math.trunc(stake * totalVipOdds).toLocaleString('en-US') %>
 <% const splitTeams = (matchValue = "") => { %>
 <%   const normalized = String(matchValue || "").replace(" vs ", " - "); %>
