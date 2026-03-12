@@ -1,23 +1,22 @@
 <div class="col-12 p-md-2" id="premium-list">
     <div class="mb-4 border-bottom border-light">
-        <h3 class="fw-bold mb-0">
-            <i class="fa-solid fa-crown text-warning me-2"></i>
+        <h5 class="fw-bold bg-dark text-light p-3 rounded-top mb-0">
             Tips za Nyongeza (Odds 3+)
-        </h3>
+        </h5>
         <p class="text-muted small mb-0 my-2 py-1 ps-2 pe-1 border-start border-secondary border-3">Ikiwa mtaji wako ni mdogo au unataka kuongeza wingi wa odds, tafadhali chagua mechi 2 au 3 zenye jumla ya odds 2.00 au zaidi kwenye tips hizi za nyongeza.</p>
     </div>
     <% if (betslip3 && betslip3.length > 0) { %>
-    <div class="row g-3">
+    <div class="row g-3 px-2">
         <% betslip3.forEach(item => { %>
         <div class="col-12">
-            <div class="card h-100 premium-tip-card">
-                <div class="card-header border-0 py-3 premium-tip-card__header">
-                    <div class="d-flex justify-content-between align-items-center text-white">
+            <div class="card h-100 tip-card">
+                <div class="card-header border-0 py-3 tip-card__header">
+                    <div class="d-flex justify-content-between align-items-center text-dark">
                         <span class="fw-semibold">
                             <i class="fa-solid fa-crown me-1"></i>
                             Bonus Tip
                         </span>
-                        <small class="text-white-75">
+                        <small class="text-dark-75">
                             <i class="fa-solid fa-calendar-check me-1"></i>
                             <%= item.date %>
                         </small>
@@ -35,11 +34,11 @@
                     <h6 class="fw-bold text-dark mb-2"><%= item.match %></h6>
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="badge bg-warning text-dark px-3 py-2" style="min-width: 120px;">
-                            <i class="fa-solid fa-bullseye fa-beat me-1"></i>
+                        <span class="premium-tip-badge" style="min-width: 120px;">
+                            <i class="fa-regular fa-circle-dot fa-beat me-1"></i>
                             <%= item.tip %>
                         </span>
-                        <span class="fw-bold text-success <%= item?.status === "won" ? "d-inline-block" : "d-none" %>">
+                        <span class="p-2 small badge text-bg-success text-light <%= item?.status === "won" ? "d-inline-block" : "d-none" %>">
                             WON <%= item.result %>
                         </span>
                     </div>

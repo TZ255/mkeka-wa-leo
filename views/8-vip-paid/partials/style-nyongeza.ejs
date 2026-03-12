@@ -8,20 +8,33 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
   }
 
-  .premium-tip-card {
+  #premium-list .tip-card {
     border: 1px solid #f1f3f5;
     border-radius: 16px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     overflow: hidden;
   }
 
-  .premium-tip-card:hover {
+  .tip-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
   }
 
-  .premium-tip-card__header {
-    background: linear-gradient(135deg, #ffb703, #ff7b00);
+  .tip-card__header {
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  }
+
+  #premium-list .premium-tip-badge {
+    display: inline-block;
+    background-color: #edf2ff;
+    color: #4263eb;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    border-left: 3px solid #4263eb;
+    min-width: 120px;
   }
 
   .text-white-75 {
