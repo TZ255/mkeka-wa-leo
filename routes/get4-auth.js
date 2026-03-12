@@ -93,27 +93,10 @@ router.get('/mkeka/vip', async (req, res) => {
                 betslip3: betslip3.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
             }
 
-
-            //find VIP Slips
-            let slips = await paidVipModel.find({ date: d, status: { $ne: 'deleted' } }).sort('time').sort('match')
-
-            //find yesterday won, combine and sort by time
-            let free_won = await mkekaDB.find({ status: 'won', date: jana }).cache(600)
-
             //fetch won betslips, avoid duplicates
             let supa_won = await BetslipModel.find({ status: 'won', date: jana }).cache(600)
             supa_won = [...new Map(supa_won.map(d => [d.match, d])).values()];
             let supa_won_total_odds = supa_won.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
-
-            const parseTime = (t) => {
-                if (!t || !t.includes(':')) return 0;
-                const [h, m] = t.split(':').map(Number);
-                return (isNaN(h) || isNaN(m)) ? 0 : h * 60 + m;
-            };
-
-            const won_slips = [...free_won, ...supa_won].sort((a, b) => {
-                return parseTime(a.time) - parseTime(b.time);
-            });
 
             //Booking Codes
             let today_codes = await BookingCodesModel.find({ date: d });
@@ -134,7 +117,7 @@ router.get('/mkeka/vip', async (req, res) => {
                 else if (req.query.auto === '0') autopilot = false;
             }
 
-            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, total_odds, booking_codes, slips, user, d, jana, supa_won, supa_won_total_odds, won_slips, siku, autopilot })
+            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, total_odds, booking_codes, user, d, jana, supa_won, supa_won_total_odds, siku, autopilot })
         }
         res.render('8-vip/vip')
     } catch (err) {
