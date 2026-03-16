@@ -20,7 +20,7 @@
         </li>
     </ul>
 
-    <div class="small text-muted mb-1">Hesabu ya jumla</div>
+    <div class="small text-secondary mb-1">Hesabu ya jumla</div>
     <div class="fw-semibold">
         <%= total_odds?.betslip1 %> × <%= total_odds?.betslip2 %> x 2.00
         = <span class="text-dark"><%= totalVipOdds %></span>
@@ -40,15 +40,15 @@
     <div id="counting" class="d-flex justify-content-center gap-3 fs-4 fw-semibold text-center">
         <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
             <div id="hours" class="fs-2">--</div>
-            <small class="text-muted">Hours</small>
+            <small class="text-secondary">Hours</small>
         </div>
         <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
             <div id="minutes" class="fs-2">--</div>
-            <small class="text-muted">Minutes</small>
+            <small class="text-secondary">Minutes</small>
         </div>
         <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
             <div id="seconds" class="fs-2">--</div>
-            <small class="text-muted">Seconds</small>
+            <small class="text-secondary">Seconds</small>
         </div>
     </div>
 </div>
@@ -64,7 +64,7 @@
                         <hr class="flex-grow-1 border-2">
                     </div>
                     <h2 class="display-6 fw-bold text-secondary mb-3">Mwisho</h2>
-                    <p class="text-muted mb-4" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>Zingatia!
+                    <p class="text-secondary mb-4" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>Zingatia!
                         Betting ni Burudani.. <br> Beti kistaarabu. Usibetie kiasi cha pesa ambacho kikipotea
                         kitakuathiri.</p>
                 </div>

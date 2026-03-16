@@ -16,7 +16,7 @@
             <tbody>
                 <% standing.current_round_fixtures.forEach(fixture => { %>
                 <tr class="tdata">
-                    <td class="text-muted text-center">
+                    <td class="text-secondary text-center">
                         <span class="time d-block <%= fixture.fixture.status.short %>">
                             <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
                         </span>
@@ -60,7 +60,7 @@
             <tbody>
                 <% round.fixtures.forEach(fixture => { %>
                 <tr class="tdata">
-                    <td class="text-muted text-center">
+                    <td class="text-secondary text-center">
                         <span class="time d-block <%= fixture.fixture.status.short %>">
                             <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
                         </span>

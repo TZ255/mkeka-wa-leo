@@ -15,7 +15,7 @@
       <tbody>
         <% recent_results.forEach(fixture=> { %>
         <tr class="tdata">
-          <td class="text-muted text-center">
+          <td class="text-secondary text-center">
             <span class="time d-block <%= fixture.fixture.status.short %>">
               <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi' , hour12:
                     false, hour: "2-digit" , minute: "2-digit" }) %>
@@ -29,7 +29,7 @@
             </span>
             <% } %>
           </td>
-          <td class="text-muted text-center align-middle">
+          <td class="text-secondary text-center align-middle">
             <%= fixture.league.round?.match(/\d+/)?.[0] || '-' %>
           </td>
           <td class="<%= fixture.fixture.status.short %>">
@@ -66,7 +66,7 @@
       <tbody>
         <% recent_fixtures.forEach(fixture=> { %>
         <tr class="tdata">
-          <td class="text-muted text-center">
+          <td class="text-secondary text-center">
             <span class="time d-block <%= fixture.fixture.status.short %>">
               <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi' , hour12:
                       false, hour: "2-digit" , minute: "2-digit" }) %>
@@ -80,7 +80,7 @@
             </span>
             <% } %>
           </td>
-          <td class="text-muted text-center align-middle">
+          <td class="text-secondary text-center align-middle">
             <%= fixture.league.round?.match(/\d+/)?.[0] || '-' %>
           </td>
           <td class="<%= fixture.fixture.status.short %>">
@@ -124,7 +124,7 @@
         <tbody>
           <% round.fixtures.forEach(fixture=> { %>
           <tr class="tdata" itemscope itemtype="https://schema.org/SportsEvent">
-            <td class="text-muted text-center">
+            <td class="text-secondary text-center">
               <span class="time d-block <%= fixture.fixture.status.short %>">
                 <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi' ,
                           hour12: false, hour: "2-digit" , minute: "2-digit" }) %>
@@ -143,7 +143,7 @@
               <meta itemprop="endDate" content="<%= new Date((fixture.fixture.timestamp + 5*60*60) * 1000).toISOString().slice(0,19) + '+03:00' %>">
               <meta itemprop="location" content="<%= fixture.fixture?.venue?.name %>, <%= fixture.fixture?.venue?.city %>, <%= fixture.league.country %>">
             </td>
-            <td class="date text-muted text-center align-middle">
+            <td class="date text-secondary text-center align-middle">
               <%= fixture.league.round?.match(/\d+/)?.[0] || '-' %>
 
               <!-- schema description -->

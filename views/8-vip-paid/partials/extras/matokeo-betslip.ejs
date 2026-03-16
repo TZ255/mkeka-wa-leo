@@ -9,68 +9,6 @@
 <%   return { home, away }; %>
 <% }; %>
 
-<div class="vip-card-wrapper vip-showcase mx-auto">
-    <div class="vip-promo-card">
-        <div class="card-header vip-showcase-header">
-            <div class="vip-badge">VIP TIPS - <%= trh %></div>
-            <h2 class="mb-1 fw-extrabold text-white" style="font-weight: 800;">MATOKEO YA VIP JANA</h2>
-            <p class="mb-0 text-white-50 fw-semibold">Mechi za VIP zilizoshinda Jana! 🔥</p>
-        </div>
-
-        <div class="card-body vip-showcase-body py-4 px-2 py-md-4 px-md-4">
-            <div class="vip-slip-matches">
-                <% if (supa_won && supa_won.length > 0) { %>
-                <% supa_won.forEach(match => { %>
-                <div class="vip-slip-row">
-                    <div class="vip-row-left">
-                        <div class="vip-row-meta">
-                            <span class="vip-pill">
-                                <i class="fa-regular fa-calendar"></i>
-                                <%= match?.date || '--/--/----' %>
-                            </span>
-                            <span class="vip-pill">
-                                <i class="fa-regular fa-clock"></i>
-                                <%= match?.time || '--:--' %>
-                            </span>
-                            <span class="vip-pill vip-pill-league">
-                                <i class="fa-solid fa-trophy"></i>
-                                <%= match?.league || 'League' %>
-                            </span>
-                        </div>
-                        <% const teams = splitTeams(match?.match); %>
-                        <div class="vip-row-match">
-                            <div class="vip-team"><%= teams.home || '-' %></div>
-                            <% if (teams.away) { %>
-                            <div class="vip-team vip-team-away"><%= teams.away %></div>
-                            <% } %>
-                        </div>
-                        <div class="vip-tip-pill">
-                            <%= match.tip %>
-                        </div>
-                    </div>
-
-                    <div class="vip-row-odds">
-                        <span class="vip-odds-pill text-success" title="Odds Locked" style="width: fit-content;">
-                            <%= match?.result?.replace(/[()]/g, '') || '-:-' %>
-                        </span>
-                    </div>
-                </div>
-                <% }) %>
-                <% } %>
-                <!-- If there is no supa won results -->
-                <% if (supa_won && supa_won.length === 0) { %>
-                <div class="vip-empty">Matokeo ya jana bado hayajawekwa kwa sasa.</div>
-                <% } %>
-            </div>
-
-            <button class="unlock-btn vip-unlock-btn d-flex align-items-center justify-content-center gap-2"
-                onclick="ScrollToLipiaBtn2()">
-                LIPIA VIP <i class="fa-solid fa-arrow-up ms-2"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
 
 <script>
     function ScrollToLipiaBtn2() {
@@ -80,3 +18,65 @@
         }
     }
 </script>
+
+
+<div class="col-12 p-md-2 mx-auto" id="premium-list" style="max-width: 640px;">
+    <div class="mb-4 border-bottom border-light">
+        <h4 class="fw-bold text-light p-3 rounded-top-4 mb-0 nyongeza_container_header">
+            <span class="d-block">Ushindi wa VIP Jana</span>
+            <span class="d-block small text-white text-opacity-50 fw-semibold mt-1" style="font-size: .85rem;">Mechi zilizoshinda Jana, <%= trh %></span>
+        </h4>
+    </div>
+    <% if (supa_won && supa_won.length > 0) { %>
+    <div class="row g-3 px-2">
+        <% supa_won.forEach(item => { %>
+        <div class="col-12">
+            <div class="card h-100 tip-card">
+                <div class="card-header border-0 py-3 tip-card__header">
+                    <div class="d-flex justify-content-between align-items-center text-dark">
+                        <span class="fw-semibold">
+                            <i class="fa-solid fa-crown me-1"></i>
+                        </span>
+                        <small class="text-dark-75">
+                            <i class="fa-solid fa-calendar-check me-1"></i>
+                            <%= item.date %>
+                        </small>
+                    </div>
+                </div>
+                <div class="card-body p-3 p-md-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="text-secondary">
+                            <i class="fa-solid fa-clock me-1"></i>
+                            <span class="fw-semibold text-dark"><%= item.time %></span>
+                        </div>
+                        <span
+                            class="badge text-bg-light text-secondary fw-semibold"><%= item?.league %></span>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-2"><%= item.match %></h6>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="premium-tip-badge" style="min-width: 120px;">
+                            <i class="fa-regular fa-circle-dot fa-beat me-1"></i>
+                            <%= item.tip %>
+                        </span>
+                        <span class="p-2 small badge text-bg-success text-light <%= item?.status === "won" ? "d-inline-block" : "d-none" %>">
+                            WON <%= item.result %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+    <% } %>
+
+    <% if (!supa_won || supa_won.length === 0) { %>
+    <div class="text-center py-5">
+        <div class="icon-circle-lg bg-light text-warning mx-auto mb-3">
+            <i class="fa-solid fa-circle-info fa-2x"></i>
+        </div>
+        <h4 class="text-dark mb-2">Matokeo ya jana yatapakiwa hivi punde.</h4>
+        <p class="text-secondary mb-0">Tafadhali rudi tena baadaye.</p>
+    </div>
+    <% } %>
+</div>

@@ -25,10 +25,10 @@
                         <tr>
                             <!-- Time column -->
                             <td class="text-center">
-                                <div class="text-muted <%= ['1H', '2H', 'HT', 'CANC', 'PST'].includes(match.status) ? 'd-none' : '' %>">
+                                <div class="text-secondary <%= ['1H', '2H', 'HT', 'CANC', 'PST'].includes(match.status) ? 'd-none' : '' %>">
                                     <%= match.time %>
                                 </div>
-                                <small class="text-muted <%= ['1H', '2H', 'HT', 'CANC', 'PST'].includes(match.status) ? 'd-none' : 'd-block' %>">
+                                <small class="text-secondary <%= ['1H', '2H', 'HT', 'CANC', 'PST'].includes(match.status) ? 'd-none' : 'd-block' %>">
                                     <%= match.jsDate.split('-').reverse().join('/').split('/20')[0] %>
                                 </small>
                                 <% if (match.status === "PST") { %>

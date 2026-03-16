@@ -90,7 +90,7 @@
                         <tbody>
                             <% ratiba.forEach(fixture => { %>
                             <tr class="tdata">
-                                <td class="text-muted text-center">
+                                <td class="text-secondary text-center">
                                     <span class="time d-block <%= fixture.fixture.status.short %>">
                                         <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
                                     </span>
@@ -129,9 +129,7 @@
     <%- include('../../../../0-global/modal-leon.ejs'); %>
 
     <!-- bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 
 </html>
