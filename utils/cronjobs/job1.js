@@ -8,6 +8,8 @@ const { UpdateOtherLeagueMatchDay, UpdateMatchDayLeagueData } = require('../../r
 const { wafungajiBoraNBC, assistBoraNBC } = require('../../routes/fns/ligikuucotz');
 const { UpdateBongoLeagueData } = require('../../routes/fns/bongo-ligi');
 const { getAllFixtures } = require('../../routes/fns/fixtures');
+const { syncOddsForDate } = require('../../routes/fns/odds-ingestion');
+const OddsFixture = require('../../model/odds-fixtures-bets');
 
 
 module.exports = () => {
@@ -135,5 +137,25 @@ module.exports = () => {
     runLocked('fixtures', () =>
       getAllFixtures()
     );
+  }, { timezone: tz });
+
+  // ------------------------------------
+  // Odds sync: 06:00, 10:00
+  // ------------------------------------
+  cron.schedule('0 6,10 * * *', () => {
+    runLocked('odds-sync', () =>
+      syncOddsForDate(getISODate())
+    );
+  }, { timezone: tz });
+
+  // ------------------------------------
+  // Cleanup odds older than 7 days: 02:00
+  // ------------------------------------
+  cron.schedule('0 2 * * *', () => {
+    runLocked('odds-cleanup', async () => {
+      const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      const result = await OddsFixture.deleteMany({ createdAt: { $lte: cutoff } });
+      console.log(`[odds-cleanup] Deleted ${result.deletedCount} docs older than 7 days`);
+    });
   }, { timezone: tz });
 };
