@@ -30,6 +30,7 @@ const { nkiriFunction } = require('../bots/charlotte/functions/nkiri')
 const mkekaDB = require('../model/mkeka-mega')
 const { postMegaToMkekaLeo } = require('./fns/sendSocialPhoto')
 const { oddToWinPercent } = require('../utils/odd-to-percent')
+const { syncOddsForDate } = require('./fns/odds-ingestion')
 
 
 router.get('/standings', async (req, res) => {
@@ -347,6 +348,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
+        //await syncOddsForDate("2026-03-21")
         res.send('Testing API endpoint')
     } catch (error) {
         res.send(error)

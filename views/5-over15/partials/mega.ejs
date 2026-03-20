@@ -59,7 +59,7 @@
               <% const hasAccuracy = accuracy > 0; %>
               <% const normalizedAccuracy = Math.max(0, Math.min(100, accuracy)); %>
               <% const displayAccuracy = Math.round(normalizedAccuracy); %>
-              <% const accuracyState = normalizedAccuracy >= 70 ? 'accuracy--success' : 'accuracy--warning'; %>
+              <% const accuracyState = normalizedAccuracy >= 65 ? 'accuracy--success' : 'accuracy--warning'; %>
               <span class="odds-chip<%= hasAccuracy ? ` odds-chip--accuracy ${accuracyState}` : '' %>" aria-label="<%= hasAccuracy ? 'Accuracy' : 'Odds' %>" style="height: 50px;<%= hasAccuracy ? ` --accuracy:${normalizedAccuracy};` : '' %>">
                 <% if (hasAccuracy) { %>
                   <span><%= `${displayAccuracy}%` %></span>

@@ -77,7 +77,7 @@ function buildFixtureLookup(fixturesResponse, allowedLeagueIds) {
     if (unwanted_countries.includes(item.league.country)) continue;
 
     // Skip leagues not in the needed list
-    if (!allowedLeagueIds.has(item.league.id)) continue;
+   // if (!allowedLeagueIds.has(item.league.id)) continue; //removing this for now
 
     const fid = item.fixture.id;
     const { date, time } = extractDateAndTime(item.fixture.date);
@@ -169,7 +169,90 @@ function mapBetValuesToDocument(betId, values, doc) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// COMPUTE BEST PICK
+// PER-MARKET BEST PICK
+// Finds the highest accuracy selection from a list of { label, sel }
+// ═══════════════════════════════════════════════════════════════════
+
+function pickBest(entries) {
+  let best = null;
+  for (const e of entries) {
+    if (!e.sel || e.sel.accuracy == null) continue;
+    if (!best || e.sel.accuracy > best.accuracy) {
+      best = { label: e.label, odds: e.sel.odds, accuracy: e.sel.accuracy };
+    }
+  }
+  return best || {};
+}
+
+// Compute best_pick inside each market sub-document
+function computeMarketBestPicks(doc) {
+  doc.match_winner.best_pick = pickBest([
+    { label: 'Home Win', sel: doc.match_winner.home },
+    { label: 'Draw', sel: doc.match_winner.draw },
+    { label: 'Away Win', sel: doc.match_winner.away },
+  ]);
+
+  doc.over_under.best_pick = pickBest([
+    { label: 'Over 0.5', sel: doc.over_under.over_0_5 },
+    { label: 'Under 0.5', sel: doc.over_under.under_0_5 },
+    { label: 'Over 1.5', sel: doc.over_under.over_1_5 },
+    { label: 'Under 1.5', sel: doc.over_under.under_1_5 },
+    { label: 'Over 2.5', sel: doc.over_under.over_2_5 },
+    { label: 'Under 2.5', sel: doc.over_under.under_2_5 },
+    { label: 'Over 3.5', sel: doc.over_under.over_3_5 },
+    { label: 'Under 3.5', sel: doc.over_under.under_3_5 },
+  ]);
+
+  doc.first_half_over_under.best_pick = pickBest([
+    { label: 'Over 0.5', sel: doc.first_half_over_under.over_0_5 },
+    { label: 'Under 0.5', sel: doc.first_half_over_under.under_0_5 },
+    { label: 'Over 1.5', sel: doc.first_half_over_under.over_1_5 },
+    { label: 'Under 1.5', sel: doc.first_half_over_under.under_1_5 },
+    { label: 'Over 2.5', sel: doc.first_half_over_under.over_2_5 },
+    { label: 'Under 2.5', sel: doc.first_half_over_under.under_2_5 },
+    { label: 'Over 3.5', sel: doc.first_half_over_under.over_3_5 },
+    { label: 'Under 3.5', sel: doc.first_half_over_under.under_3_5 },
+  ]);
+
+  doc.ht_ft.best_pick = pickBest([
+    { label: 'Home/Home', sel: doc.ht_ft.home_home },
+    { label: 'Home/Draw', sel: doc.ht_ft.home_draw },
+    { label: 'Home/Away', sel: doc.ht_ft.home_away },
+    { label: 'Draw/Home', sel: doc.ht_ft.draw_home },
+    { label: 'Draw/Draw', sel: doc.ht_ft.draw_draw },
+    { label: 'Draw/Away', sel: doc.ht_ft.draw_away },
+    { label: 'Away/Home', sel: doc.ht_ft.away_home },
+    { label: 'Away/Draw', sel: doc.ht_ft.away_draw },
+    { label: 'Away/Away', sel: doc.ht_ft.away_away },
+  ]);
+
+  doc.btts.best_pick = pickBest([
+    { label: 'BTTS: Yes', sel: doc.btts.yes },
+    { label: 'BTTS: No', sel: doc.btts.no },
+  ]);
+
+  doc.highest_scoring_half.best_pick = pickBest([
+    { label: '1st Half', sel: doc.highest_scoring_half.first_half },
+    { label: '2nd Half', sel: doc.highest_scoring_half.second_half },
+    { label: 'Draw', sel: doc.highest_scoring_half.draw },
+  ]);
+
+  doc.double_chance.best_pick = pickBest([
+    { label: 'Home/Draw', sel: doc.double_chance.home_draw },
+    { label: 'Home/Away', sel: doc.double_chance.home_away },
+    { label: 'Draw/Away', sel: doc.double_chance.draw_away },
+  ]);
+
+  // Exact score — stored as plain object, pick best from all entries
+  const esEntries = Object.entries(doc.exact_score).map(([key, sel]) => ({
+    label: key.replace(/_/g, ':'),
+    sel,
+  }));
+  doc.exact_score_best_pick = pickBest(esEntries);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// OVERALL BEST PICK
 // Only from: match_winner, over/under 2.5 & 3.5, btts
 // ═══════════════════════════════════════════════════════════════════
 
@@ -279,6 +362,9 @@ function processOddsItem(item, fixtureLookup) {
       mapBetValuesToDocument(bet.id, bet.values, doc);
     }
   }
+
+  // Compute best_pick inside each market
+  computeMarketBestPicks(doc);
 
   return {
     fixtureId,
