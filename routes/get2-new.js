@@ -349,7 +349,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-        await GET_TIPS_FOR_MKEKALEO("2026-03-24")
+        // await GET_TIPS_FOR_MKEKALEO("2026-03-24")
         res.send('Testing API endpoint')
     } catch (error) {
         res.send(error)
