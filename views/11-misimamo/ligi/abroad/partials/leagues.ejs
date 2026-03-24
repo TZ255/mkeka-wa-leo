@@ -12,11 +12,13 @@
     <tbody>
         <% standing.standing.forEach(team=> { %>
         <tr>
-            <td class="tdata text-center td_desc" title="<%= team?.description %>" data-league_id="<%= partials.league_id %>">
+            <td class="tdata text-center td_desc" title="<%= team?.description %>"
+                data-league_id="<%= partials.league_id %>">
                 <%= team.rank %>.
             </td>
             <td class="tdata">
-                <%= team.team.name %>
+                <img src="<%= team.team.logo %>" alt="logo for <%= team.team.name %>" width="14" loading="lazy" style="vertical-align: middle;">
+                <span style="vertical-align: middle;"><%= team.team.name %></span>
             </td>
             <td class="tdata text-center">
                 <%= team.all.played %>
