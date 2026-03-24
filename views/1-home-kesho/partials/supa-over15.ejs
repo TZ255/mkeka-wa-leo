@@ -34,9 +34,14 @@
                         <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
                         <meta itemprop="location" content="<%= leagueGroup._id.league %>">
                         <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        <br>
-                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        <div class="home-team">
+                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        </div>
+                        <div class="away-team">
+                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
+                        </div>
                     </td>
                     <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
