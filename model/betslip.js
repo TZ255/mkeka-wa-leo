@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const slipSchema = new Schema({
+    fixture_id: {type: Number},
     date: {
         type: String,
     },
@@ -26,7 +27,11 @@ const slipSchema = new Schema({
     },
     result: {type: String, default: '-:-'},
     status: {type: String, default: 'pending'},
-    vip_no: {type: Number, default: 2}
+    vip_no: {type: Number, default: 2},
+    logo: {
+        home: { type: String, default: null },
+        away: { type: String, default: null }
+    }
 }, {strict: false, timestamps: true })
 
 let BetslipModel = mongoose.model('betslip', slipSchema)

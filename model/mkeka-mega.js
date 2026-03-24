@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const megaSchema = new Schema({
+    fixture_id: {type: Number},
     match: {type: String},
     league: {type: String},
     odds: {type: Number, default: 1},
@@ -17,6 +18,10 @@ const megaSchema = new Schema({
     isPollClosed: {type: Boolean, default: false},
     weekday: {type: String, default: 'unknown'},
     jsDate: {type: String, default: 'unknown'},
+    logo: {
+        home: { type: String, default: null },
+        away: { type: String, default: null }
+    }
 }, {strict: false, timestamps: true})
 
 const mkekaDB = mongoose.model('Accumulator', megaSchema)

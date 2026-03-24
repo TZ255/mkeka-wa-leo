@@ -39,8 +39,14 @@
           </div>
           <div class="prediction__match">
             <div class="teams">
-              <div class="team"><span class="dot" aria-hidden="true"></span><span class="name"><%= _home %></span></div>
-              <div class="team"><span class="dot alt" aria-hidden="true"></span><span class="name"><%= _away %></span></div>
+              <div class="team">
+                <img src="<%= el.logo.home %>" alt="Logo for <%= _home %>" loading="lazy" width="20" aria-hidden="true">
+                <span class="name"><%= _home %></span>
+              </div>
+              <div class="team">
+                <img src="<%= el.logo.away %>" alt="Logo for <%= _away %>" loading="lazy" width="20" aria-hidden="true">
+                <span class="name"><%= _away %></span>
+              </div>
             </div>
             <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %></span></div>
           </div>

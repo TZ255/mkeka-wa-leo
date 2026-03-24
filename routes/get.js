@@ -2,10 +2,7 @@ const router = require('express').Router()
 const mkekadb = require('../model/mkeka-mega')
 const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
-const venas15Model = require('../model/venas15')
-const venas25Model = require('../model/venas25')
-const passion35 = require('../model/pp35')
-const graphModel = require('../model/graph-tips')
+const over25Model = require('../model/over25mik')
 const affModel = require('../model/affiliates-analytics')
 const bttsModel = require('../model/ya-uhakika/btts')
 const over15Mik = require('../model/ove15mik')
@@ -28,6 +25,10 @@ const supatipsModel = require('../model/supatips')
 const { LinkToRedirect } = require('./fns/affLinktoRedirect')
 const correctScoreModel = require('../model/cscore')
 const yaUhakikaVipModel = require('../model/ya-uhakika/vip-yauhakika')
+const BTTSTipsModel = require('../model/btts-tips')
+const DCTipsModel = require('../model/dc-tips')
+const OU35Tips = require('../model/over35mik')
+const Over05HTTips = require('../model/over05ht')
 
 router.get('/', async (req, res) => {
     try {
@@ -55,18 +56,10 @@ router.get('/', async (req, res) => {
         //mikeka mega
         let mikeka = await mkekadb
             .find({ date: d, status: { $ne: "vip" }, bet: { $ne: "Over 1.5" } })
-            .select("date time league match bet odds accuracy weekday jsDate")
+            .select("date time league match bet odds accuracy weekday jsDate logo")
             .sort({ accuracy: -1 })   // pick the best 20 first
             .limit(20)
             .cache(600)
-
-        // now reorder ONLY those 20 by time asc
-        const toMinutes = (t = "") => {
-            const [h, m] = t.split(":").map(Number)
-            return (h || 0) * 60 + (m || 0)
-        }
-
-        mikeka.sort((a, b) => toMinutes(a.time) - toMinutes(b.time))
 
         //check if there is no any slip
         //find random 3
@@ -121,17 +114,10 @@ router.get('/mkeka/kesho', async (req, res) => {
 
         //mikeka mega
         let mikeka = await mkekadb
-            .find({ date: kesho, status: { $ne: 'vip' }, bet: { $ne: "Over 1.5" } }).select('date time league match bet odds accuracy weekday jsDate')
+            .find({ date: kesho, status: { $ne: 'vip' }, bet: { $ne: "Over 1.5" } }).select('date time league match bet odds accuracy weekday jsDate logo')
             .sort({ accuracy: -1 })
             .limit(20)
             .cache(600)
-
-        // now reorder ONLY those 20 by time asc
-        const toMinutes = (t = "") => {
-            const [h, m] = t.split(":").map(Number)
-            return (h || 0) * 60 + (m || 0)
-        }
-        mikeka.sort((a, b) => toMinutes(a.time) - toMinutes(b.time))
 
         //multiply all odds of MegaOdds
         const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -318,50 +304,14 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             }
         }
 
-        //over leo
-        let over1 = ['4:1', '4:2', '5:0', '5:1', '5:2', '5:3', '5:4']
-        let over2 = ['2:4', '0:5', '1:5', '2:5', '3:5', '4:5']
-        let under = ['0:0']
-        let less_over = ['3:1', '1:3', '1:4', '4:3', '3:4', '4:4']
-
-        let ou_leo = await correctScoreModel.aggregate([
-            {
-                $match: {
-                    siku: SEO.trh.date, time: { $gte: '12:00' },
-                    tip: { $in: [...over1, ...over2, ...under, ...less_over] }
-                }
-            }, { $sort: { time: 1 } }
-        ]).cache(600);
-
-        let transformedData = ou_leo.map(doc => {
-            let newTip;
-            let odd = 1.50; //default odd for Over 2.5
-            if (over1.includes(doc.tip) || over2.includes(doc.tip) || less_over.includes(doc.tip)) {
-                newTip = 'Over 2.5'
-            } else if (under.includes(doc.tip)) {
-                newTip = 'Under 2.5'
-            }
-
-            return {
-                ...doc,
-                date: doc.siku,
-                score: doc.tip,
-                tip: newTip,
-                odd
-            };
-        });
-
-        // check if transformedData length is greater than 20, if so, filter out entries with less_over tips
-        if (transformedData.length > 20) {
-            transformedData = transformedData.filter(doc => !less_over.includes(doc.score));
-        }
+        let mikeka = await over25Model.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
 
         //multiply all odds
-        let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('6-over25/over25', { total_odds, mikeka: transformedData, SEO })
+        res.render('6-over25/over25', { total_odds, mikeka, SEO })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -406,8 +356,8 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
         }
 
         let Alltips = await mkekadb
-            .find({ date: SEO.trh.date }).sort('time')
-            .select('date time league match bet odds accuracy weekday jsDate')
+            .find({ date: SEO.trh.date }).sort('-accuracy')
+            .select('date time league match bet odds accuracy weekday jsDate logo')
             .cache(600)
 
         //multiply all odds
@@ -458,26 +408,14 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
         }
 
 
-        //magoli leo
-        const scores = ['0:3', '0:4', '0:5', '1:3', '1:4', '1:5', '2:3', '2:4', '2:5', '3:0', '3:1', '3:2', '3:3', '3:4', '4:0', '4:1', '4:2', '4:3', '5:0', '5:1', '5:2'];
-
-        let magoli = await correctScoreModel.find({
-            siku: SEO.trh.date,
-            time: { $gte: '12:00' },
-            tip: { $in: [...scores] }
-        }).sort({ time: 1 }).select('time siku league match tip createdAt').lean().cache(600);
-
-        magoli = magoli.map(m => ({
-            ...m,   // spread original mongoose doc
-            tip: 'Over 0.5 HT'
-        }));
+        let mikeka = await Over05HTTips.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
 
         //multiply all odds
-        let total_odds = Math.pow(1.24, magoli.length).toFixed(2)
+        let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('9-over05/over05', { total_odds, mikeka: magoli, SEO })
+        res.render('9-over05/over05', { total_odds, mikeka, SEO })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -521,53 +459,14 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, r
             }
         }
 
-        //over leo
-        let over1 = ['4:2', '4:3', '4:4', '5:0', '5:1', '5:2', '5:3', '5:4']
-        let over2 = ['3:4', '4:4', '0:5', '1:5', '2:5', '3:5', '4:5']
-        let under = ['0:0', '0:1']
-        let less_over = ['4:1', '1:4', '2:4']
-        let less_under = ['1:0', '1:1']
-
-        let ou_leo = await correctScoreModel.aggregate([
-            {
-                $match: {
-                    siku: SEO.trh.date, time: { $gte: '12:00' },
-                    tip: { $in: [...over1, ...over2, ...under, ...less_over, ...less_under] }
-                }
-            }, { $sort: { time: 1 } }
-        ]).cache(600);
-
-        let transformedData = ou_leo.map(doc => {
-            let newTip;
-            let odd = 1.88; //default odd for Over 3.5
-            if (over1.includes(doc.tip) || over2.includes(doc.tip) || less_over.includes(doc.tip)) {
-                newTip = 'Over 3.5'
-            } else if (under.includes(doc.tip) || less_under.includes(doc.tip)) {
-                newTip = 'Under 3.5'
-                //random odd from 1.17 to 1.25
-                odd = (Math.random() * (1.25 - 1.17) + 1.17).toFixed(2);
-            }
-
-            return {
-                ...doc,
-                date: doc.siku,
-                score: doc.tip,
-                tip: newTip,
-                odd
-            };
-        });
-
-        // check if transformedData length is greater than 20, if so, filter out entries with less_under and less_over tips
-        if (transformedData.length > 20) {
-            transformedData = transformedData.filter(doc => !less_under.includes(doc.score) && !less_over.includes(doc.score));
-        }
+        let mikeka = await OU35Tips.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
 
         //multiply all odds
-        let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('10-over35/over35', { total_odds, mikeka: transformedData, SEO })
+        res.render('10-over35/over35', { total_odds, mikeka, SEO })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -649,48 +548,14 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             }
         }
 
-        //dc leo
-        let dc_1x = ['2:0', '3:0', '3:1', '4:1']
-        let dc_x2 = ['0:2', '0:3', '1:3', '1:4']
-        let dc_12 = ['2:2', '4:2', '2:4']
-
-        let dc_leo = await correctScoreModel.aggregate([
-            {
-                $match: {
-                    siku: SEO.trh.date, time: { $gte: '12:00' },
-                    tip: { $in: [...dc_1x, ...dc_x2, ...dc_12] }
-                }
-            }, { $sort: { time: 1 } }
-        ]).cache(600);
-
-        let transformedData = dc_leo.map(doc => {
-            let newTip;
-            //random odd from 1.20 to 1.29
-            let odd = (Math.random() * (1.29 - 1.20) + 1.20).toFixed(2);
-            if (dc_1x.includes(doc.tip)) {
-                newTip = '1X'
-            } else if (dc_x2.includes(doc.tip)) {
-                newTip = 'X2'
-            } else if (dc_12.includes(doc.tip)) {
-                newTip = '12'
-                //random odd from 1.28 to 1.39
-                odd = (Math.random() * (1.39 - 1.28) + 1.28).toFixed(2);
-            }
-
-            return {
-                ...doc,
-                date: doc.siku,
-                tip: newTip,
-                odd
-            };
-        });
+        let mikeka = await DCTipsModel.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
 
         //multiply all odds
-        let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('10-dc/index', { total_odds, mikeka: transformedData, SEO })
+        res.render('10-dc/index', { total_odds, mikeka, SEO })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -734,48 +599,14 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             }
         }
 
-
-        //dc leo
-        let btts_1 = ['3:2', '4:3', '4:2']
-        let btts_2 = ['2:3', '2:4', '2:5', '3:5']
-        let nobtts = ['0:0']
-        let less_gg = ['1:3', '1:4']
-
-        let gg_leo = await correctScoreModel.find({
-            siku: SEO.trh.date,
-            time: { $gte: '12:00' },
-            tip: { $in: [...btts_1, ...btts_2, ...nobtts, ...less_gg] }
-        }).sort({ time: 1 }).lean().cache(600);
-
-        let transformedData = gg_leo.map(doc => {
-            let newTip = 'BTTS: Yes'
-            //random odd from 1.50 to 1.64
-            let odd = (Math.random() * (1.64 - 1.50) + 1.50).toFixed(2);
-            if (nobtts.includes(doc.tip)) {
-                newTip = 'BTTS: No'
-            }
-
-            return {
-                ...doc,
-                date: doc.siku,
-                score: doc.tip,
-                tip: newTip,
-                odd
-            };
-        });
-
-        // check if transformedData length is greater than 20, if so, filter out entries with less_gg tips
-        if (transformedData.length > 20) {
-            transformedData = transformedData.filter(doc => !less_gg.includes(doc.score));
-        }
-
+        let mikeka = await BTTSTipsModel.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
 
         //multiply all odds
-        let total_odds = transformedData.reduce((product, doc) => product * doc.odd, 1).toFixed(2)
+        let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
         if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('10-gg/index', { total_odds, mikeka: transformedData, SEO })
+        res.render('10-gg/index', { total_odds, mikeka, SEO })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`

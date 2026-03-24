@@ -3,10 +3,14 @@
         Over 1.5 SUPA za Leo
     </h2>
     <ul style="list-style: none; padding: 0; text-align: center;">
-        <li class="spn_trh" id="spn_trh_leo"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.leo %>: </b><%= trh.leo %></li>
-        <li class="spn_hide" id="spn_trh_juzi"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.juzi %>: </b><%= trh.juzi %></li>
-        <li class="spn_hide" id="spn_trh_jana"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.jana %>: </b><%= trh.jana %></li>
-        <li class="spn_hide" id="spn_trh_kesho"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.kesho %>: </b><%= trh.kesho %></li>
+        <li class="spn_trh" id="spn_trh_leo"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.leo %>:
+            </b><%= trh.leo %></li>
+        <li class="spn_hide" id="spn_trh_juzi"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.juzi %>:
+            </b><%= trh.juzi %></li>
+        <li class="spn_hide" id="spn_trh_jana"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.jana %>:
+            </b><%= trh.jana %></li>
+        <li class="spn_hide" id="spn_trh_kesho"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.kesho %>:
+            </b><%= trh.kesho %></li>
     </ul>
     <div class="toggle-cont" id="supa-za-leo">
         <div class="toggles">
@@ -47,9 +51,14 @@
                         <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
                         <meta itemprop="location" content="<%= leagueGroup._id.league %>">
                         <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        <br>
-                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        <div class="home-team">
+                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        </div>
+                        <div class="away-team">
+                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
+                        </div>
                     </td>
                     <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
@@ -98,9 +107,14 @@
                         <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
                         <meta itemprop="location" content="<%= leagueGroup._id.league %>">
                         <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        <br>
-                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        <div class="home-team">
+                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        </div>
+                        <div class="away-team">
+                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
+                        </div>
                     </td>
                     <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
@@ -143,9 +157,14 @@
                         <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
                         <meta itemprop="location" content="<%= leagueGroup._id.league %>">
                         <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        <br>
-                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        <div class="home-team">
+                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        </div>
+                        <div class="away-team">
+                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
+                        </div>
                     </td>
                     <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
@@ -189,9 +208,14 @@
                         <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
                         <meta itemprop="location" content="<%= leagueGroup._id.league %>">
                         <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        <br>
-                        <span class="away" itemprop="awayTeam"><%= match.awayTeam %></span>
+                        <div class="home-team">
+                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
+                        </div>
+                        <div class="away-team">
+                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
+                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
+                        </div>
                     </td>
                     <th class="tip-td table-success"><%= match.bet %></th>
                 </tr>
@@ -201,7 +225,8 @@
         </table>
         <% if (ktips.length === 0) { %>
         <div class="zakesho">
-            * Over 1.5 SUPA za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo litakuwa
+            * Over 1.5 SUPA za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo
+            litakuwa
             tayari.
         </div>
         <% } %>

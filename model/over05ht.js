@@ -19,8 +19,6 @@ const slipSchema = new Schema({
     }
 }, {strict: false, timestamps: true })
 
-let MikekaDb = mongoose.connection.useDb('mikeka-ya-uhakika')
-let Over15Mik = MikekaDb.model('betslip', slipSchema)
+let Over05HTTips = mongoose.model('ht-over05', slipSchema)
 
-module.exports = Over15Mik
-// module.exports = mongoose.model('betslip', slipSchema)
+module.exports = Over05HTTips

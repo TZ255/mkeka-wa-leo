@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const slipSchema = new Schema({
+    fixture_id: {type: Number},
     match: {type: String},
     league: {type: String},
     odds: {type: Number, default: '--'},

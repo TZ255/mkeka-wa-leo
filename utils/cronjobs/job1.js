@@ -10,15 +10,32 @@ const { UpdateBongoLeagueData } = require('../../routes/fns/bongo-ligi');
 const { getAllFixtures } = require('../../routes/fns/fixtures');
 const { syncOddsForDate } = require('../../routes/fns/odds-ingestion');
 const OddsFixture = require('../../model/odds-fixtures-bets');
+const { GET_TIPS_FOR_MKEKALEO } = require('../fetch-for-mikekadb');
 
 
 module.exports = () => {
   if (process.env.local === 'true') return console.log('⏰ Cron jobs disabled in local mode');
 
-  const tz = 'Africa/Nairobi';
+  // DATE HELPERS
+  const TZ = 'Africa/Nairobi';
+  const format = (date, locale) => date.toLocaleDateString(locale, { timeZone: TZ });
 
-  const getDate = () => new Date().toLocaleDateString('en-GB', { timeZone: tz });
-  const getISODate = () => getDate().split('/').reverse().join('-');
+  const addDays = (base, days) => {
+    const d = new Date(base);
+    d.setDate(d.getDate() + days);
+    return d;
+  };
+
+  const base = new Date();
+
+  const today = format(base, 'en-CA');
+  const today_ddmmyyyy = format(base, 'en-GB');
+
+  const tomorrow = format(addDays(base, 1), 'en-CA');
+  const tomorrow_ddmmyyyy = format(addDays(base, 1), 'en-GB');
+
+  const afterTomorrow = format(addDays(base, 2), 'en-CA');
+  const afterTomorrow_ddmmyyyy = format(addDays(base, 2), 'en-GB');
 
   console.log('⏰ Cron jobs loaded');
 
@@ -46,27 +63,27 @@ module.exports = () => {
   // ------------------------------------
   cron.schedule('*/15 * * * *', () => {
     runLocked('check-betslip', () =>
-      checking3MkekaBetslip(getDate())
+      checking3MkekaBetslip(today_ddmmyyyy)
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // 07:01 notify upcoming tips
   // ------------------------------------
   cron.schedule('1 7 * * *', () => {
     runLocked('notify-upcoming', () =>
-      notifyMkekaLeoForUpcomingTips(getDate(), false)
+      notifyMkekaLeoForUpcomingTips(today_ddmmyyyy, false)
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
-  // 08:00–15:59 post mega
+  // 08:00–10:59 post mega
   // ------------------------------------
-  cron.schedule('* 8-15 * * *', () => {
+  cron.schedule('* 8-10 * * *', () => {
     runLocked('post-mega', () =>
-      postMegaToMkekaLeo(getDate())
+      postMegaToMkekaLeo(today_ddmmyyyy)
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // 11:00 send random ad to mkeka leo channel
@@ -75,7 +92,7 @@ module.exports = () => {
     runLocked('post-ad', () =>
       postAdToMkekaLeo()
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // 03:05 reset emails + APIs + matchdays
@@ -91,9 +108,9 @@ module.exports = () => {
 
       await RapidKeysModel.updateMany({}, { $set: { times_used: 0 } });
 
-      await UpdateOtherLeagueMatchDay(getISODate());
+      await UpdateOtherLeagueMatchDay(today);
     });
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // Bongo updates at :05 and :35 (14:00–04:59)
@@ -103,14 +120,14 @@ module.exports = () => {
       await wafungajiBoraNBC();
       setTimeout(assistBoraNBC, 5000);
     });
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   cron.schedule('5,35 0-4 * * *', () => {
     runLocked('bongo-update-am', async () => {
       await wafungajiBoraNBC();
       setTimeout(assistBoraNBC, 5000);
     });
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // Bongo league updates
@@ -119,7 +136,7 @@ module.exports = () => {
     runLocked('bongo-league', () =>
       UpdateBongoLeagueData(567, 2025)
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // Other leagues update at 5'
@@ -128,7 +145,7 @@ module.exports = () => {
     runLocked('other-leagues', () =>
       UpdateMatchDayLeagueData()
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // Fixtures updates EVERY 30 MINUTES
@@ -137,16 +154,34 @@ module.exports = () => {
     runLocked('fixtures', () =>
       getAllFixtures()
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
 
   // ------------------------------------
-  // Odds sync: 06:00, 10:00
+  // Odds sync today
   // ------------------------------------
-  cron.schedule('0 6,10 * * *', () => {
+  cron.schedule('0 3,6,10 * * *', () => {
     runLocked('odds-sync', () =>
-      syncOddsForDate(getISODate())
+      syncOddsForDate(today)
     );
-  }, { timezone: tz });
+  }, { timezone: TZ });
+
+  // ------------------------------------
+  // Odds sync tomorrow
+  // ------------------------------------
+  cron.schedule('5 3,10,17,23 * * *', () => {
+    runLocked('odds-sync-tomorrow', () =>
+      syncOddsForDate(tomorrow)
+    );
+  }, { timezone: TZ });
+
+  // ------------------------------------
+  // Odds sync after tomorrow
+  // ------------------------------------
+  cron.schedule('10 4,10,23 * * *', () => {
+    runLocked('odds-sync-after-tomorrow', () =>
+      syncOddsForDate(afterTomorrow)
+    );
+  }, { timezone: TZ });
 
   // ------------------------------------
   // Cleanup odds older than 7 days: 02:00
@@ -157,5 +192,23 @@ module.exports = () => {
       const result = await OddsFixture.deleteMany({ createdAt: { $lte: cutoff } });
       console.log(`[odds-cleanup] Deleted ${result.deletedCount} docs older than 7 days`);
     });
-  }, { timezone: tz });
+  }, { timezone: TZ });
+
+  //---------------------------------------
+  // Cron for MikekaDB to fetch today matches from OddsFixtures
+  //----------------------------------------
+  cron.schedule("17 3,8,16,20,23 * * *", () => {
+    runLocked("fetch-for-mikekadb", async ()=> {
+      GET_TIPS_FOR_MKEKALEO(today)
+    })
+  })
+
+  //---------------------------------------
+  // Cron for MikekaDB to fetch tomorrow matches from OddsFixtures
+  //----------------------------------------
+  cron.schedule("25 8,16,20 * * *", () => {
+    runLocked("fetch-for-mikekadb-tomorrow", async ()=> {
+      GET_TIPS_FOR_MKEKALEO(tomorrow)
+    })
+  })
 };

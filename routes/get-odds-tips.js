@@ -3,11 +3,11 @@ const OddsFixture = require('../model/odds-fixtures-bets');
 const NeededLeague = require('../model/leagues-for-odds');
 
 const TIMEZONE = 'Africa/Nairobi';
-const MIN_ACCURACY = 65;
+const MIN_ACCURACY = 60;
 const MIN_TIME = '11:00';
 
 function getTodayDate() {
-  return "2026-03-21"
+  return "2026-03-24"
 }
 
 function getReadableDate() {

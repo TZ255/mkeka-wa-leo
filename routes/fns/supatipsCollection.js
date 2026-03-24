@@ -136,7 +136,8 @@ const processOver15 = async (d, _d, _s, kesho) => {
                     homeTeam: { $arrayElemAt: ["$matchTeams", 0] },
                     awayTeam: { $arrayElemAt: ["$matchTeams", 1] },
                     matokeo: "$matokeo",
-                    league: "$league"
+                    league: "$league",
+                    logo: "$logo"
                 }
             }
         }},

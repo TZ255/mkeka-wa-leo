@@ -2,6 +2,7 @@ const betslip = require('../../model/betslip')
 const correctScoreModel = require('../../model/cscore')
 const MikekaTipsVIPModel = require('../../model/mikekatips-vip')
 const mkekadb = require('../../model/mkeka-mega')
+const Over25Mik = require('../../model/over25mik')
 const paidVipModel = require('../../model/paid-vips')
 const supatipsModel = require('../../model/supatips')
 const fameTipsModel = require('../../model/ya-uhakika/fametips')
@@ -14,19 +15,11 @@ const checking3MkekaBetslip = async (d) => {
         //checking Betslip1
         let slip = await betslip.find({ date: d, vip_no: 1 })
         if (slip.length < 1) {
-            const home_win = ['2:0', '3:0', '4:0'];
-            const over_25 = ['4:1', '4:2', '4:3', '5:1', '5:2', '5:3', '1:4'];
-            const btts = ['2:4', '3:4', '2:5', '4:5'];
-
-            // Combine all tip patterns
-            const allTips = [...home_win, ...over_25, ...btts];
-
-            const copies = await correctScoreModel.aggregate([
+            const copies = await Over25Mik.aggregate([
                 {
                     $match: {
-                        siku: d,
+                        date: d,
                         time: { $gte: '14:00' },
-                        tip: { $in: allTips }
                     }
                 },
                 { $sample: { size: 4 } }
@@ -34,24 +27,16 @@ const checking3MkekaBetslip = async (d) => {
 
             // Prepare documents for bulk insertion
             const betslipDocs = copies.map(c => {
-                // Determine the tip category
-                let tipCategory;
-                if (home_win.includes(c.tip)) {
-                    tipCategory = 'Home Win';
-                } else if (over_25.includes(c.tip)) {
-                    tipCategory = 'Over 2.5';
-                } else if (btts.includes(c.tip)) {
-                    tipCategory = 'BTTS: Yes';
-                }
-
                 return {
-                    date: c.siku,
+                    date: c.date,
                     time: c.time,
                     league: c.league,
-                    tip: tipCategory,
-                    odd: '1.52',
+                    tip: c.bet,
+                    odd: String(Number(c.odds).toFixed(2)),
                     match: c.match.replace(/ - /g, ' vs '),
-                    vip_no: 1
+                    vip_no: 1,
+                    logo: c.logo,
+                    fixture_id: c.fixture_id
                 };
             });
 
@@ -71,7 +56,7 @@ const checking3MkekaBetslip = async (d) => {
 
             for (let c of copies) {
                 await betslip.create({
-                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2
+                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2, logo: c.logo, fixture_id: c.fixture_id
                 })
             }
         }

@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const mikekaDb = require('../model/mkeka-mega')
 const bttsModel = require('../model/ya-uhakika/btts')
-const fb_mikeka = require('../model/pm-mikeka')
 const betslip = require('../model/betslip')
 const over15Mik = require('../model/ove15mik')
 const supatipsModel = require('../model/supatips')
@@ -181,24 +180,6 @@ router.post('/post/supatips', async (req, res) => {
     } catch (err) {
         res.send(err.message)
     }
-})
-
-router.post('/post-fb', async (req, res) => {
-    let date = req.body.siku
-    let maelezo = req.body.maelezo
-    let image = req.body.image
-    let secret = req.body.secret
-
-
-    let siku = new Date(date).toLocaleDateString('en-GB')
-
-    if (secret == '5654') {
-        let mk = await fb_mikeka.create({ siku, image, maelezo })
-        res.send(mk)
-    } else {
-        res.send(`You're not Authorized`)
-    }
-
 })
 
 router.post('/delete/:id', async (req, res) => {
