@@ -1,8 +1,12 @@
 const betslip = require('../../model/betslip')
 const correctScoreModel = require('../../model/cscore')
+const DCTipsModel = require('../../model/dc-tips')
 const MikekaTipsVIPModel = require('../../model/mikekatips-vip')
 const mkekadb = require('../../model/mkeka-mega')
+const Over15Mik = require('../../model/ove15mik')
+const Over05HTTips = require('../../model/over05ht')
 const Over25Mik = require('../../model/over25mik')
+const OU35Tips = require('../../model/over35mik')
 const paidVipModel = require('../../model/paid-vips')
 const supatipsModel = require('../../model/supatips')
 const fameTipsModel = require('../../model/ya-uhakika/fametips')
@@ -64,20 +68,56 @@ const checking3MkekaBetslip = async (d) => {
         // checking betslip3, pull 4 random docs from mikekatips VIP
         const todaysbanker = await betslip.find({ date: d, vip_no: 3 })
         if (todaysbanker.length < 1) {
-            console.log('Pulling from MikekaTips VIP for betslip 3...')
-            let date = String(d).split('/').reverse().join('-');
-            let copies = await MikekaTipsVIPModel.aggregate([
+            const copies_ht05 = await Over05HTTips.aggregate([
                 {
-                    $match: {date, time: { $gte: '14:00' }, isPremium: true}
+                    $match: {
+                        date: d,
+                        time: { $gte: '14:00' },
+                    }
                 },
-                { $sample: { size: 7 } }
-            ])
+                { $sample: { size: 3 } }
+            ]);
 
-            for (let c of copies) {
-                let tip = c.tip
-                await betslip.create({
-                    date: d, time: c.time, league: c.league, tip: tip, odd: "1", match: c.match.replace(/ - /g, ' vs '), vip_no: 3, expl: matchExplanation(tip, c.match)
-                })
+            const copies_o15 = await Over15Mik.aggregate([
+                {
+                    $match: {
+                        date: d,
+                        time: { $gte: '14:00' },
+                    }
+                },
+                { $sample: { size: 2 } }
+            ]);
+
+            const copies_dc = await DCTipsModel.aggregate([
+                {
+                    $match: {
+                        date: d,
+                        time: { $gte: '14:00' },
+                    }
+                },
+                { $sample: { size: 2 } }
+            ]);
+
+            const copies = [...copies_ht05, ...copies_o15, ...copies_dc]
+
+            // Prepare documents for bulk insertion
+            const betslipDocs = copies.map(c => {
+                return {
+                    date: c.date,
+                    time: c.time,
+                    league: c.league,
+                    tip: c.bet.replace('Over 1.5', 'FT Over 1.5').replace('Home/Away', 'DC: 12').replace('Home/Draw', 'DC: 1X').replace('Draw/Away', 'DC: X2'),
+                    odd: String(Number(c.odds).toFixed(2)),
+                    match: c.match.replace(/ - /g, ' vs '),
+                    vip_no: 3,
+                    logo: c.logo,
+                    fixture_id: c.fixture_id
+                };
+            });
+
+            // Insert all at once
+            if (betslipDocs.length > 0) {
+                await betslip.insertMany(betslipDocs);
             }
         }
 
