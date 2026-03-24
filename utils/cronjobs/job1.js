@@ -11,6 +11,7 @@ const { getAllFixtures } = require('../../routes/fns/fixtures');
 const { syncOddsForDate } = require('../../routes/fns/odds-ingestion');
 const OddsFixture = require('../../model/odds-fixtures-bets');
 const { GET_TIPS_FOR_MKEKALEO } = require('../fetch-for-mikekadb');
+const { autoUpdateResults } = require('../auto-update-results');
 
 
 module.exports = () => {
@@ -148,9 +149,9 @@ module.exports = () => {
   }, { timezone: TZ });
 
   // ------------------------------------
-  // Fixtures updates EVERY 30 MINUTES
+  // Fixtures updates EVERY 10 MINUTES
   // ------------------------------------
-  cron.schedule('*/30 * * * *', () => {
+  cron.schedule('*/10 * * * *', () => {
     runLocked('fixtures', () =>
       getAllFixtures()
     );
@@ -211,4 +212,24 @@ module.exports = () => {
       GET_TIPS_FOR_MKEKALEO(tomorrow)
     })
   })
+
+  // ------------------------------------
+  // Auto-update results: every 15 min 16:00–23:59 (today)
+  // ------------------------------------
+  cron.schedule('*/15 16-23 * * *', () => {
+    runLocked('auto-update-today', () =>
+      autoUpdateResults(today_ddmmyyyy)
+    );
+  }, { timezone: TZ });
+
+  // ------------------------------------
+  // Auto-update results: every 15 min 00:00–03:59 (yesterday)
+  // ------------------------------------
+  const yesterday_ddmmyyyy = format(addDays(base, -1), 'en-GB');
+
+  cron.schedule('*/15 0-3 * * *', () => {
+    runLocked('auto-update-yesterday', () =>
+      autoUpdateResults(yesterday_ddmmyyyy)
+    );
+  }, { timezone: TZ });
 };
