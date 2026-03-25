@@ -94,7 +94,7 @@ module.exports = () => {
   // ------------------------------------
   // 08:00–10:59 post mega
   // ------------------------------------
-  cron.schedule('* 8-10 * * *', () => {
+  cron.schedule('* 8-13 * * *', () => {
     const today = format(new Date(), 'en-GB');
 
     runLocked('post-mega', () =>
