@@ -123,53 +123,5 @@ async function replySocialWin(telegram_message_id, resultText) {
     }).catch(() => { throw new Error('Kushindwa kutuma reply ya WON') });
 }
 
-/**
- * TEMPORARY TEST — delete after confirming it works.
- * Posts a sample pick image to mikekaDB_channel.
- */
-async function testPickImage() {
-    const doc = {
-        match: 'Manchester City - Manchester United',
-        bet: 'Over 2.5',
-        league: 'Premier League',
-        date: '25/03/2026',
-        time: '22:00',
-        logo: {
-            home: 'https://media.api-sports.io/football/teams/42.png',
-            away: 'https://media.api-sports.io/football/teams/49.png',
-        }
-    };
 
-    const [home, away] = doc.match.split(' - ');
-
-    const buffer = await generatePickBuffer({
-        homeTeam: home,
-        awayTeam: away,
-        homeLogo: doc.logo.home,
-        awayLogo: doc.logo.away,
-        pick: doc.bet,
-        time: doc.time,
-        league: doc.league,
-        date: doc.date.split('/20')[0],
-    });
-
-    const caption = buildCaption(doc);
-
-    const resp = await bot.api.sendPhoto(
-        mikekaDB_channel,
-        new InputFile(buffer, 'pick.png'),
-        {
-            caption,
-            parse_mode: 'HTML',
-            reply_markup: {
-                inline_keyboard: [[
-                    { text: 'Beti Sasa | 100% Bonus 🤑', url: 'https://bet-link.top/gsb/register', style: 'success' }
-                ]]
-            }
-        }
-    );
-
-    return { ok: true, message_id: resp?.message_id };
-}
-
-module.exports = { sendSocialPhoto, replySocialWin, postMegaToMkekaLeo, testPickImage };
+module.exports = { sendSocialPhoto, replySocialWin, postMegaToMkekaLeo };

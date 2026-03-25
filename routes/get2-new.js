@@ -28,7 +28,7 @@ const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
 const { getLessUsedAPIKey } = require('./fns/RAPIDAPI')
 const { nkiriFunction } = require('../bots/charlotte/functions/nkiri')
 const mkekaDB = require('../model/mkeka-mega')
-const { postMegaToMkekaLeo, testPickImage } = require('./fns/sendSocialPhoto')
+const { postMegaToMkekaLeo } = require('./fns/sendSocialPhoto')
 const { oddToWinPercent } = require('../utils/odd-to-percent')
 const { syncOddsForDate } = require('./fns/odds-ingestion')
 const { getBestPicksForMikekaDB, GET_TIPS_FOR_MKEKALEO } = require('../utils/fetch-for-mikekadb')
@@ -350,8 +350,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-        const result = await testPickImage()
-        res.json(result)
+        res.json({message: "working"})
     } catch (error) {
         res.json({ error: error?.message || String(error) })
     }

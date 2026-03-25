@@ -107,7 +107,8 @@ module.exports = () => {
   // ------------------------------------
   cron.schedule('0 13 * * *', () => {
     runLocked('post-ad', () =>
-      postAdToMkekaLeo()
+      // postAdToMkekaLeo()
+    console.log("cron job Ad posting is paused for a while")
     );
   }, { timezone: TZ });
 
