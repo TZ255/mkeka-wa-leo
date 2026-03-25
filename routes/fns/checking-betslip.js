@@ -1,3 +1,4 @@
+const MatchWinnerTips = require('../../model/1x2tips')
 const betslip = require('../../model/betslip')
 const correctScoreModel = require('../../model/cscore')
 const DCTipsModel = require('../../model/dc-tips')
@@ -26,11 +27,24 @@ const checking3MkekaBetslip = async (d) => {
                         time: { $gte: '14:00' },
                     }
                 },
-                { $sample: { size: 4 } }
+                { $sample: { size: 3 } }
             ]);
 
+            const copies1x2 = await MatchWinnerTips.aggregate([
+                {
+                    $match: {
+                        date: d,
+                        time: { $gte: '14:00' },
+                        accuracy: { $gte: 60 }
+                    }
+                },
+                { $sample: { size: 2 } }
+            ]);
+
+            const combinedDocs = [...copies, ...copies1x2]
+
             // Prepare documents for bulk insertion
-            const betslipDocs = copies.map(c => {
+            const betslipDocs = combinedDocs.map(c => {
                 return {
                     date: c.date,
                     time: c.time,

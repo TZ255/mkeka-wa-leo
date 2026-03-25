@@ -9,6 +9,7 @@ const OU35Tips = require('../model/over35mik');
 const BTTSTipsModel = require('../model/btts-tips');
 const DCTipsModel = require('../model/dc-tips');
 const Over05HTTips = require('../model/over05ht');
+const MatchWinnerTips = require('../model/1x2tips');
 
 const TIMEZONE = 'Africa/Nairobi';
 const MIN_ACCURACY = 60;
@@ -71,6 +72,61 @@ const getBestPicksForMikekaDB = async (ISODate) => {
     } catch (error) {
         console.error(error?.message, error);
         sendNotification(741815228, error?.message || "❌ Failed to fetch best picks for MikekaDB");
+    }
+};
+
+//fetch best match winner
+const getBestMatchWinner = async (ISODate) => {
+    try {
+        const neededIds = await getNeededLeagueIds();
+
+        const fixtures = await OddsFixture.find({
+            'match.date': ISODate,
+            'league.id': { $in: neededIds },
+            'match_winner.best_pick.accuracy': { $lte: 77 }, //accuracy less than, odds 1.3 or more
+            'match_winner.best_pick.odds': { $ne: null },
+            'match.time': { $gt: MIN_TIME },
+        }).sort({ 'match_winner.best_pick.accuracy': -1 }).lean();
+
+        console.log(`⏳ Start Processing Tips for Match Winner, ${fixtures.length} found`);
+
+        const bulkOps = fixtures.map(pick => {
+            const DDMMYYYY = String(pick?.match?.date).split('-').reverse().join("/");
+            const match = `${pick?.match?.home?.name} - ${pick?.match?.away?.name}`;
+            const doc = {
+                fixture_id: pick.fixture_id,
+                time: pick?.match?.time,
+                jsDate: pick?.match?.date,
+                league: `${pick?.league?.country}: ${pick?.league?.name}`.replace('World: ', ""),
+                accuracy: Number(pick.match_winner.best_pick.accuracy || 0),
+                odds: pick.match_winner.best_pick.odds,
+                bet: pick.match_winner.best_pick.label,
+                facts: null,
+                weekday: GetDayFromDateString(DDMMYYYY),
+                logo: { home: pick.match.home.logo, away: pick.match.away.logo},
+                match,
+                date: DDMMYYYY
+            };
+
+            return {
+                updateOne: {
+                    filter: { match, date: DDMMYYYY },
+                    update: { $set: doc },
+                    upsert: true
+                }
+            };
+        });
+
+        if (bulkOps.length > 0) {
+            const result = await MatchWinnerTips.bulkWrite(bulkOps);
+            console.log(`✅ Done. Matched: ${result.matchedCount}, Upserted: ${result.upsertedCount}`);
+        } else {
+            console.log(`⚠️ No Match Winner tips to process`);
+        }
+
+    } catch (error) {
+        console.error(error?.message, error);
+        sendNotification(741815228, error?.message || "❌ Failed to fetch 1X2 Tips");
     }
 };
 
@@ -469,6 +525,8 @@ const getBestOver05HT = async (ISODate) => {
 const GET_TIPS_FOR_MKEKALEO = async (ISODate) => {
     try {
         await getBestPicksForMikekaDB(ISODate).catch(e => {})
+        await new Promise(res => setTimeout(res, 1000));
+        await getBestMatchWinner(ISODate).catch(e => {})
         await new Promise(res => setTimeout(res, 1000));
         await getBestOU25(ISODate).catch(e => {})
         await new Promise(res => setTimeout(res, 1000));
