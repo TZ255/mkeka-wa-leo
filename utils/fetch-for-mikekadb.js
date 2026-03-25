@@ -82,7 +82,7 @@ const getBestOver15 = async (ISODate) => {
         const fixtures = await OddsFixture.find({
             'match.date': ISODate,
             'league.id': { $in: neededIds },
-            'over_under.over_1_5.accuracy': { $gte: 80 },
+            'over_under.over_1_5.accuracy': { $gte: 78 },
             'over_under.over_1_5.odds': { $ne: null },
             'match.time': { $gt: MIN_TIME },
         }).sort({ 'over_under.over_1_5.accuracy': -1 }).lean();
@@ -232,7 +232,7 @@ const getBestOU35 = async (ISODate) => {
                     'over_under.over_2_5.odds': { $ne: null }
                 },
                 {
-                    'over_under.under_3_5.accuracy': { $gte: 70 },
+                    'over_under.under_3_5.accuracy': { $gte: 75 },
                     'over_under.under_3_5.odds': { $ne: null }
                 }
             ]
