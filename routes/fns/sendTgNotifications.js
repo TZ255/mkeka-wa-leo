@@ -38,7 +38,7 @@ const notifyMkekaLeoForUpcomingTips = async (dateStr, disable_notification = fal
 
             const notifyMsg = `<b>Habari wadau!</b> \n\nMechi za leo ${dateStr} tutazipost kuanzia 08:00 AM. Fuatilia utabiri wetu wa kila siku hapa!`;
             await botLaura.api.sendMessage(mkekawaleo, notifyMsg, { parse_mode: 'HTML', disable_notification }).catch(() => { });
-            await botLaura.api.copyMessage(mkekawaleo, mikekaDB_channel, 10459)
+            await botLaura.api.copyMessage(mkekawaleo, mikekaDB_channel, 10808)
         }
     } catch (error) {
         console.error(error)
