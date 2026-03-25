@@ -33,7 +33,7 @@ async function sendSocialPhoto(buffer, caption) {
  */
 function buildCaption(doc) {
     const [home, away] = doc.match.split(' - ');
-    const match = `<a href="https://bet-link.top/gsb/register">${home} vs ${away}</a>`
+    const match = `<a href="https://bet-link.top/gsb/register"><b>${home} vs ${away}</b></a>`
     const promo = `Beti mechi hii | Pata 100% bonus kwenye deposit yako ya kwanza`
     return `🎯 Tip: <b>${doc.bet}</b> \n⚽ ${match} \n\n📅 ${doc.date.split('/20')[0]}  •  ${doc.time} \n🏆 ${doc.league} \n\n<tg-spoiler>${promo}</tg-spoiler>`;
 }
@@ -129,7 +129,7 @@ async function replySocialWin(telegram_message_id, resultText) {
  */
 async function testPickImage() {
     const doc = {
-        match: 'Arsenal The Gunners - Chelsea The Stamford Bridge',
+        match: 'Manchester City - Manchester United',
         bet: 'Over 2.5',
         league: 'Premier League',
         date: '25/03/2026',

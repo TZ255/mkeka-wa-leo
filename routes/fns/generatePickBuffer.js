@@ -1,5 +1,10 @@
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage, registerFont } = require('canvas');
 const axios = require('axios');
+const path = require('path');
+
+const fontsDir = path.join(__dirname, '..', '..', 'public', 'fonts');
+registerFont(path.join(fontsDir, 'Inter-Bold.ttf'), { family: 'Inter', weight: 'bold' });
+registerFont(path.join(fontsDir, 'Inter-Regular.ttf'), { family: 'Inter', weight: 'normal' });
 
 const WIDTH = 1200;
 const HEIGHT = 440;
@@ -97,7 +102,7 @@ function drawPlaceholderCircle(ctx, cx, cy, radius) {
     ctx.lineWidth = 2;
     ctx.stroke();
     // Shield icon placeholder
-    ctx.font = `bold ${radius}px sans-serif`;
+    ctx.font = `bold ${radius}px Inter`;
     ctx.fillStyle = TEXT_MUTED;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -169,7 +174,7 @@ async function generatePickBuffer(pickData) {
 
     // ── League badge ──
     const headerY = cardY + 50;
-    ctx.font = 'bold 18px sans-serif';
+    ctx.font = 'bold 18px Inter';
     const leagueText = league.toUpperCase();
     const leagueW = ctx.measureText(leagueText).width;
     const badgePad = 18;
@@ -191,7 +196,7 @@ async function generatePickBuffer(pickData) {
 
     // ── Time & date ──
     const timeDate = date ? `${time}  ·  ${date}` : time;
-    ctx.font = '16px sans-serif';
+    ctx.font = '16px Inter';
     ctx.fillStyle = TEXT_MUTED;
     ctx.fillText(timeDate, WIDTH / 2, headerY + 30);
 
@@ -209,7 +214,7 @@ async function generatePickBuffer(pickData) {
     }
 
     // Home name
-    ctx.font = 'bold 28px sans-serif';
+    ctx.font = 'bold 28px Inter';
     ctx.fillStyle = TEXT_WHITE;
     ctx.textAlign = 'left';
     ctx.fillText(
@@ -227,7 +232,7 @@ async function generatePickBuffer(pickData) {
     }
 
     // Away name
-    ctx.font = 'bold 28px sans-serif';
+    ctx.font = 'bold 28px Inter';
     ctx.fillStyle = TEXT_WHITE;
     ctx.textAlign = 'right';
     ctx.fillText(
@@ -246,7 +251,7 @@ async function generatePickBuffer(pickData) {
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    ctx.font = 'bold 18px sans-serif';
+    ctx.font = 'bold 18px Inter';
     ctx.fillStyle = TEXT_LIGHT;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -255,7 +260,7 @@ async function generatePickBuffer(pickData) {
 
     // ── Pick pill ──
     const pickY = teamY + 78;
-    ctx.font = 'bold 34px sans-serif';
+    ctx.font = 'bold 34px Inter';
     const pickText = pick.toUpperCase();
     const pickW = ctx.measureText(pickText).width;
     const pillPadX = 32;
@@ -303,7 +308,7 @@ async function generatePickBuffer(pickData) {
     ctx.restore();
 
     // Footer text
-    ctx.font = 'bold 15px sans-serif';
+    ctx.font = 'bold 15px Inter';
     ctx.fillStyle = TEXT_MUTED;
     ctx.textAlign = 'center';
     ctx.fillText('MKEKAWALEO.COM', WIDTH / 2, footerY + 25);
