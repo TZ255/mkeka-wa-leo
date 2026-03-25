@@ -37,7 +37,7 @@ const { identity } = require('lodash');
 const { getAllFixtures } = require('./routes/fns/fixtures');
 const removeTrailingSlash = require('./routes/fns/removeTrailingSlash');
 const RapidKeysModel = require('./model/rapid_keys');
-const { repostToMkekaLeo, postMegaToMkekaLeo } = require('./routes/fns/sendSocialPhoto');
+const { postMegaToMkekaLeo } = require('./routes/fns/sendSocialPhoto');
 const { KenyaSafeBots } = require('./bots/zambias/bot-safe');
 
 const app = express()

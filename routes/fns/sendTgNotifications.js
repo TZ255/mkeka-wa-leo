@@ -35,10 +35,8 @@ const notifyMkekaLeoForUpcomingTips = async (dateStr, disable_notification = fal
         //if there is no social tip yet and false socials are available, send message to mkekawaleo to notify that soon social tip will be posted
         if (socialCount === 0 && matches > 0) {
             await botLaura.api.copyMessage(mkekawaleo, mikekaDB_channel, 10434)
-            // stop all previous unclosed polls before posting the new one
-            stopPolls()
 
-            const notifyMsg = `<b>Habari wadau!</b> \n\nMechi za leo ${dateStr} tutazipost kuanzia 08:00 AM kwa mfumo wa <b>poll</b>. Piga kura yako ukiwa unakubaliana na utabiri (👍 Agree) au hukubaliani nao (👎 Disagree). \n\nWekeza kwenye tabiri zenye kura nyingi za kukubaliana (👍)`;
+            const notifyMsg = `<b>Habari wadau!</b> \n\nMechi za leo ${dateStr} tutazipost kuanzia 08:00 AM. Fuatilia utabiri wetu wa kila siku hapa!`;
             await botLaura.api.sendMessage(mkekawaleo, notifyMsg, { parse_mode: 'HTML', disable_notification }).catch(() => { });
             await botLaura.api.copyMessage(mkekawaleo, mikekaDB_channel, 10459)
         }
@@ -60,19 +58,4 @@ const postAdToMkekaLeo = async () => {
     }
 }
 
-const stopPolls = async () => {
-    try {
-        const polls = await mkekaDB.find({ isPollClosed: false, telegram_message_id: { $ne: null } });
-        for (const poll of polls) {
-            if (!poll?.telegram_message_id) continue;
-            await botLaura.api.stopPoll(mkekawaleo, poll.telegram_message_id).catch(() => { });
-            await poll.updateOne({ $set: { isPollClosed: true } });
-        }
-    } catch (error) {
-        console.error('Error in stopPolls:', error?.message)
-        sendLauraNotification(mikekaDB_channel, `Error in stopPolls: ${error?.message}`, false)
-    }
-}
-
-
-module.exports = { sendNotification, sendLauraNotification, notifyMkekaLeoForUpcomingTips, postAdToMkekaLeo, stopPolls }
+module.exports = { sendNotification, sendLauraNotification, notifyMkekaLeoForUpcomingTips, postAdToMkekaLeo }

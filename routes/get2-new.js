@@ -20,7 +20,7 @@ const mkekaUsersModel = require('../model/mkeka-users')
 const { getAllFixtures, getFixturePredictions } = require('./fns/fixtures')
 const { processRatibaMatokeo } = require('./fns/processFixturesCollection')
 const moment = require('moment-timezone')
-const { sendNotification, sendLauraNotification, stopPolls } = require('./fns/sendTgNotifications')
+const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotifications')
 const { on } = require('form-data')
 const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
@@ -28,7 +28,7 @@ const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
 const { getLessUsedAPIKey } = require('./fns/RAPIDAPI')
 const { nkiriFunction } = require('../bots/charlotte/functions/nkiri')
 const mkekaDB = require('../model/mkeka-mega')
-const { postMegaToMkekaLeo } = require('./fns/sendSocialPhoto')
+const { postMegaToMkekaLeo, testPickImage } = require('./fns/sendSocialPhoto')
 const { oddToWinPercent } = require('../utils/odd-to-percent')
 const { syncOddsForDate } = require('./fns/odds-ingestion')
 const { getBestPicksForMikekaDB, GET_TIPS_FOR_MKEKALEO } = require('../utils/fetch-for-mikekadb')
@@ -350,11 +350,10 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-        // await GET_TIPS_FOR_MKEKALEO("2026-03-24")
-        // autoUpdateResults("24/03/2026")
-        res.send('Testing API endpoint')
+        const result = await testPickImage()
+        res.json(result)
     } catch (error) {
-        res.send(error)
+        res.json({ error: error?.message || String(error) })
     }
 })
 

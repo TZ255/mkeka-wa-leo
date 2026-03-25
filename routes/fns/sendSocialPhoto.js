@@ -1,6 +1,7 @@
 const { Bot, InputFile } = require('grammy');
 const SocialTipModel = require('../../model/social-tip');
 const mkekaDB = require('../../model/mkeka-mega');
+const { generatePickBuffer } = require('./generatePickBuffer');
 
 const mikekaDB_channel = -1001696592315;
 const mkekawaleo = -1001733907813;
@@ -28,7 +29,17 @@ async function sendSocialPhoto(buffer, caption) {
 }
 
 /**
- * Repost the first unposted social tip for a given date (DD/MM/YYYY) to another channel, add inline button, then delete the original.
+ * Build an HTML caption for a pick image.
+ */
+function buildCaption(doc) {
+    const [home, away] = doc.match.split(' - ');
+    const match = `<a href="https://bet-link.top/gsb/register">${home} vs ${away}</a>`
+    const promo = `Beti mechi hii | Pata 100% bonus kwenye deposit yako ya kwanza`
+    return `🎯 Tip: <b>${doc.bet}</b> \n⚽ ${match} \n\n📅 ${doc.date.split('/20')[0]}  •  ${doc.time} \n🏆 ${doc.league} \n\n<tg-spoiler>${promo}</tg-spoiler>`;
+}
+
+/**
+ * Generate pick images and post them sequentially to the mkekawaleo channel.
  * @param {string} dateStr format DD/MM/YYYY
  */
 async function postMegaToMkekaLeo(dateStr) {
@@ -38,72 +49,60 @@ async function postMegaToMkekaLeo(dateStr) {
         const docs = await mkekaDB.find({ date: dateStr, isSocial: false, time: { $gte: '10:00' } }).sort({ time: 1 }).limit(3);
         if (!docs || docs.length === 0) return null;
 
-        for (let doc of docs) {
-            const tgPost = await bot.api.sendPoll(
-                mkekawaleo,
-                `${doc.date.split('/20')[0]} ${doc.time} | ${doc.league}\n⚽ ${doc.match.replace(' - ', ' vs ')}\n🎯 Tip: ${doc.bet}`,
-                [
-                    '👍 I Agree',
-                    '👎 I Disagree'
-                ],
-                {
-                    reply_markup: {
-                        inline_keyboard: [
-                            [
-                                {
-                                    text: 'Beti Sasa | 100% Bonus 🤑',
-                                    url: 'https://bet-link.top/gsb/register',
-                                    style: 'danger'
-                                }
-                            ]
-                        ]
+        let posted = 0;
+
+        // Sequential processing — one at a time to avoid memory spikes
+        for (const doc of docs) {
+            try {
+                const [home, away] = doc.match.split(' - ');
+
+                const buffer = await generatePickBuffer({
+                    homeTeam: home,
+                    awayTeam: away,
+                    homeLogo: doc.logo?.home || null,
+                    awayLogo: doc.logo?.away || null,
+                    pick: doc.bet,
+                    time: doc.time,
+                    league: doc.league,
+                    date: doc.date.split('/20')[0],
+                });
+
+                const caption = buildCaption(doc);
+
+                const tgPost = await bot.api.sendPhoto(
+                    mkekawaleo,
+                    new InputFile(buffer, 'pick.png'),
+                    {
+                        caption,
+                        parse_mode: 'HTML',
+                        reply_markup: {
+                            inline_keyboard: [[
+                                { text: 'Beti Sasa | 100% Bonus 🤑', url: 'https://bet-link.top/gsb/register' }
+                            ]]
+                        }
                     }
+                );
+
+                if (tgPost?.message_id) {
+                    doc.isSocial = true;
+                    doc.telegram_message_id = tgPost.message_id;
+                    await doc.save();
+                    posted++;
                 }
-            )
-            // if posted successfully, mark isSocial true
-            if (tgPost?.message_id) {
-                doc.isSocial = true;
-                doc.telegram_message_id = tgPost.message_id;
-                await doc.save();
+            } catch (err) {
+                await bot.api.sendMessage(mikekaDB_channel, `Pick image error (${doc.match}): ${err?.message || err}`).catch(() => {});
             }
         }
 
-        return { "ok": true, "tips posted": docs.length };
+        return { ok: true, 'tips posted': posted };
     } catch (error) {
-        const msg = `repostToMkekaLeo error: ${error?.message || error}`;
+        const msg = `postMegaToMkekaLeo error: ${error?.message || error}`;
         await bot.api.sendMessage(mikekaDB_channel, msg).catch(() => { });
         return null;
     }
 }
 
 
-/**
- * Repost the first unposted social tip for a given date (DD/MM/YYYY) to another channel, add inline button, then delete the original.
- * @param {string} dateStr format DD/MM/YYYY
- */
-async function repostToMkekaLeo(dateStr) {
-    try {
-        if (!dateStr) throw new Error('date haijapokelewa (DD/MM/YYYY)');
-
-        const doc = await SocialTipModel.findOne({ date: dateStr, isPosted: false, message_id: { $exists: true } }).sort({ createdAt: 1 });
-        if (!doc) return null;
-
-        const copyResp = await bot.api.copyMessage(mkekawaleo, mikekaDB_channel, doc.message_id, {
-            reply_markup: {
-                inline_keyboard: [[{ text: '🎁 10,000 TZS BURE!', url: 'https://bet-link.top/gsb/register' }]]
-            }
-        });
-
-        await bot.api.deleteMessage(mikekaDB_channel, doc.message_id).catch(() => { });
-
-        await doc.updateOne({ $set: { isPosted: true, repost_message_id: copyResp?.message_id || null } });
-        return copyResp;
-    } catch (error) {
-        const msg = `repostToMkekaLeo error: ${error?.message || error}`;
-        await bot.api.sendMessage(mikekaDB_channel, msg).catch(() => { });
-        return null;
-    }
-}
 
 /**
  * Reply to a reposted message on mkekawaleo channel marking it as WON.
@@ -116,17 +115,7 @@ async function replySocialWin(telegram_message_id, resultText) {
     const doc = await mkekaDB.findOne({ telegram_message_id });
     if (!doc) throw new Error('Social tip haijapatikana kwenye mkekaDB kwa telegram_message_id hii');
 
-    // stop the poll and get the final results
-    const poll_res = await bot.api.stopPoll(mkekawaleo, telegram_message_id).catch(() => { });
-    const agreeVotes = poll_res?.options?.[0]?.voter_count || 0;
-    const disagreeVotes = poll_res?.options?.[1]?.voter_count || 0;
-
-    if (!poll_res || agreeVotes + disagreeVotes === 0) throw new Error(`Tatizo kwenye stopPoll au 0 votes: ${poll_res ? JSON.stringify(poll_res) : 'no response'}`);
-
-    // mark the poll as closed in the database
-    await doc.updateOne({ $set: { isPollClosed: true } });
-
-    const text = `⚽ ${doc.match.replace(' - ', ' vs ')}\n<b>🎯 Tip: ${doc.bet}</b> \n📈 Votes: ${agreeVotes} 👍 / ${disagreeVotes} 👎 \n<b>🥅 Result: ${resultText} ✅ (WON)</b>`
+    const text = `⚽ ${doc.match.replace(' - ', ' vs ')}\n<b>🎯 Tip: ${doc.bet}</b>\n<b>🥅 Result: ${resultText} ✅ (WON)</b>`;
     return bot.api.sendMessage(mkekawaleo, text, {
         parse_mode: 'HTML',
         disable_notification: true,
@@ -134,4 +123,53 @@ async function replySocialWin(telegram_message_id, resultText) {
     }).catch(() => { throw new Error('Kushindwa kutuma reply ya WON') });
 }
 
-module.exports = { sendSocialPhoto, repostToMkekaLeo, replySocialWin, postMegaToMkekaLeo };
+/**
+ * TEMPORARY TEST — delete after confirming it works.
+ * Posts a sample pick image to mikekaDB_channel.
+ */
+async function testPickImage() {
+    const doc = {
+        match: 'Arsenal The Gunners - Chelsea The Stamford Bridge',
+        bet: 'Over 2.5',
+        league: 'Premier League',
+        date: '25/03/2026',
+        time: '22:00',
+        logo: {
+            home: 'https://media.api-sports.io/football/teams/42.png',
+            away: 'https://media.api-sports.io/football/teams/49.png',
+        }
+    };
+
+    const [home, away] = doc.match.split(' - ');
+
+    const buffer = await generatePickBuffer({
+        homeTeam: home,
+        awayTeam: away,
+        homeLogo: doc.logo.home,
+        awayLogo: doc.logo.away,
+        pick: doc.bet,
+        time: doc.time,
+        league: doc.league,
+        date: doc.date.split('/20')[0],
+    });
+
+    const caption = buildCaption(doc);
+
+    const resp = await bot.api.sendPhoto(
+        mikekaDB_channel,
+        new InputFile(buffer, 'pick.png'),
+        {
+            caption,
+            parse_mode: 'HTML',
+            reply_markup: {
+                inline_keyboard: [[
+                    { text: 'Beti Sasa | 100% Bonus 🤑', url: 'https://bet-link.top/gsb/register', style: 'success' }
+                ]]
+            }
+        }
+    );
+
+    return { ok: true, message_id: resp?.message_id };
+}
+
+module.exports = { sendSocialPhoto, replySocialWin, postMegaToMkekaLeo, testPickImage };

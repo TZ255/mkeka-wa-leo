@@ -81,7 +81,7 @@ async function autoUpdateResults(dateStr) {
             megaUpdated++;
 
             // Post won results to Telegram (only won, skip lost)
-            if (result === 'won' && doc.telegram_message_id && !doc.isPollClosed) {
+            if (result === 'won' && doc.telegram_message_id) {
                 try {
                     // await new Promise(r => setTimeout(r, 1000));
                     await replySocialWin(doc.telegram_message_id, `${scores.home}:${scores.away}`);
