@@ -35,33 +35,40 @@ async function postMegaToMkekaLeo(dateStr) {
     try {
         if (!dateStr) throw new Error('date haijapokelewa (DD/MM/YYYY)');
 
-        const doc = await mkekaDB.findOne({ date: dateStr, isSocial: false, time: { $gte: '10:00' } }).sort({ time: 1 });
-        if (!doc) return null;
+        const docs = await mkekaDB.find({ date: dateStr, isSocial: false, time: { $gte: '10:00' } }).sort({ time: 1 }).limit(3);
+        if (!docs || docs.length === 0) return null;
 
-        const tgPost = await bot.api.sendPoll(
-            mkekawaleo,
-            `${doc.date.split('/20')[0]} ${doc.time} | ${doc.league}\n⚽ ${doc.match.replace(' - ', ' vs ')}\n🎯 Tip: ${doc.bet}`,
-            [
-                '👍 I Agree',
-                '👎 I Disagree'
-            ],
-            {
-                reply_markup: {
-                    inline_keyboard: [
-                        [
-                            {
-                                text: 'Beti Sasa | 100% Bonus 🤑',
-                                url: 'https://bet-link.top/gsb/register',
-                                style: 'danger'
-                            }
+        for (let doc of docs) {
+            const tgPost = await bot.api.sendPoll(
+                mkekawaleo,
+                `${doc.date.split('/20')[0]} ${doc.time} | ${doc.league}\n⚽ ${doc.match.replace(' - ', ' vs ')}\n🎯 Tip: ${doc.bet}`,
+                [
+                    '👍 I Agree',
+                    '👎 I Disagree'
+                ],
+                {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: 'Beti Sasa | 100% Bonus 🤑',
+                                    url: 'https://bet-link.top/gsb/register',
+                                    style: 'danger'
+                                }
+                            ]
                         ]
-                    ]
+                    }
                 }
+            )
+            // if posted successfully, mark isSocial true
+            if (tgPost?.message_id) {
+                doc.isSocial = true;
+                doc.telegram_message_id = tgPost.message_id;
+                await doc.save();
             }
-        )
+        }
 
-        await doc.updateOne({ $set: { isSocial: true, telegram_message_id: tgPost?.message_id || null } });
-        return tgPost;
+        return { "ok": true, "tips posted": docs.length };
     } catch (error) {
         const msg = `repostToMkekaLeo error: ${error?.message || error}`;
         await bot.api.sendMessage(mikekaDB_channel, msg).catch(() => { });
@@ -87,13 +94,13 @@ async function repostToMkekaLeo(dateStr) {
             }
         });
 
-        await bot.api.deleteMessage(mikekaDB_channel, doc.message_id).catch(() => {});
+        await bot.api.deleteMessage(mikekaDB_channel, doc.message_id).catch(() => { });
 
         await doc.updateOne({ $set: { isPosted: true, repost_message_id: copyResp?.message_id || null } });
         return copyResp;
     } catch (error) {
         const msg = `repostToMkekaLeo error: ${error?.message || error}`;
-        await bot.api.sendMessage(mikekaDB_channel, msg).catch(() => {});
+        await bot.api.sendMessage(mikekaDB_channel, msg).catch(() => { });
         return null;
     }
 }
