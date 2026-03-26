@@ -275,6 +275,9 @@ const getBestOU25 = async (ISODate) => {
 const getBestOU35 = async (ISODate) => {
     console.log(`⏳ Processing Over/Under 3.5 Tips...`);
 
+    const MIN_OVER_ACCU = 62;
+    const MIN_UNDER_ACCU = 75;
+
     try {
         const neededIds = await getNeededLeagueIds();
 
@@ -284,11 +287,11 @@ const getBestOU35 = async (ISODate) => {
             'match.time': { $gt: MIN_TIME },
             $or: [
                 {
-                    'over_under.over_3_5.accuracy': { $gte: 55 },
-                    'over_under.over_2_5.odds': { $ne: null }
+                    'over_under.over_3_5.accuracy': { $gte: MIN_OVER_ACCU },
+                    'over_under.over_3_5.odds': { $ne: null }
                 },
                 {
-                    'over_under.under_3_5.accuracy': { $gte: 75 },
+                    'over_under.under_3_5.accuracy': { $gte: MIN_UNDER_ACCU },
                     'over_under.under_3_5.odds': { $ne: null }
                 }
             ]
@@ -302,20 +305,17 @@ const getBestOU35 = async (ISODate) => {
 
             if (!over && !under) continue;
 
-            let bestPick;
+            let bestPick = null;
 
-            if (over && under) {
-                bestPick = over.accuracy >= under.accuracy
-                    ? { ...over, label: "Over 3.5" }
-                    : { ...under, label: "Under 3.5" };
-            } else if (over) {
+            // 🔥 PRIORITY LOGIC
+            if (over?.accuracy >= MIN_OVER_ACCU && over?.odds) {
                 bestPick = { ...over, label: "Over 3.5" };
-            } else {
+            } 
+            else if (under?.accuracy >= MIN_UNDER_ACCU && under?.odds) {
                 bestPick = { ...under, label: "Under 3.5" };
             }
 
-            // safety filters
-            if (!bestPick?.odds || bestPick.accuracy < MIN_ACCURACY) continue;
+            if (!bestPick) continue;
 
             const DDMMYYYY = pick.match.date.split('-').reverse().join('/');
             const match = `${pick.match.home.name} - ${pick.match.away.name}`;
@@ -331,7 +331,10 @@ const getBestOU35 = async (ISODate) => {
                 odds: bestPick.odds,
                 bet: bestPick.label,
                 weekday: GetDayFromDateString(DDMMYYYY),
-                logo: { home: pick.match.home.logo, away: pick.match.away.logo}
+                logo: {
+                    home: pick.match.home.logo,
+                    away: pick.match.away.logo
+                }
             };
 
             bulkOps.push({

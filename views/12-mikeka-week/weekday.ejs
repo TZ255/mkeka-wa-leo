@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%- include('../0-global/fonts.ejs'); %>
     <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
-    <meta name="description" content="Mikeka ya bure ya <%= partials.siku %>. Shinda beti zako kwa mechi za <%= partials.siku %> na mikeka yetu ya leo ya 1X2, Over 1.5, Over 2.5 na Both Teams to Score">
-    <title>Mkeka wa <%= partials.siku %></title>
+    <meta name="description" content="Mikeka ya bure na mega odds za <%= partials.siku %>. Shinda beti zako kwa mechi za <%= partials.siku %> na mikeka yetu inayojumuisha 1X2, Over 1.5, Over 2.5 na Both Teams to Score">
+    <title>Mkeka wa <%= partials.siku %> | <%= partials.trh.mega %></title>
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonicalPath %>">
     <%- include('./partials/style.ejs'); %>
     <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/v3-mega.css">
     <%- include('../0-global/google.ejs'); %>
     <%- include('../0-global/favicon.ejs') %>
 </head>
@@ -25,27 +26,33 @@
                 <p>
                     Karibu jamvini kwa mikeka yetu ya bure ya <%= partials.siku %>. Hapa tumekuwekea utabiri wa mechi za leo zote. Tabiri zetu zimechambuliwa kwa umakini mkubwa ili kukuhakikishia wewe mdau wetu nafasi nzuri ya ushindi.
                 </p>
+                <p>
+                    Kwa siku ya <%= partials.siku %>, <strong><%= partials.trh.mega %></strong>, tumeandaa jumla ya mechi <strong><%= mikeka.length %></strong> zenye jumla ya odds <strong><%= Number(megaOdds) %></strong>. Karibu!
+                </p>
             </div>
             <br><br>
             <%- include('../0-global/banner.ejs'); %>
             <br>
             <section class="megaodds" itemscope>
-                <%- include('./partials/supatips.ejs'); %>
+                <%- include('./partials/mega.ejs'); %>
             </section> <br>
-            <div class="next-prev d-flex justify-content-between px-4 fs-4 fw-bold mb-4">
-                <div class="prev">
-                    <a href="/mkeka/<%= partials.prevNext.prev %>" class="text-success">
-                        <i class="fa-solid fa-arrow-left"></i>
-                        <%= String(partials.prevNext.prev).charAt(0).toUpperCase() + String(partials.prevNext.prev).slice(1) %>
+            <% const allDays = ['jumatatu','jumanne','jumatano','alhamisi','ijumaa','jumamosi','jumapili']; %>
+            <nav class="card border-0 shadow-sm overflow-hidden mb-4" style="background:#0f1420; border-radius:16px; border:1px solid rgba(255,255,255,.08);">
+                <div class="d-flex flex-wrap justify-content-center gap-2 p-3">
+                    <% allDays.forEach(day => {
+                        const label = day.charAt(0).toUpperCase() + day.slice(1);
+                        const isActive = day === partials.siku.toLowerCase();
+                    %>
+                    <a href="/mkeka/<%= day %>"
+                       class="btn btn-sm rounded-pill fw-semibold px-3 <%= isActive ? 'text-dark' : 'text-light' %>"
+                       style="<%= isActive
+                         ? 'background:linear-gradient(180deg,#2bd576,#14b862); box-shadow:0 4px 12px rgba(20,184,98,.35);'
+                         : 'background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);' %>">
+                        <%= label %>
                     </a>
+                    <% }) %>
                 </div>
-                <div class="next">
-                    <a href="/mkeka/<%= partials.prevNext.next %>" class="text-success">
-                        <%= String(partials.prevNext.next).charAt(0).toUpperCase() + String(partials.prevNext.next).slice(1) %>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
+            </nav>
             <hr>
             <%- include('../0-global/banner2.ejs'); %>
             <%- include('../0-global/somapia.ejs'); %>

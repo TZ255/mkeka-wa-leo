@@ -1,5 +1,4 @@
-const moment = require('moment');
-const { processSupatips } = require('./supatipsCollection');
+const mkekadb = require('../../model/mkeka-mega');
 
 //English day to swahili
 const WeekDayFn = (engDay) => {
@@ -83,58 +82,58 @@ const GetJsDate = (ddmmyyyy) => {
 }
 
 
-const findMikekaByWeekday = async (weekday, Model) => {
-    const dayIndex = moment().day(weekday).day();
-    const today = moment().format('YYYY-MM-DD');
+const findMikekaByWeekday = async (swahiliDay) => {
+    const dayMap = { 'jumapili': 0, 'jumatatu': 1, 'jumanne': 2, 'jumatano': 3, 'alhamisi': 4, 'ijumaa': 5, 'jumamosi': 6 };
+    const targetIndex = dayMap[swahiliDay.toLowerCase()];
 
-    // Find next occurrence of weekday
-    let nextDate = moment(today);
-    while (nextDate.day() !== dayIndex) {
-        nextDate.add(1, 'days');
-    }
+    // Get today in Africa/Nairobi
+    const now = new Date();
+    const todayStr = now.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' });
+    const [d, m, y] = todayStr.split('/').map(Number);
+    const todayUTC = new Date(Date.UTC(y, m - 1, d));
+    const currentIndex = todayUTC.getUTCDay();
 
-    // Search for future date
-    const futureResult = await processSupatips(nextDate.format('YYYY-MM-DD'));
-
-    if (futureResult.length > 0) {
-        return {mikeka: futureResult, trh: nextDate.format('DD/MM/YYYY')}
-    }
-
-    // Find previous occurrence if no future results
-    let prevDate = moment(today);
-    while (prevDate.day() !== dayIndex) {
-        prevDate.subtract(1, 'days');
-    }
-
-    // Search for past date
-    return {
-        mikeka: await processSupatips(prevDate.format('YYYY-MM-DD')),
-        trh: prevDate.format('DD/MM/YYYY')
-    }
-    
-}
-
-//change swahili weekday to English
-function SwahiliDayToEnglish(day) {
-    const days = {
-        'jumapili': 'Sunday',
-        'jumatatu': 'Monday',
-        'jumanne': 'Tuesday',
-        'jumatano': 'Wednesday',
-        'alhamisi': 'Thursday',
-        'ijumaa': 'Friday',
-        'jumamosi': 'Saturday'
+    // Helper: offset a UTC date by N days and return dd/mm/yyyy
+    const offsetDate = (base, days) => {
+        const dt = new Date(base.getTime() + days * 86400000);
+        const dd = String(dt.getUTCDate()).padStart(2, '0');
+        const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
+        const yyyy = dt.getUTCFullYear();
+        return { dateStr: `${dd}/${mm}/${yyyy}`, dt };
     };
 
-    const translatedDay = days[day.toLowerCase()];
+    // Helper: query mega odds for a dd/mm/yyyy date
+    const queryMega = async (dateStr) => {
+        const mikeka = await mkekadb
+            .find({ date: dateStr, status: { $ne: 'vip' }, bet: { $ne: 'Over 1.5' } })
+            .select('date time league match bet odds accuracy weekday jsDate logo')
+            .sort({ accuracy: -1 })
+            .cache(600);
+        const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2);
+        return { mikeka, megaOdds };
+    };
 
-    if (translatedDay) {
-        return translatedDay;
-    } else {
-        return 'Invalid day';
+    // Helper: format human-readable date (e.g. "26 Mar 2026")
+    const formatMonthDate = (dt) => {
+        return new Date(Date.UTC(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDate()))
+            .toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
+    };
+
+    // Next occurrence (0 = today if same weekday)
+    const daysForward = (targetIndex - currentIndex + 7) % 7;
+    const next = offsetDate(todayUTC, daysForward);
+    const nextResult = await queryMega(next.dateStr);
+
+    if (nextResult.mikeka.length > 0) {
+        return { ...nextResult, trh: next.dateStr, monthDate: formatMonthDate(next.dt) };
     }
+
+    // Previous occurrence (7 days before next)
+    const prev = offsetDate(next.dt, -7);
+    const prevResult = await queryMega(prev.dateStr);
+    return { ...prevResult, trh: prev.dateStr, monthDate: formatMonthDate(prev.dt) };
 }
 
 module.exports = {
-    WeekDayFn, GetDayFromDateString, GetJsDate, findMikekaByWeekday, SwahiliDayToEnglish, DetermineNextPrev
+    WeekDayFn, GetDayFromDateString, GetJsDate, findMikekaByWeekday, DetermineNextPrev
 }

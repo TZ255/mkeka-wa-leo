@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const mkekadb = require('../model/mkeka-mega')
-const supatips = require('../model/supatips')
 const betslip = require('../model/betslip')
 const over25Model = require('../model/over25mik')
 const affModel = require('../model/affiliates-analytics')
@@ -9,19 +8,18 @@ const over15Mik = require('../model/ove15mik')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 
-const { WeekDayFn, findMikekaByWeekday, SwahiliDayToEnglish, DetermineNextPrev, GetJsDate, GetDayFromDateString } = require('./fns/weekday')
+const { WeekDayFn, findMikekaByWeekday, DetermineNextPrev, GetJsDate, GetDayFromDateString } = require('./fns/weekday')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateBongoLeagueData } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
 const OtherStandingLigiKuuModel = require('../model/Ligi/other')
 const { UpdateOtherLeagueData } = require('./fns/other-ligi')
-const { processSupatips, processOver15 } = require('./fns/supatipsCollection')
+const { processOver15 } = require('./fns/supatipsCollection')
 const getPaymentStatus = require('./fns/pesapal/getTxStatus')
 const { makePesaPalAuth } = require('./fns/pesapal/auth')
 const isProduction = require('./fns/pesapal/isProduction')
 const { sendNotification, sendLauraNotification } = require('./fns/sendTgNotifications')
 const { processCScoreTips } = require('./fns/cscoreCollection')
-const supatipsModel = require('../model/supatips')
 const { LinkToRedirect } = require('./fns/affLinktoRedirect')
 const correctScoreModel = require('../model/cscore')
 const yaUhakikaVipModel = require('../model/ya-uhakika/vip-yauhakika')
@@ -627,20 +625,23 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
         if (!days.includes(weekday)) {
             next()
         } else {
-            //mikeka & tarehes
-            let matchDays = await findMikekaByWeekday(SwahiliDayToEnglish(weekday), supatipsModel)
+            //mikeka mega & tarehes
+            let { mikeka, megaOdds, monthDate } = await findMikekaByWeekday(weekday)
+
+            let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
+            let siku = weekday.charAt(0).toUpperCase() + weekday.slice(1)
 
             let partials = {
-                siku: weekday.charAt(0).toUpperCase() + weekday.slice(1),
+                siku,
                 canonicalPath: `/mkeka/${weekday}`,
-                trh: {
-                    mega: matchDays.trh,
-                },
+                trh: { mega: monthDate, created },
                 prevNext: DetermineNextPrev(weekday)
             }
 
+            let trh = { siku: weekday }
+
             res.set('Cache-Control', 'public, max-age=600');
-            res.render('12-mikeka-week/weekday', { matchDays, partials });
+            res.render('12-mikeka-week/weekday', { mikeka, megaOdds, partials, trh });
         }
     } catch (err) {
         console.error(err.message)

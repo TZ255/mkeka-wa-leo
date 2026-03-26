@@ -108,7 +108,7 @@ module.exports = () => {
   cron.schedule('0 13 * * *', () => {
     runLocked('post-ad', () =>
       // postAdToMkekaLeo()
-    console.log("cron job Ad posting is paused for a while")
+      console.log("cron job Ad posting is paused for a while")
     );
   }, { timezone: TZ });
 
@@ -207,6 +207,24 @@ module.exports = () => {
       syncOddsForDate(afterTomorrow)
     );
   }, { timezone: TZ });
+
+
+  // ------------------------------------
+  // Odds sync (next 3 days)
+  // ------------------------------------
+  cron.schedule('37 16,23 * * *', () => {
+    const next3 = format(addDays(3), 'en-CA');
+    const next4 = format(addDays(4), 'en-CA');
+
+    runLocked('odds-sync-next3', async () => {
+      await syncOddsForDate(next3)
+      await GET_TIPS_FOR_MKEKALEO(next3)
+      await syncOddsForDate(next4)
+      await GET_TIPS_FOR_MKEKALEO(next4)
+    }
+    );
+  }, { timezone: TZ });
+
 
   // ------------------------------------
   // Cleanup odds

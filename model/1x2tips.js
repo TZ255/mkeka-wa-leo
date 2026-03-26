@@ -10,6 +10,7 @@ const slipSchema = new Schema({
     time: { type: String },
     date: { type: String },
     bet: { type: String },
+    result: {type: String, default: '-:-'},
     status: { type: String, default: 'Pending' },
     weekday: { type: String, default: 'unknown' },
     jsDate: { type: String, default: 'unknown' },
