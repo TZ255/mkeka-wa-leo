@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 
         //mikeka mega
         let mikeka = await mkekadb
-            .find({ date: d, status: { $ne: "vip" }, bet: { $ne: "Over 1.5" } })
+            .find({ date: d, status: { $ne: "vip" }, bet: { $ne: "Over 1.5" }, accuracy: {$gte: 60} })
             .select("date time league match bet odds accuracy weekday jsDate logo")
             .sort({ accuracy: -1 })   // pick the best 20 first
             .limit(20)
@@ -68,7 +68,11 @@ router.get('/', async (req, res) => {
         ])
 
         //multiply all odds of MegaOdds
-        const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
+        const megaOdds = mikeka.reduce((product, doc) => {
+            const odds = Number(doc.odds);
+            if (!odds || isNaN(odds)) return product;
+            return product * odds;
+        }, 1);
 
         //multiply all odds of betslip
         const slipOdds = {
@@ -88,7 +92,7 @@ router.get('/', async (req, res) => {
         //cache response
         res.set('Cache-Control', 'public, max-age=600');
 
-        res.render('1-home/home', { megaOdds, mikeka, stips, ytips, ktips, jtips, slip, slip2, slip3, slipOdds, trh, jumasiku })
+        res.render('1-home/home', { megaOdds: megaOdds.toFixed(2), mikeka, stips, ytips, ktips, jtips, slip, slip2, slip3, slipOdds, trh, jumasiku })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -118,7 +122,11 @@ router.get('/mkeka/kesho', async (req, res) => {
             .cache(600)
 
         //multiply all odds of MegaOdds
-        const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
+        let megaOdds = mikeka.reduce((product, doc) => {
+            const odds = Number(doc.odds);
+            if (!odds || isNaN(odds)) return product;
+            return product * odds;
+        }, 1);
 
         //Over 1.5 SUPA Tips
         const { ktips } = await processOver15('no leo', 'no jana', 'no juzi', kesho)
@@ -129,7 +137,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         let jumasiku = { kesho: WeekDayFn(k_juma) }
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('1-home-kesho/index', { megaOdds, mikeka, ktips, trh, jumasiku })
+        res.render('1-home-kesho/index', { megaOdds: megaOdds.toFixed(2), mikeka, ktips, trh, jumasiku })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -306,7 +314,6 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
-        if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('6-over25/over25', { total_odds, mikeka, SEO })
@@ -354,7 +361,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
         }
 
         let Alltips = await mkekadb
-            .find({ date: SEO.trh.date }).sort('-accuracy')
+            .find({ date: SEO.trh.date, accuracy: {$gte: 60} }).sort('-accuracy')
             .select('date time league match bet odds accuracy weekday jsDate logo')
             .cache(600)
 
@@ -410,7 +417,6 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
-        if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('9-over05/over05', { total_odds, mikeka, SEO })
@@ -461,7 +467,6 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, r
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
-        if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('10-over35/over35', { total_odds, mikeka, SEO })
@@ -550,7 +555,6 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
-        if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('10-dc/index', { total_odds, mikeka, SEO })
@@ -601,7 +605,6 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
-        if (total_odds > 9999) total_odds = 9999.99
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('10-gg/index', { total_odds, mikeka, SEO })

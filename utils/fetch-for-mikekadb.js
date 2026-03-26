@@ -83,7 +83,7 @@ const getBestMatchWinner = async (ISODate) => {
         const fixtures = await OddsFixture.find({
             'match.date': ISODate,
             'league.id': { $in: neededIds },
-            'match_winner.best_pick.accuracy': { $lte: 77 }, //accuracy less than, odds 1.3 or more
+            'match_winner.best_pick.accuracy': { $gte: 60 },
             'match_winner.best_pick.odds': { $ne: null },
             'match.time': { $gt: MIN_TIME },
         }).sort({ 'match_winner.best_pick.accuracy': -1 }).lean();

@@ -21,13 +21,13 @@
     <%- include('../0-global/header.ejs'); %>
     <main>
         <section class="left">
-            <h1 class="h2" style="font-size: 16px;">Mikeka ya <%= partials.siku %>: <%= partials.trh.mega %></h1>
+            <h1 class="h2" style="font-size: 16px;">Mikeka ya <%= partials.siku %>, <%= partials.trh.mega %></h1>
             <div class="intro p">
                 <p>
                     Karibu jamvini kwa mikeka yetu ya bure ya <%= partials.siku %>. Hapa tumekuwekea utabiri wa mechi za leo zote. Tabiri zetu zimechambuliwa kwa umakini mkubwa ili kukuhakikishia wewe mdau wetu nafasi nzuri ya ushindi.
                 </p>
                 <p>
-                    Kwa siku ya <%= partials.siku %>, <strong><%= partials.trh.mega %></strong>, tumeandaa jumla ya mechi <strong><%= mikeka.length %></strong> zenye jumla ya odds <strong><%= Number(megaOdds) %></strong>. Karibu!
+                    Kwa siku ya <%= partials.siku %>, <strong><%= partials.trh.mega %></strong>, tumeandaa jumla ya mechi <strong><%= mikeka.length %></strong> zenye jumla ya odds <strong><%= Number(megaOdds).toLocaleString("sw-TZ", {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></strong>. Karibu!
                 </p>
             </div>
             <br><br>

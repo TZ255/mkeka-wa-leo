@@ -128,7 +128,7 @@
             <div class="stat__body">
               <div class="label">Total Odds</div>
               <div class="value fw-bold fs-5">
-                <%= Number(megaOdds) %>
+                <%= Number(megaOdds) > 9999 ? "9999+" : megaOdds %>
               </div>
             </div>
           </div>

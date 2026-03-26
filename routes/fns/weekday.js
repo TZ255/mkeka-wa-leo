@@ -33,25 +33,25 @@ const WeekDayFn = (engDay) => {
 const DetermineNextPrev = (swahiliWeekday) => {
     switch (String(swahiliWeekday).toLowerCase()) {
         case 'jumatatu':
-            return {next: 'jumanne', prev: 'jumapili'}
+            return { next: 'jumanne', prev: 'jumapili' }
 
         case 'jumanne':
-            return {next: 'jumatano', prev: 'jumatatu'}
+            return { next: 'jumatano', prev: 'jumatatu' }
 
         case 'jumatano':
-            return {next: 'alhamisi', prev: 'jumanne'}
+            return { next: 'alhamisi', prev: 'jumanne' }
 
         case 'alhamisi':
-            return {next: 'ijumaa', prev: 'jumatano'}
+            return { next: 'ijumaa', prev: 'jumatano' }
 
         case 'ijumaa':
-            return {next: 'jumamosi', prev: 'alhamisi'}
+            return { next: 'jumamosi', prev: 'alhamisi' }
 
         case 'jumamosi':
-            return {next: 'jumapili', prev: 'ijumaa'}
+            return { next: 'jumapili', prev: 'ijumaa' }
 
         case 'jumapili':
-            return {next: 'jumatatu', prev: 'jumamosi'}
+            return { next: 'jumatatu', prev: 'jumamosi' }
 
         default:
             return "Siku"
@@ -105,12 +105,18 @@ const findMikekaByWeekday = async (swahiliDay) => {
     // Helper: query mega odds for a dd/mm/yyyy date
     const queryMega = async (dateStr) => {
         const mikeka = await mkekadb
-            .find({ date: dateStr, status: { $ne: 'vip' }, bet: { $ne: 'Over 1.5' } })
+            .find({ date: dateStr, status: { $ne: 'vip' }, bet: { $ne: 'Over 1.5' }, accuracy: { $gte: 60 } })
             .select('date time league match bet odds accuracy weekday jsDate logo')
             .sort({ accuracy: -1 })
             .cache(600);
-        const megaOdds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2);
-        return { mikeka, megaOdds };
+
+        let megaOdds = mikeka.reduce((product, doc) => {
+            const odds = Number(doc.odds);
+            if (!odds || isNaN(odds)) return product;
+            return product * odds;
+        }, 1);
+
+        return { mikeka, megaOdds: megaOdds.toFixed(2) };
     };
 
     // Helper: format human-readable date (e.g. "26 Mar 2026")

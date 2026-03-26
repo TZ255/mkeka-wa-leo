@@ -35,7 +35,7 @@ const checking3MkekaBetslip = async (d) => {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        accuracy: { $gte: 60 }
+                        accuracy: { $gte: 65 }
                     }
                 },
                 { $sample: { size: 2 } }

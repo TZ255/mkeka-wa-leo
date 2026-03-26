@@ -123,7 +123,7 @@
             <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
             <div class="stat__body">
               <div class="label">Total Odds</div>
-              <div class="value fw-bold fs-5"><%= Number(total_odds) %></div>
+              <div class="value fw-bold fs-5"><%= Number(total_odds) > 9999 ? "9999+" : total_odds %></div>
             </div>
           </div>
         </div>

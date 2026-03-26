@@ -117,7 +117,7 @@
             <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
             <div class="stat__body">
               <div class="label">Total Odds</div>
-              <div class="value fw-bold fs-5"><%= Number(megaOdds) %></div>
+              <div class="value fw-bold fs-5"><%= Number(megaOdds) > 9999 ? "9999+" : megaOdds %></div>
             </div>
           </div>
         </div>

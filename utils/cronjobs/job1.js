@@ -122,13 +122,11 @@ module.exports = () => {
       await affAnalyticsModel.findOneAndUpdate(
         { pid: 'shemdoe' },
         { $set: { email_count: 0 } }
-      );
+      ).catch(e => {});
 
       sendNotification(741815228, '📧 Email count reset');
 
-      await RapidKeysModel.updateMany({}, { $set: { times_used: 0 } });
-
-      await UpdateOtherLeagueMatchDay(todayISO);
+      await UpdateOtherLeagueMatchDay(todayISO).catch(e => {});
     });
   }, { timezone: TZ });
 
@@ -136,7 +134,7 @@ module.exports = () => {
   // Bongo updates
   // ------------------------------------
   const bongoJob = async () => {
-    await wafungajiBoraNBC();
+    await wafungajiBoraNBC().catch(e => {});
     setTimeout(assistBoraNBC, 5000);
   };
 
@@ -203,24 +201,26 @@ module.exports = () => {
   cron.schedule('10 4,10,23 * * *', () => {
     const afterTomorrow = format(addDays(2), 'en-CA');
 
-    runLocked('odds-sync-after-tomorrow', () =>
-      syncOddsForDate(afterTomorrow)
+    runLocked('odds-sync-after-tomorrow', async () => {
+      await syncOddsForDate(afterTomorrow).catch(e => {})
+      GET_TIPS_FOR_MKEKALEO(afterTomorrow)
+    }
     );
   }, { timezone: TZ });
 
 
   // ------------------------------------
-  // Odds sync (next 3 days)
+  // Odds sync (next 3 & 4 days)
   // ------------------------------------
-  cron.schedule('39 16,21 * * *', () => {
+  cron.schedule('37 16,21 * * *', () => {
     const next3 = format(addDays(3), 'en-CA');
     const next4 = format(addDays(4), 'en-CA');
 
     runLocked('odds-sync-next3', async () => {
-      await syncOddsForDate(next3)
-      await GET_TIPS_FOR_MKEKALEO(next3)
-      await syncOddsForDate(next4)
-      await GET_TIPS_FOR_MKEKALEO(next4)
+      await syncOddsForDate(next3).catch(e => {})
+      await GET_TIPS_FOR_MKEKALEO(next3).catch(e => {})
+      await syncOddsForDate(next4).catch(e => {})
+      await GET_TIPS_FOR_MKEKALEO(next4).catch(e => {})
     }
     );
   }, { timezone: TZ });
@@ -247,7 +247,7 @@ module.exports = () => {
     const today = format(new Date(), 'en-CA');
 
     runLocked('fetch-mikeka', async () => {
-      await GET_TIPS_FOR_MKEKALEO(today);
+      await GET_TIPS_FOR_MKEKALEO(today).catch(e => {});
     });
   }, { timezone: TZ });
 
@@ -258,7 +258,7 @@ module.exports = () => {
     const tomorrow = format(addDays(1), 'en-CA');
 
     runLocked('fetch-mikeka-tomorrow', async () => {
-      await GET_TIPS_FOR_MKEKALEO(tomorrow);
+      await GET_TIPS_FOR_MKEKALEO(tomorrow).catch(e => {});
     });
   }, { timezone: TZ });
 
