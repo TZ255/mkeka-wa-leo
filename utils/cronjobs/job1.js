@@ -212,7 +212,7 @@ module.exports = () => {
   // ------------------------------------
   // Odds sync (next 3 days)
   // ------------------------------------
-  cron.schedule('37 16,23 * * *', () => {
+  cron.schedule('39 16,21 * * *', () => {
     const next3 = format(addDays(3), 'en-CA');
     const next4 = format(addDays(4), 'en-CA');
 
