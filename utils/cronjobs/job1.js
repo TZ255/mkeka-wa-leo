@@ -176,7 +176,7 @@ module.exports = () => {
   // ------------------------------------
   // Odds sync (today)
   // ------------------------------------
-  cron.schedule('0 3,6,10 * * *', () => {
+  cron.schedule('0 3,6,8 * * *', () => {
     const today = format(new Date(), 'en-CA');
 
     runLocked('odds-sync', () =>
