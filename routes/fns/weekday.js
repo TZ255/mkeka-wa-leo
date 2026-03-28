@@ -106,7 +106,7 @@ const findMikekaByWeekday = async (swahiliDay) => {
     const queryMega = async (dateStr) => {
         const mikeka = await mkekadb
             .find({ date: dateStr, status: { $ne: 'vip' }, bet: { $ne: 'Over 1.5' }, accuracy: { $gte: 60 } })
-            .select('date time league match bet odds accuracy weekday jsDate logo')
+            .select('date time league match bet odds accuracy confidence weekday jsDate logo')
             .sort({ accuracy: -1 })
             .limit(100)
             .cache(600);

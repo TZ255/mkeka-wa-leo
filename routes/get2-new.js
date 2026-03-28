@@ -31,7 +31,10 @@ const mkekaDB = require('../model/mkeka-mega')
 const { postMegaToMkekaLeo } = require('./fns/sendSocialPhoto')
 const { oddToWinPercent } = require('../utils/odd-to-percent')
 const { syncOddsForDate } = require('./fns/odds-ingestion')
-const { getBestPicksForMikekaDB, GET_TIPS_FOR_MKEKALEO, getBestOU25 } = require('../utils/fetch-for-mikekadb')
+const { GET_TIPS_FOR_MKEKALEO } = require('../utils/fetch-for-mikekadb')
+const { analyzeMatch } = require('../utils/analyze-match')
+const OddsFixture = require('../model/odds-fixtures-bets')
+const NeededLeague = require('../model/leagues-for-odds')
 const { autoUpdateResults } = require('../utils/auto-update-results')
 
 
@@ -348,12 +351,57 @@ router.get('/mechi/:siku', async (req, res) => {
 })
 
 
+router.get('/api/test-smart-tips', async (req, res) => {
+    try {
+        const moment = require('moment-timezone');
+        const date = req.query.date || moment().tz('Africa/Nairobi').format('YYYY-MM-DD');
+
+        const leagues = await NeededLeague.find({ isNeeded: true }, { league_id: 1 }).lean();
+        const neededIds = leagues.map(l => l.league_id);
+
+        const fixtures = await OddsFixture.find({
+            'match.date': date,
+            'league.id': { $in: neededIds },
+            'match.time': { $gt: '08:00' },
+            'best_pick.odds': { $ne: null },
+        }).lean();
+
+        const mw = [], ou25 = [], btts = [];
+        let goalIndexSum = 0, goalIndexCount = 0;
+
+        for (const pick of fixtures) {
+            const { tips, meta } = analyzeMatch(pick);
+            if (meta.goalIndex) { goalIndexSum += meta.goalIndex; goalIndexCount++; }
+            for (const tip of tips) {
+                if (tip.market === 'match_winner') mw.push(tip);
+                else if (tip.market === 'over_2_5') ou25.push(tip);
+                else if (tip.market === 'btts') btts.push(tip);
+            }
+        }
+
+        mw.sort((a, b) => b.accuracy - a.accuracy);
+        ou25.sort((a, b) => b.accuracy - a.accuracy);
+        btts.sort((a, b) => b.accuracy - a.accuracy);
+
+        res.render('test-smart-tips', {
+            date,
+            total: fixtures.length,
+            mw, ou25, btts,
+            avgGoalIndex: goalIndexCount ? Math.round(goalIndexSum / goalIndexCount) : 'N/A',
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error?.message || String(error) });
+    }
+})
+
 router.get('/api/testing', async (req, res) => {
     try {
-        await getBestOU25("2026-03-29")
-        res.json({message: "working"})
+        await GET_TIPS_FOR_MKEKALEO("2026-03-29")
+        res.json({ok: true})
     } catch (error) {
-        res.json({ error: error?.message || String(error) })
+        console.error(error);
+        res.status(500).json({ error: error?.message || String(error) });
     }
 })
 

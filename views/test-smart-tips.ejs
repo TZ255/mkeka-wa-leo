@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tips Test — <%= date %></title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e1e1e1; padding: 16px; }
+        h1 { font-size: 18px; margin-bottom: 12px; color: #fff; }
+        h2 { font-size: 15px; margin: 20px 0 8px; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+        .summary { background: #1a1d27; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; line-height: 1.6; }
+        .summary span { color: #60a5fa; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+        th { background: #1a1d27; color: #9ca3af; text-align: left; padding: 8px 10px; font-weight: 500; white-space: nowrap; }
+        td { padding: 7px 10px; border-bottom: 1px solid #1f2230; }
+        tr:hover td { background: #1a1d27; }
+        .super { color: #34d399; font-weight: 700; }
+        .strong { color: #fbbf24; font-weight: 600; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .badge.super { background: #064e3b; color: #34d399; }
+        .badge.strong { background: #422006; color: #fbbf24; }
+        .meta { color: #6b7280; font-size: 11px; }
+        .empty { color: #4b5563; font-style: italic; padding: 16px; }
+        .goal-idx { color: #818cf8; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<h1>Smart Tips Test — <%= date %></h1>
+
+<div class="summary">
+    Fixtures analyzed: <span><%= total %></span> &nbsp;|&nbsp;
+    Match Winner: <span><%= mw.length %></span> &nbsp;|&nbsp;
+    O/U 2.5: <span><%= ou25.length %></span> &nbsp;|&nbsp;
+    BTTS: <span><%= btts.length %></span> &nbsp;|&nbsp;
+    Goal Index avg: <span><%= avgGoalIndex %></span>
+</div>
+
+<!-- MATCH WINNER -->
+<h2>Match Winner (<%= mw.length %>)</h2>
+<% if (mw.length) { %>
+<table>
+    <tr><th>Match</th><th>League</th><th>Bet</th><th>Odds</th><th>Prob%</th><th>Confidence</th><th>Meta</th></tr>
+    <% mw.forEach(t => { %>
+    <tr>
+        <td><%= t.match %></td>
+        <td><%= t.league %></td>
+        <td><strong><%= t.bet %></strong></td>
+        <td><%= t.odds %></td>
+        <td><%= t.accuracy %>%</td>
+        <td><span class="badge <%= t.confidence === 'SUPER_STRONG' ? 'super' : 'strong' %>"><%= t.confidence %></span></td>
+        <td class="meta">H:<%= t.meta?.homeP %> D:<%= t.meta?.drawP %> A:<%= t.meta?.awayP %> gap:<%= t.meta?.gap %> GI:<span class="goal-idx"><%= t.meta?.goalIndex %></span></td>
+    </tr>
+    <% }) %>
+</table>
+<% } else { %><p class="empty">No Match Winner tips generated</p><% } %>
+
+<!-- OVER/UNDER 2.5 -->
+<h2>Over/Under 2.5 (<%= ou25.length %>)</h2>
+<% if (ou25.length) { %>
+<table>
+    <tr><th>Match</th><th>League</th><th>Bet</th><th>Odds</th><th>Prob%</th><th>Confidence</th><th>Meta</th></tr>
+    <% ou25.forEach(t => { %>
+    <tr>
+        <td><%= t.match %></td>
+        <td><%= t.league %></td>
+        <td><strong><%= t.bet %></strong></td>
+        <td><%= t.odds %></td>
+        <td><%= t.accuracy %>%</td>
+        <td><span class="badge <%= t.confidence === 'SUPER_STRONG' ? 'super' : 'strong' %>"><%= t.confidence %></span></td>
+        <td class="meta">Ov:<%= t.meta?.overP %> Un:<%= t.meta?.underP %> GG:<%= t.meta?.bttsYesP %> NG:<%= t.meta?.bttsNoP %> Hi:<%= t.meta?.highScoring %> GI:<span class="goal-idx"><%= t.meta?.goalIndex %></span></td>
+    </tr>
+    <% }) %>
+</table>
+<% } else { %><p class="empty">No Over/Under 2.5 tips generated</p><% } %>
+
+<!-- BTTS -->
+<h2>BTTS (<%= btts.length %>)</h2>
+<% if (btts.length) { %>
+<table>
+    <tr><th>Match</th><th>League</th><th>Bet</th><th>Odds</th><th>Prob%</th><th>Confidence</th><th>Meta</th></tr>
+    <% btts.forEach(t => { %>
+    <tr>
+        <td><%= t.match %></td>
+        <td><%= t.league %></td>
+        <td><strong><%= t.bet %></strong></td>
+        <td><%= t.odds %></td>
+        <td><%= t.accuracy %>%</td>
+        <td><span class="badge <%= t.confidence === 'SUPER_STRONG' ? 'super' : 'strong' %>"><%= t.confidence %></span></td>
+        <td class="meta">GG:<%= t.meta?.bttsYesP %> NG:<%= t.meta?.bttsNoP %> Ov:<%= t.meta?.overP %> Un:<%= t.meta?.underP %> Hi:<%= t.meta?.highScoring %> GI:<span class="goal-idx"><%= t.meta?.goalIndex %></span></td>
+    </tr>
+    <% }) %>
+</table>
+<% } else { %><p class="empty">No BTTS tips generated</p><% } %>
+
+</body>
+</html>

@@ -1,237 +1,148 @@
-<section class="keka-mix-sectio shadow rounded mb-5">
-    <h2 class="h2" id="spn-title">
-        Over 1.5 SUPA za Leo
-    </h2>
-    <ul style="list-style: none; padding: 0; text-align: center;">
-        <li class="spn_trh" id="spn_trh_leo"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.leo %>:
-            </b><%= trh.leo %></li>
-        <li class="spn_hide" id="spn_trh_juzi"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.juzi %>:
-            </b><%= trh.juzi %></li>
-        <li class="spn_hide" id="spn_trh_jana"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.jana %>:
-            </b><%= trh.jana %></li>
-        <li class="spn_hide" id="spn_trh_kesho"><b><i class="fa-solid fa-calendar-days"></i> <%= jumasiku.kesho %>:
-            </b><%= trh.kesho %></li>
-    </ul>
-    <div class="toggle-cont" id="supa-za-leo">
-        <div class="toggles">
-            <div class="jtoggle" id="jtoggle">« Juzi</div>
-            <div class="ytoggle" id="ytoggle">Jana</div>
-            <div class="ltoggle active_toggle" id="ltoggle">⁕ Leo ⁕</div>
-            <div class="ktoggle" id="ktoggle">Kesho »</div>
+<section class="mega-card card border-0 shadow-sm" itemscope>
+  <!-- Navigation Header -->
+  <div class="btn-group" role="group" aria-label="Mikeka ya Leo na Kesho">
+    <a href="#supa-over15-za-leo" class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+      Leo
+    </a>
+    <a href="/mkeka/kesho#supa-over15-za-kesho" class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+      Kesho
+    </a>
+  </div>
+
+  <!-- Title header -->
+  <div class="mega-card__header border-top" id="supa-over15-za-leo">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <h2 class="mega-card__title m-0 fw-bold fs-3">
+          <span class="bullet" aria-hidden="true"></span>
+          Over 1.5 Supa za Leo
+        </h2>
+        <div class="date-wrap d-flex align-items-center gap-2">
+          <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i>
+            <%= jumasiku.leo %>
+          </span>
+          <span class="vr d-none d-sm-inline"></span>
+          <span class="date-badge">
+            <%= trh.leo %>
+          </span>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- today -->
-    <div class="tble-cont" id="lday" itemscope itemtype="https://schema.org/Table">
-        <meta itemprop="about" content="Mechi za Leo: <%= jumasiku.leo %>">
-        <table class="table table-light table-striped">
-            <thead>
-                <tr class="table-dark">
-                    <th scope="col">Time</th>
-                    <th scope="col">Matches</th>
-                    <th class="tips-th" scope="col">Tip</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <% stips.forEach(leagueGroup => { %>
-                <tr class="league-row table-dark mt-8">
-                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
-                </tr>
-                <% leagueGroup.matches.forEach(match => { %>
-                <tr itemscope itemtype="https://schema.org/SportsEvent">
-                    <td class="time-td">
-                        <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.date %></span>
-                        </time>
-                    </td>
-                    <td class="match-td">
-                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                        <meta itemprop="description"
-                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
-                        <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <div class="home-team">
-                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        </div>
-                        <div class="away-team">
-                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
-                        </div>
-                    </td>
-                    <th class="tip-td table-success"><%= match.bet %></th>
-                </tr>
-                <% }); %>
-                <% }); %>
-            </tbody>
-        </table>
-        <% if (stips.length === 0) { %>
-        <div class="zakesho">
-            * Over 1.5 SUPA za leo: <%= trh.leo %></b> bado upo kwenye maandalizi. Shuka chini kuangalia mikeka mingine
-            iliyotayari.
+  <% if (super_over15?.length> 0) { %>
+  <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
+    <div class="prediction-list">
+      <% super_over15.forEach(el=> { %>
+      <!-- variables -->
+      <% const _parts=(el.match || '' ).split(' - '); 
+            const _home = _parts[0] || ''; 
+            const _away = _parts[1] || ''; 
+            %>
+      <article class="prediction" itemscope itemtype="https://schema.org/CreativeWork">
+        <div class="prediction__grid">
+          <div class="prediction__meta">
+            <div class="time"><i class="fa-regular fa-clock me-1"></i><%= el.time %></div>
+            <div class="league mt-1"><span class="league-tag"><%= el.league %></span></div>
+          </div>
+          <div class="prediction__match">
+            <div class="teams">
+              <div class="team">
+                <img src="<%= el.logo.home %>" alt="" loading="lazy" width="20" aria-hidden="true">
+                <span class="name"><%= _home %></span>
+              </div>
+              <div class="team">
+                <img src="<%= el.logo.away %>" alt="" loading="lazy" width="20" aria-hidden="true">
+                <span class="name"><%= _away %></span>
+              </div>
+            </div>
+            <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %></span></div>
+          </div>
+          <div class="prediction__odds">
+            <div class="odds-cta">
+              <% const accuracy = Number(el?.accuracy || 0); %>
+              <% const hasAccuracy = accuracy > 0; %>
+              <% const normalizedAccuracy = Math.max(0, Math.min(100, accuracy)); %>
+              <% const displayAccuracy = Math.round(normalizedAccuracy); %>
+              <% const accuracyState = normalizedAccuracy >= 65 ? 'accuracy--success' : 'accuracy--warning'; %>
+              <span class="odds-chip<%= hasAccuracy ? ` odds-chip--accuracy ${accuracyState}` : '' %>" aria-label="<%= hasAccuracy ? 'Accuracy' : 'Odds' %>" style="height: 50px;<%= hasAccuracy ? ` --accuracy:${normalizedAccuracy};` : '' %>">
+                <% if (hasAccuracy) { %>
+                  <span><%= `${displayAccuracy}%` %></span>
+                  <small style="font-size: 0.65rem;">Kushinda</small>
+                <% } %>
+                <% if (!hasAccuracy) { %>
+                  <small style="font-size: 0.65rem;">Odds</small>
+                  <span><%= String(el.odds).padEnd(4, ' 0') %></span>
+                <% } %>
+              </span>
+              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet on Betway" style="height: 50px;">
+                <img src="/imgs/logos/betway-logo.png" alt="" class="bet-btn__logo" loading="lazy" decoding="async">
+                <span class="bet-btn__text">BET</span>
+                <span class="bet-btn__arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right fa-beat"></i></span>
+              </button>
+            </div>
+          </div>
         </div>
-        <% } %>
-        <% if (stips.length > 0) { %>
-        <!-- <%- include('../../0-global/aff.ejs'); %> -->
-        <% } %>
+
+        <!-- SEO CreativeWork -->
+        <meta itemprop="headline" content="<%= _home %> vs <%= _away %> prediction - <%= trh.leo %>">
+        <meta itemprop="about" content="Utabiri wa <%= trh.siku %> mechi ya <%= _home %> vs <%= _away %>, <%= el.league %>">
+        <meta itemprop="abstract" content="Mechi hii ya <%= _home %> vs <%= _away %> utabiri wetu wa mwisho ni - <%= el.bet %>">
+        <meta itemprop="datePublished" content="<%= trh.created %>">
+        <meta itemprop="dateModified" content="<%= trh.created %>">
+        <meta itemprop="author" content="Mkeka wa Leo">
+        <meta itemprop="publisher" content="Mkeka wa Leo">
+        <meta itemprop="keywords" content="utabiri wa mechi za <%= trh.siku %>, utabiri wa <%= el.league %>, <%= _home %> vs <%= _away %> prediction">
+        <meta itemprop="mainEntityOfPage" content="https://mkekawaleo.com/">
+      </article>
+      <% }) %>
     </div>
+  </div>
+  <% } %>
 
-    <!-- juzi -->
-    <div class="tble-cont ficha" id="jday" style="display: none;" itemscope itemtype="https://schema.org/Table">
-        <meta itemprop="about" content="Over 1.5 SUPA za Juzi: <%= jumasiku.juzi %>">
-        <table class="table table-light table-striped">
-            <thead>
-                <tr class="table-dark">
-                    <th scope="col">Time</th>
-                    <th scope="col">Matches</th>
-                    <th class="tips-th" scope="col">Tip</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <% jtips.forEach(leagueGroup => { %>
-                <tr class="league-row table-dark mt-8">
-                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
-                </tr>
-                <% leagueGroup.matches.forEach(match => { %>
-                <tr itemscope itemtype="https://schema.org/SportsEvent">
-                    <td class="time-td">
-                        <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.date %></span>
-                        </time>
-                    </td>
-                    <td class="match-td">
-                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                        <meta itemprop="description"
-                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
-                        <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <div class="home-team">
-                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        </div>
-                        <div class="away-team">
-                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
-                        </div>
-                    </td>
-                    <th class="tip-td table-success"><%= match.bet %></th>
-                </tr>
-                <% }); %>
-                <% }); %>
-            </tbody>
-        </table>
-        <% if (jtips.length > 0) { %>
-        <!-- <%- include('../../0-global/aff.ejs'); %> -->
-        <% } %>
-    </div>
+  <!-- If no Tips -->
+  <% if (super_over15.length==0) { %>
+  <div class="alert alert-warning mx-1" role="alert">
+    Bado hakuna tips za Mega Odds kwa siku ya leo, tafadhali tembelea tena baadae au endelea
+    kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya
+      bure hapa.</a>
+  </div>
+  <br>
+  <% } %>
 
-    <!-- yesterday -->
-    <div class="tble-cont ficha" id="yday" style="display: none;" itemscope itemtype="https://schema.org/Table">
-        <meta itemprop="about" content="Over 1.5 SUPA za Jana: <%= jumasiku.jana %>">
-        <table class="table table-light table-striped">
-            <thead>
-                <tr class="table-dark">
-                    <th scope="col">Time</th>
-                    <th scope="col">Matches</th>
-                    <th class="tips-th" scope="col">Tip</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <% ytips.forEach(leagueGroup => { %>
-                <tr class="league-row table-dark mt-8">
-                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
-                </tr>
-                <% leagueGroup.matches.forEach(match => { %>
-                <tr itemscope itemtype="https://schema.org/SportsEvent">
-                    <td class="time-td">
-                        <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.date %></span>
-                        </time>
-                    </td>
-                    <td class="match-td">
-                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                        <meta itemprop="description"
-                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
-                        <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <div class="home-team">
-                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        </div>
-                        <div class="away-team">
-                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
-                        </div>
-                    </td>
-                    <th class="tip-td table-success"><%= match.bet %></th>
-                </tr>
-                <% }); %>
-                <% }); %>
-            </tbody>
-        </table>
-        <% if (ytips.length > 0) { %>
-        <!-- <%- include('../../0-global/aff.ejs'); %> -->
-        <% } %>
-    </div>
-
-
-    <!-- tomorrow -->
-    <div class="tble-cont ficha" id="kday" style="display: none;" itemscope itemtype="https://schema.org/Table">
-        <meta itemprop="about" content="Over 1.5 SUPA za Kesho: <%= jumasiku.kesho %>">
-        <table class="table table-light table-striped">
-            <thead>
-                <tr class="table-dark">
-                    <th scope="col">Time</th>
-                    <th scope="col">Matches</th>
-                    <th class="tips-th" scope="col">Tip</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <% ktips.forEach(leagueGroup => { %>
-                <tr class="league-row table-dark mt-8">
-                    <td colspan="3" class="league-name"><%= leagueGroup._id.league %></td>
-                </tr>
-                <% leagueGroup.matches.forEach(match => { %>
-                <tr itemscope itemtype="https://schema.org/SportsEvent">
-                    <td class="time-td">
-                        <time itemprop="startDate" datetime="<%= match.startDate %>">
-                            <%= match.time %> <br> <span><%= match.date %></span>
-                        </time>
-                    </td>
-                    <td class="match-td">
-                        <meta itemprop="name" content="<%= match.homeTeam %> vs <%= match.awayTeam %> Tips">
-                        <meta itemprop="description"
-                            content="Utabiri wa leo kati ya <%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="performer" content="<%= match.homeTeam %> vs <%= match.awayTeam %>">
-                        <meta itemprop="location" content="<%= leagueGroup._id.league %>">
-                        <meta itemprop="endDate" content="<%= match.endDate %>">
-                        <div class="home-team">
-                            <img src="<%= match?.logo?.home || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.homeTeam %></span>
-                        </div>
-                        <div class="away-team">
-                            <img src="<%= match?.logo?.away || "" %>" alt="" width="16" loading="lazy">
-                            <span class="home" itemprop="homeTeam"><%= match.awayTeam %></span>
-                        </div>
-                    </td>
-                    <th class="tip-td table-success"><%= match.bet %></th>
-                </tr>
-                <% }); %>
-                <% }); %>
-            </tbody>
-        </table>
-        <% if (ktips.length === 0) { %>
-        <div class="zakesho">
-            * Over 1.5 SUPA za Kesho <b><%= jumasiku.kesho %>: </b> bado hazijaandaliwa, rudi baada ya mda kidogo
-            litakuwa
-            tayari.
+  <div class="mega-card__summary border-top">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
+      <div class="row g-3 align-items-stretch metrics">
+        <div class="col-12 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--bookie">
+            <div class="stat__icon"><i class="fa-solid fa-building-columns"></i></div>
+            <div class="stat__body">
+              <div class="label">Kampuni</div>
+              <div class="value"><span class="badge text-bg-dark px-3 py-2">BETWAY</span></div>
+            </div>
+          </div>
         </div>
-        <% } %>
-        <% if (ktips.length > 0) { %>
-        <!-- <%- include('../../0-global/aff.ejs'); %> -->
-        <% } %>
+        <div class="col-6 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--odds">
+            <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
+            <div class="stat__body">
+              <div class="label">Total Odds</div>
+              <div class="value fw-bold fs-5">
+                <%= Number(supa15_odds) > 9999 ? "9999+" : supa15_odds %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <div class="stat d-flex align-items-center gap-3 stat--bonus">
+            <div class="stat__icon"><i class="fa-solid fa-gift"></i></div>
+            <div class="stat__body">
+              <div class="label">Bonus</div>
+              <div class="value fw-semibold">400%</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
