@@ -27,7 +27,8 @@
                     Karibu jamvini kwa mikeka yetu ya bure ya <%= partials.siku %>. Hapa tumekuwekea utabiri wa mechi za leo zote. Tabiri zetu zimechambuliwa kwa umakini mkubwa ili kukuhakikishia wewe mdau wetu nafasi nzuri ya ushindi.
                 </p>
                 <p>
-                    Kwa siku ya <%= partials.siku %>, <strong><%= partials.trh.mega %></strong>, tumeandaa jumla ya mechi <strong><%= mikeka.length %></strong> zenye jumla ya odds <strong><%= Number(megaOdds).toLocaleString("sw-TZ", {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></strong>. Karibu!
+                    
+                    Kwa siku ya <%= partials.siku %>, <strong><%= partials.trh.mega %></strong>, tumeandaa jumla ya mechi <strong><%= mikeka.length %></strong> zenye jumla ya odds <strong><%= Number(megaOdds) > 9999 ? "9,999+" : Number(megaOdds).toLocaleString("sw-TZ", {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></strong>
                 </p>
             </div>
             <br><br>

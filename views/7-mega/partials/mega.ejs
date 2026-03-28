@@ -142,3 +142,19 @@
     </div>
   </div>
 </section>
+
+<!-- More Button -->
+<% if (mikeka?.length >= 20) { %>
+ <div class="container mt-4 p-0">
+  <div class="text-center p-4 rounded-4 border bg-light-subtle">
+    <p class="mb-2 text-muted small fw-semibold">
+      Unataka Kuona Zaidi?
+    </p>
+    <a href="/mkeka/<%= SEO?.trh?.day?.toLowerCase() || "mega-odds-leo" %>" 
+       class="btn btn-success d-inline-flex align-items-center gap-2 px-4 py-2 fw-semibold shadow-sm">
+      <span>Tazama Utabiri wa Mechi Zote za <%= SEO.siku %></span>
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+</div>
+<% } %>

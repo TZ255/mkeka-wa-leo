@@ -256,7 +256,7 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
             }
         }
 
-        let mikeka = await over15Mik.find({ date: SEO.trh.date }).sort('time').lean().cache(600)
+        let mikeka = await over15Mik.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
 
         // random odd for each tip between 1.18 to 1.25, tips has no odd field
         let total_odds = mikeka.reduce((product, doc) => {
@@ -361,7 +361,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
         }
 
         let Alltips = await mkekadb
-            .find({ date: SEO.trh.date, accuracy: {$gte: 60} }).sort('-accuracy')
+            .find({ date: SEO.trh.date, accuracy: {$gte: 60} }).sort('-accuracy').limit(20)
             .select('date time league match bet odds accuracy weekday jsDate logo')
             .cache(600)
 
@@ -463,7 +463,7 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, r
             }
         }
 
-        let mikeka = await OU35Tips.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
+        let mikeka = await OU35Tips.find({ date: SEO.trh.date }).sort('-accuracy').limit(50).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)

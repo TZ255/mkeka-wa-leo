@@ -108,6 +108,7 @@ const findMikekaByWeekday = async (swahiliDay) => {
             .find({ date: dateStr, status: { $ne: 'vip' }, bet: { $ne: 'Over 1.5' }, accuracy: { $gte: 60 } })
             .select('date time league match bet odds accuracy weekday jsDate logo')
             .sort({ accuracy: -1 })
+            .limit(100)
             .cache(600);
 
         let megaOdds = mikeka.reduce((product, doc) => {
