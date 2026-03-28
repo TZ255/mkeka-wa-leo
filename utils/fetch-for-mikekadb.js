@@ -185,8 +185,6 @@ const getBestOver15 = async (ISODate) => {
 
 //fetch Over 2.5
 const getBestOU25 = async (ISODate) => {
-    const del = await OU25Tips.deleteMany({jsDate: {$in: ["2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01"]}})
-    console.log("Deleted:", del.deletedCount)
     console.log(`⏳ Processing Over 2.5 Tips...`);
     const MIN_OVER_25 = 57;
 

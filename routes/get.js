@@ -310,7 +310,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             }
         }
 
-        let mikeka = await over25Model.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
+        let mikeka = await over25Model.find({ date: SEO.trh.date }).sort('-accuracy').limit(20).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -601,7 +601,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             }
         }
 
-        let mikeka = await BTTSTipsModel.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
+        let mikeka = await BTTSTipsModel.find({ date: SEO.trh.date }).sort('-accuracy').limit(20).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)

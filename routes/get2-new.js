@@ -350,7 +350,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-       // await getBestOU25("2026-03-29")
+        await getBestOU25("2026-03-29")
         res.json({message: "working"})
     } catch (error) {
         res.json({ error: error?.message || String(error) })
