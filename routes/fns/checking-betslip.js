@@ -26,7 +26,7 @@ const checking3MkekaBetslip = async (d) => {
                         date: d,
                         time: { $gte: '14:00' },
                         odds: { $gte: 1.33 },
-                        accuracy: { $gte: 63 },
+                        accuracy: { $gte: 60 },
                     }
                 },
                 { $sample: { size: 3 } }
