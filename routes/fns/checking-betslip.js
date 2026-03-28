@@ -41,7 +41,7 @@ const checking3MkekaBetslip = async (d) => {
                         accuracy: { $gte: 63 }
                     }
                 },
-                { $sample: { size: 2 } }
+                { $sample: { size: 3 } }
             ]);
 
             const combinedDocs = [...copies, ...copies1x2]
