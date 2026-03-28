@@ -218,18 +218,13 @@ const getBestOU25 = async (ISODate) => {
 
             let bestPick;
 
-            if (over && under) {
-                bestPick = over.accuracy >= under.accuracy
-                    ? { ...over, label: "Over 2.5" }
-                    : { ...under, label: "Under 2.5" };
-            } else if (over) {
+            // 🔥 PRIORITY LOGIC
+            if (over?.accuracy >= MIN_OV25 && over?.odds) {
                 bestPick = { ...over, label: "Over 2.5" };
-            } else {
+            } 
+            else if (under?.accuracy >= MIN_UN25 && under?.odds) {
                 bestPick = { ...under, label: "Under 2.5" };
             }
-
-            // safety filters
-            if (!bestPick?.odds || bestPick.accuracy < MIN_ACCURACY) continue;
 
             const DDMMYYYY = pick.match.date.split('-').reverse().join('/');
             const match = `${pick.match.home.name} - ${pick.match.away.name}`;
