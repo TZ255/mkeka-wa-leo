@@ -185,8 +185,9 @@ const getBestOver15 = async (ISODate) => {
 
 //fetch Over 2.5
 const getBestOU25 = async (ISODate) => {
-    console.log(`⏳ Processing Over 2.5 Tips...`);
-    const MIN_OVER_25 = 57;
+    console.log(`⏳ Processing Over/Under 2.5 Tips...`);
+    const MIN_OV25 = 57
+    const MIN_UN25 = 70
 
     try {
         const neededIds = await getNeededLeagueIds();
@@ -195,13 +196,40 @@ const getBestOU25 = async (ISODate) => {
             'match.date': ISODate,
             'league.id': { $in: neededIds },
             'match.time': { $gt: MIN_TIME },
-            'over_under.over_2_5.accuracy': { $gte: MIN_OVER_25 }
+            $or: [
+                {
+                    'over_under.over_2_5.accuracy': { $gte: MIN_OV25 },
+                    'over_under.over_2_5.odds': { $ne: null }
+                },
+                {
+                    'over_under.under_2_5.accuracy': { $gte: MIN_UN25 },
+                    'over_under.under_2_5.odds': { $ne: null }
+                }
+            ]
         }).lean();
 
         const bulkOps = [];
 
         for (const pick of fixtures) {
-            if (pick.over_under.over_2_5.accuracy < MIN_OVER_25) continue;
+            const over = pick?.over_under?.over_2_5;
+            const under = pick?.over_under?.under_2_5;
+
+            if (!over && !under) continue;
+
+            let bestPick;
+
+            if (over && under) {
+                bestPick = over.accuracy >= under.accuracy
+                    ? { ...over, label: "Over 2.5" }
+                    : { ...under, label: "Under 2.5" };
+            } else if (over) {
+                bestPick = { ...over, label: "Over 2.5" };
+            } else {
+                bestPick = { ...under, label: "Under 2.5" };
+            }
+
+            // safety filters
+            if (!bestPick?.odds || bestPick.accuracy < MIN_ACCURACY) continue;
 
             const DDMMYYYY = pick.match.date.split('-').reverse().join('/');
             const match = `${pick.match.home.name} - ${pick.match.away.name}`;
@@ -213,9 +241,9 @@ const getBestOU25 = async (ISODate) => {
                 jsDate: pick.match.date,
                 time: pick.match.time,
                 league: `${pick.league.country}: ${pick.league.name}`.replace('World: ', ''),
-                accuracy: Number(pick.over_under.over_2_5.accuracy || 0),
-                odds: pick.over_under.over_2_5.odds,
-                bet: "Over 2.5",
+                accuracy: Number(bestPick.accuracy || 0),
+                odds: bestPick.odds,
+                bet: bestPick.label,
                 weekday: GetDayFromDateString(DDMMYYYY),
                 logo: { home: pick.match.home.logo, away: pick.match.away.logo}
             };
@@ -522,4 +550,4 @@ const GET_TIPS_FOR_MKEKALEO = async (ISODate) => {
 }
 
 
-module.exports = { GET_TIPS_FOR_MKEKALEO, getBestOU25 };
+module.exports = { GET_TIPS_FOR_MKEKALEO };
