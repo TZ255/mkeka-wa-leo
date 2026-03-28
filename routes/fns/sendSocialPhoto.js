@@ -46,7 +46,14 @@ async function postMegaToMkekaLeo(dateStr) {
     try {
         if (!dateStr) throw new Error('date haijapokelewa (DD/MM/YYYY)');
 
-        const docs = await mkekaDB.find({ date: dateStr, isSocial: false, time: { $gte: '10:00' }, accuracy: { $gte: 70 } }).sort({ time: 1 }).limit(3);
+        const docs = await mkekaDB
+            .find({
+                date: dateStr,
+                isSocial: false,
+                time: { $gte: '10:00' },
+                $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 70 } }]
+            })
+            .sort({ time: 1 }).limit(3);
         if (!docs || docs.length === 0) return null;
 
         let posted = 0;
@@ -90,7 +97,7 @@ async function postMegaToMkekaLeo(dateStr) {
                     posted++;
                 }
             } catch (err) {
-                await bot.api.sendMessage(mikekaDB_channel, `Pick image error (${doc.match}): ${err?.message || err}`).catch(() => {});
+                await bot.api.sendMessage(mikekaDB_channel, `Pick image error (${doc.match}): ${err?.message || err}`).catch(() => { });
             }
         }
 
