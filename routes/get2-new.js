@@ -31,7 +31,7 @@ const mkekaDB = require('../model/mkeka-mega')
 const { postMegaToMkekaLeo } = require('./fns/sendSocialPhoto')
 const { oddToWinPercent } = require('../utils/odd-to-percent')
 const { syncOddsForDate } = require('./fns/odds-ingestion')
-const { getBestPicksForMikekaDB, GET_TIPS_FOR_MKEKALEO } = require('../utils/fetch-for-mikekadb')
+const { getBestPicksForMikekaDB, GET_TIPS_FOR_MKEKALEO, getBestOU25 } = require('../utils/fetch-for-mikekadb')
 const { autoUpdateResults } = require('../utils/auto-update-results')
 
 
@@ -350,6 +350,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
+       // await getBestOU25("2026-03-29")
         res.json({message: "working"})
     } catch (error) {
         res.json({ error: error?.message || String(error) })
