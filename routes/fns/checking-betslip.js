@@ -117,10 +117,11 @@ const checking3MkekaBetslip = async (d) => {
                         date: d,
                         time: { $gte: '14:00' },
                         odds: { $gte: 1.15 },
+                        accuracy: { $gte: 75 },
                         match: { $nin: copies_ht05.map(c => c.match) }
                     }
                 },
-                { $sample: { size: 2 } }
+                { $sample: { size: 3 } }
             ]);
 
             const copies_dc = await DCTipsModel.aggregate([
@@ -128,11 +129,12 @@ const checking3MkekaBetslip = async (d) => {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        odds: { $gte: 1.08 },
+                        odds: { $gte: 1.1 },
+                        confidence: "SUPER_STRONG",
                         match: { $nin: [...copies_ht05.map(c => c.match), ...copies_o15.map(c => c.match)] }
                     }
                 },
-                { $sample: { size: 2 } }
+                { $sample: { size: 3 } }
             ]);
 
             const copies = [...copies_ht05, ...copies_o15, ...copies_dc]

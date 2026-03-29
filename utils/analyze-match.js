@@ -197,6 +197,46 @@ function analyzeMatch(pick) {
         }
     }
 
+    // ════════════════════════════════════════════
+    // DOUBLE CHANCE: derived from MW fair probs, odds from DC market
+    // ════════════════════════════════════════════
+    const dc = pick.double_chance;
+    if (!homeP || !drawP || !awayP) {
+        skipped.push(`DC: skipped — MW odds missing (need homeP, drawP, awayP)`);
+    } else if (!dc?.home_draw?.odds && !dc?.home_away?.odds && !dc?.draw_away?.odds) {
+        skipped.push(`DC: missing odds — no DC market data`);
+    } else {
+        const dcOptions = [
+            { label: '1X', prob: +(homeP + drawP).toFixed(1), odds: dc?.home_draw?.odds },
+            { label: 'X2', prob: +(drawP + awayP).toFixed(1), odds: dc?.draw_away?.odds },
+            { label: '12', prob: +(homeP + awayP).toFixed(1), odds: dc?.home_away?.odds },
+        ].filter(o => o.odds).sort((a, b) => b.prob - a.prob);
+
+        if (dcOptions.length) {
+            const best = dcOptions[0];
+            let confidence = 'WEAK';
+
+            if (best.prob >= 80) confidence = 'SUPER_STRONG';
+            else if (best.prob >= 70) confidence = 'STRONG';
+
+            // 12 (no draw): upgrade if xG confirms high-scoring, downgrade if draw-prone
+            if (best.label === '12') {
+                if (best.prob >= 70 && xG !== null && xG >= 3.0) confidence = 'SUPER_STRONG';
+                else if (drawP >= 30) confidence = 'WEAK';
+            }
+
+            if (confidence !== 'WEAK') {
+                tips.push({
+                    ...base, market: 'double_chance',
+                    bet: best.label, odds: best.odds, accuracy: best.prob, confidence,
+                    meta: { homeP, drawP, awayP, xG, oneX: dcOptions.find(o => o.label === '1X')?.prob, x2: dcOptions.find(o => o.label === 'X2')?.prob, twelve: dcOptions.find(o => o.label === '12')?.prob },
+                });
+            } else {
+                skipped.push(`DC: weak — best=${best.label} ${best.prob}%${best.label === '12' && drawP >= 30 ? ' (draw-prone: drawP=' + drawP + ')' : ''}`);
+            }
+        }
+    }
+
     if (skipped.length && process.env.local == "true") {
         // console.log(`⏭️ ${match} — skipped: ${skipped.join(' | ')}`);
     }

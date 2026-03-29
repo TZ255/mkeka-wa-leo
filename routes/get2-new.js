@@ -367,7 +367,7 @@ router.get('/api/test-smart-tips', async (req, res) => {
             'best_pick.odds': { $ne: null },
         }).lean();
 
-        const mw = [], ou25 = [], btts = [], mega = [];
+        const mw = [], ou25 = [], btts = [], dc = [], mega = [];
 
         for (const pick of fixtures) {
             const { tips } = analyzeMatch(pick);
@@ -375,23 +375,31 @@ router.get('/api/test-smart-tips', async (req, res) => {
                 if (tip.market === 'match_winner') mw.push(tip);
                 else if (tip.market === 'over_2_5') ou25.push(tip);
                 else if (tip.market === 'btts') btts.push(tip);
-                
-                // process mega
-                if (tip.confidence === 'SUPER_STRONG' || (tip.confidence === 'STRONG' && tip.accuracy >= 70)) {
-                    mega.push(tip);
-                }
+                else if (tip.market === 'double_chance') dc.push(tip);
+            }
+
+            // best tip per match for mega (MW, OU25, BTTS only)
+            const megaTips = tips.filter(t => t.market !== 'double_chance');
+            if (megaTips.length) {
+                const best = [...megaTips].sort((a, b) => {
+                    const rank = { SUPER_STRONG: 2, STRONG: 1 };
+                    if (rank[b.confidence] !== rank[a.confidence]) return rank[b.confidence] - rank[a.confidence];
+                    return b.accuracy - a.accuracy;
+                })[0];
+                mega.push(best);
             }
         }
 
         mw.sort((a, b) => b.accuracy - a.accuracy);
         ou25.sort((a, b) => b.accuracy - a.accuracy);
         btts.sort((a, b) => b.accuracy - a.accuracy);
+        dc.sort((a, b) => b.accuracy - a.accuracy);
         mega.sort((a, b) => b.accuracy - a.accuracy);
 
         res.render('test-smart-tips', {
             date,
             total: fixtures.length,
-            mw, ou25, btts, mega
+            mw, ou25, btts, dc, mega
         });
     } catch (error) {
         console.error(error);
@@ -403,8 +411,8 @@ router.get('/api/testing', async (req, res) => {
     if (process.env.local !== "true") return res.status(403).json({ error: "Not Local" });
 
     try {
-        await syncOddsForDate('2026-03-30');
-        await GET_TIPS_FOR_MKEKALEO("2026-03-30")
+        await syncOddsForDate('2026-03-31');
+        await GET_TIPS_FOR_MKEKALEO("2026-03-31")
         res.json({ok: true})
     } catch (error) {
         console.error(error);

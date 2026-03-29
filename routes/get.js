@@ -631,7 +631,16 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             }
         }
 
-        let mikeka = await DCTipsModel.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
+        let mikeka = await DCTipsModel.find({
+            date: SEO.trh.date,
+            $or: [
+                { confidence: 'SUPER_STRONG' },
+                {
+                    confidence: 'STRONG',
+                    accuracy: { $gte: 70 },
+                }
+            ]
+        }).sort('-accuracy').limit(100).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)

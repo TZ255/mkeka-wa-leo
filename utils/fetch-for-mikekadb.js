@@ -36,7 +36,7 @@ const getSmartTips = async (ISODate) => {
 
         console.log(`⏳ Analyzing ${fixtures.length} matches for smart tips...`);
 
-        const mwOps = [], ou25Ops = [], bttsOps = [], megaOps = [];
+        const mwOps = [], ou25Ops = [], bttsOps = [], dcOps = [], megaOps = [];
 
         for (const pick of fixtures) {
             const { tips } = analyzeMatch(pick);
@@ -54,11 +54,13 @@ const getSmartTips = async (ISODate) => {
                 if (market === 'match_winner') mwOps.push(op);
                 else if (market === 'over_2_5') ou25Ops.push(op);
                 else if (market === 'btts') bttsOps.push(op);
+                else if (market === 'double_chance') dcOps.push(op);
             }
 
-            // Best tip for mega collection
-            if (tips.length) {
-                const best = [...tips].sort((a, b) => {
+            // Best tip for mega collection (MW, OU25, BTTS only)
+            const megaTips = tips.filter(t => t.market !== 'double_chance');
+            if (megaTips.length) {
+                const best = [...megaTips].sort((a, b) => {
                     const rank = { SUPER_STRONG: 2, STRONG: 1 };
                     if (rank[b.confidence] !== rank[a.confidence]) return rank[b.confidence] - rank[a.confidence];
                     return b.accuracy - a.accuracy;
@@ -87,12 +89,16 @@ const getSmartTips = async (ISODate) => {
             const r = await BTTSTipsModel.bulkWrite(bttsOps);
             console.log(`✅ BTTS: ${r.matchedCount} matched, ${r.upsertedCount} upserted`);
         }
+        if (dcOps.length) {
+            const r = await DCTipsModel.bulkWrite(dcOps);
+            console.log(`✅ DC: ${r.matchedCount} matched, ${r.upsertedCount} upserted`);
+        }
         if (megaOps.length) {
             const r = await mkekaDB.bulkWrite(megaOps);
             console.log(`✅ Mega: ${r.matchedCount} matched, ${r.upsertedCount} upserted`);
         }
 
-        console.log(`📊 Smart Tips Summary: MW=${mwOps.length}, OU25=${ou25Ops.length}, BTTS=${bttsOps.length}, Mega=${megaOps.length}`);
+        console.log(`📊 Smart Tips Summary: MW=${mwOps.length}, OU25=${ou25Ops.length}, BTTS=${bttsOps.length}, DC=${dcOps.length}, Mega=${megaOps.length}`);
 
     } catch (error) {
         console.error(error?.message, error);
@@ -228,77 +234,6 @@ const getBestOU35 = async (ISODate) => {
 };
 
 // ═══════════════════════════════════════════════════════════════════
-// Double Chance — margin-removed probability
-// ═══════════════════════════════════════════════════════════════════
-
-const getBestDCTips = async (ISODate) => {
-    try {
-        const neededIds = await getNeededLeagueIds();
-
-        const fixtures = await OddsFixture.find({
-            'match.date': ISODate,
-            'match.time': { $gt: MIN_TIME },
-            $or: [
-                { 'double_chance.home_draw.odds': { $ne: null } },
-                { 'double_chance.home_away.odds': { $ne: null } },
-                { 'double_chance.draw_away.odds': { $ne: null } },
-            ]
-        }).lean();
-
-        console.log(`⏳ Start Processing Tips for DC, ${fixtures.length} found`);
-
-        const bulkOps = [];
-
-        for (const pick of fixtures) {
-            const dc = pick.double_chance;
-            const [hdP, haP, daP] = removeMargin([
-                dc?.home_draw?.odds,
-                dc?.home_away?.odds,
-                dc?.draw_away?.odds,
-            ]);
-
-            const options = [
-                { label: 'Home or Draw', prob: hdP, odds: dc?.home_draw?.odds },
-                { label: 'Home or Away', prob: haP, odds: dc?.home_away?.odds },
-                { label: 'Draw or Away', prob: daP, odds: dc?.draw_away?.odds },
-            ].filter(o => o.prob && o.odds).sort((a, b) => b.prob - a.prob);
-
-            if (!options.length || options[0].prob < 80) continue;
-
-            const best = options[0];
-            const DDMMYYYY = String(pick.match.date).split('-').reverse().join('/');
-            const match = `${pick.match.home.name} - ${pick.match.away.name}`;
-
-            bulkOps.push({
-                updateOne: {
-                    filter: { match, date: DDMMYYYY },
-                    update: { $set: {
-                        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league.id,
-                        time: pick.match.time, jsDate: pick.match.date,
-                        league: `${pick.league.country}: ${pick.league.name}`.replace('World: ', ''),
-                        accuracy: best.prob, odds: best.odds, bet: best.label,
-                        weekday: GetDayFromDateString(DDMMYYYY),
-                        logo: { home: pick.match.home.logo, away: pick.match.away.logo, league: { logo: pick.league.logo, flag: pick.league.flag } },
-                    }},
-                    upsert: true
-                }
-            });
-        }
-
-        if (bulkOps.length > 0) {
-            const result = await DCTipsModel.bulkWrite(bulkOps);
-            console.log(`✅ DC Done. Matched: ${result.matchedCount}, Upserted: ${result.upsertedCount}`);
-        } else {
-            console.log(`⚠️ No DC tips to process`);
-        }
-
-    } catch (error) {
-        console.error(error?.message, error);
-        sendNotification(741815228, error?.message || "❌ Failed to fetch DC Tips");
-    }
-};
-
-// ═══════════════════════════════════════════════════════════════════
 // Over 0.5 HT — margin-removed probability
 // ═══════════════════════════════════════════════════════════════════
 
@@ -360,8 +295,6 @@ const GET_TIPS_FOR_MKEKALEO = async (ISODate) => {
         await getBestOU35(ISODate).catch(e => {});
         await new Promise(res => setTimeout(res, 1000));
         await getBestOver15(ISODate).catch(e => {});
-        await new Promise(res => setTimeout(res, 1000));
-        await getBestDCTips(ISODate).catch(e => {});
         await new Promise(res => setTimeout(res, 1000));
         await getBestOver05HT(ISODate).catch(e => {});
     } catch (error) {
