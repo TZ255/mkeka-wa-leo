@@ -29,7 +29,7 @@ const checking3MkekaBetslip = async (d) => {
                         bet: "Over 2.5",
                         $or: [
                             { confidence: 'SUPER_STRONG' },
-                            { confidence: 'STRONG', accuracy: { $gte: 70 } }
+                            { confidence: 'STRONG', "meta.xG": { $gte: 3.5 } }
                         ]
                     }
                 },

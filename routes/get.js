@@ -278,15 +278,13 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
             }
         }
 
-        let mikeka = await over15Mik.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
+        let mikeka = await over15Mik.find({ date: SEO.trh.date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean().cache(600)
 
-        // random odd for each tip between 1.18 to 1.25, tips has no odd field
         let total_odds = mikeka.reduce((product, doc) => {
-            {
-                let randomOdd = (Math.random() * (1.25 - 1.18) + 1.18).toFixed(2)
-                return product * parseFloat(randomOdd)
-            }
-        }, 1).toFixed(2)
+            const odds = Number(doc.odds);
+            if (!odds || isNaN(odds)) return product;
+            return product * odds;
+        }, 1).toFixed(2);
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('5-over15/over15', { total_odds, mikeka, SEO })
@@ -332,7 +330,8 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             }
         }
 
-        let mikeka = await over25Model.find({ date: SEO.trh.date, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 65 } }] }).sort('-accuracy').limit(20).lean().cache(600)
+        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.5
+        let mikeka = await over25Model.find({ date: SEO.trh.date, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', "meta.xG": { $gte: 3.5 } }] }).sort('-accuracy').limit(20).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -623,7 +622,8 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             }
         }
 
-        let mikeka = await BTTSTipsModel.find({ date: SEO.trh.date, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 65 } }] }).sort('-accuracy').limit(20).lean().cache(600)
+        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.0 and bttsYesP >= 54
+        let mikeka = await BTTSTipsModel.find({ date: SEO.trh.date, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', "meta.xG": { $gte: 3.0 }, "meta.bttsYesP": { $gte: 54 } }] }).sort('-accuracy').limit(20).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)

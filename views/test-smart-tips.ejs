@@ -22,7 +22,6 @@
         .badge.strong { background: #422006; color: #fbbf24; }
         .meta { color: #6b7280; font-size: 11px; }
         .empty { color: #4b5563; font-style: italic; padding: 16px; }
-        .goal-idx { color: #818cf8; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -34,7 +33,7 @@
     Match Winner: <span><%= mw.length %></span> &nbsp;|&nbsp;
     O/U 2.5: <span><%= ou25.length %></span> &nbsp;|&nbsp;
     BTTS: <span><%= btts.length %></span> &nbsp;|&nbsp;
-    Goal Index avg: <span><%= avgGoalIndex %></span>
+    Mega: <span><%= mega %></span>
 </div>
 
 <!-- MATCH WINNER -->
@@ -50,7 +49,7 @@
         <td><%= t.odds %></td>
         <td><%= t.accuracy %>%</td>
         <td><span class="badge <%= t.confidence === 'SUPER_STRONG' ? 'super' : 'strong' %>"><%= t.confidence %></span></td>
-        <td class="meta">H:<%= t.meta?.homeP %> D:<%= t.meta?.drawP %> A:<%= t.meta?.awayP %> gap:<%= t.meta?.gap %> GI:<span class="goal-idx"><%= t.meta?.goalIndex %></span></td>
+        <td class="meta">H:<%= t.meta?.homeP %> D:<%= t.meta?.drawP %> A:<%= t.meta?.awayP %> gap:<%= t.meta?.gap %></td>
     </tr>
     <% }) %>
 </table>
@@ -69,7 +68,7 @@
         <td><%= t.odds %></td>
         <td><%= t.accuracy %>%</td>
         <td><span class="badge <%= t.confidence === 'SUPER_STRONG' ? 'super' : 'strong' %>"><%= t.confidence %></span></td>
-        <td class="meta">Ov:<%= t.meta?.overP %> Un:<%= t.meta?.underP %> GG:<%= t.meta?.bttsYesP %> NG:<%= t.meta?.bttsNoP %> Hi:<%= t.meta?.highScoring %> GI:<span class="goal-idx"><%= t.meta?.goalIndex %></span></td>
+        <td class="meta">Ov:<%= t.meta?.overP %> Un:<%= t.meta?.underP %> GG:<%= t.meta?.bttsYesP %> NG:<%= t.meta?.bttsNoP %> xG:<%= t.meta?.xG %></td>
     </tr>
     <% }) %>
 </table>
@@ -88,7 +87,7 @@
         <td><%= t.odds %></td>
         <td><%= t.accuracy %>%</td>
         <td><span class="badge <%= t.confidence === 'SUPER_STRONG' ? 'super' : 'strong' %>"><%= t.confidence %></span></td>
-        <td class="meta">GG:<%= t.meta?.bttsYesP %> NG:<%= t.meta?.bttsNoP %> Ov:<%= t.meta?.overP %> Un:<%= t.meta?.underP %> Hi:<%= t.meta?.highScoring %> GI:<span class="goal-idx"><%= t.meta?.goalIndex %></span></td>
+        <td class="meta">GG:<%= t.meta?.bttsYesP %> NG:<%= t.meta?.bttsNoP %> Ov:<%= t.meta?.overP %> Un:<%= t.meta?.underP %> xG:<%= t.meta?.xG %></td>
     </tr>
     <% }) %>
 </table>

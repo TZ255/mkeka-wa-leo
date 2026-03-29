@@ -1,31 +1,30 @@
 const { GetDayFromDateString } = require('../routes/fns/weekday');
-
-const HIGH_SCORES = ["3_0","3_1","2_2","3_2", "4:0", "4_1","4_2","5_1","5_2","0_3","1_3","2_3","0_4","1_4","0_5","1_5"];
-const LOW_SCORES  = ["0_0","1_0","0_1"];
+const { removeMargin } = require('./odd-to-percent');
 
 /**
  * Analyze a single OddsFixture document.
- * Returns { tips, meta } where each tip is ready for MongoDB.
+ * Returns { tips, skipped, meta } where each tip is ready for MongoDB.
  */
 function analyzeMatch(pick) {
     const tips = [];
 
-    // ── Raw implied probabilities: 100 / odds ──
-    const homeP    = prob(pick.match_winner?.home);
-    const drawP    = prob(pick.match_winner?.draw);
-    const awayP    = prob(pick.match_winner?.away);
-    const overP    = prob(pick.over_under?.over_2_5);
-    const underP   = prob(pick.over_under?.under_2_5);
-    const bttsYesP = prob(pick.btts?.yes);
-    const bttsNoP  = prob(pick.btts?.no);
+    // ── Fair probabilities: margin removed per market group ──
+    const [homeP, drawP, awayP] = removeMargin([
+        pick.match_winner?.home?.odds,
+        pick.match_winner?.draw?.odds,
+        pick.match_winner?.away?.odds,
+    ]);
+    const [overP, underP] = removeMargin([
+        pick.over_under?.over_2_5?.odds,
+        pick.over_under?.under_2_5?.odds,
+    ]);
+    const [bttsYesP, bttsNoP] = removeMargin([
+        pick.btts?.yes?.odds,
+        pick.btts?.no?.odds,
+    ]);
 
-    // ── Exact score signals ──
-    const scores = getScoreProbs(pick.exact_score);
-    const highScoring = scores ? scores.highProb > scores.lowProb : null; // true/false/null
-    const lowScoring  = scores ? scores.lowProb > scores.highProb : null;
-
-    // ── Goal Index (0-100): how likely the match is high-scoring ──
-    const goalIndex = calcGoalIndex(overP, bttsYesP, scores);
+    // ── Expected Goals from exact score odds ──
+    const xG = calcExpectedGoals(pick.exact_score);
 
     // ── Shared base fields ──
     const DDMMYYYY = String(pick.match?.date).split('-').reverse().join('/');
@@ -44,16 +43,15 @@ function analyzeMatch(pick) {
     // MATCH WINNER: gap between 1st and 2nd prob
     // ════════════════════════════════════════════
     if (!homeP || !drawP || !awayP) {
-        skipped.push(`MW: missing ${!homeP ? 'home' : ''} ${!drawP ? 'draw' : ''} ${!awayP ? 'away' : ''}`.trim());
-    }
-    if (homeP && drawP && awayP) {
+        skipped.push(`MW: missing odds — ${[!homeP && 'home', !drawP && 'draw', !awayP && 'away'].filter(Boolean).join(', ')}`);
+    } else {
         const entries = [
             { label: 'Home Win', prob: homeP, odds: pick.match_winner.home.odds },
             { label: 'Draw',     prob: drawP, odds: pick.match_winner.draw.odds },
             { label: 'Away Win', prob: awayP, odds: pick.match_winner.away.odds },
         ].sort((a, b) => b.prob - a.prob);
 
-        const top = entries[0], gap = top.prob - entries[1].prob;
+        const top = entries[0], gap = +(top.prob - entries[1].prob).toFixed(1);
 
         let confidence = 'WEAK';
         if (gap >= 20 && top.prob >= 65) confidence = 'SUPER_STRONG';
@@ -63,33 +61,42 @@ function analyzeMatch(pick) {
             tips.push({
                 ...base, market: 'match_winner',
                 bet: top.label, odds: top.odds, accuracy: top.prob, confidence,
-                meta: { homeP, drawP, awayP, gap, goalIndex },
+                meta: { homeP, drawP, awayP, gap },
             });
+        } else {
+            skipped.push(`MW: weak — ${top.label} ${top.prob}% gap=${gap} (need gap>=15 & prob>=60)`);
         }
     }
 
     // ════════════════════════════════════════════
-    // OVER/UNDER 2.5: cross-check BTTS + exact scores
+    // OVER/UNDER 2.5: independent signals, xG boosts
     // ════════════════════════════════════════════
     if (!overP || !underP) {
-        skipped.push(`OU25: missing ${!overP ? 'over' : ''} ${!underP ? 'under' : ''}`.trim());
-    }
-    if (overP && underP) {
+        skipped.push(`OU25: missing odds — ${[!overP && 'over', !underP && 'under'].filter(Boolean).join(', ')}`);
+    } else {
         let bet, odds, accuracy, confidence = 'WEAK';
 
-        // Over 2.5: primary + BTTS agrees + exact scores agree
-        if (overP >= 60 && bttsYesP >= 50 && highScoring !== false) {
-            confidence = 'SUPER_STRONG';
+        // Over 2.5
+        if (overP >= 60) {
+            if ((bttsYesP && bttsYesP >= 50) || (xG !== null && xG >= 3.0)) {
+                confidence = 'SUPER_STRONG';
+            } else {
+                confidence = 'STRONG';
+            }
             bet = 'Over 2.5'; odds = pick.over_under.over_2_5.odds; accuracy = overP;
-        } else if (overP >= 55 && (bttsYesP >= 45 || highScoring === true)) {
+        } else if (overP >= 55 && ((bttsYesP && bttsYesP >= 45) || (xG !== null && xG >= 2.5))) {
             confidence = 'STRONG';
             bet = 'Over 2.5'; odds = pick.over_under.over_2_5.odds; accuracy = overP;
         }
-        // Under 2.5: primary + BTTS No agrees + exact scores agree
-        else if (underP >= 65 && bttsNoP >= 55 && lowScoring !== false) {
-            confidence = 'SUPER_STRONG';
+        // Under 2.5
+        else if (underP >= 65) {
+            if ((bttsNoP && bttsNoP >= 55) || (xG !== null && xG <= 2.0)) {
+                confidence = 'SUPER_STRONG';
+            } else {
+                confidence = 'STRONG';
+            }
             bet = 'Under 2.5'; odds = pick.over_under.under_2_5.odds; accuracy = underP;
-        } else if (underP >= 60 && (bttsNoP >= 50 || lowScoring === true)) {
+        } else if (underP >= 60 && ((bttsNoP && bttsNoP >= 50) || (xG !== null && xG <= 2.5))) {
             confidence = 'STRONG';
             bet = 'Under 2.5'; odds = pick.over_under.under_2_5.odds; accuracy = underP;
         }
@@ -98,33 +105,42 @@ function analyzeMatch(pick) {
             tips.push({
                 ...base, market: 'over_2_5',
                 bet, odds, accuracy, confidence,
-                meta: { overP, underP, bttsYesP, bttsNoP, highScoring, lowScoring, goalIndex },
+                meta: { overP, underP, bttsYesP, bttsNoP, xG },
             });
+        } else {
+            skipped.push(`OU25: weak — overP=${overP} underP=${underP} bttsYesP=${bttsYesP} bttsNoP=${bttsNoP} xG=${xG}`);
         }
     }
 
     // ════════════════════════════════════════════
-    // BTTS: cross-check Over/Under + exact scores
+    // BTTS: independent signals, xG boosts
     // ════════════════════════════════════════════
     if (!bttsYesP || !bttsNoP) {
-        skipped.push(`BTTS: missing ${!bttsYesP ? 'yes' : ''} ${!bttsNoP ? 'no' : ''}`.trim());
-    }
-    if (bttsYesP && bttsNoP) {
+        skipped.push(`BTTS: missing odds — ${[!bttsYesP && 'yes', !bttsNoP && 'no'].filter(Boolean).join(', ')}`);
+    } else {
         let bet, odds, accuracy, confidence = 'WEAK';
 
-        // GG: primary + Over 2.5 agrees + exact scores agree
-        if (bttsYesP >= 58 && overP >= 50 && highScoring !== false) {
-            confidence = 'SUPER_STRONG';
+        // BTTS Yes
+        if (bttsYesP >= 58) {
+            if ((overP && overP >= 50) || (xG !== null && xG >= 2.5)) {
+                confidence = 'SUPER_STRONG';
+            } else {
+                confidence = 'STRONG';
+            }
             bet = 'BTTS: Yes'; odds = pick.btts.yes.odds; accuracy = bttsYesP;
-        } else if (bttsYesP >= 53 && (overP >= 45 || highScoring === true)) {
+        } else if (bttsYesP >= 53 && ((overP && overP >= 45) || (xG !== null && xG >= 2.0))) {
             confidence = 'STRONG';
             bet = 'BTTS: Yes'; odds = pick.btts.yes.odds; accuracy = bttsYesP;
         }
-        // NG: primary + Under 2.5 agrees + exact scores agree
-        else if (bttsNoP >= 65 && underP >= 60 && lowScoring !== false) {
-            confidence = 'SUPER_STRONG';
+        // BTTS No
+        else if (bttsNoP >= 65) {
+            if ((underP && underP >= 60) || (xG !== null && xG <= 2.0)) {
+                confidence = 'SUPER_STRONG';
+            } else {
+                confidence = 'STRONG';
+            }
             bet = 'BTTS: No'; odds = pick.btts.no.odds; accuracy = bttsNoP;
-        } else if (bttsNoP >= 58 && (underP >= 55 || lowScoring === true)) {
+        } else if (bttsNoP >= 58 && ((underP && underP >= 55) || (xG !== null && xG <= 2.3))) {
             confidence = 'STRONG';
             bet = 'BTTS: No'; odds = pick.btts.no.odds; accuracy = bttsNoP;
         }
@@ -133,8 +149,10 @@ function analyzeMatch(pick) {
             tips.push({
                 ...base, market: 'btts',
                 bet, odds, accuracy, confidence,
-                meta: { bttsYesP, bttsNoP, overP, underP, highScoring, lowScoring, goalIndex },
+                meta: { bttsYesP, bttsNoP, overP, underP, xG },
             });
+        } else {
+            skipped.push(`BTTS: weak — bttsYesP=${bttsYesP} bttsNoP=${bttsNoP} overP=${overP} underP=${underP} xG=${xG}`);
         }
     }
 
@@ -142,41 +160,28 @@ function analyzeMatch(pick) {
         // console.log(`⏭️ ${match} — skipped: ${skipped.join(' | ')}`);
     }
 
-    return { tips, skipped, meta: { goalIndex, homeP, drawP, awayP, overP, underP, bttsYesP, bttsNoP, scores } };
+    return { tips, skipped, meta: { homeP, drawP, awayP, overP, underP, bttsYesP, bttsNoP, xG } };
 }
 
 // ── Helpers ──────────────────────────────────
 
-/** Extract implied probability from a selection: 100 / odds */
-function prob(sel) {
-    const o = sel?.odds;
-    return (o && o >= 1) ? Math.round(100 / o) : null;
-}
-
-/** Sum implied probs for high-scoring vs low-scoring exact scores */
-function getScoreProbs(exactScore) {
+/** Calculate expected goals from exact score odds */
+function calcExpectedGoals(exactScore) {
     if (!exactScore || typeof exactScore !== 'object') return null;
-    let highProb = 0, lowProb = 0;
-    for (const s of HIGH_SCORES) {
-        if (exactScore[s]?.odds > 0) highProb += 100 / exactScore[s].odds;
+    let expectedGoals = 0, totalProb = 0;
+    for (const score in exactScore) {
+        const odds = exactScore[score]?.odds;
+        if (!odds || odds < 1) continue;
+        const p = 100 / odds;
+        const parts = score.split(/[_:]/);
+        if (parts.length !== 2) continue;
+        const goals = Number(parts[0]) + Number(parts[1]);
+        if (isNaN(goals)) continue;
+        expectedGoals += goals * p;
+        totalProb += p;
     }
-    for (const s of LOW_SCORES) {
-        if (exactScore[s]?.odds > 0) lowProb += 100 / exactScore[s].odds;
-    }
-    if (highProb === 0 && lowProb === 0) return null;
-    return { highProb: Math.round(highProb), lowProb: Math.round(lowProb) };
-}
-
-/** Goal Index (0-100): weighted signal of how high-scoring the match is */
-function calcGoalIndex(overP, bttsYesP, scores) {
-    let sum = 0, w = 0;
-    if (overP)    { sum += overP * 0.4;    w += 0.4; }
-    if (bttsYesP) { sum += bttsYesP * 0.3; w += 0.3; }
-    if (scores && (scores.highProb + scores.lowProb) > 0) {
-        sum += (scores.highProb / (scores.highProb + scores.lowProb) * 100) * 0.3;
-        w += 0.3;
-    }
-    return w > 0 ? Math.round(sum / w) : 50;
+    if (totalProb === 0) return null;
+    return Math.round((expectedGoals / totalProb) * 100) / 100;
 }
 
 module.exports = { analyzeMatch };
