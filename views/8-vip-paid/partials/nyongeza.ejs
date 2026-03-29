@@ -1,63 +1,67 @@
 <div class="col-12 p-md-2 mx-auto" id="premium-list">
-    <div class="mb-4 border-bottom border-light">
-        <h5 class="fw-bold text-light p-3 rounded-top-3 mb-0 text-center nyongeza_container_header">
-            <span class="d-block" style="font-size: 18px;">Tips za Nyongeza | VIP #3</span>
-            <span class="d-block text-white text-opacity-50 fw-semibold mt-1" style="font-size: .75rem;">
-                Chagua mechi 3 zenye jumla ya odds 2 hadi 3
+  <div class="mb-4 border-bottom border-light">
+    <h5 class="fw-bold text-light p-3 rounded-top-3 mb-0 text-center nyongeza_container_header">
+      <span class="d-block" style="font-size: 18px;">Tips za Nyongeza | VIP #3</span>
+      <span class="d-block text-white text-opacity-50 fw-semibold mt-1" style="font-size: .75rem;">
+        Chagua mechi 3 zenye jumla ya odds 2 hadi 3
+      </span>
+    </h5>
+  </div>
+  <% if (betslip3 && betslip3.length > 0) { %>
+  <div class="row g-3 px-2">
+    <% betslip3.forEach(item => { %>
+    <div class="col-12">
+      <div class="card h-100 tip-card">
+        <div class="card-header border-0 py-3 tip-card__header">
+          <div class="d-flex justify-content-between align-items-center text-dark">
+            <span class="text-warning-emphasis">
+              <i class="fa-solid fa-crown me-1"></i>
+              Bonus Tip
             </span>
-        </h5>
-    </div>
-    <% if (betslip3 && betslip3.length > 0) { %>
-    <div class="row g-3 px-2">
-        <% betslip3.forEach(item => { %>
-        <div class="col-12">
-            <div class="card h-100 tip-card">
-                <div class="card-header border-0 py-3 tip-card__header">
-                    <div class="d-flex justify-content-between align-items-center text-dark">
-                        <span class="text-warning-emphasis">
-                            <i class="fa-solid fa-crown me-1"></i>
-                            Bonus Tip
-                        </span>
-                        <small class="text-dark-75">
-                            <i class="fa-solid fa-calendar-check me-1"></i>
-                            <%= item.date %>
-                        </small>
-                    </div>
-                </div>
-                <div class="card-body p-3 p-md-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="text-secondary">
-                            <i class="fa-solid fa-clock me-1"></i>
-                            <span class="fw-semibold text-dark"><%= item.time %></span>
-                        </div>
-                        <span
-                            class="badge text-bg-light text-secondary fw-semibold"><%= item?.league %></span>
-                    </div>
-                    <h6 class="fw-bold text-dark mb-2"><%= item.match %></h6>
-
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="premium-tip-badge" style="min-width: 120px;">
-                            <i class="fa-regular fa-circle-dot fa-beat me-1"></i>
-                            <%= item.tip %>
-                        </span>
-                        <span class="p-2 small badge text-bg-success text-light <%= item?.status === "won" ? "d-inline-block" : "d-none" %>">
-                            WON <%= item.result %>
-                        </span>
-                    </div>
-                </div>
+            <small class="text-dark-75">
+              <i class="fa-solid fa-calendar-check me-1"></i>
+              <%= item.date %>
+            </small>
+          </div>
+        </div>
+        <div class="card-body p-3 p-md-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="text-secondary">
+              <i class="fa-solid fa-clock me-1"></i>
+              <span class="fw-semibold text-dark"><%= item.time %></span>
             </div>
-        </div>
-        <% }); %>
-    </div>
-    <% } %>
+            <span class="badge text-bg-light text-secondary fw-semibold"><%= item?.league %></span>
+          </div>
+          <h6 class="fw-bold text-dark mb-2"><%= item.match %></h6>
 
-    <% if (!betslip3 || betslip3.length === 0) { %>
-    <div class="text-center py-5">
-        <div class="icon-circle-lg bg-light text-warning mx-auto mb-3">
-            <i class="fa-solid fa-circle-info fa-2x"></i>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="premium-tip-badge" style="min-width: 120px;">
+              <i class="fa-regular fa-circle-dot fa-beat me-1"></i>
+              <%= item.tip %>
+            </span>
+            <% if (item?.status === "won" || item?.status === "lose") { 
+                        const isWon = item.status === "won";
+                        const badgeClass = isWon ? "text-bg-success" : "text-bg-danger";
+                        const textLabel = isWon ? "WON" : "LOST";%>
+            <span class="p-2 small badge <%= badgeClass %> text-light d-inline-block">
+              <%= textLabel %> <%= item.result %>
+            </span>
+            <% } %>
+          </div>
         </div>
-        <h4 class="text-dark mb-2">Hakuna bonus tips zilizowekwa kwa siku hii.</h4>
-        <p class="text-secondary mb-0">Tutakutumia mpya mara tu zinapoongezwa, endelea kufuatilia.</p>
+      </div>
     </div>
-    <% } %>
+    <% }); %>
+  </div>
+  <% } %>
+
+  <% if (!betslip3 || betslip3.length === 0) { %>
+  <div class="text-center py-5">
+    <div class="icon-circle-lg bg-light text-warning mx-auto mb-3">
+      <i class="fa-solid fa-circle-info fa-2x"></i>
+    </div>
+    <h4 class="text-dark mb-2">Hakuna bonus tips zilizowekwa kwa siku hii.</h4>
+    <p class="text-secondary mb-0">Tutakutumia mpya mara tu zinapoongezwa, endelea kufuatilia.</p>
+  </div>
+  <% } %>
 </div>
