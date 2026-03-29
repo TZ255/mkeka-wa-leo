@@ -352,6 +352,7 @@ router.get('/mechi/:siku', async (req, res) => {
 
 
 router.get('/api/test-smart-tips', async (req, res) => {
+    if (process.env.local !== "true") return res.status(403).json({ error: "Not Local" });
     try {
         const moment = require('moment-timezone');
         const date = req.query.date || moment().tz('Africa/Nairobi').format('YYYY-MM-DD');
@@ -397,7 +398,7 @@ router.get('/api/test-smart-tips', async (req, res) => {
 
 router.get('/api/testing', async (req, res) => {
     try {
-        await GET_TIPS_FOR_MKEKALEO("2026-03-29")
+        // await GET_TIPS_FOR_MKEKALEO("2026-03-29")
         res.json({ok: true})
     } catch (error) {
         console.error(error);
