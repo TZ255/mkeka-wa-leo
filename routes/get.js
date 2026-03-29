@@ -67,7 +67,7 @@ router.get('/', async (req, res) => {
                 .cache(600),
 
             await over15Mik
-                .find({ date: d, accuracy: { $gte: 80 } })
+                .find({ date: d, accuracy: { $gte: 75 } })
                 .select("date time league match bet odds accuracy weekday jsDate logo")
                 .sort({ accuracy: -1 })
                 .limit(20)
@@ -167,7 +167,7 @@ router.get('/mkeka/kesho', async (req, res) => {
             .cache(600);
 
         let super_over15 = await over15Mik
-            .find({ date: kesho, accuracy: { $gte: 80 } })
+            .find({ date: kesho, accuracy: { $gte: 75 } })
             .select("date time league match bet odds accuracy weekday jsDate logo")
             .sort({ accuracy: -1 })
             .limit(20)

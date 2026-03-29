@@ -74,7 +74,7 @@ function buildFixtureLookup(fixturesResponse, allowedLeagueIds) {
 
   for (const item of fixturesResponse) {
     // Skip unwanted countries
-    if (unwanted_countries.includes(item.league.country)) continue;
+    // if (unwanted_countries.includes(item.league.country)) continue;
 
     // Skip leagues not in the needed list
    // if (!allowedLeagueIds.has(item.league.id)) continue; //removing this for now

@@ -403,7 +403,8 @@ router.get('/api/testing', async (req, res) => {
     if (process.env.local !== "true") return res.status(403).json({ error: "Not Local" });
 
     try {
-        await GET_TIPS_FOR_MKEKALEO("2026-03-29")
+        await syncOddsForDate('2026-03-30');
+        await GET_TIPS_FOR_MKEKALEO("2026-03-30")
         res.json({ok: true})
     } catch (error) {
         console.error(error);

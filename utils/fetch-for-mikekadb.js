@@ -30,7 +30,6 @@ const getSmartTips = async (ISODate) => {
 
         const fixtures = await OddsFixture.find({
             'match.date': ISODate,
-            'league.id': { $in: neededIds },
             'match.time': { $gt: MIN_TIME },
             'best_pick.odds': { $ne: null },
         }).lean();
@@ -111,7 +110,6 @@ const getBestOver15 = async (ISODate) => {
         const neededIds = await getNeededLeagueIds();
         const fixtures = await OddsFixture.find({
             'match.date': ISODate,
-            'league.id': { $in: neededIds },
             'over_under.over_1_5.odds': { $ne: null },
             'match.time': { $gt: MIN_TIME },
         }).lean();
@@ -172,7 +170,6 @@ const getBestOU35 = async (ISODate) => {
 
         const fixtures = await OddsFixture.find({
             'match.date': ISODate,
-            'league.id': { $in: neededIds },
             'match.time': { $gt: MIN_TIME },
             $or: [
                 { 'over_under.over_3_5.odds': { $ne: null } },
@@ -240,7 +237,6 @@ const getBestDCTips = async (ISODate) => {
 
         const fixtures = await OddsFixture.find({
             'match.date': ISODate,
-            'league.id': { $in: neededIds },
             'match.time': { $gt: MIN_TIME },
             $or: [
                 { 'double_chance.home_draw.odds': { $ne: null } },
@@ -312,7 +308,6 @@ const getBestOver05HT = async (ISODate) => {
         const neededIds = await getNeededLeagueIds();
         const fixtures = await OddsFixture.find({
             'match.date': ISODate,
-            'league.id': { $in: neededIds },
             'first_half_over_under.over_0_5.odds': { $ne: null },
             'match.time': { $gt: MIN_TIME },
         }).lean();
