@@ -19,17 +19,18 @@ const checking3MkekaBetslip = async (d) => {
     try {
         //checking Betslip1
         let slip = await betslip.find({ date: d, vip_no: 1 })
+        let vip2 = await betslip.find({ date: d, vip_no: 2 })
         if (slip.length < 1) {
             const copies25 = await Over25Mik.aggregate([
                 {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        odds: { $gte: 1.3 },
                         bet: "Over 2.5",
+                        fixture_id: { $nin: vip2.map(c => c.fixture_id) },
                         $or: [
                             { confidence: 'SUPER_STRONG' },
-                            { confidence: 'STRONG', "meta.xG": { $gte: 3.5 } }
+                            { confidence: 'STRONG', "meta.xG": { $gte: 3.0 } }
                         ]
                     }
                 },
@@ -41,9 +42,10 @@ const checking3MkekaBetslip = async (d) => {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        odds: { $gte: 1.3 },
+                        odds: { $gte: 1.2 },
                         confidence: "SUPER_STRONG",
-                        match: { $nin: copies25.map(c => c.match) } // Exclude matches already in Over 2.5 picks
+                        match: { $nin: copies25.map(c => c.match) },
+                        fixture_id: { $nin: vip2.map(c => c.fixture_id) }
                     }
                 },
                 { $sample: { size: 2 } }
@@ -76,12 +78,12 @@ const checking3MkekaBetslip = async (d) => {
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         let vip1 = await betslip.find({ date: d, vip_no: 1 });
         if (multikeka.length < 1) {
-            let copies = await MatchWinnerTips.aggregate([
+            let copies = await mkekadb.aggregate([
                 {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        odds: { $gte: 1.3 },
+                        odds: { $gte: 1.2 },
                         confidence: "SUPER_STRONG",
                         fixture_id: { $nin: vip1.map(c => c.fixture_id) }
                     }

@@ -379,8 +379,18 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             }
         }
 
-        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.5
-        let mikeka = await over25Model.find({ date: SEO.trh.date, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', "meta.xG": { $gte: 3.5 } }] }).sort('-accuracy').limit(20).lean().cache(600)
+        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.0
+        let mikeka = await over25Model.find({
+            date: SEO.trh.date,
+            $or: [
+                { confidence: 'SUPER_STRONG' },
+                { confidence: 'STRONG', "meta.xG": { $gte: 3.0 } }
+            ]
+        })
+            .sort('-accuracy')
+            .limit(20)
+            .lean()
+            .cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -672,7 +682,25 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
         }
 
         // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.0 and bttsYesP >= 54
-        let mikeka = await BTTSTipsModel.find({ date: SEO.trh.date, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', "meta.xG": { $gte: 3.0 }, "meta.bttsYesP": { $gte: 54 } }] }).sort('-accuracy').limit(20).lean().cache(600)
+        let mikeka = await BTTSTipsModel.find({
+            date: SEO.trh.date,
+            $or: [
+                { confidence: 'SUPER_STRONG' },
+                {
+                    confidence: 'STRONG',
+                    accuracy: { $gte: 57 },
+                    $and: [
+                        { "meta.bttsYesP": { $gte: 56 } },
+                        {
+                            $or: [
+                                { "meta.xG": { $gte: 2.8 } },
+                                { "meta.xG": { $gte: 3.2 } } // high tempo override
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }).sort('-accuracy').limit(20).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)

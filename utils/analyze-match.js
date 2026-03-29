@@ -47,15 +47,18 @@ function analyzeMatch(pick) {
     } else {
         const entries = [
             { label: 'Home Win', prob: homeP, odds: pick.match_winner.home.odds },
-            { label: 'Draw',     prob: drawP, odds: pick.match_winner.draw.odds },
+            { label: 'Draw', prob: drawP, odds: pick.match_winner.draw.odds },
             { label: 'Away Win', prob: awayP, odds: pick.match_winner.away.odds },
         ].sort((a, b) => b.prob - a.prob);
 
         const top = entries[0], gap = +(top.prob - entries[1].prob).toFixed(1);
 
         let confidence = 'WEAK';
-        if ((gap >= 20 && top.prob >= 65) || (gap >= 40 && top.prob >= 60)) confidence = 'SUPER_STRONG';
-        else if (gap >= 15 && top.prob >= 60) confidence = 'STRONG';
+
+        // Strength score combines top probability and gap, with more weight on top probability
+        const strengthScore = (top.prob * 0.65) + (gap * 0.5);
+        if (strengthScore >= 55) confidence = 'SUPER_STRONG';
+        else if (strengthScore >= 45) confidence = 'STRONG';
 
         if (confidence !== 'WEAK') {
             tips.push({
@@ -76,29 +79,67 @@ function analyzeMatch(pick) {
     } else {
         let bet, odds, accuracy, confidence = 'WEAK';
 
-        // Over 2.5
-        if (overP >= 60) {
-            if ((bttsYesP && bttsYesP >= 50) || (xG !== null && xG >= 3.0)) {
+        // -----------------------------
+        // OVER 2.5
+        // -----------------------------
+        if (overP >= 62) {
+            if (
+                (bttsYesP && bttsYesP >= 55 && xG !== null && xG >= 2.7) ||
+                (xG !== null && xG >= 3.2)
+            ) {
                 confidence = 'SUPER_STRONG';
             } else {
                 confidence = 'STRONG';
             }
-            bet = 'Over 2.5'; odds = pick.over_under.over_2_5.odds; accuracy = overP;
-        } else if (overP >= 55 && ((bttsYesP && bttsYesP >= 45) || (xG !== null && xG >= 2.5))) {
+
+            bet = 'Over 2.5';
+            odds = pick.over_under.over_2_5.odds;
+            accuracy = overP;
+
+        } else if (
+            overP >= 55 &&
+            (
+                (bttsYesP && bttsYesP >= 48) ||
+                (xG !== null && xG >= 2.5)
+            )
+        ) {
             confidence = 'STRONG';
-            bet = 'Over 2.5'; odds = pick.over_under.over_2_5.odds; accuracy = overP;
+
+            bet = 'Over 2.5';
+            odds = pick.over_under.over_2_5.odds;
+            accuracy = overP;
         }
-        // Under 2.5
+
+
+        // -----------------------------
+        // UNDER 2.5
+        // -----------------------------
         else if (underP >= 65) {
-            if ((bttsNoP && bttsNoP >= 55) || (xG !== null && xG <= 2.0)) {
+            if (
+                (bttsNoP && bttsNoP >= 60 && xG !== null && xG <= 2.3) ||
+                (xG !== null && xG <= 1.8)
+            ) {
                 confidence = 'SUPER_STRONG';
             } else {
                 confidence = 'STRONG';
             }
-            bet = 'Under 2.5'; odds = pick.over_under.under_2_5.odds; accuracy = underP;
-        } else if (underP >= 60 && ((bttsNoP && bttsNoP >= 50) || (xG !== null && xG <= 2.5))) {
+
+            bet = 'Under 2.5';
+            odds = pick.over_under.under_2_5.odds;
+            accuracy = underP;
+
+        } else if (
+            underP >= 58 &&
+            (
+                (bttsNoP && bttsNoP >= 52) ||
+                (xG !== null && xG <= 2.6)
+            )
+        ) {
             confidence = 'STRONG';
-            bet = 'Under 2.5'; odds = pick.over_under.under_2_5.odds; accuracy = underP;
+
+            bet = 'Under 2.5';
+            odds = pick.over_under.under_2_5.odds;
+            accuracy = underP;
         }
 
         if (confidence !== 'WEAK') {
