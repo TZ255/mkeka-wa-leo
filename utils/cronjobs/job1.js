@@ -30,6 +30,14 @@ const OddsFixture = require('../../model/odds-fixtures-bets');
 
 const { GET_TIPS_FOR_MKEKALEO } = require('../fetch-for-mikekadb');
 const { autoUpdateResults } = require('../auto-update-results');
+const mkekaDB = require('../../model/mkeka-mega');
+const Over25Mik = require('../../model/over25mik');
+const Over15Mik = require('../../model/ove15mik');
+const OU35Tips = require('../../model/over35mik');
+const BTTSTipsModel = require('../../model/btts-tips');
+const Over05HTTips = require('../../model/over05ht');
+const DCTipsModel = require('../../model/dc-tips');
+const MatchWinnerTips = require('../../model/1x2tips');
 
 module.exports = () => {
   if (process.env.local === 'true') {
@@ -122,11 +130,11 @@ module.exports = () => {
       await affAnalyticsModel.findOneAndUpdate(
         { pid: 'shemdoe' },
         { $set: { email_count: 0 } }
-      ).catch(e => {});
+      ).catch(e => { });
 
       sendNotification(741815228, '📧 Email count reset');
 
-      await UpdateOtherLeagueMatchDay(todayISO).catch(e => {});
+      await UpdateOtherLeagueMatchDay(todayISO).catch(e => { });
     });
   }, { timezone: TZ });
 
@@ -134,7 +142,7 @@ module.exports = () => {
   // Bongo updates
   // ------------------------------------
   const bongoJob = async () => {
-    await wafungajiBoraNBC().catch(e => {});
+    await wafungajiBoraNBC().catch(e => { });
     setTimeout(assistBoraNBC, 5000);
   };
 
@@ -202,7 +210,7 @@ module.exports = () => {
     const afterTomorrow = format(addDays(2), 'en-CA');
 
     runLocked('odds-sync-after-tomorrow', async () => {
-      await syncOddsForDate(afterTomorrow).catch(e => {})
+      await syncOddsForDate(afterTomorrow).catch(e => { })
       GET_TIPS_FOR_MKEKALEO(afterTomorrow)
     }
     );
@@ -217,26 +225,49 @@ module.exports = () => {
     const next4 = format(addDays(4), 'en-CA');
 
     runLocked('odds-sync-next3', async () => {
-      await syncOddsForDate(next3).catch(e => {})
-      await GET_TIPS_FOR_MKEKALEO(next3).catch(e => {})
-      await syncOddsForDate(next4).catch(e => {})
-      await GET_TIPS_FOR_MKEKALEO(next4).catch(e => {})
+      await syncOddsForDate(next3).catch(e => { })
+      await GET_TIPS_FOR_MKEKALEO(next3).catch(e => { })
+      await syncOddsForDate(next4).catch(e => { })
+      await GET_TIPS_FOR_MKEKALEO(next4).catch(e => { })
     }
     );
   }, { timezone: TZ });
 
 
-  // ------------------------------------
-  // Cleanup odds
-  // ------------------------------------
   cron.schedule('0 2 * * *', () => {
     runLocked('odds-cleanup', async () => {
       const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-      const result = await OddsFixture.deleteMany({
-        createdAt: { $lte: cutoff }
+
+      const oddsResult = await OddsFixture.deleteMany({
+        updatedAt: { $lte: cutoff }
       });
 
-      console.log(`[odds-cleanup] Deleted ${result.deletedCount}`);
+      const collections = {
+        MkekaDB: mkekaDB,
+        Over25Mik,
+        Over15Mik,
+        OU35Tips,
+        BTTSTipsModel,
+        Over05HTTips,
+        DCTipsModel,
+        MatchWinnerTips
+      };
+
+      const entries = Object.entries(collections);
+
+      const results = await Promise.all(
+        entries.map(([_, model]) =>
+          model.deleteMany({ updatedAt: { $lte: cutoff } })
+        )
+      );
+
+      // build log dynamically
+      let log = `[odds-cleanup]:\nDeleted ${oddsResult.deletedCount} for OddsFixture\n`;
+
+      entries.forEach(([name], i) => {
+        log += `Deleted ${results[i].deletedCount} for ${name}\n`;
+      });
+      console.log(log.trim());
     });
   }, { timezone: TZ });
 
@@ -247,7 +278,7 @@ module.exports = () => {
     const today = format(new Date(), 'en-CA');
 
     runLocked('fetch-mikeka', async () => {
-      await GET_TIPS_FOR_MKEKALEO(today).catch(e => {});
+      await GET_TIPS_FOR_MKEKALEO(today).catch(e => { });
     });
   }, { timezone: TZ });
 
@@ -258,7 +289,7 @@ module.exports = () => {
     const tomorrow = format(addDays(1), 'en-CA');
 
     runLocked('fetch-mikeka-tomorrow', async () => {
-      await GET_TIPS_FOR_MKEKALEO(tomorrow).catch(e => {});
+      await GET_TIPS_FOR_MKEKALEO(tomorrow).catch(e => { });
     });
   }, { timezone: TZ });
 

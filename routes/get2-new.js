@@ -367,28 +367,31 @@ router.get('/api/test-smart-tips', async (req, res) => {
             'best_pick.odds': { $ne: null },
         }).lean();
 
-        const mw = [], ou25 = [], btts = [];
-        let megaCount = 0;
+        const mw = [], ou25 = [], btts = [], mega = [];
 
         for (const pick of fixtures) {
             const { tips } = analyzeMatch(pick);
-            if (tips.length) megaCount++;
             for (const tip of tips) {
                 if (tip.market === 'match_winner') mw.push(tip);
                 else if (tip.market === 'over_2_5') ou25.push(tip);
                 else if (tip.market === 'btts') btts.push(tip);
+                
+                // process mega
+                if (tip.confidence === 'SUPER_STRONG' || (tip.confidence === 'STRONG' && tip.accuracy >= 70)) {
+                    mega.push(tip);
+                }
             }
         }
 
         mw.sort((a, b) => b.accuracy - a.accuracy);
         ou25.sort((a, b) => b.accuracy - a.accuracy);
         btts.sort((a, b) => b.accuracy - a.accuracy);
+        mega.sort((a, b) => b.accuracy - a.accuracy);
 
         res.render('test-smart-tips', {
             date,
             total: fixtures.length,
-            mw, ou25, btts,
-            mega: megaCount,
+            mw, ou25, btts, mega
         });
     } catch (error) {
         console.error(error);
@@ -397,8 +400,10 @@ router.get('/api/test-smart-tips', async (req, res) => {
 })
 
 router.get('/api/testing', async (req, res) => {
+    if (process.env.local !== "true") return res.status(403).json({ error: "Not Local" });
+
     try {
-        // await GET_TIPS_FOR_MKEKALEO("2026-03-29")
+        await GET_TIPS_FOR_MKEKALEO("2026-03-29")
         res.json({ok: true})
     } catch (error) {
         console.error(error);

@@ -123,7 +123,7 @@ const getBestOver15 = async (ISODate) => {
                 pick.over_under?.over_1_5?.odds,
                 pick.over_under?.under_1_5?.odds,
             ]);
-            if (!overP || overP < 80) continue;
+            if (!overP || overP < 75) continue;
 
             const DDMMYYYY = String(pick.match.date).split('-').reverse().join('/');
             const match = `${pick.match.home.name} - ${pick.match.away.name}`;
@@ -132,13 +132,13 @@ const getBestOver15 = async (ISODate) => {
                 updateOne: {
                     filter: { match, date: DDMMYYYY },
                     update: { $set: {
-                        fixture_id: pick.fixture_id, match, date: DDMMYYYY,
+                        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league.id,
                         jsDate: pick.match.date, time: pick.match.time,
                         league: `${pick.league.country}: ${pick.league.name}`.replace('World: ', ''),
                         accuracy: overP, odds: pick.over_under.over_1_5.odds,
                         bet: 'Over 1.5',
                         weekday: GetDayFromDateString(DDMMYYYY),
-                        logo: { home: pick.match.home.logo, away: pick.match.away.logo },
+                        logo: { home: pick.match.home.logo, away: pick.match.away.logo, league: { logo: pick.league.logo, flag: pick.league.flag } },
                     }},
                     upsert: true
                 }
@@ -205,12 +205,12 @@ const getBestOU35 = async (ISODate) => {
                 updateOne: {
                     filter: { match, date: DDMMYYYY },
                     update: { $set: {
-                        fixture_id: pick.fixture_id, match, date: DDMMYYYY,
+                        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league.id,
                         jsDate: pick.match.date, time: pick.match.time,
                         league: `${pick.league.country}: ${pick.league.name}`.replace('World: ', ''),
                         accuracy: bestProb, odds: bestOdds, bet: bestLabel,
                         weekday: GetDayFromDateString(DDMMYYYY),
-                        logo: { home: pick.match.home.logo, away: pick.match.away.logo },
+                        logo: { home: pick.match.home.logo, away: pick.match.away.logo, league: { logo: pick.league.logo, flag: pick.league.flag } },
                     }},
                     upsert: true
                 }
@@ -277,12 +277,12 @@ const getBestDCTips = async (ISODate) => {
                 updateOne: {
                     filter: { match, date: DDMMYYYY },
                     update: { $set: {
-                        fixture_id: pick.fixture_id, match, date: DDMMYYYY,
+                        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league.id,
                         time: pick.match.time, jsDate: pick.match.date,
                         league: `${pick.league.country}: ${pick.league.name}`.replace('World: ', ''),
                         accuracy: best.prob, odds: best.odds, bet: best.label,
                         weekday: GetDayFromDateString(DDMMYYYY),
-                        logo: { home: pick.match.home.logo, away: pick.match.away.logo },
+                        logo: { home: pick.match.home.logo, away: pick.match.away.logo, league: { logo: pick.league.logo, flag: pick.league.flag } },
                     }},
                     upsert: true
                 }
@@ -333,13 +333,13 @@ const getBestOver05HT = async (ISODate) => {
                 updateOne: {
                     filter: { match, date: DDMMYYYY },
                     update: { $set: {
-                        fixture_id: pick.fixture_id, match, date: DDMMYYYY,
+                        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league.id,
                         jsDate: pick.match.date, time: pick.match.time,
                         league: `${pick.league.country}: ${pick.league.name}`.replace('World: ', ''),
                         accuracy: overP, odds: pick.first_half_over_under.over_0_5.odds,
                         bet: 'HT Over 0.5',
                         weekday: GetDayFromDateString(DDMMYYYY),
-                        logo: { home: pick.match.home.logo, away: pick.match.away.logo },
+                        logo: { home: pick.match.home.logo, away: pick.match.away.logo, league: { logo: pick.league.logo, flag: pick.league.flag } },
                     }},
                     upsert: true
                 }

@@ -26,6 +26,7 @@ const BTTSTipsModel = require('../model/btts-tips')
 const DCTipsModel = require('../model/dc-tips')
 const OU35Tips = require('../model/over35mik')
 const Over05HTTips = require('../model/over05ht')
+const MatchWinnerTips = require('../model/1x2tips')
 
 router.get('/', async (req, res) => {
     try {
@@ -50,20 +51,28 @@ router.get('/', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        //mikeka mega
-        let mikeka = await mkekadb
-            .find({ date: d, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 70 } }] })
-            .select("date time league match bet odds accuracy weekday jsDate logo confidence")
-            .sort({ accuracy: -1 })
-            .limit(20)
-            .cache(600);
+        const [mikeka, super_directwin, super_over15] = await Promise.all([
+            await mkekadb
+                .find({ date: d, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 70 } }] })
+                .select("date time league match bet odds accuracy weekday jsDate logo confidence")
+                .sort({ accuracy: -1 })
+                .limit(20)
+                .cache(600),
 
-        let super_over15 = await over15Mik
-            .find({ date: d, accuracy: { $gte: 80 } })
-            .select("date time league match bet odds accuracy weekday jsDate logo")
-            .sort({ accuracy: -1 })
-            .limit(20)
-            .cache(600);
+            await MatchWinnerTips
+                .find({ date: d, confidence: 'SUPER_STRONG' })
+                .select("date time league match bet odds accuracy weekday jsDate logo confidence")
+                .sort({ accuracy: -1 })
+                .limit(10)
+                .cache(600),
+
+            await over15Mik
+                .find({ date: d, accuracy: { $gte: 80 } })
+                .select("date time league match bet odds accuracy weekday jsDate logo")
+                .sort({ accuracy: -1 })
+                .limit(20)
+                .cache(600)
+        ])
 
         //check if there is no any slip
         //find random 3
@@ -87,6 +96,13 @@ router.get('/', async (req, res) => {
             return product * odds;
         }, 1);
 
+        //multiply all odds of Super Direct Win Tips
+        const supa_directwin_odds = super_directwin.reduce((product, doc) => {
+            const odds = Number(doc.odds);
+            if (!odds || isNaN(odds)) return product;
+            return product * odds;
+        }, 1);
+
         //multiply all odds of betslip
         const slipOdds = {
             slip: slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
@@ -102,7 +118,18 @@ router.get('/', async (req, res) => {
         //cache response
         res.set('Cache-Control', 'public, max-age=600');
 
-        res.render('1-home/home', { megaOdds: megaOdds.toFixed(2), supa15_odds: supa15_odds.toFixed(2), mikeka, super_over15, slip, slipOdds, trh, jumasiku })
+        res.render('1-home/home', {
+            megaOdds: megaOdds.toFixed(2),
+            supa15_odds: supa15_odds.toFixed(2),
+            supa_directwin_odds: supa_directwin_odds.toFixed(2),
+            mikeka,
+            super_over15,
+            super_directwin,
+            slip,
+            slipOdds,
+            trh,
+            jumasiku
+        })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -132,6 +159,13 @@ router.get('/mkeka/kesho', async (req, res) => {
             .limit(20)
             .cache(600);
 
+        let super_directwin = await MatchWinnerTips
+            .find({ date: kesho, confidence: 'SUPER_STRONG' })
+            .select("date time league match bet odds accuracy weekday jsDate logo confidence")
+            .sort({ accuracy: -1 })
+            .limit(10)
+            .cache(600);
+
         let super_over15 = await over15Mik
             .find({ date: kesho, accuracy: { $gte: 80 } })
             .select("date time league match bet odds accuracy weekday jsDate logo")
@@ -153,13 +187,28 @@ router.get('/mkeka/kesho', async (req, res) => {
             return product * odds;
         }, 1);
 
+        // multiply all odds of Super Direct Win Tips
+        const supa_directwin_odds = super_directwin.reduce((product, doc) => {
+            const odds = Number(doc.odds);
+            if (!odds || isNaN(odds)) return product;
+            return product * odds;
+        }, 1);
+
         //tarehes
         let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
         let trh = { kesho: month_date, siku: 'kesho', created }
         let jumasiku = { kesho: WeekDayFn(k_juma) }
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('1-home-kesho/index', { megaOdds: megaOdds.toFixed(2), mikeka, super_over15, supa15_odds: supa15_odds.toFixed(2), trh, jumasiku })
+        res.render('1-home-kesho/index', {
+            megaOdds: megaOdds.toFixed(2),
+            mikeka,
+            super_over15,
+            supa15_odds: supa15_odds.toFixed(2),
+            super_directwin, supa_directwin_odds: supa_directwin_odds.toFixed(2),
+            trh,
+            jumasiku
+        })
     } catch (err) {
         console.log(err.message, err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -382,7 +431,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
         }
 
         let Alltips = await mkekadb
-            .find({ date: SEO.trh.date, accuracy: {$gte: 60} }).sort('-accuracy').limit(20)
+            .find({ date: SEO.trh.date, accuracy: { $gte: 60 } }).sort('-accuracy').limit(20)
             .select('date time league match bet odds accuracy weekday jsDate logo')
             .cache(600)
 

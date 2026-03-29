@@ -1,21 +1,21 @@
 <section class="mega-card card border-0 shadow-sm" itemscope>
   <!-- Navigation Header -->
-  <div class="btn-group" role="group" aria-label="Mikeka ya Leo na Kesho">
-    <a href="#supa-over15" class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+  <div class="btn-group" role="group" aria-label="Direct Win:Mikeka ya Leo na Kesho">
+    <a href="#supa-direct-win" class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
       Leo
     </a>
-    <a href="/mkeka/kesho#supa-over15" class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+    <a href="/mkeka/kesho#supa-direct-win" class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
       Kesho
     </a>
   </div>
 
   <!-- Title header -->
-  <div class="mega-card__header border-top" id="supa-over15">
+  <div class="mega-card__header border-top" id="supa-direct-win">
     <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <h2 class="mega-card__title m-0 fw-bold fs-3">
           <span class="bullet" aria-hidden="true"></span>
-          Over 1.5 Supa za Leo
+          Direct Win: Supa za Leo
         </h2>
         <div class="date-wrap d-flex align-items-center gap-2">
           <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i>
@@ -30,10 +30,10 @@
     </div>
   </div>
 
-  <% if (super_over15?.length> 0) { %>
+  <% if (super_directwin?.length> 0) { %>
   <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
     <div class="prediction-list">
-      <% super_over15.forEach(el=> { %>
+      <% super_directwin.forEach(el=> { %>
       <!-- variables -->
       <% const _parts=(el.match || '' ).split(' - '); 
             const _home = _parts[0] || ''; 
@@ -101,9 +101,9 @@
   <% } %>
 
   <!-- If no Tips -->
-  <% if (super_over15.length==0) { %>
+  <% if (super_directwin.length==0) { %>
   <div class="alert alert-warning mx-1" role="alert">
-    Bado hakuna tips za Over 1.5 (Supa) kwa siku ya leo, tafadhali tembelea tena baadae au endelea
+    Bado hakuna tips za Direct Win (Supa) kwa siku ya leo, tafadhali tembelea tena baadae au endelea
     kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya
       bure hapa.</a>
   </div>
@@ -128,7 +128,7 @@
             <div class="stat__body">
               <div class="label">Total Odds</div>
               <div class="value fw-bold fs-5">
-                <%= Number(supa15_odds) > 9999 ? "9999+" : supa15_odds %>
+                <%= Number(supa_directwin_odds) > 9999 ? "9999+" : supa_directwin_odds %>
               </div>
             </div>
           </div>
@@ -146,3 +146,19 @@
     </div>
   </div>
 </section>
+
+<!-- More Button -->
+<% if (super_directwin?.length > 5) { %>
+ <div class="container mt-4">
+  <div class="text-center p-4 rounded-4 border bg-light-subtle">
+    <p class="mb-2 text-muted small fw-semibold">
+      Unataka Mikeka Zaidi?
+    </p>
+    <a href="/mkeka/<%= jumasiku?.leo?.toLowerCase() || "" %>" 
+       class="btn btn-success d-inline-flex align-items-center gap-2 px-4 py-2 fw-semibold shadow-sm">
+      <span>Bashiri Zote za <%= jumasiku?.leo %></span>
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+</div>
+<% } %>

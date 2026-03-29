@@ -30,11 +30,11 @@ function analyzeMatch(pick) {
     const DDMMYYYY = String(pick.match?.date).split('-').reverse().join('/');
     const match = `${pick.match?.home?.name} - ${pick.match?.away?.name}`;
     const base = {
-        fixture_id: pick.fixture_id, match, date: DDMMYYYY,
+        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league_id,
         jsDate: pick.match?.date, time: pick.match?.time,
         league: `${pick.league?.country}: ${pick.league?.name}`.replace('World: ', ''),
         weekday: GetDayFromDateString(DDMMYYYY),
-        logo: { home: pick.match?.home?.logo, away: pick.match?.away?.logo },
+        logo: { home: pick.match?.home?.logo, away: pick.match?.away?.logo, league: { logo: pick.league?.logo, flag: pick.league?.flag } },
     };
 
     const skipped = [];
@@ -54,7 +54,7 @@ function analyzeMatch(pick) {
         const top = entries[0], gap = +(top.prob - entries[1].prob).toFixed(1);
 
         let confidence = 'WEAK';
-        if (gap >= 20 && top.prob >= 65) confidence = 'SUPER_STRONG';
+        if ((gap >= 20 && top.prob >= 65) || (gap >= 40 && top.prob >= 60)) confidence = 'SUPER_STRONG';
         else if (gap >= 15 && top.prob >= 60) confidence = 'STRONG';
 
         if (confidence !== 'WEAK') {

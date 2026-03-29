@@ -33,7 +33,7 @@
     Match Winner: <span><%= mw.length %></span> &nbsp;|&nbsp;
     O/U 2.5: <span><%= ou25.length %></span> &nbsp;|&nbsp;
     BTTS: <span><%= btts.length %></span> &nbsp;|&nbsp;
-    Mega: <span><%= mega %></span>
+    Mega: <span><%= mega.length %></span>
 </div>
 
 <!-- MATCH WINNER -->
@@ -92,6 +92,24 @@
     <% }) %>
 </table>
 <% } else { %><p class="empty">No BTTS tips generated</p><% } %>
+
+<!-- MEGA -->
+<h2>Mega (<%= mega.length %>)</h2>
+<% if (mega.length) { %>
+<table>
+    <tr><th>Match</th><th>League</th><th>Bet</th><th>Odds</th><th>Prob%</th><th>Confidence</th></tr>
+    <% mega.forEach(t => { %>
+    <tr>
+        <td><%= t.match %></td>
+        <td><%= t.league %></td>
+        <td><strong><%= t.bet %></strong></td>
+        <td><%= t.odds %></td>
+        <td><%= t.accuracy %>%</td>
+        <td><span class="badge <%= t.confidence === 'SUPER_STRONG' ? 'super' : 'strong' %>"><%= t.confidence %></span></td>
+    </tr>
+    <% }) %>
+</table>
+<% } else { %><p class="empty">No Mega tips generated</p><% } %>
 
 </body>
 </html>
