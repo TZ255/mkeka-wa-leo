@@ -15,6 +15,7 @@ const oldLeagueRedirects = require('./routes/old-ligi-redirects')
 const getRouter3 = require('./routes/get3')
 const blogRouter = require('./routes/blog')
 const oddsTipsRouter = require('./routes/get-odds-tips')
+const htmxTips = require('./routes/htmx-tips')
 const googleAuthRouter = require('./routes/google-auth')
 const routeAuth = require('./routes/get4-auth')
 const paymentRouter = require('./routes/clickpesa')
@@ -82,6 +83,7 @@ app.use(getRouter2)
 app.use(getRouter3)
 app.use(blogRouter)
 app.use(oddsTipsRouter)
+app.use(htmxTips)
 
 //Attached Bots Goes Here
 if (process.env.local != 'true') {

@@ -1,10 +1,17 @@
+<div id="supa-directwin-section">
 <section class="mega-card card border-0 shadow-sm" itemscope>
   <!-- Navigation Header -->
   <div class="btn-group" role="group" aria-label="Direct Win:Mikeka ya Leo na Kesho">
-    <a href="#supa-direct-win" class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+    <a href="#supa-direct-win"
+       hx-get="/api/tips/directwin?siku=leo" hx-target="#supa-directwin-section" hx-swap="outerHTML"
+       hx-on::before-request="__tipsLoading('supa-directwin-section')"
+       class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
       Leo
     </a>
-    <a href="/mkeka/kesho#supa-direct-win" class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+    <a href="/mkeka/kesho#supa-direct-win"
+       hx-get="/api/tips/directwin?siku=kesho" hx-target="#supa-directwin-section" hx-swap="outerHTML"
+       hx-on::before-request="__tipsLoading('supa-directwin-section')"
+       class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
       Kesho
     </a>
   </div>
@@ -154,7 +161,7 @@
     <p class="mb-2 text-muted small fw-semibold">
       Unataka Mikeka Zaidi?
     </p>
-    <a href="/mkeka/<%= jumasiku?.leo?.toLowerCase() || "" %>" 
+    <a href="/mkeka/<%= jumasiku?.leo?.toLowerCase() || "" %>"
        class="btn btn-success d-inline-flex align-items-center gap-2 px-4 py-2 fw-semibold shadow-sm">
       <span>Bashiri Zote za <%= jumasiku?.leo %></span>
       <i class="fas fa-arrow-right"></i>
@@ -162,3 +169,16 @@
   </div>
 </div>
 <% } %>
+</div>
+
+<script>
+if (typeof __tipsLoading === 'undefined') {
+    window.__tipsLoading = function(id) {
+        var s = document.getElementById(id);
+        if (!s) return;
+        var h = s.querySelector('.mega-card__header');
+        if (h) h.innerHTML = '<div class="d-flex justify-content-center py-5"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Inapakia...</span></div></div>';
+        s.querySelectorAll('.mega-card__body, .alert, .mega-card__summary').forEach(function(el) { el.style.display = 'none'; });
+    }
+}
+</script>

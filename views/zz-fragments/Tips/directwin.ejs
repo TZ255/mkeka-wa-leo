@@ -2,16 +2,18 @@
 <section class="mega-card card border-0 shadow-sm" itemscope>
   <!-- Navigation Header -->
   <div class="btn-group" role="group" aria-label="Direct Win:Mikeka ya Leo na Kesho">
-    <a href="/#supa-direct-win"
+    <a href="<%= trh.siku === 'leo' ? '#supa-direct-win' : '/#supa-direct-win' %>"
        hx-get="/api/tips/directwin?siku=leo" hx-target="#supa-directwin-section" hx-swap="outerHTML"
        hx-on::before-request="__tipsLoading('supa-directwin-section')"
-       class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+       class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>"
+       title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
       Leo
     </a>
     <a href="/mkeka/kesho#supa-direct-win"
        hx-get="/api/tips/directwin?siku=kesho" hx-target="#supa-directwin-section" hx-swap="outerHTML"
        hx-on::before-request="__tipsLoading('supa-directwin-section')"
-       class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+       class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>"
+       title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
       Kesho
     </a>
   </div>
@@ -22,30 +24,26 @@
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <h2 class="mega-card__title m-0 fw-bold fs-3">
           <span class="bullet" aria-hidden="true"></span>
-          Direct Win: Supa za Kesho
+          Direct Win: Supa za <%= trh.siku === 'leo' ? 'Leo' : 'Kesho' %>
         </h2>
         <div class="date-wrap d-flex align-items-center gap-2">
           <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i>
-            <%= jumasiku.kesho %>
+            <%= displayDay %>
           </span>
           <span class="vr d-none d-sm-inline"></span>
           <span class="date-badge">
-            <%= trh.kesho %>
+            <%= displayDate %>
           </span>
         </div>
       </div>
     </div>
   </div>
 
-  <% if (super_directwin?.length> 0) { %>
+  <% if (super_directwin?.length > 0) { %>
   <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
     <div class="prediction-list">
-      <% super_directwin.forEach(el=> { %>
-      <!-- variables -->
-      <% const _parts=(el.match || '' ).split(' - '); 
-            const _home = _parts[0] || ''; 
-            const _away = _parts[1] || ''; 
-            %>
+      <% super_directwin.forEach(el => { %>
+      <% const _parts = (el.match || '').split(' - '); const _home = _parts[0] || ''; const _away = _parts[1] || ''; %>
       <article class="prediction" itemscope itemtype="https://schema.org/CreativeWork">
         <div class="prediction__grid">
           <div class="prediction__meta">
@@ -92,7 +90,7 @@
         </div>
 
         <!-- SEO CreativeWork -->
-        <meta itemprop="headline" content="<%= _home %> vs <%= _away %> prediction - <%= trh.kesho %>">
+        <meta itemprop="headline" content="<%= _home %> vs <%= _away %> prediction - <%= displayDate %>">
         <meta itemprop="about" content="Utabiri wa <%= trh.siku %> mechi ya <%= _home %> vs <%= _away %>, <%= el.league %>">
         <meta itemprop="abstract" content="Mechi hii ya <%= _home %> vs <%= _away %> utabiri wetu wa mwisho ni - <%= el.bet %>">
         <meta itemprop="datePublished" content="<%= trh.created %>">
@@ -100,7 +98,7 @@
         <meta itemprop="author" content="Mkeka wa Leo">
         <meta itemprop="publisher" content="Mkeka wa Leo">
         <meta itemprop="keywords" content="utabiri wa mechi za <%= trh.siku %>, utabiri wa <%= el.league %>, <%= _home %> vs <%= _away %> prediction">
-        <meta itemprop="mainEntityOfPage" content="https://mkekawaleo.com/">
+        <meta itemprop="mainEntityOfPage" content="https://mkekawaleo.com/<%= trh.siku === 'kesho' ? 'mkeka/kesho' : '' %>">
       </article>
       <% }) %>
     </div>
@@ -108,9 +106,9 @@
   <% } %>
 
   <!-- If no Tips -->
-  <% if (super_directwin.length==0) { %>
+  <% if (super_directwin.length == 0) { %>
   <div class="alert alert-warning mx-1" role="alert">
-    Bado hakuna tips za Direct Win (Supa) kwa siku ya kesho, tafadhali tembelea tena baadae au endelea
+    Bado hakuna tips za Direct Win (Supa) kwa siku ya <%= trh.siku %>, tafadhali tembelea tena baadae au endelea
     kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya
       bure hapa.</a>
   </div>
@@ -161,24 +159,12 @@
     <p class="mb-2 text-muted small fw-semibold">
       Unataka Mikeka Zaidi?
     </p>
-    <a href="/mkeka/<%= jumasiku?.kesho?.toLowerCase() || "kesho" %>"
+    <a href="/mkeka/<%= displayDay?.toLowerCase() || '' %>"
        class="btn btn-success d-inline-flex align-items-center gap-2 px-4 py-2 fw-semibold shadow-sm">
-      <span>Bashiri Zote za <%= jumasiku?.kesho %></span>
+      <span>Bashiri Zote za <%= displayDay %></span>
       <i class="fas fa-arrow-right"></i>
     </a>
   </div>
 </div>
 <% } %>
 </div>
-
-<script>
-if (typeof __tipsLoading === 'undefined') {
-    window.__tipsLoading = function(id) {
-        var s = document.getElementById(id);
-        if (!s) return;
-        var h = s.querySelector('.mega-card__header');
-        if (h) h.innerHTML = '<div class="d-flex justify-content-center py-5"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Inapakia...</span></div></div>';
-        s.querySelectorAll('.mega-card__body, .alert, .mega-card__summary').forEach(function(el) { el.style.display = 'none'; });
-    }
-}
-</script>

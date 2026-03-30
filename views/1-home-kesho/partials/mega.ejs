@@ -1,10 +1,16 @@
-<section class="mega-card card border-0 shadow-sm" itemscope>
+<section id="mega-card-section" class="mega-card card border-0 shadow-sm" itemscope>
   <!-- Navigation Header -->
   <div class="btn-group" role="group" aria-label="Mikeka ya Leo na Kesho">
-    <a href="/" class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+    <a href="/"
+       hx-get="/api/tips/mega?siku=leo" hx-target="#mega-card-section" hx-swap="outerHTML"
+       hx-on::before-request="__tipsLoading('mega-card-section')"
+       class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
       Leo
     </a>
-    <a href="/mkeka/kesho" class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+    <a href="/mkeka/kesho"
+       hx-get="/api/tips/mega?siku=kesho" hx-target="#mega-card-section" hx-swap="outerHTML"
+       hx-on::before-request="__tipsLoading('mega-card-section')"
+       class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
       Kesho
     </a>
   </div>
@@ -136,3 +142,15 @@
     </div>
   </div>
 </section>
+
+<script>
+if (typeof __tipsLoading === 'undefined') {
+    window.__tipsLoading = function(id) {
+        var s = document.getElementById(id);
+        if (!s) return;
+        var h = s.querySelector('.mega-card__header');
+        if (h) h.innerHTML = '<div class="d-flex justify-content-center py-5"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Inapakia...</span></div></div>';
+        s.querySelectorAll('.mega-card__body, .alert, .mega-card__summary').forEach(function(el) { el.style.display = 'none'; });
+    }
+}
+</script>
