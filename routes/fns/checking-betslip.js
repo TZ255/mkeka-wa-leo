@@ -30,7 +30,7 @@ const checking3MkekaBetslip = async (d) => {
                         fixture_id: { $nin: vip2.map(c => c.fixture_id) },
                         $or: [
                             { confidence: 'SUPER_STRONG' },
-                            { confidence: 'STRONG', "meta.xG": { $gte: 3.0 } }
+                            { confidence: 'STRONG', "meta.xG": { $gte: 3.4 } }
                         ]
                     }
                 },
