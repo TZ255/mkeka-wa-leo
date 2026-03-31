@@ -411,8 +411,8 @@ router.get('/api/testing', async (req, res) => {
     if (process.env.local !== "true") return res.status(403).json({ error: "Not Local" });
 
     try {
-        await syncOddsForDate('2026-03-31');
-        await GET_TIPS_FOR_MKEKALEO("2026-03-31")
+        await syncOddsForDate('2026-04-01');
+        await GET_TIPS_FOR_MKEKALEO("2026-04-01")
         res.json({ok: true})
     } catch (error) {
         console.error(error);

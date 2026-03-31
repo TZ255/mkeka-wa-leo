@@ -195,7 +195,7 @@ module.exports = () => {
   // ------------------------------------
   // Odds sync (tomorrow)
   // ------------------------------------
-  cron.schedule('5 3,10,17,23 * * *', () => {
+  cron.schedule('5 3,10,12,18,23 * * *', () => {
     const tomorrow = format(addDays(1), 'en-CA');
 
     runLocked('odds-sync-tomorrow', () =>
