@@ -362,7 +362,6 @@ router.get('/api/test-smart-tips', async (req, res) => {
 
         const fixtures = await OddsFixture.find({
             'match.date': date,
-            'league.id': { $in: neededIds },
             'match.time': { $gt: '08:00' },
             'best_pick.odds': { $ne: null },
         }).lean();
