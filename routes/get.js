@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
                 .find({ date: d, confidence: 'SUPER_STRONG' })
                 .select("date time league match bet odds accuracy weekday jsDate logo confidence")
                 .sort({ accuracy: -1 })
-                .limit(10)
+                .limit(15)
                 .cache(600),
 
             await over15Mik
