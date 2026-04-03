@@ -14,16 +14,232 @@
     <%- include('../0-global/google.ejs'); %>
     <%- include('../0-global/fonts.ejs'); %>
     <style>
-        section.posts .card {
-            margin: 12px 16px;
-            width: 100%;
-            max-width: 360px;
+        .standings-page {
+            padding: 0 12px;
         }
 
-        section.posts .card img {
-            width: 100%;
-            max-width: 360px;
-            height: 206px;
+        .standings-page .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            margin-top: 28px;
+        }
+
+        .standings-page .section-header h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .standings-page .section-header .header-icon {
+            font-size: 1.2rem;
+        }
+
+        .league-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            overflow: hidden;
+        }
+
+        .league-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            text-decoration: none;
+            color: #1a1a1a;
+            border-bottom: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .league-card:hover {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            transform: translateX(3px);
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+
+        .league-card:active {
+            transform: translateX(1px);
+        }
+
+        .league-card .league-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            flex-shrink: 0;
+            border-radius: 6px;
+            background: #f8f9fa;
+            padding: 4px;
+        }
+
+        .league-card .league-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .league-card .league-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .league-card .league-meta {
+            font-size: 0.78rem;
+            color: #6c757d;
+            margin-top: 1px;
+        }
+
+        .league-card .league-arrow {
+            margin-left: auto;
+            color: #28a745;
+            font-size: 1rem;
+            flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .league-card:hover .league-arrow {
+            opacity: 1;
+        }
+
+        /* Quick links row */
+        .quick-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            padding: 16px;
+        }
+
+        .quick-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+
+        .quick-links a:hover {
+            background: #28a745;
+            color: #fff;
+            border-color: #28a745;
+        }
+
+        .fixture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 0;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            overflow: hidden;
+        }
+
+        .fixture-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #1a1a1a;
+            border-bottom: 1px solid #f0f0f0;
+            border-right: 1px solid #f0f0f0;
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .fixture-card:hover {
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            transform: translateX(3px);
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+
+        .fixture-card .league-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .fixture-card .fixture-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .fixture-card .fixture-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .fixture-card .fixture-meta {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 1px;
+        }
+
+        .fixture-card .league-arrow {
+            margin-left: auto;
+            color: #28a745;
+            font-size: 1rem;
+            flex-shrink: 0;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .fixture-card:hover .league-arrow {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .league-grid,
+            .fixture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .league-card,
+            .fixture-card {
+                border-right: none;
+            }
+
+            .quick-links {
+                gap: 8px;
+            }
+
+            .quick-links a {
+                padding: 7px 12px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -31,91 +247,87 @@
 <body>
     <%- include('../0-global/header.ejs'); %>
     <main>
-        <section class="leftside">
-            <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                        <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                            aria-controls="panelsStayOpen-collapseOne">
-                            MISIMAMO YA LIGI KUU 2025/2026
-                        </button>
-                    </h2>
-                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                        aria-labelledby="panelsStayOpen-headingOne">
-                        <div class="accordion-body">
-                            <div class="container mt-4">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item fw-bold">
-                                        <a href="/standings/football/tanzania/premier-league" title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2025/2026" class="text-decoration-none link-success">
-                                            Tanzania - NBC Premier League 2025/2026
-                                        </a>
-                                    </li>
-                                    <% leagues_others.forEach(league => { %>
-                                    <li class="list-group-item fw-bold">
-                                        <a href="/standings/football/<%= league.path %>" title="Msimamo wa <%= league.ligi %> - <%= league.league_name %> kwa msimu wa <%= league.msimu.long %>" class="text-decoration-none link-success">
-                                            <%= league.country %> - <%= league.ligi %> <%= league.msimu.short %>
-                                        </a>
-                                    </li>
-                                    <% }) %>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <section class="leftside standings-page">
 
-                <!-- Next Accordion -->
-                <div class="accordion-item mt-5">
-                    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                        <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
-                            aria-controls="panelsStayOpen-collapseTwo">
-                            RATIBA NA MATOKEO YA MECHI
-                        </button>
-                    </h2>
-                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
-                        aria-labelledby="panelsStayOpen-headingTwo">
-                        <div class="accordion-body">
-                            <div class="container mt-4">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item fw-bold">
-                                        <a href="/mechi/jana" title="Ratiba na Matokeo ya Mechi Zote za Jana" class="text-decoration-none link-success">
-                                            Matokeo ya Mechi Zote za Jana
-                                        </a>
-                                    </li>
-                                    <li class="list-group-item fw-bold">
-                                        <a href="/mechi/leo" title="Ratiba na Matokeo ya Mechi Zote za Leo" class="text-decoration-none link-success">
-                                            Ratiba na Matokeo ya Mechi Zote za Leo
-                                        </a>
-                                    </li>
-                                    <li class="list-group-item fw-bold">
-                                        <a href="/mechi/kesho" title="Ratiba na Matokeo ya Mechi Zote za Kesho" class="text-decoration-none link-success">
-                                            Ratiba ya Mechi Zote za Kesho
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <hr class="text-success mx-auto my-2 w-50">
-
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item fw-bold">
-                                        <a href="/football/fixtures/tanzania/premier-league" title="Ratiba na Matokeo ya Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2025/2026" class="text-decoration-none link-success">
-                                            Tanzania: NBC Premier League 2025/2026 - Ratiba na Matokeo
-                                        </a>
-                                    </li>
-                                    <% leagues_others.forEach(league => { %>
-                                    <li class="list-group-item fw-bold">
-                                        <a href="/football/fixtures/<%= league.path %>" title="Ratiba na Matokeo ya <%= league.ligi %> - <%= league.league_name %> kwa msimu wa <%= league.msimu.long %>" class="text-decoration-none link-success">
-                                            <%= league.country %>: <%= league.league_name %> <%= league.msimu.short %> - Ratiba na Matokeo
-                                        </a>
-                                    </li>
-                                    <% }) %>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- MISIMAMO -->
+            <div class="section-header">
+                <span class="header-icon">&#127942;</span>
+                <h2>MISIMAMO YA LIGI KUU 2025/2026</h2>
             </div>
+            <div class="league-grid">
+                <a href="/standings/football/tanzania/premier-league"
+                   title="Msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2025/2026"
+                   class="league-card">
+                    <img src="https://media.api-sports.io/football/leagues/567.png"
+                         alt="NBC Premier League"
+                         class="league-logo" loading="lazy">
+                    <div class="league-info">
+                        <span class="league-name">NBC Premier League</span>
+                        <span class="league-meta">Tanzania &middot; 2025/2026</span>
+                    </div>
+                    <span class="league-arrow">&#8250;</span>
+                </a>
+                <% leagues_others.forEach(league => { %>
+                <a href="/standings/football/<%= league.path %>"
+                   title="Msimamo wa <%= league.ligi %> - <%= league.league_name %> kwa msimu wa <%= league.msimu.long %>"
+                   class="league-card">
+                    <img src="https://media.api-sports.io/football/leagues/<%= league.league_id %>.png"
+                         alt="<%= league.league_name %>"
+                         class="league-logo" loading="lazy">
+                    <div class="league-info">
+                        <span class="league-name"><%= league.ligi %></span>
+                        <span class="league-meta"><%= league.country %> &middot; <%= league.msimu.short %></span>
+                    </div>
+                    <span class="league-arrow">&#8250;</span>
+                </a>
+                <% }) %>
+            </div>
+
+            <!-- RATIBA NA MATOKEO -->
+            <div class="section-header" style="margin-top: 36px;">
+                <span class="header-icon">&#9917;</span>
+                <h2>RATIBA NA MATOKEO YA MECHI</h2>
+            </div>
+            <div class="quick-links">
+                <a href="/mechi/jana" title="Ratiba na Matokeo ya Mechi Zote za Jana">
+                    &#128337; Mechi za Jana
+                </a>
+                <a href="/mechi/leo" title="Ratiba na Matokeo ya Mechi Zote za Leo">
+                    &#128994; Mechi za Leo
+                </a>
+                <a href="/mechi/kesho" title="Ratiba na Matokeo ya Mechi Zote za Kesho">
+                    &#128197; Mechi za Kesho
+                </a>
+            </div>
+            <div class="fixture-grid">
+                <a href="/football/fixtures/tanzania/premier-league"
+                   title="Ratiba na Matokeo ya Ligi Kuu ya NBC Tanzania Bara kwa msimu wa 2025/2026"
+                   class="fixture-card">
+                    <img src="https://media.api-sports.io/football/leagues/567.png"
+                         alt="NBC Premier League"
+                         class="league-logo" loading="lazy">
+                    <div class="fixture-info">
+                        <span class="fixture-name">NBC Premier League 2025/2026</span>
+                        <span class="fixture-meta">Tanzania - Ratiba na Matokeo</span>
+                    </div>
+                    <span class="league-arrow">&#8250;</span>
+                </a>
+                <% leagues_others.forEach(league => { %>
+                <a href="/football/fixtures/<%= league.path %>"
+                   title="Ratiba na Matokeo ya <%= league.ligi %> - <%= league.league_name %> kwa msimu wa <%= league.msimu.long %>"
+                   class="fixture-card">
+                    <img src="https://media.api-sports.io/football/leagues/<%= league.league_id %>.png"
+                         alt="<%= league.league_name %>"
+                         class="league-logo" loading="lazy">
+                    <div class="fixture-info">
+                        <span class="fixture-name"><%= league.league_name %> <%= league.msimu.short %></span>
+                        <span class="fixture-meta"><%= league.country %> - Ratiba na Matokeo</span>
+                    </div>
+                    <span class="league-arrow">&#8250;</span>
+                </a>
+                <% }) %>
+            </div>
+
             <br><br><br>
         </section>
     </main>
