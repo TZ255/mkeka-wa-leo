@@ -46,9 +46,9 @@ function analyzeMatch(pick) {
         skipped.push(`MW: missing odds — ${[!homeP && 'home', !drawP && 'draw', !awayP && 'away'].filter(Boolean).join(', ')}`);
     } else {
         const entries = [
-            { label: 'Home Win', prob: homeP, odds: pick.match_winner.home.odds },
+            { label: `${pick.match?.home?.name} Win`, prob: homeP, odds: pick.match_winner.home.odds },
             { label: 'Draw', prob: drawP, odds: pick.match_winner.draw.odds },
-            { label: 'Away Win', prob: awayP, odds: pick.match_winner.away.odds },
+            { label: `${pick.match?.away?.name} Win`, prob: awayP, odds: pick.match_winner.away.odds },
         ].sort((a, b) => b.prob - a.prob);
 
         const top = entries[0], gap = +(top.prob - entries[1].prob).toFixed(1);

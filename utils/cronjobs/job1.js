@@ -274,7 +274,7 @@ module.exports = () => {
   // ------------------------------------
   // Fetch MikekaDB (today)
   // ------------------------------------
-  cron.schedule('17 3,8,16,20,23 * * *', () => {
+  cron.schedule('17 3,8,10 * * *', () => {
     const today = format(new Date(), 'en-CA');
 
     runLocked('fetch-mikeka', async () => {
@@ -285,7 +285,7 @@ module.exports = () => {
   // ------------------------------------
   // Fetch MikekaDB (tomorrow)
   // ------------------------------------
-  cron.schedule('25 8,16,20 * * *', () => {
+  cron.schedule('25 8,10,16,21,23 * * *', () => {
     const tomorrow = format(addDays(1), 'en-CA');
 
     runLocked('fetch-mikeka-tomorrow', async () => {

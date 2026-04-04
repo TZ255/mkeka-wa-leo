@@ -28,6 +28,8 @@ const OU35Tips = require('../model/over35mik')
 const Over05HTTips = require('../model/over05ht')
 const MatchWinnerTips = require('../model/1x2tips')
 
+const PRIORITY_LEAGUES = [567, 1, 2, 3, 39, 40, 12, 20, 140, 78, 61, 135, 94, 88, 203]
+
 router.get('/', async (req, res) => {
     try {
         //leo
@@ -53,24 +55,24 @@ router.get('/', async (req, res) => {
 
         const [mikeka, super_directwin, super_over15] = await Promise.all([
             await mkekadb
-                .find({ date: d, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 70 } }] })
+                .find({ date: d, time: { $gte: "12:00" }, confidence: 'SUPER_STRONG' })
                 .select("date time league match bet odds accuracy weekday jsDate logo confidence")
                 .sort({ accuracy: -1 })
-                .limit(20)
+                .limit(50)
                 .cache(600),
 
             await MatchWinnerTips
                 .find({ date: d, confidence: 'SUPER_STRONG' })
                 .select("date time league match bet odds accuracy weekday jsDate logo confidence")
                 .sort({ accuracy: -1 })
-                .limit(15)
+                .limit(35)
                 .cache(600),
 
             await over15Mik
                 .find({ date: d, accuracy: { $gte: 75 } })
                 .select("date time league match bet odds accuracy weekday jsDate logo")
                 .sort({ accuracy: -1 })
-                .limit(20)
+                .limit(35)
                 .cache(600)
         ])
 
@@ -153,24 +155,24 @@ router.get('/mkeka/kesho', async (req, res) => {
 
         //mikeka mega
         let mikeka = await mkekadb
-            .find({ date: kesho, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 70 } }] })
+            .find({ date: kesho, confidence: 'SUPER_STRONG' })
             .select('date time league match bet odds accuracy weekday jsDate logo confidence')
             .sort({ accuracy: -1 })
-            .limit(20)
+            .limit(50)
             .cache(600);
 
         let super_directwin = await MatchWinnerTips
             .find({ date: kesho, confidence: 'SUPER_STRONG' })
             .select("date time league match bet odds accuracy weekday jsDate logo confidence")
             .sort({ accuracy: -1 })
-            .limit(10)
+            .limit(35)
             .cache(600);
 
         let super_over15 = await over15Mik
             .find({ date: kesho, accuracy: { $gte: 75 } })
             .select("date time league match bet odds accuracy weekday jsDate logo")
             .sort({ accuracy: -1 })
-            .limit(20)
+            .limit(35)
             .cache(600);
 
         //multiply all odds of MegaOdds
@@ -441,7 +443,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
         }
 
         let Alltips = await mkekadb
-            .find({ date: SEO.trh.date, accuracy: { $gte: 60 } }).sort('-accuracy').limit(20)
+            .find({ date: SEO.trh.date, confidence: 'SUPER_STRONG' }).sort('-accuracy').limit(50)
             .select('date time league match bet odds accuracy weekday jsDate logo')
             .cache(600)
 

@@ -42,7 +42,7 @@
         mechi kadhaa kwenye tiketi moja. Kwa mikeka yetu na chambuzi zetu za kitaalamu, utapata odds za uhakika
         za Acca Bets (Mega Tips) kila siku hapa BURE!.
         <br><br>
-        Kwa siku ya <%= SEO.siku %>, <strong><%= SEO.trh.day %> ya <%= SEO.trh.month_date %></strong>, tumeandaa mkeka wa Mega Odds wenye mechi <strong><%= mikeka.length %></strong> na jumla ya odds <strong><%= total_odds %></strong>.
+        Kwa siku ya <%= SEO.siku %>, <strong><%= SEO.trh.day %> ya <%= SEO.trh.month_date %></strong>, tumeandaa mkeka wa Mega Odds wenye mechi <strong><%= mikeka.length %></strong> na jumla ya odds <strong><%= Number(total_odds) > 9999 ? "9,999+" : Number(total_odds).toLocaleString("sw-TZ", {minimumFractionDigits: 2, maximumFractionDigits: 2}) %></strong>.
       </p>
       <%- include('../0-global/banner.ejs'); %>
       <%- include('./partials/mega.ejs'); %>
