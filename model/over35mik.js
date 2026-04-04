@@ -7,7 +7,8 @@ const slipSchema = new Schema({
     match: { type: String },
     league: { type: String },
     odds: { type: Number, default: 1 },
-    accuracy: { type: Number, default: 1 },
+    accuracy: { type: Number, default: 0 },
+    isPriority: { type: Boolean, default: false },
     time: { type: String },
     date: { type: String },
     bet: { type: String },
@@ -24,6 +25,9 @@ const slipSchema = new Schema({
         },
     }
 }, { strict: false, timestamps: true })
+
+// over35: find by { date } sort accuracy
+slipSchema.index({ date: 1, accuracy: -1 })
 
 let OU35Tips = mongoose.model('over35-tips', slipSchema)
 

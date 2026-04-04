@@ -53,29 +53,18 @@
             </div>
             <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %></span></div>
           </div>
-          <div class="prediction__odds">
-            <div class="odds-cta">
-              <% const accuracy = Number(el?.accuracy || 0); %>
-              <% const hasAccuracy = accuracy > 0; %>
-              <% const normalizedAccuracy = Math.max(0, Math.min(100, accuracy)); %>
-              <% const displayAccuracy = Math.round(normalizedAccuracy); %>
-              <% const accuracyState = normalizedAccuracy >= 65 ? 'accuracy--success' : 'accuracy--warning'; %>
-              <span class="odds-chip<%= hasAccuracy ? ` odds-chip--accuracy ${accuracyState}` : '' %>" aria-label="<%= hasAccuracy ? 'Accuracy' : 'Odds' %>" style="height: 50px;<%= hasAccuracy ? ` --accuracy:${normalizedAccuracy};` : '' %>">
-                <% if (hasAccuracy) { %>
-                  <span><%= `${displayAccuracy}%` %></span>
-                  <small style="font-size: 0.65rem;">Kushinda</small>
-                <% } %>
-                <% if (!hasAccuracy) { %>
-                  <small style="font-size: 0.65rem;">Odds</small>
-                  <span><%= String(el.odds).padEnd(4, ' 0') %></span>
-                <% } %>
+          <% const accuracy = Number(el?.accuracy || 0); %>
+          <% const hasAccuracy = accuracy > 0; %>
+          <% const normalizedAccuracy = Math.max(0, Math.min(100, accuracy)); %>
+          <% const displayAccuracy = Math.round(normalizedAccuracy); %>
+          <div class="prediction__progress">
+            <div class="gold-bar" role="progressbar" aria-valuenow="<%= hasAccuracy ? displayAccuracy : el.odds %>" aria-valuemin="0" aria-valuemax="100">
+              <div class="gold-bar__track">
+                <div class="gold-bar__fill" style="width:<%= hasAccuracy ? normalizedAccuracy : Math.min(Number(el.odds) * 10, 100) %>%"></div>
+              </div>
+              <span class="gold-bar__value">
+                <% if (hasAccuracy) { %><%= displayAccuracy %>%<% } else { %><%= String(el.odds).padEnd(4, '0') %><% } %>
               </span>
-              <button class="btn bet-btn" type="button" onclick="window.open('/betway/register')" aria-label="Bet on Betway" style="height: 50px;">
-                <img src="/imgs/logos/betway-logo.png" alt="" class="bet-btn__logo" loading="lazy" decoding="async">
-                <span class="bet-btn__text d-none d-lg-inline">BET</span>
-                <span class="bet-btn__text d-inline d-lg-none">BETI SASA</span>
-                <span class="bet-btn__arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right fa-beat"></i></span>
-              </button>
             </div>
           </div>
         </div>

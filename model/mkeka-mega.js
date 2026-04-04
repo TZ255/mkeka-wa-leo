@@ -8,6 +8,7 @@ const megaSchema = new Schema({
     league: { type: String },
     odds: { type: Number, default: 1 },
     accuracy: { type: Number, default: 0 },
+    isPriority: { type: Boolean, default: false },
     facts: { type: String, default: null },
     time: { type: String },
     date: { type: String },
@@ -28,6 +29,13 @@ const megaSchema = new Schema({
         },
     }
 }, { strict: false, timestamps: true })
+
+// aggregateTips: { date, confidence, accuracy } with sort on accuracy
+megaSchema.index({ date: 1, confidence: 1, accuracy: -1 })
+// findMikekaByWeekday: { date, status, bet, accuracy }
+megaSchema.index({ date: 1, status: 1, bet: 1, accuracy: -1 })
+// aggregation pipeline uses league_id for $in priority check
+megaSchema.index({ date: 1, league_id: 1 })
 
 const mkekaDB = mongoose.model('Accumulator', megaSchema)
 module.exports = mkekaDB

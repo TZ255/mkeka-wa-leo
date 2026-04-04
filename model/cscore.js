@@ -42,6 +42,9 @@ const cscoreSchema = new Schema({
     }
 }, {strict: false, timestamps: true })
 
+// correct score: find by { siku: { $in: [...] } }
+cscoreSchema.index({ siku: 1 })
+
 const mkeka_wa_leo = mongoose.connection.useDb('mkeka-wa-leo')
 let correctScoreModel = mkeka_wa_leo.model('correct-score', cscoreSchema)
 module.exports = correctScoreModel

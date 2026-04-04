@@ -1,27 +1,44 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="max-width: 450px;">
-      <div class="modal-header">
-        <h1 class="modal-title fw-bold" id="exampleModalLabel" style="font-size: 15px;">
-          MECHI MOJA IMECHANA? USIWAZE! 🎉
-        </h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" style="text-align: justify;">
-        Huku tunakurudishia hadi mara 50 ya dau lako iwapo mkeka umechanwa na mechi moja. <br><br> Yaani! <b>BETWAY</b>
-        tumekuletea <b>BETSAVER</b> , Mechi moja ikichana ni kama tumeshinda tu! 🤑 <br>
-        <div style="width: 100%; height: fit-content;">
-          <img src="/imgs/betsaver.webp" alt="BetWay, Betsaver Refund. Rudishiwa hadi mara 50 ya dau lako"
-            style="width: 100%;" onclick="window.open('/betway/register')">
+    <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg" style="max-width: 480px; margin: auto;">
+
+      <!-- Colored top accent bar -->
+      <div style="height: 5px; background: linear-gradient(90deg, #1a8d1a, #28a745, #1a8d1a);"></div>
+
+      <div class="modal-header border-0 pb-0 pt-3 px-4">
+        <div>
+          <span class="badge rounded-pill text-bg-success mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">OFA MAALUM</span>
+          <h5 class="modal-title fw-bold lh-sm" id="exampleModalLabel" style="font-size: 1rem;">
+            Mechi Moja Imechana? USIWAZE!
+          </h5>
         </div>
+        <button type="button" class="btn-close btn-close-sm align-self-start" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-          style="padding: 8px 12px; background-color: white; border: 1px solid #808080; color: #808080;">X</button>
-        <button type="button" id="betBtn" class="btn btn-primary"
-          style="background-color: green; border: green; padding: 8px 20px;"><b>BASHIRI SASA!</b></button>
+
+      <div class="modal-body px-4 pt-2 pb-3">
+        <p class="text-body-secondary mb-3" style="font-size: 0.88rem; line-height: 1.6;">
+          Rudishiwa hadi <strong class="text-success">mara 50</strong> ya dau lako iwapo mkeka umechanwa na mechi moja. <br>
+          Ukiwa na <strong>BETWAY BETSAVER</strong> &mdash; mechi moja ikichana ni kama umeshinda tu!
+        </p>
+        <a href="/betway/register" target="_blank" class="d-block rounded-3 overflow-hidden" style="cursor: pointer;">
+          <img src="/imgs/betsaver.webp"
+            alt="BetWay Betsaver – Rudishiwa hadi mara 50 ya dau lako"
+            class="img-fluid w-100 d-block"
+            style="transition: transform 0.2s; object-fit: cover;"
+            onmouseover="this.style.transform='scale(1.02)'"
+            onmouseout="this.style.transform='scale(1)'">
+        </a>
       </div>
+
+      <div class="modal-footer border-0 pt-0 px-4 pb-3 gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Funga</button>
+        <button type="button" id="betBtn" class="btn btn-success btn-sm rounded-pill px-4 fw-semibold"
+          style="background: linear-gradient(135deg, #1a8d1a, #28a745); border: none;">
+          BASHIRI SASA
+        </button>
+      </div>
+
     </div>
   </div>
 </div>

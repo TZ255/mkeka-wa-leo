@@ -39,5 +39,8 @@ const slipSchema = new Schema({
     }
 }, { strict: false, timestamps: true })
 
+// betslip.find({ date, vip_no }) — used on homepage, betslip page
+slipSchema.index({ date: 1, vip_no: 1 })
+
 let BetslipModel = mongoose.model('betslip', slipSchema)
 module.exports = BetslipModel
