@@ -71,6 +71,10 @@ router.post('/api/pay', async (req, res) => {
         const orderRef = generateOrderId(phone);
         const timestamp_string = Date.now().toString(36);
 
+        //update user phone number
+        user.phone = phone;
+        await user.save();
+
         // build payment payload
         const payload = {
             SECRET: process.env.PASS,
