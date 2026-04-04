@@ -30,7 +30,7 @@ function analyzeMatch(pick) {
     const DDMMYYYY = String(pick.match?.date).split('-').reverse().join('/');
     const match = `${pick.match?.home?.name} - ${pick.match?.away?.name}`;
     const base = {
-        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league_id,
+        fixture_id: pick.fixture_id, match, date: DDMMYYYY, league_id: pick.league.id,
         jsDate: pick.match?.date, time: pick.match?.time,
         league: `${pick.league?.country}: ${pick.league?.name}`.replace('World: ', ''),
         weekday: GetDayFromDateString(DDMMYYYY),

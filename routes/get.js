@@ -9,6 +9,7 @@ const axios = require('axios').default
 const cheerio = require('cheerio')
 
 const { WeekDayFn, findMikekaByWeekday, DetermineNextPrev, GetJsDate, GetDayFromDateString } = require('./fns/weekday')
+const { aggregateTips } = require('./fns/aggregateTips')
 const { processMatches } = require('./fns/apimatches')
 const { UpdateBongoLeagueData } = require('./fns/bongo-ligi')
 const StandingLigiKuuModel = require('../model/Ligi/bongo')
@@ -26,9 +27,8 @@ const BTTSTipsModel = require('../model/btts-tips')
 const DCTipsModel = require('../model/dc-tips')
 const OU35Tips = require('../model/over35mik')
 const Over05HTTips = require('../model/over05ht')
-const MatchWinnerTips = require('../model/1x2tips')
 
-const PRIORITY_LEAGUES = [567, 1, 2, 3, 39, 40, 12, 20, 140, 78, 61, 135, 94, 88, 203]
+
 
 router.get('/', async (req, res) => {
     try {
@@ -53,57 +53,16 @@ router.get('/', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        const [mikeka, super_directwin, super_over15] = await Promise.all([
-            await mkekadb
-                .find({ date: d, time: { $gte: "12:00" }, confidence: 'SUPER_STRONG' })
-                .select("date time league match bet odds accuracy weekday jsDate logo confidence")
-                .sort({ accuracy: -1 })
-                .limit(50)
-                .cache(600),
-
-            await MatchWinnerTips
-                .find({ date: d, confidence: 'SUPER_STRONG' })
-                .select("date time league match bet odds accuracy weekday jsDate logo confidence")
-                .sort({ accuracy: -1 })
-                .limit(35)
-                .cache(600),
-
-            await over15Mik
-                .find({ date: d, accuracy: { $gte: 75 } })
-                .select("date time league match bet odds accuracy weekday jsDate logo")
-                .sort({ accuracy: -1 })
-                .limit(35)
-                .cache(600)
+        const [tips, [slip, slip2, slip3]] = await Promise.all([
+            aggregateTips(d),
+            Promise.all([
+                betslip.find({ date: d, vip_no: 1 }).cache(600),
+                betslip.find({ date: d, vip_no: 2 }).cache(600),
+                betslip.find({ date: d, vip_no: 3 }).cache(600)
+            ])
         ])
 
-        //check if there is no any slip
-        //find random 3
-        let [slip, slip2, slip3] = await Promise.all([
-            betslip.find({ date: d, vip_no: 1 }).cache(600),
-            betslip.find({ date: d, vip_no: 2 }).cache(600),
-            betslip.find({ date: d, vip_no: 3 }).cache(600)
-        ])
-
-        //multiply all odds of MegaOdds
-        const megaOdds = mikeka.reduce((product, doc) => {
-            const odds = Number(doc.odds);
-            if (!odds || isNaN(odds)) return product;
-            return product * odds;
-        }, 1);
-
-        //multiply all odds of Super Over 1.5 Tips
-        const supa15_odds = super_over15.reduce((product, doc) => {
-            const odds = Number(doc.odds);
-            if (!odds || isNaN(odds)) return product;
-            return product * odds;
-        }, 1);
-
-        //multiply all odds of Super Direct Win Tips
-        const supa_directwin_odds = super_directwin.reduce((product, doc) => {
-            const odds = Number(doc.odds);
-            if (!odds || isNaN(odds)) return product;
-            return product * odds;
-        }, 1);
+        const { mikeka, super_directwin, super_over15, megaOdds, supa15_odds, supa_directwin_odds } = tips
 
         //multiply all odds of betslip
         const slipOdds = {
@@ -121,9 +80,9 @@ router.get('/', async (req, res) => {
         res.set('Cache-Control', 'public, max-age=600');
 
         res.render('1-home/home', {
-            megaOdds: megaOdds.toFixed(2),
-            supa15_odds: supa15_odds.toFixed(2),
-            supa_directwin_odds: supa_directwin_odds.toFixed(2),
+            megaOdds,
+            supa15_odds,
+            supa_directwin_odds,
             mikeka,
             super_over15,
             super_directwin,
@@ -153,48 +112,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         let month_date = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        //mikeka mega
-        let mikeka = await mkekadb
-            .find({ date: kesho, confidence: 'SUPER_STRONG' })
-            .select('date time league match bet odds accuracy weekday jsDate logo confidence')
-            .sort({ accuracy: -1 })
-            .limit(50)
-            .cache(600);
-
-        let super_directwin = await MatchWinnerTips
-            .find({ date: kesho, confidence: 'SUPER_STRONG' })
-            .select("date time league match bet odds accuracy weekday jsDate logo confidence")
-            .sort({ accuracy: -1 })
-            .limit(35)
-            .cache(600);
-
-        let super_over15 = await over15Mik
-            .find({ date: kesho, accuracy: { $gte: 75 } })
-            .select("date time league match bet odds accuracy weekday jsDate logo")
-            .sort({ accuracy: -1 })
-            .limit(35)
-            .cache(600);
-
-        //multiply all odds of MegaOdds
-        let megaOdds = mikeka.reduce((product, doc) => {
-            const odds = Number(doc.odds);
-            if (!odds || isNaN(odds)) return product;
-            return product * odds;
-        }, 1);
-
-        //multiply all odds of Super Over 1.5 Tips
-        const supa15_odds = super_over15.reduce((product, doc) => {
-            const odds = Number(doc.odds);
-            if (!odds || isNaN(odds)) return product;
-            return product * odds;
-        }, 1);
-
-        // multiply all odds of Super Direct Win Tips
-        const supa_directwin_odds = super_directwin.reduce((product, doc) => {
-            const odds = Number(doc.odds);
-            if (!odds || isNaN(odds)) return product;
-            return product * odds;
-        }, 1);
+        const { mikeka, super_directwin, super_over15, megaOdds, supa15_odds, supa_directwin_odds } = await aggregateTips(kesho)
 
         //tarehes
         let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
@@ -203,11 +121,12 @@ router.get('/mkeka/kesho', async (req, res) => {
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('1-home-kesho/index', {
-            megaOdds: megaOdds.toFixed(2),
+            megaOdds,
             mikeka,
             super_over15,
-            supa15_odds: supa15_odds.toFixed(2),
-            super_directwin, supa_directwin_odds: supa_directwin_odds.toFixed(2),
+            supa15_odds,
+            super_directwin,
+            supa_directwin_odds,
             trh,
             jumasiku
         })
@@ -390,7 +309,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             ]
         })
             .sort('-accuracy')
-            .limit(20)
+            .limit(50)
             .lean()
             .cache(600)
 
@@ -442,16 +361,10 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             }
         }
 
-        let Alltips = await mkekadb
-            .find({ date: SEO.trh.date, confidence: 'SUPER_STRONG' }).sort('-accuracy').limit(50)
-            .select('date time league match bet odds accuracy weekday jsDate logo')
-            .cache(600)
-
-        //multiply all odds
-        let total_odds = Alltips.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
+        const { mikeka, megaOdds } = await aggregateTips(SEO.trh.date, ['mikeka'])
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('7-mega/mega', { mikeka: Alltips, SEO, total_odds })
+        res.render('7-mega/mega', { mikeka, SEO, total_odds: megaOdds })
     } catch (err) {
         console.error(err)
         let tgAPI = `https://api.telegram.org/bot${process.env.LAURA_TOKEN}/copyMessage`
@@ -711,7 +624,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
                     ]
                 }
             ]
-        }).sort('-accuracy').limit(20).lean().cache(600)
+        }).sort('-accuracy').limit(50).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
