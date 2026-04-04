@@ -78,22 +78,26 @@ const checking3MkekaBetslip = async (d) => {
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         let vip1 = await betslip.find({ date: d, vip_no: 1 });
         if (multikeka.length < 1) {
-            let copies = await mkekadb.aggregate([
+            let copies = await DCTipsModel.aggregate([
                 {
                     $match: {
+                        fixture_id: { $nin: vip1.map(c => c.fixture_id) },
                         date: d,
                         time: { $gte: '14:00' },
-                        odds: { $gte: 1.2 },
+                        accuracy: { $gte: 75 },
+                        bet: "12",
                         confidence: "SUPER_STRONG",
-                        fixture_id: { $nin: vip1.map(c => c.fixture_id) }
+                        "meta.xG": { $gte: 3.0 }
                     }
                 },
-                { $sample: { size: 4 } }
+                { $sample: { size: 5 } }
             ])
 
             for (let c of copies) {
+                let tip = "12 & Over 1.5"
+                let odd = (Number(c.odds) * 1.18).toFixed(2)
                 await betslip.create({
-                    date: c.date, time: c.time, league: c.league, tip: c.bet, odd: c.odds, match: c.match.replace(/ - /g, ' vs '), vip_no: 2, logo: c.logo, fixture_id: c.fixture_id
+                    date: c.date, time: c.time, league: c.league, tip, odd, match: c.match.replace(/ - /g, ' vs '), vip_no: 2, logo: c.logo, fixture_id: c.fixture_id
                 })
             }
         }
