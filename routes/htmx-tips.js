@@ -5,6 +5,7 @@ const { aggregateTips } = require('./fns/aggregateTips')
 function getDateInfo(siku) {
     const nd = new Date()
     if (siku === 'kesho') nd.setDate(nd.getDate() + 1)
+    if (siku === 'jana') nd.setDate(nd.getDate() - 1)
 
     const date = nd.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
     const displayDate = nd.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
@@ -17,7 +18,7 @@ function getDateInfo(siku) {
 // Mega Odds fragment
 router.get('/api/tips/mega', async (req, res) => {
     try {
-        const siku = req.query.siku === 'kesho' ? 'kesho' : 'leo'
+        const siku = ['kesho', 'jana'].includes(req.query.siku) ? req.query.siku : 'leo'
         const { date, displayDate, displayDay, trh } = getDateInfo(siku)
 
         const { mikeka, megaOdds } = await aggregateTips(date, ['mikeka'])
@@ -33,7 +34,7 @@ router.get('/api/tips/mega', async (req, res) => {
 // Direct Win fragment
 router.get('/api/tips/directwin', async (req, res) => {
     try {
-        const siku = req.query.siku === 'kesho' ? 'kesho' : 'leo'
+        const siku = ['kesho', 'jana'].includes(req.query.siku) ? req.query.siku : 'leo'
         const { date, displayDate, displayDay, trh } = getDateInfo(siku)
 
         const { super_directwin, supa_directwin_odds } = await aggregateTips(date, ['directwin'])
@@ -49,7 +50,7 @@ router.get('/api/tips/directwin', async (req, res) => {
 // Over 1.5 fragment
 router.get('/api/tips/over15', async (req, res) => {
     try {
-        const siku = req.query.siku === 'kesho' ? 'kesho' : 'leo'
+        const siku = ['kesho', 'jana'].includes(req.query.siku) ? req.query.siku : 'leo'
         const { date, displayDate, displayDay, trh } = getDateInfo(siku)
 
         const { super_over15, supa15_odds } = await aggregateTips(date, ['over15'])

@@ -1,4 +1,4 @@
-const updatingScores = (tip, home, away, ft_total, ht_total, ht_home, ht_away) => {
+const updatingScores = (tip, home, away, ft_total, ht_total, ht_home, ht_away, matchStr) => {
     switch (tip) {
         case '1': case 'Home Win':
             return home > away ? 'won' : 'lose';
@@ -106,6 +106,10 @@ const updatingScores = (tip, home, away, ft_total, ht_total, ht_home, ht_away) =
             return (ht_away > ht_home && away > home) ? 'won' : 'lose';
 
         default:
+            if (tip.endsWith(' Win') && matchStr) {
+                const homeTeam = matchStr.split(' - ')[0];
+                return tip.startsWith(homeTeam) ? (home > away ? 'won' : 'lose') : (away > home ? 'won' : 'lose');
+            }
             return 'unknown';
     }
 }

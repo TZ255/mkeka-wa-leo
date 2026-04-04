@@ -73,6 +73,11 @@
                 <% if (hasAccuracy) { %><%= displayAccuracy %>%<% } else { %><%= String(el.odds).padEnd(4, '0') %><% } %>
               </span>
             </div>
+            <% if (el.status === 'won' || el.status === 'lose') { %>
+            <div class="prediction__result mt-1 text-center">
+              <span class="badge text-bg-<%= el.status === 'won' ? 'success' : 'danger' %>"><%= (el.result || '').replace(/[()]/g, '') %> <%= el.status.toUpperCase() %></span>
+            </div>
+            <% } %>
           </div>
         </div>
 
