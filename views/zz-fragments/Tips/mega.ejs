@@ -67,7 +67,7 @@
                 <span class="name"><%= _away %></span>
               </div>
             </div>
-            <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %></span></div>
+            <div class="bet mt-2 mt-md-1"><span class="bet-tag"><%= el.bet %> <span class="bet-tag__odds"><%= Number(el.odds).toFixed(2) %></span></span></div>
           </div>
           <% const accuracy = Number(el?.accuracy || 0); %>
           <% const hasAccuracy = accuracy > 0; %>
