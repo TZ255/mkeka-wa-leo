@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="mainModal" tabindex="-1" aria-labelledby="mainModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg" style="max-width: 480px; margin: auto;">
 
@@ -9,7 +9,7 @@
       <div class="modal-header border-0 pb-0 pt-3 px-4">
         <div>
           <span class="badge rounded-pill text-bg-success mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">OFA MAALUM</span>
-          <h5 class="modal-title fw-bold lh-sm" id="exampleModalLabel" style="font-size: 1rem;">
+          <h5 class="modal-title fw-bold lh-sm" id="mainModalLabel" style="font-size: 1rem;">
             Mechi Moja Imechana? USIWAZE!
           </h5>
         </div>
@@ -33,7 +33,7 @@
 
       <div class="modal-footer border-0 pt-0 px-4 pb-3 gap-2">
         <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Funga</button>
-        <button type="button" id="betBtn" class="btn btn-success btn-sm rounded-pill px-4 fw-semibold"
+        <button type="button" id="mainBetBtn" class="btn btn-success btn-sm rounded-pill px-4 fw-semibold"
           style="background: linear-gradient(135deg, #1a8d1a, #28a745); border: none;">
           BASHIRI SASA
         </button>
@@ -43,42 +43,73 @@
   </div>
 </div>
 
+<!-- Swap Modal -->
+ <div class="modal fade" id="swapModal" tabindex="-1" aria-labelledby="swapModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg" style="max-width: 480px; margin: auto;">
+
+      <!-- Colored top accent bar -->
+      <div style="height: 5px; background: linear-gradient(90deg, #1a8d1a, #28a745, #1a8d1a);"></div>
+
+      <div class="modal-header border-0 pb-0 pt-3 px-4">
+        <div>
+          <span class="badge rounded-pill text-bg-success mb-2" style="font-size: 0.7rem; letter-spacing: 0.5px;">OFA MAALUM</span>
+          <h5 class="modal-title fw-bold lh-sm" id="swapModalLabel" style="font-size: 1rem;">
+            FURUSHI LA OFA 🔥🔥🔥
+          </h5>
+        </div>
+        <button type="button" class="btn-close btn-close-sm align-self-start" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body px-4 pt-2 pb-3">
+        <p class="text-body-secondary mb-3" style="font-size: 0.88rem; line-height: 1.6;">
+          Jisajili na <strong>BetWay</strong> &mdash; jipatie kifurushi chenye zawadi za <strong class="text-success">Mizunguko 10 Bure, Aviator Miruko 10 Bure & Beti za Bure</strong>
+        </p>
+        <a href="/betway/register" target="_blank" class="d-block rounded-3 overflow-hidden" style="cursor: pointer;">
+          <img src="/imgs/ofa-mizunguko.webp"
+            alt="BetWay Betsaver – Rudishiwa hadi mara 50 ya dau lako"
+            class="img-fluid w-100 d-block"
+            style="transition: transform 0.2s; object-fit: cover;"
+            onmouseover="this.style.transform='scale(1.02)'"
+            onmouseout="this.style.transform='scale(1)'">
+        </a>
+      </div>
+
+      <div class="modal-footer border-0 pt-0 px-4 pb-3 gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Funga</button>
+        <button type="button" id="swapBetBtn" class="btn btn-success btn-sm rounded-pill px-4 fw-semibold"
+          style="background: linear-gradient(135deg, #1a8d1a, #28a745); border: none;">
+          JISAJILI SASA
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-  let modalInstance;
-  let modalShowInterval;
+  document.addEventListener('DOMContentLoaded', function () {
+    const mainModal = new bootstrap.Modal(document.getElementById('mainModal'));
+    const swapModal = new bootstrap.Modal(document.getElementById('swapModal'));
 
-  // Function to show the modal
-  function showModal() {
-    if (!modalInstance) {
-      modalInstance = new bootstrap.Modal(document.getElementById('exampleModal'));
-    }
-    modalInstance.show();
-  }
+    // When main modal is closed, schedule swap modal
+    document.getElementById('mainModal').addEventListener('hidden.bs.modal', function () {
+      setTimeout(function () { swapModal.show(); }, 60000);
+    });
 
-  // Function to start the interval timer
-  function startModalInterval() {
-    showModal(); // Show immediately first time
-    modalShowInterval = setInterval(showModal, 60000); // Then every 20 seconds
-  }
+    // When swap modal is closed, schedule main modal
+    document.getElementById('swapModal').addEventListener('hidden.bs.modal', function () {
+      setTimeout(function () { mainModal.show(); }, 60000);
+    });
 
-  // Function to handle modal hide event
-  function handleModalHide() {
-    // Clear existing interval if any
-    if (modalShowInterval) {
-      clearInterval(modalShowInterval);
-    }
-    // Start new interval
-    modalShowInterval = setInterval(showModal, 60000);
-  }
+    // Bet buttons
+    document.getElementById('mainBetBtn').addEventListener('click', function () {
+      window.open('/betway/register');
+    });
+    document.getElementById('swapBetBtn').addEventListener('click', function () {
+      window.open('/betway/register');
+    });
 
-  // Add event listener for when modal is hidden
-  document.getElementById('exampleModal').addEventListener('hidden.bs.modal', handleModalHide);
-
-  // Add event listener to the bet button
-  document.getElementById('betBtn').addEventListener('click', function () {
-    window.open('/betway/register');
+    // Show main modal after 15s initial delay
+    setTimeout(function () { mainModal.show(); }, 15000);
   });
-
-  // Start the initial timer
-  setTimeout(startModalInterval, 15000);
 </script>
