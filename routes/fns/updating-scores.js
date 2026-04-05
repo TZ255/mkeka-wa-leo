@@ -107,7 +107,7 @@ const updatingScores = (tip, home, away, ft_total, ht_total, ht_home, ht_away, m
 
         default:
             if (tip.endsWith(' Win') && matchStr) {
-                const homeTeam = matchStr.split(' - ')[0];
+                const homeTeam = matchStr.split(/ - | vs /)[0];
                 return tip.startsWith(homeTeam) ? (home > away ? 'won' : 'lose') : (away > home ? 'won' : 'lose');
             }
             return 'unknown';
