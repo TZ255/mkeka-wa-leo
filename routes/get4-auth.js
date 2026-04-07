@@ -181,10 +181,8 @@ router.post('/update/vip/match-data/:id', async (req, res) => {
 
         if (String(tip).toLowerCase().includes('shift-')) {
             let vip_no = Number(tip.split('-')[1].trim());
-            await betslip.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending', vip_no, expl: match.expl
-            })
-            await match.deleteOne();
+            match.vip_no = vip_no;
+            await match.save()
             return res.status(200).json({ ok: `✅ Match Status Shifted to VIP ${vip_no}`, match });
         }
 
