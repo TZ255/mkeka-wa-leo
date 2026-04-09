@@ -84,7 +84,6 @@ const checking3MkekaBetslip = async (d) => {
                         fixture_id: { $nin: vip1.map(c => c.fixture_id) },
                         date: d,
                         time: { $gte: '14:00' },
-                        accuracy: { $gte: 75 },
                         bet: "12",
                         confidence: "SUPER_STRONG",
                         "meta.xG": { $gte: 3.0 }
