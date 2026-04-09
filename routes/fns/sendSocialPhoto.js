@@ -51,7 +51,7 @@ async function postMegaToMkekaLeo(dateStr) {
                 date: dateStr,
                 isSocial: false,
                 time: { $gte: '10:00' },
-                $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 70 } }]
+                confidence: 'SUPER_STRONG',
             })
             .sort({ time: 1 }).limit(3);
         if (!docs || docs.length === 0) return null;

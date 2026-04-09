@@ -412,7 +412,8 @@ router.get('/api/testing', async (req, res) => {
     try {
         //await syncOddsForDate('2026-04-01');
         //await GET_TIPS_FOR_MKEKALEO("2026-04-04")
-        await autoUpdateResults('05/04/2026');
+        await autoUpdateResults('08/04/2026');
+        await autoUpdateResults('09/04/2026');
         res.json({ok: true})
     } catch (error) {
         console.error(error);

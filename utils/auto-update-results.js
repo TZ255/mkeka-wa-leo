@@ -1,7 +1,8 @@
 const mkekaDB = require('../model/mkeka-mega');
 const BetslipModel = require('../model/betslip');
 const Over15Mik = require('../model/ove15mik');
-const MatchWinnerTips = require('../model/1x2tips');
+const Over25Mik = require('../model/over25mik');
+const DCTipsModel = require('../model/dc-tips');
 const fixturesModel = require('../model/Ligi/fixtures');
 const updatingScores = require('../routes/fns/updating-scores');
 const { replySocialWin } = require('../routes/fns/sendSocialPhoto');
@@ -169,14 +170,14 @@ async function autoUpdateResults(dateStr) {
         }
     }
 
-    // --- 1x2 tips ---
-    const tipsQuery = { date: dateStr, status: { $regex: /^pending$/i } };
-    if (cutoffTime) tipsQuery.time = { $lte: cutoffTime };
+    // --- over 2.5 ---
+    const over25Query = { date: dateStr, status: { $regex: /^pending$/i } };
+    if (cutoffTime) over25Query.time = { $lte: cutoffTime };
 
-    const pendingTips = await MatchWinnerTips.find(tipsQuery);
-    let tipsUpdated = 0;
+    const pendingOver25 = await Over25Mik.find(over25Query);
+    let over25Updated = 0;
 
-    for (const doc of pendingTips) {
+    for (const doc of pendingOver25) {
         try {
             if (!doc.fixture_id) continue;
 
@@ -195,14 +196,47 @@ async function autoUpdateResults(dateStr) {
             doc.status = result;
             doc.result = `(${scores.home}:${scores.away})`;
             await doc.save();
-            tipsUpdated++;
-            logLocal('1x2', doc, result, scores);
+            over25Updated++;
+            logLocal('over25', doc, result, scores);
         } catch (err) {
-            console.error(`[auto-update] Error updating 1x2tip ${doc._id}:`, err?.message);
+            console.error(`[auto-update] Error updating over25 ${doc._id}:`, err?.message);
         }
     }
 
-    console.log(`[auto-update] ${dateStr}: mega ${megaUpdated}/${pendingMega.length}, betslip ${betUpdated}/${pendingBets.length}, over15 ${over15Updated}/${pendingOver15.length}, 1x2 ${tipsUpdated}/${pendingTips.length}`);
+    // --- double chance tips ---
+    const dcQuery = { date: dateStr, status: { $regex: /^pending$/i } };
+    if (cutoffTime) dcQuery.time = { $lte: cutoffTime };
+
+    const pendingDC = await DCTipsModel.find(dcQuery);
+    let dcUpdated = 0;
+
+    for (const doc of pendingDC) {
+        try {
+            if (!doc.fixture_id) continue;
+
+            const fixture = await fixturesModel.findOne({
+                fixture_id: String(doc.fixture_id),
+                status: 'FT'
+            });
+            if (!fixture?.matokeo) continue;
+
+            const scores = extractScores(fixture.matokeo);
+            if (!scores) continue;
+
+            const result = updatingScores(doc.bet, scores.home, scores.away, scores.ft_total, scores.ht_total, scores.ht_home, scores.ht_away, doc.match);
+            if (result === 'unknown') continue;
+
+            doc.status = result;
+            doc.result = `(${scores.home}:${scores.away})`;
+            await doc.save();
+            dcUpdated++;
+            logLocal('dc', doc, result, scores);
+        } catch (err) {
+            console.error(`[auto-update] Error updating dc-tip ${doc._id}:`, err?.message);
+        }
+    }
+
+    console.log(`[auto-update] ${dateStr}: mega ${megaUpdated}/${pendingMega.length}, betslip ${betUpdated}/${pendingBets.length}, over15 ${over15Updated}/${pendingOver15.length}, over25 ${over25Updated}/${pendingOver25.length}, dc ${dcUpdated}/${pendingDC.length}`);
 }
 
 module.exports = { autoUpdateResults };

@@ -31,7 +31,6 @@ router.get('/odds-tips/best-picks', async (req, res) => {
     const neededIds = await getNeededLeagueIds();
     const fixtures = await OddsFixture.find({
       'match.date': today,
-      'league.id': { $in: neededIds },
       'best_pick.accuracy': { $gte: MIN_ACCURACY },
       'best_pick.odds': { $ne: null },
       'match.time': { $gt: MIN_TIME },

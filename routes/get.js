@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
             ])
         ])
 
-        const { mikeka, super_directwin, super_over15, megaOdds, supa15_odds, supa_directwin_odds } = tips
+        const { mikeka, super_dc, super_over15, megaOdds, supa15_odds, supa_dc_odds } = tips
 
         //multiply all odds of betslip
         const slipOdds = {
@@ -82,10 +82,10 @@ router.get('/', async (req, res) => {
         res.render('1-home/home', {
             megaOdds,
             supa15_odds,
-            supa_directwin_odds,
+            supa_dc_odds,
             mikeka,
             super_over15,
-            super_directwin,
+            super_dc,
             slip,
             slipOdds,
             trh,
@@ -112,7 +112,7 @@ router.get('/mkeka/kesho', async (req, res) => {
         let month_date = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        const { mikeka, super_directwin, super_over15, megaOdds, supa15_odds, supa_directwin_odds } = await aggregateTips(kesho)
+        const { mikeka, super_dc, super_over15, megaOdds, supa15_odds, supa_dc_odds } = await aggregateTips(kesho)
 
         //tarehes
         let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
@@ -125,8 +125,8 @@ router.get('/mkeka/kesho', async (req, res) => {
             mikeka,
             super_over15,
             supa15_odds,
-            super_directwin,
-            supa_directwin_odds,
+            super_dc,
+            supa_dc_odds,
             trh,
             jumasiku
         })
@@ -300,12 +300,12 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             }
         }
 
-        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.0
+        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.25
         let mikeka = await over25Model.find({
             date: SEO.trh.date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
-                { confidence: 'STRONG', "meta.xG": { $gte: 3.0 } }
+                { confidence: 'STRONG', "meta.xG": { $gte: 3.25 } }
             ]
         })
             .sort('-accuracy')

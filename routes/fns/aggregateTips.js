@@ -1,6 +1,6 @@
 const mkekadb = require('../../model/mkeka-mega')
 const over15Mik = require('../../model/ove15mik')
-const MatchWinnerTips = require('../../model/1x2tips')
+const DCTipsModel = require('../../model/dc-tips')
 
 // League IDs that get boosted to the top of tip lists (e.g. EPL, La Liga, Serie A, etc.)
 const PRIORITY_LEAGUES = [567, 1, 2, 3, 39, 40, 12, 20, 140, 78, 61, 135, 94, 88, 203, 179, 89, 41, 42, 45, 144, 119, 103, 207, 113, 307, 345, 197, 106, 318]
@@ -43,12 +43,12 @@ function priorityPipeline(matchStage, limit = 35) {
 const QUERIES = {
     // Mega odds: SUPER_STRONG or STRONG with accuracy >= 70%
     mikeka: (date) => mkekadb.aggregate(
-        priorityPipeline({ date, $or: [{ confidence: 'SUPER_STRONG' }, { confidence: 'STRONG', accuracy: { $gte: 70 } }] }, 35)
+        priorityPipeline({ date, confidence: 'SUPER_STRONG' }, 35)
     ).cache(600),
 
-    // Direct win (1X2): only SUPER_STRONG picks
-    directwin: (date) => MatchWinnerTips.aggregate(
-        priorityPipeline({ date, confidence: 'SUPER_STRONG' }, 25)
+    // Double Chance: SUPER_STRONG with odds >= 1.08
+    dc: (date) => DCTipsModel.aggregate(
+        priorityPipeline({ date, confidence: 'SUPER_STRONG', odds: { $gte: 1.08 } }, 35)
     ).cache(600),
 
     // Over 1.5 goals: accuracy >= 75%
@@ -65,7 +65,7 @@ const QUERIES = {
  * @param {string[]} types - Tip types to fetch (defaults to all three)
  * @returns {Object} Tips and odds keyed for the frontend templates
  */
-async function aggregateTips(date, types = ['mikeka', 'directwin', 'over15']) {
+async function aggregateTips(date, types = ['mikeka', 'dc', 'over15']) {
     const promises = types.map(t => QUERIES[t](date))
     const results = await Promise.all(promises)
 
@@ -77,10 +77,10 @@ async function aggregateTips(date, types = ['mikeka', 'directwin', 'over15']) {
 
     return {
         mikeka: data.mikeka || [],
-        super_directwin: data.directwin || [],
+        super_dc: data.dc || [],
         super_over15: data.over15 || [],
         megaOdds: data.mikeka_odds || '0.00',
-        supa_directwin_odds: data.directwin_odds || '0.00',
+        supa_dc_odds: data.dc_odds || '0.00',
         supa15_odds: data.over15_odds || '0.00',
     }
 }

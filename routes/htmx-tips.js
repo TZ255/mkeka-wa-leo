@@ -31,16 +31,16 @@ router.get('/api/tips/mega', async (req, res) => {
     }
 })
 
-// Direct Win fragment
-router.get('/api/tips/directwin', async (req, res) => {
+// Double Chance fragment
+router.get('/api/tips/dc', async (req, res) => {
     try {
         const siku = ['kesho', 'jana'].includes(req.query.siku) ? req.query.siku : 'leo'
         const { date, displayDate, displayDay, trh } = getDateInfo(siku)
 
-        const { super_directwin, supa_directwin_odds } = await aggregateTips(date, ['directwin'])
+        const { super_dc, supa_dc_odds } = await aggregateTips(date, ['dc'])
 
         res.set('Cache-Control', 'public, max-age=600')
-        res.render('zz-fragments/Tips/directwin', { super_directwin, supa_directwin_odds, trh, displayDate, displayDay })
+        res.render('zz-fragments/Tips/dc', { super_dc, supa_dc_odds, trh, displayDate, displayDay })
     } catch (err) {
         console.log(err.message)
         res.status(500).send('<div class="alert alert-danger mx-1">Kuna tatizo, jaribu tena.</div>')

@@ -1,38 +1,56 @@
-<section id="dc-tips" class="mega-card card border-0 shadow-sm" itemscope>
-  <div class="btn-group" role="group" aria-label="Leo na Kesho">
-    <a href="/mkeka/double-chance#dc-tips" class="btn <%= SEO.siku.toLowerCase() === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo wa Double Chance" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+<div id="supa-dc-section">
+<section class="mega-card card border-0 shadow-sm" itemscope>
+  <!-- Navigation Header -->
+  <div class="btn-group" role="group" aria-label="Double Chance:Mikeka ya Jana, Leo na Kesho">
+    <button type="button"
+       hx-get="/api/tips/dc?siku=jana" hx-target="#supa-dc-section" hx-swap="outerHTML"
+       hx-on::before-request="__tipsLoading('supa-dc-section')"
+       class="btn <%= trh.siku === 'jana' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Jana" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+      Jana
+    </button>
+    <a href="#supa-dc"
+       hx-get="/api/tips/dc?siku=leo" hx-target="#supa-dc-section" hx-swap="outerHTML"
+       hx-on::before-request="__tipsLoading('supa-dc-section')"
+       class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo">
       Leo
     </a>
-    <a href="/mkeka/double-chance/kesho#dc-tips" class="btn <%= SEO.siku.toLowerCase() === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Kesho wa Double Chance" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
+    <a href="/mkeka/kesho#supa-dc"
+       hx-get="/api/tips/dc?siku=kesho" hx-target="#supa-dc-section" hx-swap="outerHTML"
+       hx-on::before-request="__tipsLoading('supa-dc-section')"
+       class="btn <%= trh.siku === 'kesho' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Kesho" style="border-top-right-radius: 16px; border-bottom-right-radius: 0;">
       Kesho
     </a>
   </div>
 
-  <div class="mega-card__header border-top" id="mega-za-leo">
+  <!-- Title header -->
+  <div class="mega-card__header border-top" id="supa-dc">
     <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
       <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
         <h2 class="mega-card__title m-0 fw-bold fs-3">
           <span class="bullet" aria-hidden="true"></span>
-          Double Chance - Tips za <%= SEO.siku %>
+          Double Chance: Supa za Leo
         </h2>
         <div class="date-wrap d-flex align-items-center gap-2">
-          <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i><%= SEO.trh.day %></span>
+          <span class="day-chip"><i class="fa-regular fa-calendar me-1"></i>
+            <%= jumasiku.leo %>
+          </span>
           <span class="vr d-none d-sm-inline"></span>
-          <span class="date-badge"> <%= SEO.trh.month_date %> </span>
+          <span class="date-badge">
+            <%= trh.leo %>
+          </span>
         </div>
       </div>
     </div>
   </div>
 
-  <% if (mikeka?.length > 0) { %>
+  <% if (super_dc?.length> 0) { %>
   <div class="mega-card__body px-2 px-md-3 py-2 py-md-3">
     <div class="prediction-list">
-      <% mikeka.forEach(el=> { %>
+      <% super_dc.forEach(el=> { %>
       <!-- variables -->
-      <% 
-            const _parts = (el.match || '').split(' - '); 
-            const _home = _parts[0] || ''; 
-            const _away = _parts[1] || ''; 
+      <% const _parts=(el.match || '' ).split(' - ');
+            const _home = _parts[0] || '';
+            const _away = _parts[1] || '';
             %>
       <article class="prediction" itemscope itemtype="https://schema.org/CreativeWork">
         <div class="prediction__grid">
@@ -75,15 +93,15 @@
         </div>
 
         <!-- SEO CreativeWork -->
-        <meta itemprop="headline" content="<%= _home %> vs <%= _away %> double chance prediction - <%= SEO.trh.month_date %>">
-        <meta itemprop="about" content="Utabiri wa <%= SEO.trh.siku %> mechi ya <%= _home %> vs <%= _away %>, <%= el.league %>">
-        <meta itemprop="abstract" content="Mechi hii ya <%= _home %> vs <%= _away %> utabiri wetu wa mwisho wa double chance ni - <%= el.bet %>">
-        <meta itemprop="datePublished" content="<%= SEO.trh.created %>">
-        <meta itemprop="dateModified" content="<%= SEO.trh.created %>">
+        <meta itemprop="headline" content="<%= _home %> vs <%= _away %> prediction - <%= trh.leo %>">
+        <meta itemprop="about" content="Utabiri wa <%= trh.siku %> mechi ya <%= _home %> vs <%= _away %>, <%= el.league %>">
+        <meta itemprop="abstract" content="Mechi hii ya <%= _home %> vs <%= _away %> utabiri wetu wa mwisho ni - <%= el.bet %>">
+        <meta itemprop="datePublished" content="<%= trh.created %>">
+        <meta itemprop="dateModified" content="<%= trh.created %>">
         <meta itemprop="author" content="Mkeka wa Leo">
         <meta itemprop="publisher" content="Mkeka wa Leo">
-        <meta itemprop="keywords" content="utabiri wa mechi za <%= SEO.siku %>, 'double chance tips', utabiri wa <%= el.league %>, <%= _home %> vs <%= _away %> prediction">
-        <meta itemprop="mainEntityOfPage" content="<%= SEO.canonical %>">
+        <meta itemprop="keywords" content="utabiri wa mechi za <%= trh.siku %>, utabiri wa <%= el.league %>, <%= _home %> vs <%= _away %> prediction">
+        <meta itemprop="mainEntityOfPage" content="https://mkekawaleo.com/">
       </article>
       <% }) %>
     </div>
@@ -91,10 +109,11 @@
   <% } %>
 
   <!-- If no Tips -->
-  <% if (mikeka.length == 0) { %>
+  <% if (super_dc.length==0) { %>
   <div class="alert alert-warning mx-1" role="alert">
-    Bado hakuna tips za Double Chance kwa siku ya <%= SEO.siku %>, tafadhali tembelea tena baadae au endelea
-    kufuatilia <a href="/mkeka" class="link-success" title="Mikeka ya Bure">mikeka yetu mingine ya bure hapa.</a>
+    Bado hakuna tips za Double Chance (Supa) kwa siku ya leo, tafadhali tembelea tena baadae au endelea
+    kufuatilia <a href="/mkeka" class="text-success" title="Mikeka ya Bure">mikeka yetu mingine ya
+      bure hapa.</a>
   </div>
   <br>
   <% } %>
@@ -116,7 +135,9 @@
             <div class="stat__icon"><i class="fa-solid fa-chart-line"></i></div>
             <div class="stat__body">
               <div class="label">Total Odds</div>
-              <div class="value fw-bold fs-5"><%= Number(total_odds) > 9999 ? "9999+" : total_odds %></div>
+              <div class="value fw-bold fs-5">
+                <%= Number(supa_dc_odds) > 9999 ? "9999+" : supa_dc_odds %>
+              </div>
             </div>
           </div>
         </div>
@@ -130,8 +151,35 @@
           </div>
         </div>
       </div>
-
-      <%- include('../../0-global/aff-mega.ejs'); %>
     </div>
   </div>
 </section>
+
+<!-- More Button -->
+<% if (super_dc?.length > 5) { %>
+ <div class="container mt-4">
+  <div class="text-center p-4 rounded-4 border bg-light-subtle">
+    <p class="mb-2 text-muted small fw-semibold">
+      Unataka Mikeka Zaidi?
+    </p>
+    <a href="/mkeka/<%= jumasiku?.leo?.toLowerCase() || "" %>"
+       class="btn btn-success d-inline-flex align-items-center gap-2 px-4 py-2 fw-semibold shadow-sm">
+      <span>Bashiri Zote za <%= jumasiku?.leo %></span>
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+</div>
+<% } %>
+</div>
+
+<script>
+if (typeof __tipsLoading === 'undefined') {
+    window.__tipsLoading = function(id) {
+        var s = document.getElementById(id);
+        if (!s) return;
+        var h = s.querySelector('.mega-card__header');
+        if (h) h.innerHTML = '<div class="d-flex justify-content-center py-5"><div class="spinner-border text-success" role="status"><span class="visually-hidden">Inapakia...</span></div></div>';
+        s.querySelectorAll('.mega-card__body, .alert, .mega-card__summary').forEach(function(el) { el.style.display = 'none'; });
+    }
+}
+</script>
