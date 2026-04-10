@@ -38,7 +38,9 @@
         <div class="prediction__grid">
           <div class="prediction__meta">
             <div class="time"><i class="fa-regular fa-clock me-1"></i><%= el.time %></div>
-            <div class="league mt-1"><span class="league-tag"><%= el.league %></span></div>
+            <div class="league mt-1" data-fixture_id="<%= el?.fixture_id %>">
+              <span class="league-tag"><%= el.league %></span>
+            </div>
           </div>
           <div class="prediction__match">
             <div class="teams">

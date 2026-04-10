@@ -300,16 +300,16 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             }
         }
 
-        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.25
+        // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.4
         let mikeka = await over25Model.find({
             date: SEO.trh.date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
-                { confidence: 'STRONG', "meta.xG": { $gte: 3.25 } }
+                { confidence: 'STRONG', "meta.xG": { $gte: 3.4 } }
             ]
         })
             .sort('-accuracy')
-            .limit(50)
+            .limit(100)
             .lean()
             .cache(600)
 
@@ -612,19 +612,10 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
                 { confidence: 'SUPER_STRONG' },
                 {
                     confidence: 'STRONG',
-                    accuracy: { $gte: 57 },
-                    $and: [
-                        { "meta.bttsYesP": { $gte: 56 } },
-                        {
-                            $or: [
-                                { "meta.xG": { $gte: 2.8 } },
-                                { "meta.xG": { $gte: 3.2 } } // high tempo override
-                            ]
-                        }
-                    ]
+                    accuracy: { $gte: 65 },
                 }
             ]
-        }).sort('-accuracy').limit(50).lean().cache(600)
+        }).sort('-accuracy').limit(100).lean().cache(600)
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)

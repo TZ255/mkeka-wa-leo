@@ -6,7 +6,7 @@ const DCTipsModel = require('../../model/dc-tips')
 const PRIORITY_LEAGUES = [567, 1, 2, 3, 39, 40, 12, 20, 140, 78, 61, 135, 94, 88, 203, 179, 89, 41, 42, 45, 144, 119, 103, 207, 113, 307, 345, 197, 106, 318]
 
 // Fields returned to the client from each aggregation
-const TIP_FIELDS = { date: 1, time: 1, league: 1, match: 1, bet: 1, odds: 1, accuracy: 1, weekday: 1, jsDate: 1, logo: 1, confidence: 1, status: 1, result: 1 }
+const TIP_FIELDS = { date: 1, time: 1, league: 1, match: 1, bet: 1, odds: 1, accuracy: 1, weekday: 1, jsDate: 1, logo: 1, confidence: 1, status: 1, result: 1, fixture_id: 1 }
 
 /**
  * Calculate the combined (accumulated) odds for a list of tips.

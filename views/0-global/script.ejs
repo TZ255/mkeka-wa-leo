@@ -34,3 +34,11 @@
         }
     });
 </script> -->
+
+<script>
+  // double click league tag to copy fixture ID to clipboard (debugging)
+  document.addEventListener('dblclick', function(e) {
+    var el = e.target.closest('.league[data-fixture_id]');
+    if (el) navigator.clipboard.writeText(el.dataset.fixture_id);
+  });
+</script>
