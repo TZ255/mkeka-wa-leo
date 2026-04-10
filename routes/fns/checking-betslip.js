@@ -78,26 +78,55 @@ const checking3MkekaBetslip = async (d) => {
         let multikeka = await betslip.find({ date: d, vip_no: 2 });
         let vip1 = await betslip.find({ date: d, vip_no: 1 });
         if (multikeka.length < 1) {
-            let copies = await DCTipsModel.aggregate([
+            const copies25 = await Over25Mik.aggregate([
                 {
                     $match: {
-                        fixture_id: { $nin: vip1.map(c => c.fixture_id) },
                         date: d,
                         time: { $gte: '14:00' },
-                        bet: "12",
-                        confidence: "SUPER_STRONG",
-                        "meta.xG": { $gte: 3.0 }
+                        bet: "Over 2.5",
+                        fixture_id: { $nin: vip1.map(c => c.fixture_id) },
+                        $or: [
+                            { confidence: 'SUPER_STRONG' },
+                            { confidence: 'STRONG', "meta.xG": { $gte: 3.4 } }
+                        ]
                     }
                 },
-                { $sample: { size: 5 } }
-            ])
+                { $sample: { size: 3 } }
+            ]);
 
-            for (let c of copies) {
-                let tip = "12 & Over 1.5"
-                let odd = (Number(c.odds) * 1.18).toFixed(2)
-                await betslip.create({
-                    date: c.date, time: c.time, league: c.league, tip, odd, match: c.match.replace(/ - /g, ' vs '), vip_no: 2, logo: c.logo, fixture_id: c.fixture_id
-                })
+            const copies1x2 = await MatchWinnerTips.aggregate([
+                {
+                    $match: {
+                        date: d,
+                        time: { $gte: '14:00' },
+                        odds: { $gte: 1.2 },
+                        confidence: "SUPER_STRONG",
+                        fixture_id: { $nin: [...vip1.map(c => c.fixture_id), ...copies25.map(c => c.fixture_id) ] }
+                    }
+                },
+                { $sample: { size: 2 } }
+            ]);
+
+            const combinedDocs = [...copies25, ...copies1x2]
+
+            // Prepare documents for bulk insertion
+            const betslipDocs = combinedDocs.map(c => {
+                return {
+                    date: c.date,
+                    time: c.time,
+                    league: c.league,
+                    tip: c.bet,
+                    odd: String(Number(c.odds).toFixed(2)),
+                    match: c.match.replace(/ - /g, ' vs '),
+                    vip_no: 2,
+                    logo: c.logo,
+                    fixture_id: c.fixture_id
+                };
+            });
+
+            // Insert all at once
+            if (betslipDocs.length > 0) {
+                await betslip.insertMany(betslipDocs);
             }
         }
 
