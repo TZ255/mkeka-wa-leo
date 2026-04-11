@@ -93,7 +93,9 @@ router.post('/api/pay', async (req, res) => {
             }
 
             //initiate payment by calling the bkazi API
-            const apiResp = await axios.post(bkaziServer, payload);
+            const apiResp = await axios.post(bkaziServer, payload, {
+                headers: { "x-webhook-secret": process.env.PASS }
+            });
             if (!apiResp) throw new Error('PAY error: No response from payment API');
 
         } catch (error) {
@@ -179,7 +181,7 @@ router.post('/api/payment-webhook', async (req, res) => {
             try {
                 let sub = await grantSubscription(email, "auto_gold", phone);
 
-                if(!sub ||!sub?.success || !sub?.grant_success) throw new Error(`Failed to grant subscription: ${sub?.message || 'Unknown error'}`);
+                if (!sub || !sub?.success || !sub?.grant_success) throw new Error(`Failed to grant subscription: ${sub?.message || 'Unknown error'}`);
             }
             catch (e) {
                 console.log('grantSubscription webhook error:', e?.message);
