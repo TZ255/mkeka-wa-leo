@@ -1,0 +1,7 @@
+<%# Result Badge partial – used inside prediction forEach loops %>
+<%# Expects: el.status ('won'|'lose'), el.result (string) %>
+<% if (false && (el.status === 'won' || el.status === 'lose')) { /* DISABLED: result badge – remove false && to re-enable */ %>
+<div class="prediction__result mt-1 text-center">
+  <span class="badge text-bg-<%= el.status === 'won' ? 'success' : 'danger' %>"><%= (el.result || '').replace(/[()]/g, '') %> <%= el.status.toUpperCase() %></span>
+</div>
+<% } %>

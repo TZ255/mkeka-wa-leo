@@ -1,18 +1,20 @@
 <section id="supa-over15-section" class="mega-card card border-0 shadow-sm" itemscope>
   <!-- Navigation Header -->
   <div class="btn-group" role="group" aria-label="Mikeka ya Jana, Leo na Kesho">
+    <!-- DISABLED: Jana button – uncomment to re-enable
     <button type="button"
        hx-get="/api/tips/over15?siku=jana" hx-target="#supa-over15-section" hx-swap="outerHTML"
        hx-on::before-request="__tipsLoading('supa-over15-section')"
-       class="btn <%= trh.siku === 'jana' ? 'btn-dark text-light' : 'btn-light text-secondary' %>"
+       class="btn <%%= trh.siku === 'jana' ? 'btn-dark text-light' : 'btn-light text-secondary' %>"
        title="Mikeka ya Jana" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
       Jana
     </button>
+    -->
     <a href="<%= trh.siku === 'leo' ? '#supa-over15' : '/#supa-over15' %>"
        hx-get="/api/tips/over15?siku=leo" hx-target="#supa-over15-section" hx-swap="outerHTML"
        hx-on::before-request="__tipsLoading('supa-over15-section')"
        class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>"
-       title="Mkeka wa Leo">
+       title="Mkeka wa Leo" style="border-bottom-left-radius: 0;">
       Leo
     </a>
     <a href="/mkeka/kesho#supa-over15"
@@ -84,11 +86,7 @@
                 <% if (hasAccuracy) { %><%= displayAccuracy %>%<% } else { %><%= String(el.odds).padEnd(4, '0') %><% } %>
               </span>
             </div>
-            <% if (el.status === 'won' || el.status === 'lose') { %>
-            <div class="prediction__result mt-1 text-center">
-              <span class="badge text-bg-<%= el.status === 'won' ? 'success' : 'danger' %>"><%= (el.result || '').replace(/[()]/g, '') %> <%= el.status.toUpperCase() %></span>
-            </div>
-            <% } %>
+            <%- include('../../0-global/result-badge.ejs') %>
           </div>
         </div>
 

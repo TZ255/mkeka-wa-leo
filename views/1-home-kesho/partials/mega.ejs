@@ -1,16 +1,18 @@
 <section id="mega-card-section" class="mega-card card border-0 shadow-sm" itemscope>
   <!-- Navigation Header -->
   <div class="btn-group" role="group" aria-label="Mikeka ya Jana, Leo na Kesho">
+    <!-- DISABLED: Jana button – uncomment to re-enable
     <button type="button"
        hx-get="/api/tips/mega?siku=jana" hx-target="#mega-card-section" hx-swap="outerHTML"
        hx-on::before-request="__tipsLoading('mega-card-section')"
-       class="btn <%= trh.siku === 'jana' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Jana" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
+       class="btn <%%= trh.siku === 'jana' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mikeka ya Jana" style="border-top-left-radius: 16px; border-bottom-left-radius: 0;">
       Jana
     </button>
+    -->
     <a href="/"
        hx-get="/api/tips/mega?siku=leo" hx-target="#mega-card-section" hx-swap="outerHTML"
        hx-on::before-request="__tipsLoading('mega-card-section')"
-       class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo">
+       class="btn <%= trh.siku === 'leo' ? 'btn-dark text-light' : 'btn-light text-secondary' %>" title="Mkeka wa Leo" style="border-bottom-left-radius: 0;">
       Leo
     </a>
     <a href="/mkeka/kesho"
@@ -77,11 +79,7 @@
                 <% if (hasAccuracy) { %><%= displayAccuracy %>%<% } else { %><%= String(el.odds).padEnd(4, '0') %><% } %>
               </span>
             </div>
-            <% if (el.status === 'won' || el.status === 'lose') { %>
-            <div class="prediction__result mt-1 text-center">
-              <span class="badge text-bg-<%= el.status === 'won' ? 'success' : 'danger' %>"><%= (el.result || '').replace(/[()]/g, '') %> <%= el.status.toUpperCase() %></span>
-            </div>
-            <% } %>
+            <%- include('../../0-global/result-badge.ejs') %>
           </div>
         </div>
 
