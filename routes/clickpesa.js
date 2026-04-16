@@ -182,8 +182,11 @@ router.get('/api/pay-status-redirect', (req, res) => {
 router.post('/api/payment-webhook', async (req, res) => {
     console.log('WEBHOOK received:', req.body);
     try {
-        const { order_id, payment_status, email, phone, reference, SECRET } = req.body || {};
-        if (!order_id || SECRET !== process.env.PASS) return res.sendStatus(400).json({ success: false, message: 'Invalid request' });
+        const { order_id, payment_status, email, phone, reference } = req.body || {};
+
+        const secret = req.headers['x-webhook-secret'];
+
+        if (!order_id || secret !== process.env.PASS) return res.sendStatus(400).json({ success: false, message: 'Invalid request' });
 
         if (payment_status === 'COMPLETED') {
             try {
