@@ -7,9 +7,6 @@
     "dev": "nodemon index.js",
     "start": "node index.js"
   },
-  "engines": {
-    "node": "22.18.x"
-  },
   "keywords": [],
   "author": "shemdoe",
   "license": "ISC",
