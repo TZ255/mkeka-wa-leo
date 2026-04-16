@@ -96,7 +96,7 @@ router.post('/api/pay', async (req, res) => {
 
         try {
             //if network is vodacom throw an error to be caught inside this try-catch and show the lipanamba info
-            if (phoneNumberDetails.telecomCompanyDetails.brand.toLowerCase() === 'vodacom') {
+            if (phoneNumberDetails?.telecomCompanyDetails?.brand?.toLowerCase() === 'vodacom') {
                 throw new Error('PAY error: Attempted payment with unsupported network - Vodacom');
             }
 
