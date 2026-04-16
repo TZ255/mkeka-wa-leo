@@ -1,4 +1,5 @@
-FROM node:20-alpine
+# use official node image 20-slim as base.... due to canva..... else would be lighweight alpine
+FROM node:20-slim
 
 WORKDIR /app
 
