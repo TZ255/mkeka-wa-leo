@@ -67,8 +67,16 @@ const PRICE = {
 };
 
 function normalizePhone(phone9 = '') {
-    if (!isValidPhoneNumber(`255${phone9.trim()}`)) return null;
-    return `255${phone9.trim()}`;
+    //if (!isValidPhoneNumber(`255${phone9.trim()}`)) return null;
+
+    const phoneString = String(phone9).trim();
+
+    // Ensure it starts with 6 or 7 and is followed by exactly 8 digits
+    if (!/^[67]\d{8}$/.test(phoneString)) {
+        return null;
+    }
+
+    return `255${phoneString}`;
 }
 
 // normalize the user name, if it contains space, first part will be firstname, the rest will be lastname. If no space, all will be firstname and lastname will be also the same as firstname
@@ -115,12 +123,6 @@ router.post('/api/pay', async (req, res) => {
 
         const phoneNumberDetails = getPhoneNumberDetails(phone);
         let network = phoneNumberDetails?.telecomCompanyDetails?.brand?.toLowerCase() || 'unknown';
-
-        if (!['halotel', 'tigo', 'airtel', 'vodacom', 'smile'].includes(network)) {
-            res.set('HX-Reswap', 'none');
-            return res.render('zz-fragments/payment-form-error', { layout: false, user: req?.user || '', message: 'Mtandao wa simu si sahihi. Tumia Voda, Tigo, Airtel au Halotel.' });
-        }
-
 
         const orderRef = generateOrderId(phone);
         const timestamp_string = Date.now().toString(36);
