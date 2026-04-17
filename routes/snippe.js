@@ -140,7 +140,7 @@ router.post('/api/pay', async (req, res) => {
                 "lastname": normalizeName(user?.name || null).lastName,
                 "email": `${user._id}@tanzabyte.com`
             },
-            "webhook_url": "https://mkekawaleo.com/webhook/snippe",
+            "webhook_url": "https://baruakazi.co.tz/payment/webhook/snippe/waleo",
             "metadata": {
                 "order_id": orderRef
             }
