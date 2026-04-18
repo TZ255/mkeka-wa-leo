@@ -14,7 +14,7 @@ const generateOrderId = (phone) => `WALEO${Date.now().toString(36)}`;
 // plan → amount + grant key
 const PRICE = {
     silver: { amount: 7000, grant: 'silver' },
-    gold: { amount: 11500, grant: 'gold' },
+    gold: { amount: 11580, grant: 'gold' },
     gold2: { amount: 35000, grant: 'gold2' },
 };
 
