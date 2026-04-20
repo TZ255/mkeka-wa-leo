@@ -1,0 +1,10 @@
+<nav class="league-nav" aria-label="League pages">
+    <% links.forEach((link) => { %>
+    <a href="<%= link.href %>" class="<%= link.active ? 'active' : '' %>">
+        <% if (link.icon) { %>
+        <i class="<%= link.icon %>"></i>
+        <% } %>
+        <%= link.label %>
+    </a>
+    <% }) %>
+</nav>

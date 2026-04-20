@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Assist bora wa Kombe la Dunia <%= partials.season_long %>. Angalia wachezaji wanaoongoza kwa assists katika World Cup.">
+    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
+    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
+    <%- include('../../../0-global/favicon.ejs') %>
+    <title>Watoa Assist Bora wa Kombe la Dunia <%= partials.season_long %></title>
+    <link rel="stylesheet" href="/css/v1-global.css">
+    <%- include('../../../0-global/google.ejs'); %>
+    <%- include('../../../0-global/fonts.ejs'); %>
+    <%- include('./partials/theme.ejs'); %>
+</head>
+
+<body>
+    <%- include('../../../0-global/header.ejs'); %>
+    <main>
+        <section class="left wc-page">
+            <%- include('./partials/hero.ejs', {
+                partials,
+                formattedUpdatedAt,
+                hero: {
+                    title: `Watoa assist bora wa Kombe la Dunia ${partials.season_long}`,
+                    copy: 'Hapa unaona wabunifu wa mwisho wa mashindano, wale wanaofungua mabeki na kutoa pasi zinazogeuka kuwa magoli muhimu.',
+                }
+            }) %>
+
+            <%- include('./partials/nav.ejs', { partials }) %>
+
+            <% if (topAssists.length > 1) { %>
+            <section class="wc-section">
+                <div class="wc-grid-two">
+                    <article class="wc-slab">
+                        <h3 class="h5">Kinara wa sasa</h3>
+                        <p class="mb-1"><strong><%= topAssists[0].player.name %></strong></p>
+                        <p class="mb-0"><%= topAssists[0].statistics[0].team.name %> anaongoza kwa <strong><%= topAssists[0].statistics[0].goals.assists ?? 0 %></strong> assists.</p>
+                    </article>
+                    <article class="wc-slab">
+                        <h3 class="h5">Anayemfukuzia</h3>
+                        <p class="mb-1"><strong><%= topAssists[1].player.name %></strong></p>
+                        <p class="mb-0"><%= topAssists[1].statistics[0].team.name %> anafukuzia kileleni akiwa na <strong><%= topAssists[1].statistics[0].goals.assists ?? 0 %></strong> assists.</p>
+                    </article>
+                </div>
+            </section>
+            <% } %>
+
+            <%- include('./partials/players-table.ejs', {
+                title: `Orodha ya wachezaji wanaongoza kwa assists ${partials.league_name} ${partials.season_long}`,
+                players: topAssists,
+                mode: 'assist'
+            }) %>
+
+            <section class="wc-section">
+                <div class="wc-cta-links">
+                    <a href="/football/kombe-la-dunia">Rudi kwenye msimamo wa World Cup</a>
+                    <a href="/football/kombe-la-dunia/ratiba">Angalia ratiba ya World Cup</a>
+                    <a href="/football/kombe-la-dunia/wafungaji-bora">Angalia top scorers</a>
+                </div>
+            </section>
+
+            <%- include('../../../0-global/somapia.ejs'); %>
+        </section>
+    </main>
+
+    <%- include('../../../0-global/footer.ejs'); %>
+    <%- include('../../../0-global/modal-leon.ejs'); %>
+    <%- include('../../../0-global/script.ejs'); %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+
+</html>

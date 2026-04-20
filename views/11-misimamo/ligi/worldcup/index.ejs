@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Msimamo wa Kombe la Dunia <%= partials.season_long %>, ratiba, top scorers na top assists katika ukurasa mmoja wa tournament hub.">
+    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
+    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
+    <%- include('../../../0-global/favicon.ejs') %>
+    <title>Kombe la Dunia <%= partials.season_long %> - Msimamo, Ratiba na Takwimu</title>
+    <link rel="stylesheet" href="/css/v1-global.css">
+    <%- include('../../../0-global/google.ejs'); %>
+    <%- include('../../../0-global/fonts.ejs'); %>
+    <%- include('./partials/theme.ejs'); %>
+</head>
+
+<body>
+    <%- include('../../../0-global/header.ejs'); %>
+    <main>
+        <section class="left wc-page">
+            <%- include('./partials/hero.ejs', {
+                partials,
+                formattedUpdatedAt,
+                hero: {
+                    title: `Kombe la Dunia ${partials.season_long}: msimamo, ratiba na mwendo wa mashindano`,
+                    copy: 'Hapa ndipo unafuatilia picha kamili ya Kombe la Dunia, kuanzia msimamo wa makundi na ratiba ya mechi hadi mbio za ufungaji na assists za mastaa wanaobeba mashindano.',
+                }
+            }) %>
+
+            <%- include('./partials/nav.ejs', { partials }) %>
+
+            <section class="wc-section">
+                <div class="wc-section-head">
+                    <h2 class="h3">Kombe la Dunia <%= partials.season_long %></h2>
+                    <span class="wc-round-chip"><%= partials.league_name %></span>
+                </div>
+                <article class="wc-slab">
+                    <p>
+                        Kombe la Dunia <%= partials.season_long %> ni jukwaa la mabingwa wa taifa, nyota wakubwa wa soka, na mechi zinazoweza kugeuza simulizi la mashindano ndani ya dakika chache. Ukurasa huu unakuweka karibu na kila kinachoamua mchezo: nani anaongoza kundi, nani yupo kwenye presha ya kufuzu, na ni mechi zipi zinazofuata kutikisa mashabiki.
+                    </p>
+                    <p class="mb-0">
+                        Kama unatafuta msimamo wa Kombe la Dunia leo, ratiba ya Kombe la Dunia <%= partials.season_long %>, matokeo ya mechi zilizopita, au majina ya vinara wa magoli na assists, hapa ndio sehemu sahihi ya kuanzia. Taarifa zimepangwa kwa namna inayokuruhusu kuona mwendo wa mashindano kwa haraka bila kupoteza kinachoendelea kwenye kila kundi na kila hatua ya mtoano.
+                    </p>
+                </article>
+                <div class="wc-legend">
+                    <span><i class="qualifier"></i> Timu zinazofuzu moja kwa moja</span>
+                    <span><i class="third"></i> Nafasi ya timu za tatu bora</span>
+                </div>
+            </section>
+
+            <% if (standings.groups.length > 0) { %>
+            <% standings.groups.forEach((group) => { %>
+            <%- include('./partials/standings-table.ejs', { title: group.label, teams: group.teams }) %>
+            <% }) %>
+            <% } else { %>
+            <section class="wc-section">
+                <div class="wc-empty">
+                    Jedwali la makundi litawekwa hapa mara tu msimamo wa mashindano utakapoanza kuonyesha picha kamili ya kila kundi.
+                </div>
+            </section>
+            <% } %>
+
+            <% if (standings.thirdPlaceTable.length > 0) { %>
+            <%- include('./partials/standings-table.ejs', {
+                title: 'Msimamo wa Timu za Nafasi ya Tatu',
+                teams: standings.thirdPlaceTable
+            }) %>
+            <% } %>
+
+            <%- include('./partials/fixtures-block.ejs', {
+                title: partials.current_round ? `Hatua ya sasa: ${partials.current_round}` : 'Mechi zilizo karibu',
+                subtitle: `${currentRoundFixtures.length} mechi`,
+                fixtures: currentRoundFixtures.slice(0, 8)
+            }) %>
+
+            <section class="wc-section">
+                <div class="wc-section-head">
+                    <h2 class="h3">Kurasa za ndani za Kombe la Dunia</h2>
+                    <span class="wc-muted">Chagua ukurasa unaokusaidia kufuatilia mashindano</span>
+                </div>
+                <div class="wc-grid-two">
+                    <article class="wc-slab">
+                        <h3 class="h5"><a href="/football/kombe-la-dunia" class="text-decoration-none">Msimamo wa Kombe la Dunia</a></h3>
+                        <p class="mb-0">
+                            Fungua ukurasa huu kuona nani ametawala kundi lake, nani anawinda kufuzu, na nani analazimika kupigania nafasi hadi dakika za mwisho.
+                        </p>
+                    </article>
+                    <article class="wc-slab">
+                        <h3 class="h5"><a href="/football/kombe-la-dunia/ratiba" class="text-decoration-none">Ratiba na Matokeo</a></h3>
+                        <p class="mb-0">
+                            Hapa unaona mechi zinazofuata, saa ya kuanza, na matokeo ya mechi zilizopita ili usikose hatua yoyote ya mashindano.
+                        </p>
+                    </article>
+                    <article class="wc-slab">
+                        <h3 class="h5"><a href="/football/kombe-la-dunia/wafungaji-bora" class="text-decoration-none">Wafungaji Bora</a></h3>
+                        <p class="mb-0">
+                            Kama macho yako yako kwenye kiatu cha dhahabu, hapa utafuatilia washambuliaji wanaotikisa nyavu na mabadiliko ya kileleni.
+                        </p>
+                    </article>
+                    <article class="wc-slab">
+                        <h3 class="h5"><a href="/football/kombe-la-dunia/assist-bora" class="text-decoration-none">Watoa Assist Bora</a></h3>
+                        <p class="mb-0">
+                            Ukurasa huu unaangazia wabunifu wa mwisho, wale wanaofungua ngome na kutengeneza pasi zinazoamua magoli.
+                        </p>
+                    </article>
+                </div>
+            </section>
+
+            <%- include('../../../0-global/somapia.ejs'); %>
+        </section>
+        <%- include('../../../0-global/right.ejs'); %>
+    </main>
+
+    <%- include('../../../0-global/footer.ejs'); %>
+    <%- include('../../../0-global/modal-leon.ejs'); %>
+    <%- include('../../../0-global/script.ejs'); %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+
+</html>

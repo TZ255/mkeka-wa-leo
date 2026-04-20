@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="sw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ratiba na matokeo ya Kombe la Dunia <%= partials.season_long %>. Angalia rounds zote zilizotangazwa kwa World Cup.">
+    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
+    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
+    <%- include('../../../0-global/favicon.ejs') %>
+    <title>Ratiba na Matokeo ya Kombe la Dunia <%= partials.season_long %></title>
+    <link rel="stylesheet" href="/css/v1-global.css">
+    <%- include('../../../0-global/google.ejs'); %>
+    <%- include('../../../0-global/fonts.ejs'); %>
+    <%- include('./partials/theme.ejs'); %>
+</head>
+
+<body>
+    <%- include('../../../0-global/header.ejs'); %>
+    <main>
+        <section class="left wc-page">
+            <%- include('./partials/hero.ejs', {
+                partials,
+                formattedUpdatedAt,
+                hero: {
+                    title: `Ratiba na matokeo ya Kombe la Dunia ${partials.season_long}`,
+                    copy: 'Huu ndio ukurasa wa kufuatilia mechi zinazokuja, saa za kuanza, na matokeo ya Kombe la Dunia kuanzia hatua ya makundi hadi michezo ya mtoano.',
+                }
+            }) %>
+
+            <%- include('./partials/nav.ejs', { partials }) %>
+
+            <%- include('./partials/fixtures-block.ejs', {
+                title: partials.current_round ? `Hatua inayopigiwa macho: ${partials.current_round}` : 'Mechi zilizo karibu zaidi',
+                subtitle: `${currentRoundFixtures.length} mechi`,
+                fixtures: currentRoundFixtures
+            }) %>
+
+            <% if (fixtureGroups.length > 0) { %>
+            <% fixtureGroups.forEach((round) => { %>
+            <%- include('./partials/fixtures-block.ejs', {
+                title: round.round,
+                subtitle: `${round.fixtures.length} mechi`,
+                fixtures: round.fixtures
+            }) %>
+            <% }) %>
+            <% } else { %>
+            <section class="wc-section">
+                <div class="wc-empty">
+                    Ratiba ya mechi za Kombe la Dunia itaonekana hapa mara tu hatua inayofuata itakapopangwa wazi.
+                </div>
+            </section>
+            <% } %>
+
+            <%- include('../../../0-global/somapia.ejs'); %>
+        </section>
+        <%- include('../../../0-global/right.ejs'); %>
+    </main>
+
+    <%- include('../../../0-global/footer.ejs'); %>
+    <%- include('../../../0-global/modal-leon.ejs'); %>
+    <%- include('../../../0-global/script.ejs'); %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -23,6 +23,7 @@ const {
 } = require('../../routes/fns/ligikuucotz');
 
 const { UpdateBongoLeagueData } = require('../../routes/fns/bongo-ligi');
+const { UpdateActiveWorldCupData } = require('../../routes/fns/worldcup-update');
 const { getAllFixtures } = require('../../routes/fns/fixtures');
 const { syncOddsForDate } = require('../../routes/fns/odds-ingestion');
 
@@ -169,6 +170,15 @@ module.exports = () => {
   cron.schedule('5 0,1,3,16,18,19,21,23 * * *', () => {
     runLocked('other-leagues', () =>
       UpdateMatchDayLeagueData()
+    );
+  }, { timezone: TZ });
+
+  // ------------------------------------
+  // World Cup update (5 times daily if active)
+  // ------------------------------------
+  cron.schedule('12 1,6,11,16,21 * * *', () => {
+    runLocked('worldcup-update', () =>
+      UpdateActiveWorldCupData()
     );
   }, { timezone: TZ });
 

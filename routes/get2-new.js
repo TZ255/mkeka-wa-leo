@@ -36,6 +36,35 @@ const { analyzeMatch } = require('../utils/analyze-match')
 const OddsFixture = require('../model/odds-fixtures-bets')
 const NeededLeague = require('../model/leagues-for-odds')
 const { autoUpdateResults } = require('../utils/auto-update-results')
+const { UpdateActiveWorldCupData } = require('./fns/worldcup-update')
+
+const getLeagueMedia = (league) => {
+    const sample = league?.current_round_fixtures?.[0]?.league || league?.season_fixtures?.[0]?.league || {};
+    return {
+        logo: league?.league_logo || sample?.logo || null,
+        flag: league?.league_flag || sample?.flag || null,
+        country: league?.country || sample?.country || '',
+    };
+};
+
+const getStandingTeamsCount = (standingRows = []) => {
+    if (!Array.isArray(standingRows) || standingRows.length === 0) return 0;
+    if (Array.isArray(standingRows[0])) {
+        return standingRows.reduce((sum, group) => sum + group.length, 0);
+    }
+    return standingRows.length;
+};
+
+const getRoundsCount = (fixtures = []) => {
+    return new Set(fixtures.map((fixture) => fixture?.league?.round).filter(Boolean)).size;
+};
+
+const getStandingUpdatedAt = (league) => {
+    return league?.standing?.[0]?.update
+        || league?.standing?.[0]?.[0]?.update
+        || league?.updatedAt
+        || new Date().toISOString();
+};
 
 
 router.get('/standings', async (req, res) => {
@@ -61,11 +90,12 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
         const path = `${nation}/${league}`.toLowerCase()
 
         // Find standing data
-        const standing = await OtherStandingLigiKuuModel.findOne({ path }).select('-season_fixtures').cache(600);
+        const standing = await OtherStandingLigiKuuModel.findOne({ path }).cache(600);
         if (!standing) return next();
 
         const season = standing.league_season
         const league_id = standing.league_id
+        const media = getLeagueMedia(standing)
 
 
         const partials = {
@@ -73,16 +103,24 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
             season_short: standing.msimu.short,
             season_long: standing.msimu.long,
             createdAt: standing.createdAt.toISOString(),
-            updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
+            updatedAt: getStandingUpdatedAt(standing),
             ligi: standing.ligi,
             path: standing.path,
             league_name: standing.league_name,
             league_id,
+            league_logo: media.logo,
+            league_flag: media.flag,
+            country: media.country,
+            current_round: standing.current_round || standing.current_round_fixtures?.[0]?.league?.round || '',
             stats: {
+                teams: getStandingTeamsCount(standing.standing),
+                fixtures: standing.season_fixtures.length,
+                rounds: getRoundsCount(standing.season_fixtures),
                 scorer: standing.top_scorers.length,
                 assist: standing.top_assists.length
             },
             canonical_path: `/standings/football/${standing.path}`,
+            section: 'standings',
         };
 
         //abroad leagues
@@ -108,6 +146,7 @@ router.get('/football/fixtures/:nation/:ligi_name', async (req, res, next) => {
 
         const season = standing.league_season;
         const league_id = standing.league_id;
+        const media = getLeagueMedia(standing);
 
         // Get and flatten all fixtures
         const flatFixtures = await OtherStandingLigiKuuModel.aggregate([
@@ -142,16 +181,24 @@ router.get('/football/fixtures/:nation/:ligi_name', async (req, res, next) => {
             season_short: standing.msimu.short,
             season_long: standing.msimu.long,
             createdAt: standing.createdAt.toISOString(),
-            updatedAt: standing.standing[0]?.update || standing.standing[0][0].update,
+            updatedAt: getStandingUpdatedAt(standing),
             ligi: standing.ligi,
             path: standing.path,
             league_name: standing.league_name,
             league_id,
+            league_logo: media.logo,
+            league_flag: media.flag,
+            country: media.country,
+            current_round: standing.current_round || standing.current_round_fixtures?.[0]?.league?.round || '',
             stats: {
+                teams: getStandingTeamsCount(standing.standing),
+                fixtures: standing.season_fixtures.length,
+                rounds: getRoundsCount(standing.season_fixtures),
                 scorer: standing.top_scorers.length,
                 assist: standing.top_assists.length
             },
             canonical_path: `/football/fixtures/${standing.path}`,
+            section: 'fixtures',
         };
 
         // abroad leagues
@@ -191,6 +238,7 @@ router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, nex
         const standing = league.standing
         const league_id = league.league_id
         const season = league.league_season
+        const media = getLeagueMedia(league)
 
         // Prepare view data
         const partials = {
@@ -203,9 +251,14 @@ router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, nex
             league_id,
             ligi: league.ligi,
             league_name: league.league_name,
+            league_logo: media.logo,
+            league_flag: media.flag,
+            country: media.country,
             canonical_path: `/football/fixtures/${league.path}/${team_id}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: team_info.update
+            updatedAt: team_info.update,
+            current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
+            section: 'team-fixtures',
         };
 
         // Render the appropriate template
@@ -230,6 +283,7 @@ router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) =>
 
         const season = league.league_season
         const league_id = league.league_id
+        const media = getLeagueMedia(league)
 
         let top_scorers = league.top_scorers
         if (!top_scorers || top_scorers.length === 0) return next()
@@ -240,15 +294,23 @@ router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) =>
             season_short: league.msimu.short,
             season_long: league.msimu.long,
             league_id,
+            league_logo: media.logo,
+            league_flag: media.flag,
+            country: media.country,
+            current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
             canonical_path: `/football/top-scorers/${league.path}`,
             ligi: league.ligi,
             league_name: league.league_name,
             stats: {
+                teams: getStandingTeamsCount(league.standing),
+                fixtures: league.season_fixtures.length,
+                rounds: getRoundsCount(league.season_fixtures),
                 scorer: top_scorers.length,
                 assist: league?.top_assists.length || 0
             },
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.standing[0]?.update || league.standing[0][0]?.update
+            updatedAt: getStandingUpdatedAt(league),
+            section: 'scorers',
         }
 
         res.set('Cache-Control', 'public, max-age=3600');
@@ -269,6 +331,7 @@ router.get('/football/top-assists/:nation/:ligi_name', async (req, res, next) =>
 
         const season = league.league_season
         const league_id = league.league_id
+        const media = getLeagueMedia(league)
 
         let top_assists = league.top_assists
         if (!top_assists || top_assists.length === 0) return next()
@@ -279,15 +342,23 @@ router.get('/football/top-assists/:nation/:ligi_name', async (req, res, next) =>
             season_short: league.msimu.short,
             season_long: league.msimu.long,
             league_id,
+            league_logo: media.logo,
+            league_flag: media.flag,
+            country: media.country,
+            current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
             ligi: league.ligi,
             league_name: league.league_name,
             canonical_path: `/football/top-assists/${league.path}`,
             stats: {
-                scorer: top_assists.length,
-                assist: league?.top_scorers.length || 0
+                teams: getStandingTeamsCount(league.standing),
+                fixtures: league.season_fixtures.length,
+                rounds: getRoundsCount(league.season_fixtures),
+                scorer: league?.top_scorers.length || 0,
+                assist: top_assists.length
             },
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.standing[0]?.update || league.standing[0][0]?.update
+            updatedAt: getStandingUpdatedAt(league),
+            section: 'assists',
         }
 
         res.set('Cache-Control', 'public, max-age=3600');
@@ -412,8 +483,7 @@ router.get('/api/testing', async (req, res) => {
     try {
         //await syncOddsForDate('2026-04-01');
         //await GET_TIPS_FOR_MKEKALEO("2026-04-04")
-        await autoUpdateResults('08/04/2026');
-        await autoUpdateResults('09/04/2026');
+        await UpdateMatchDayLeagueData()
         res.json({ok: true})
     } catch (error) {
         console.error(error);

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
+    <%- include('../shared/partials/theme.ejs'); %>
     <style>
         .tdata {
             font-size: 12px;
@@ -29,50 +30,75 @@
 <body>
     <%- include('../../../0-global/header.ejs'); %>
     <main>
-        <section class="left">
-            <div class="intro">
-                <h1 class="h2">Ratiba na Matokeo ya Ligi Kuu ya NBC Tanzania Bara <%= partials.season_long %></h1>
-                <p class="p">Hapa chini tumekuwekea ratiba na matokeo ya Ligi Kuu ya NBC Tanzania Bara kwa msimu mzima wa
-                    <%= partials.season_short %>.
-                </p>
-                <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-secondary" style="font-size: 12px;">
-                    <i class="fa-regular fa-clock"></i> Updated on:
-                    <abbr class="date published" title="<%= partials.updatedAt %>">
-                        <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
-                    </abbr>
-                </span>
-            </div>
+        <section class="left league-shell text-align-justify">
+            <% const navLinks = [
+                { href: '/standings/football/tanzania/premier-league', label: 'Msimamo', icon: 'fa-solid fa-table', active: false },
+                { href: '/football/fixtures/tanzania/premier-league', label: 'Ratiba na Matokeo', icon: 'fa-regular fa-calendar-days', active: true },
+                { href: '/football/top-scorers/tanzania/premier-league', label: 'Wafungaji Bora', icon: 'fa-solid fa-futbol', active: false },
+                { href: '/football/top-assists/tanzania/premier-league', label: 'Watoa Assist Bora', icon: 'fa-solid fa-handshake-angle', active: false }
+            ]; %>
+
+            <%- include('../shared/partials/hero.ejs', {
+                partials,
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                    timeZone: 'Africa/Nairobi',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
+                hero: {
+                    title: `Ratiba na matokeo ya Ligi Kuu ya NBC Tanzania Bara ${partials.season_long}`,
+                    copy: `Ukihitaji kujua mechi zilizopita, zinazofuata, na mwendo wa msimu mzima wa ${partials.league_name}, hapa ndipo unapata ratiba iliyopangwa kwa urahisi kufuatilia.`,
+                    primary_pill: partials.season_long,
+                    secondary_pill: partials.league_name,
+                    stats: [
+                        { value: partials.stats.fixtures || 0, label: 'Mechi' },
+                        { value: partials.stats.rounds || 0, label: 'Hatua' },
+                        { value: partials.stats.teams || 0, label: 'Timu' },
+                    ],
+                    meta_note: 'Ratiba ya msimu mzima wa ligi kuu Tanzania Bara',
+                }
+            }) %>
+
+            <%- include('../shared/partials/nav.ejs', { links: navLinks }) %>
+
             <%- include('./partials/fixtures.ejs'); %>
-            <br>
-            <div class="vidokezo p-2">
-                <h2 class="h2">Vidokezo NBC <%= partials.season_short %></h2>
-                <ul class="list-group list-group-flush fw-bold">
+
+            <div class="vidokezo">
+                <h2 class="h2 fs-6">Vidokezo vya NBC <%= partials.season_short %></h2>
+                <ul class="list-group list-group-flush fw-bold p-2">
                     <li class="list-group-item">
-                        <a href="/standings/football/tanzania/premier-league" class="text-success text-decoration-none">
-                            Msimamo Ligi Kuu Bara (NBC) - Tanzania Premier League <%= partials.season_short %>
+                        <a href="/standings/football/tanzania/premier-league">
+                            Msimamo wa sasa wa Ligi Kuu ya NBC Tanzania Bara
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="/football/top-scorers/tanzania/premier-league" class="text-success text-decoration-none">
-                            Wafungaji Bora NBC - Tanzania Premier League <%= partials.season_short %>
+                        <a href="/football/top-scorers/tanzania/premier-league">
+                            Wafungaji bora wa msimu wa ligi kuu Tanzania Bara
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="/football/top-assists/tanzania/premier-league" class="text-success text-decoration-none">
-                            Watoa Assists Bora NBC - Tanzania Premier League <%= partials.season_short %>
+                        <a href="/football/top-assists/tanzania/premier-league">
+                            Watoa assist bora wa msimu wa ligi kuu Tanzania Bara
                         </a>
                     </li>
                 </ul>
             </div>
-            <br><br>
+
             <div class="ratiba-timu">
-                <h2 class="h2">
-                    Ratiba na Matokeo kwa Timu Moja Moja - Msimu wa <%= partials.season_long %>
+                <h2 class="h2 fs-6">
+                    Ratiba na matokeo kwa kila timu ya ligi kuu bara
                 </h2>
+                <p class="p">
+                    Chagua timu unayotaka kufuatilia ili kuona mechi zake zote za nyumbani na ugenini pamoja na matokeo yake ndani ya msimu wa <%= partials.season_long %>.
+                </p>
                 <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
                     <% standing.standing.forEach(team => { %>
                      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="list-group-item">
-                        <a itemprop="item" href="/football/fixtures/tanzania/premier-league/<%= team.team.id %>" class="text-success text-decoration-none">
+                        <a itemprop="item" href="/football/fixtures/tanzania/premier-league/<%= team.team.id %>">
                             <span itemprop="name">
                                 Ratiba na Matokeo ya Mechi za <%= team.team.name.replace('Kitayosce', 'Tabora United') %>
                             </span>

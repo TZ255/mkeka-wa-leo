@@ -1,17 +1,25 @@
 <div class="ratiba-timu">
-    <h2 class="h2 fs-6">
-        Ratiba na Matokeo za Timu Zote <%= partials.ligi %>
-        <%= partials.season_long %>
-    </h2>
-    <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
+    <div class="league-section-head">
+        <div class="league-title-stack">
+            <span class="league-overline">Kurasa za Timu</span>
+            <h2 class="h2 fs-5 mb-0">Ratiba na Matokeo za Timu Zote za <%= partials.ligi %> <%= partials.season_long %></h2>
+            <p class="league-section-copy">Chagua timu unayotaka kufuatilia ili kuona ratiba yake yote ya msimu, matokeo ya mechi zilizopita na mechi zinazofuata.</p>
+        </div>
+        <span class="league-chip"><%= standing.standing.length %> timu</span>
+    </div>
+    <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="league-link-list p-0">
         <% standing.standing.forEach(team=> { %>
-        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"
-            class="list-group-item">
-            <a itemprop="item"
-                href="/football/fixtures/<%= partials.path %>/<%= team.team.id %>"
-                class="text-success text-decoration-none">
-                <span itemprop="name">
-                    Ratiba na Matokeo ya Mechi za <%= team.team.name %>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a itemprop="item" href="/football/fixtures/<%= partials.path %>/<%= team.team.id %>">
+                <span class="league-link-main">
+                    <img class="league-link-logo" src="<%= team.team.logo %>" alt="<%= team.team.name %>" loading="lazy">
+                    <span class="league-link-copy">
+                        <strong itemprop="name"><%= team.team.name %></strong>
+                        <span>Fungua ukurasa wa <%= team.team.name %> kuona ratiba ya msimu, matokeo yaliyopita na mwenendo wake kwenye msimamo.</span>
+                    </span>
+                </span>
+                <span class="league-link-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
                 </span>
             </a>
             <meta itemprop="position" content="<%= team.rank %>">

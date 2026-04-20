@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
+    <%- include('../shared/partials/theme.ejs'); %>
     <style>
         .tdata {
             font-size: 12px;
@@ -57,43 +58,72 @@
 <body>
     <%- include('../../../0-global/header.ejs'); %>
     <main>
-        <section class="left">
-            <div class="intro">
-                <h1 class="h2">Msimamo wa Ligi Kuu ya NBC Tanzania Bara <%= partials.season_long %> - Tanzania Premier League</h1>
-                <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-secondary" style="font-size: 12px;">
-                    <i class="fa-regular fa-clock"></i> Updated on:
-                    <abbr class="date published" title="<%= partials.updatedAt %>">
-                        <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
-                    </abbr>
-                </span>
+        <section class="left league-shell text-align-justify">
+            <% const navLinks = [
+                { href: '/standings/football/tanzania/premier-league', label: 'Msimamo', icon: 'fa-solid fa-table', active: true },
+                { href: '/football/fixtures/tanzania/premier-league', label: 'Ratiba na Matokeo', icon: 'fa-regular fa-calendar-days', active: false },
+                { href: '/football/top-scorers/tanzania/premier-league', label: 'Wafungaji Bora', icon: 'fa-solid fa-futbol', active: false },
+                { href: '/football/top-assists/tanzania/premier-league', label: 'Watoa Assist Bora', icon: 'fa-solid fa-handshake-angle', active: false }
+            ]; %>
+
+            <%- include('../shared/partials/hero.ejs', {
+                partials,
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                    timeZone: 'Africa/Nairobi',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
+                hero: {
+                    title: `Msimamo wa Ligi Kuu ya NBC Tanzania Bara ${partials.season_long}`,
+                    copy: `Fuatilia mbio za ubingwa, timu zinazopigania nafasi za juu, na zile zinazotafuta kujinasua mkiani mwa jedwali katika msimu wa ${partials.season_long}.`,
+                    primary_pill: partials.season_long,
+                    secondary_pill: partials.league_name,
+                    stats: [
+                        { value: partials.stats.teams || 0, label: 'Timu' },
+                        { value: partials.stats.fixtures || 0, label: 'Mechi' },
+                        { value: partials.stats.rounds || 0, label: 'Hatua' },
+                    ],
+                    meta_note: 'Takwimu za msimamo wa ligi kuu Tanzania Bara',
+                }
+            }) %>
+
+            <%- include('../shared/partials/nav.ejs', { links: navLinks }) %>
+
+            <section class="league-section-card">
+                <div class="league-muted mb-2">Muhtasari wa ligi</div>
                 <%- include('./partials/intro-standing.ejs'); %>
-                <p class="p">Hapa chini tumekuwekea msimamo wa Ligi Kuu ya NBC Tanzania Bara kwa msimu wa
-                    <%= partials.season_short %>.
+                <p class="p mb-0">
+                    Hapa chini unaona jedwali kamili la msimu wa <%= partials.season_short %>, kuanzia timu zilizo juu ya msimamo hadi zile zinazopambana kuepuka presha ya kushuka daraja.
                 </p>
-            </div>
+            </section>
+
             <%- include('./partials/standing.ejs'); %>
-            <br>
-            <div class="vidokezo p-2">
-                <h2 class="h2">Vidokezo NBC <%= partials.season_short %></h2>
-                <ul class="list-group list-group-flush fw-bold">
+
+            <div class="vidokezo">
+                <h2 class="h2 fs-6">Angalia pia kurasa muhimu za NBC <%= partials.season_short %></h2>
+                <ul class="list-group list-group-flush fw-bold p-2">
                     <li class="list-group-item">
-                        <a href="/football/fixtures/tanzania/premier-league" class="text-success text-decoration-none">
-                            Ratiba na Matokeo NBC - Tanzania Premier League <%= partials.season_short %>
+                        <a href="/football/fixtures/tanzania/premier-league">
+                            Ratiba na matokeo ya mechi zote za ligi kuu Tanzania Bara
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="/football/top-scorers/tanzania/premier-league" class="text-success text-decoration-none">
-                            Wafungaji Bora NBC - Tanzania Premier League <%= partials.season_short %>
+                        <a href="/football/top-scorers/tanzania/premier-league">
+                            Wafungaji bora ligi kuu Tanzania Bara
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="/football/top-assists/tanzania/premier-league" class="text-success text-decoration-none">
-                            Watoa Assists Bora NBC - Tanzania Premier League <%= partials.season_short %>
+                        <a href="/football/top-assists/tanzania/premier-league">
+                            Watoa assist bora ligi kuu Tanzania Bara
                         </a>
                     </li>
                 </ul>
             </div>
-            <br>
+
             <%- include('./partials/faqpage.ejs'); %>
             <%- include('../../../0-global/somapia.ejs'); %>
         </section>

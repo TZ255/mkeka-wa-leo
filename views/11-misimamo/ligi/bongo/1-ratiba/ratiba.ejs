@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/css/v1-global.css">
   <%- include('../../../../0-global/google.ejs'); %>
   <%- include('../../../../0-global/fonts.ejs'); %>
+  <%- include('../../shared/partials/theme.ejs'); %>
   <style>
     .tdata {
       font-size: 12px;
@@ -31,100 +32,156 @@
 <body>
   <%- include('../../../../0-global/header.ejs'); %>
   <main>
-    <section class="left">
-      <h1 class="h2">Ratiba na Matokeo ya Mechi za <%= partials.team_info.team.name %> Msimu wa
-        <%= partials.season_long %></h1>
-      <div>
+    <section class="left league-shell">
+      <% const teamNavLinks = [
+        { href: '/standings/football/tanzania/premier-league', label: 'Msimamo', icon: 'fa-solid fa-table', active: false },
+        { href: '/football/fixtures/tanzania/premier-league', label: 'Ratiba ya ligi', icon: 'fa-regular fa-calendar-days', active: false },
+        { href: `/football/fixtures/tanzania/premier-league/${partials.team_id}`, label: partials.team_info.team.name, icon: 'fa-solid fa-shield-halved', active: true }
+      ]; %>
+
+      <%- include('../../shared/partials/hero.ejs', {
+        partials,
+        formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+          timeZone: 'Africa/Nairobi',
+          hour: '2-digit',
+          minute: '2-digit',
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
+        hero: {
+          title: `Ratiba na matokeo ya ${partials.team_info.team.name} ${partials.season_long}`,
+          copy: `Fuatilia kila mechi ya ${partials.team_info.team.name} kwenye ${partials.ligi}, ukiangalia nafasi yake mezani, pointi ilizokusanya, na mwendo wake wa msimu mzima.`,
+          image_url: partials.team_info.team.logo,
+          image_alt: partials.team_info.team.name,
+          primary_pill: partials.season_long,
+          secondary_pill: partials.ligi,
+          stats: [
+            { value: partials.team_info.rank, label: 'Nafasi' },
+            { value: partials.team_info.points, label: 'Pointi' },
+            { value: partials.team_info.all.played, label: 'Mechi' },
+            { value: partials.team_info.goalsDiff, label: 'Goal diff' },
+          ],
+        }
+      }) %>
+
+      <%- include('../../shared/partials/nav.ejs', { links: teamNavLinks }) %>
+
+      <div class="table-section">
         <div class="utangulizi p text-align-justify">
           <p>
-            <%= partials.team_info.team.name %> ni timu inayoshiriki ligi kuu ikiwa inashikilia nafasi ya
-            <%= partials.team_info.rank %> katika <a href="/standings/football/tanzania/premier-league" class="text-success">Msimamo
-              wa Ligi Kuu Tanzania Bara <%= partials.season_long %></a> na ikiwa na jumla ya <b class="text-success">points <%= partials.team_info.points %></b>. Hadi sasa imecheza jumla
-            ya mechi
-            <%= partials.team_info.all.played %>, mechi <%= partials.team_info.home.played %> zikiwa za
-            nyumbani na <%= partials.team_info.away.played %> za ugenini.
+            <%= partials.team_info.team.name %> ipo nafasi ya <%= partials.team_info.rank %> kwenye
+            <a href="/standings/football/tanzania/premier-league" class="link-dark">msimamo wa Ligi Kuu Tanzania Bara <%= partials.season_long %></a>
+            ikiwa imekusanya pointi <strong><%= partials.team_info.points %></strong>. Hadi sasa imecheza mechi
+            <%= partials.team_info.all.played %>, kati ya hizo <%= partials.team_info.home.played %> zikiwa za nyumbani na
+            <%= partials.team_info.away.played %> za ugenini.
           </p>
           <p>
-            <%= partials.team_info.team.name %> imeshinda mechi <%= partials.team_info.all.win %>, droo
-            <%= partials.team_info.all.draw %> na kufungwa mechi
-            <%= partials.team_info.all.lose %>. Amefunga mabao
-            <%= partials.team_info.all.goals.for %> na kufungwa <%= partials.team_info.all.goals.against %>
-            hivyo kuifanya kuwa na tofauti ya mabao <%= partials.team_info.goalsDiff %>
+            Katika mwendo huo wa msimu, <%= partials.team_info.team.name %> imeshinda mechi <%= partials.team_info.all.win %>,
+            imetoka sare <%= partials.team_info.all.draw %>, na imepoteza <%= partials.team_info.all.lose %>. Imefunga mabao
+            <%= partials.team_info.all.goals.for %> na kufungwa <%= partials.team_info.all.goals.against %>, hivyo kuwa na tofauti ya mabao
+            <%= partials.team_info.goalsDiff %>.
           </p>
         </div>
-        <div class="table-section" itemscope itemtype="https://schema.org/Table">
-          <h2 class="h2" itemprop="about">Msimamo wa <%= partials.team_info.team.name %> Katika Ligi
-            Kuu Tanzania Bara <%= partials.season_long %></h2>
-          <table class="table table-striped">
-            <thead style="font-size: 13px !important;">
-              <th scope="col" class="text-center">#</th>
-              <th scope="col" class="fw-bold">Team</th>
-              <th scope="col" class="text-center">MP</th>
-              <th scope="col" class="text-center">W</th>
-              <th scope="col" class="text-center">D</th>
-              <th scope="col" class="text-center">L</th>
-              <th scope="col" class="text-center">GD</th>
-              <th scope="col" class="text-center">Pts</th>
+      </div>
+
+      <div class="table-section" itemscope itemtype="https://schema.org/Table">
+        <div class="league-section-head">
+          <h2 class="h2 fs-6 mb-0" itemprop="about">Msimamo wa <%= partials.team_info.team.name %> katika Ligi Kuu Tanzania Bara</h2>
+          <span class="league-chip">Nafasi ya <%= partials.team_info.rank %></span>
+        </div>
+        <div class="league-table-wrap">
+          <table class="league-table">
+            <colgroup>
+              <col style="width: 56px;">
+              <col class="team-col">
+              <col span="6" style="width: 9%;">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="rank-cell text-center">#</th>
+                <th class="team-cell">Timu</th>
+                <th class="stat-cell text-center">MP</th>
+                <th class="stat-cell text-center">W</th>
+                <th class="stat-cell text-center">D</th>
+                <th class="stat-cell text-center">L</th>
+                <th class="stat-cell text-center">GD</th>
+                <th class="stat-cell text-center">Pts</th>
+              </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="tdata text-center"><%= partials.team_info.rank %>.</td>
-                <td class="tdata"><%= partials.team_info.team.name %></td>
-                <td class="tdata text-center"><%= partials.team_info.all.played %></td>
-                <td class="tdata text-center"><%= partials.team_info.all.win %></td>
-                <td class="tdata text-center"><%= partials.team_info.all.draw %></td>
-                <td class="tdata text-center"><%= partials.team_info.all.lose %></td>
-                <td class="tdata text-center"><%= partials.team_info.goalsDiff %></td>
-                <td class="text-success tdata text-center fw-bold"><%= partials.team_info.points %></td>
+                <td class="rank-cell rank-badge-cell">
+                  <span class="league-rank-wrap">
+                    <span class="league-rank-marker champ<%= partials.team_info.rank %>"></span>
+                    <span class="league-rank-number"><%= partials.team_info.rank %></span>
+                  </span>
+                </td>
+                <td class="team-cell">
+                  <div class="league-team-cell">
+                    <img src="<%= partials.team_info.team.logo %>" alt="<%= partials.team_info.team.name %>" loading="lazy">
+                    <span><%= partials.team_info.team.name %></span>
+                  </div>
+                </td>
+                <td class="stat-cell text-center"><%= partials.team_info.all.played %></td>
+                <td class="stat-cell text-center"><%= partials.team_info.all.win %></td>
+                <td class="stat-cell text-center"><%= partials.team_info.all.draw %></td>
+                <td class="stat-cell text-center"><%= partials.team_info.all.lose %></td>
+                <td class="stat-cell text-center"><%= partials.team_info.goalsDiff %></td>
+                <td class="stat-cell text-center league-highlight"><%= partials.team_info.points %></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <br>
-        <hr><br>
-        <div class="table-section" itemscope itemtype="https://schema.org/Table">
-          <h2 class="h2" itemprop="about">Ratiba ya <%= partials.team_info.team.name %> - Mechi za Msimu
-            Mzima wa <%= partials.season_long %> Pamoja na Matokeo</h2>
-          <table class="table table-striped">
-            <thead>
-              <th scope="col" class="tdata text-center">Date</th>
-              <th scope="col" class="tdata">Match</th>
-              <th scope="col" class="text-center tdata">Results</th>
-            </thead>
-            <tbody>
-              <% ratiba.forEach(fixture => { %>
-              <tr class="tdata">
-                <td class="text-secondary text-center">
-                  <span class="time d-block <%= fixture.fixture.status.short %>">
-                    <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %>
-                  </span>
-                  <span class="date d-block <%= fixture.fixture.status.short %>">
-                    <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %>
-                  </span>
-                  <% if (fixture.fixture.status.short === "PST") { %>
-                  <span class="date d-block text-danger">
-                    postponed
-                  </span>
-                  <% } %>
-                </td>
-                <td class="<%= fixture.fixture.status.short %>">
-                  <%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United') %> <br> <%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United') %>
-                </td>
-                <td class="text-center fw-bold">
-                  <%= fixture.goals.home ?? '-' %> <br> <%= fixture.goals.away ?? '-' %>
-                </td>
-              </tr>
-              <% }) %>
-            </tbody>
-          </table>
-        </div>
-        <br>
-        <hr><br>
-        <%- include('./partials/faq.ejs'); %>
-        <br>
-        <%- include('../../../../0-global/somapia.ejs'); %>
       </div>
-      <br><br>
+
+      <div class="table-section" itemscope itemtype="https://schema.org/Table">
+        <div class="league-section-head">
+          <h2 class="h2 fs-6 mb-0" itemprop="about">Ratiba ya mechi zote za <%= partials.team_info.team.name %> pamoja na matokeo</h2>
+          <span class="league-chip">Mechi <%= ratiba.length %></span>
+        </div>
+        <div class="league-fixture-list">
+          <% ratiba.forEach(fixture => { %>
+          <%
+            const statusShort = fixture?.fixture?.status?.short;
+            const homeGoals = fixture?.goals?.home;
+            const awayGoals = fixture?.goals?.away;
+            const isCompleted = ['FT', 'AET', 'PEN', 'AWD', 'WO'].includes(statusShort);
+            const isDraw = homeGoals !== null && awayGoals !== null && homeGoals === awayGoals;
+            const homeWinner = isCompleted && !isDraw && fixture?.teams?.home?.winner === true;
+            const awayWinner = isCompleted && !isDraw && fixture?.teams?.away?.winner === true;
+          %>
+          <article class="league-fixture-card league-fixture-card-detail">
+            <div class="league-fixture-time">
+              <strong class="d-block"><%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %></strong>
+              <span><%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %></span>
+            </div>
+            <div class="league-fixture-teams">
+              <span class="league-fixture-team-row">
+                <img class="league-fixture-team-logo" src="<%= fixture.teams.home.logo %>" alt="<%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United') %>" loading="lazy">
+                <span class="league-fixture-team <%= homeWinner ? 'is-winner' : '' %>"><%= fixture.teams.home.name.replace('Kitayosce', 'Tabora United') %></span>
+              </span>
+              <span class="league-fixture-team-row">
+                <img class="league-fixture-team-logo" src="<%= fixture.teams.away.logo %>" alt="<%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United') %>" loading="lazy">
+                <span class="league-fixture-team <%= awayWinner ? 'is-winner' : '' %>"><%= fixture.teams.away.name.replace('Kitayosce', 'Tabora United') %></span>
+              </span>
+            </div>
+            <div class="league-fixture-score">
+              <span class="d-block"><%= fixture.goals.home ?? '-' %></span>
+              <span class="d-block"><%= fixture.goals.away ?? '-' %></span>
+              <span class="league-fixture-status d-block"><%= fixture.fixture.status.short %></span>
+            </div>
+            <% if (fixture.fixture.venue?.name) { %>
+            <div class="league-fixture-venue"><%= fixture.fixture.venue.name %></div>
+            <% } %>
+          </article>
+          <% }) %>
+        </div>
+      </div>
+
+      <%- include('./partials/faq.ejs'); %>
+      <%- include('../../../../0-global/somapia.ejs'); %>
     </section>
   </main>
 

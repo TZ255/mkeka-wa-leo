@@ -1,7 +1,12 @@
 <div class="table-section" itemscope itemtype="https://schema.org/Table">
-    <h2 class="h2 fs-6" itemprop="about">Msimamo wa <%= partials.league_name %> - <%= partials.ligi %>
-        <%= partials.season_long %>
-    </h2>
+    <div class="league-section-head">
+        <div class="league-title-stack">
+            <span class="league-overline">Jedwali la Msimamo</span>
+            <h2 class="h2 fs-5 mb-0" itemprop="about">Msimamo wa <%= partials.league_name %> <%= partials.season_long %></h2>
+            <p class="league-section-copy">Tazama nafasi za timu, mechi zilizochezwa, rekodi za ushindi na pointi za kila klabu katika <%= partials.ligi %> ya msimu huu.</p>
+        </div>
+        <span class="league-chip">Timu <%= partials.stats?.teams || 0 %></span>
+    </div>
     <% if (Array.isArray(standing.standing) && standing.standing.length > 0) { %>
     <% if (Array.isArray(standing.standing[0])) { %>
     <%- include('./groups-league.ejs') %>
@@ -10,16 +15,14 @@
     <%- include('./leagues.ejs') %>
     <% } %>
     <% } %>
-    <div id="explanations"></div>
+    <div id="explanations" class="league-legend"></div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let status_expl = []
-        // Get all table cells with class td_desc
-        const tableCells = document.querySelectorAll('td.td_desc');
+        const tableCells = document.querySelectorAll('.td_desc');
 
-        // Loop through each cell
         tableCells.forEach(cell => {
             const description = cell.getAttribute('title')?.toLowerCase() || '';
             const league_id = cell.getAttribute('data-league_id')?.toLowerCase() || '';
@@ -63,37 +66,22 @@
             const className = status.class;
             const descriptionText = status.description;
 
-            // Create a new flex div for each status
-            const flexDiv = document.createElement('div');
-            flexDiv.style.display = 'flex';
-            flexDiv.style.flexWrap = 'wrap';
-            flexDiv.style.marginBottom = '10px';
-            flexDiv.style.alignItems = 'center';
-            flexDiv.style.justifyContent = 'flex-start';
-            flexDiv.style.gap = '10px';
-            flexDiv.style.fontSize = '12px';
-            flexDiv.style.fontFamily = 'Arial, sans-serif';
+            const pill = document.createElement('span');
 
-            // Create a span for the class
             const classSpan = document.createElement('span');
             classSpan.className = className;
-            classSpan.classList.add('rounded')
-            classSpan.style.width = '16px';
-            classSpan.style.height = '16px';
+            classSpan.classList.add('rounded');
+            classSpan.style.width = '12px';
+            classSpan.style.height = '12px';
             classSpan.style.display = 'inline-block';
+            classSpan.style.flex = 'none';
 
-            // Create a span for the description
             const descriptionSpan = document.createElement('span');
             descriptionSpan.textContent = descriptionText;
-            descriptionSpan.style.marginLeft = '1px';
-            descriptionSpan.style.display = 'inline-block';
 
-            // Append spans to the flex div
-            flexDiv.appendChild(classSpan);
-            flexDiv.appendChild(descriptionSpan);
-
-            // Append the flex div to the explanations div
-            explanationsDiv.appendChild(flexDiv);
+            pill.appendChild(classSpan);
+            pill.appendChild(descriptionSpan);
+            explanationsDiv.appendChild(pill);
         }
     });
 </script>

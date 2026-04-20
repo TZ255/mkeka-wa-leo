@@ -1,0 +1,41 @@
+<section class="wc-hero">
+    <div class="wc-eyebrow">
+        <span class="wc-season-pill">FIFA <%= partials.season_long %></span>
+        <span class="wc-status-pill"><%= partials.active ? 'Msimu unaoendelea' : 'Kumbukumbu ya msimu' %></span>
+    </div>
+
+    <h1 class="wc-hero-title"><%= hero.title %></h1>
+    <p class="wc-hero-copy"><%= hero.copy %></p>
+
+    <div class="wc-meta-row">
+        <span class="wc-note-pill">
+            <i class="fa-regular fa-clock"></i>
+            Imesasishwa <%= formattedUpdatedAt %>
+        </span>
+        <% if (partials.current_round) { %>
+        <span class="wc-note-pill">
+            <i class="fa-solid fa-layer-group"></i>
+            <%= partials.current_round %>
+        </span>
+        <% } %>
+    </div>
+
+    <div class="wc-stat-row">
+        <div class="wc-stat">
+            <strong><%= partials.stats.groups || 0 %></strong>
+            <span>Makundi</span>
+        </div>
+        <div class="wc-stat">
+            <strong><%= partials.stats.teams || 0 %></strong>
+            <span>Timu</span>
+        </div>
+        <div class="wc-stat">
+            <strong><%= partials.stats.fixtures || 0 %></strong>
+            <span>Mechi</span>
+        </div>
+        <div class="wc-stat">
+            <strong><%= partials.stats.rounds || 0 %></strong>
+            <span>Hatua</span>
+        </div>
+    </div>
+</section>

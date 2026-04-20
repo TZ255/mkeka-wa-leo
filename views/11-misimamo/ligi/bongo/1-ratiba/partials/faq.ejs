@@ -62,16 +62,28 @@
 <br><br><br>
 <!-- Ratiba za Timu Nyingine -->
 <div class="ratiba-timu">
-    <h2 class="h2 fs-6">
-        Ratiba na Matokeo ya Timu Zingine za Ligi Kuu Bara <%= partials.season_long %>
-    </h2>
-    <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="list-group list-group-flush p-2">
+    <div class="league-section-head">
+        <div class="league-title-stack">
+            <span class="league-overline">Timu Nyingine</span>
+            <h2 class="h2 fs-5 mb-0">Ratiba na Matokeo ya Timu Zingine za Ligi Kuu Bara <%= partials.season_long %></h2>
+            <p class="league-section-copy">Endelea na timu nyingine za ligi kuu kwa kuchagua klabu unayotaka kuona ratiba yake yote, matokeo na mechi zinazofuata.</p>
+        </div>
+        <span class="league-chip"><%= standing.length - 1 %> timu</span>
+    </div>
+    <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="league-link-list p-0">
         <% standing.forEach(team => { %>
         <% if (team.team.id != partials.team_id) { %>
-        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="list-group-item">
-            <a itemprop="item" href="/football/fixtures/tanzania/premier-league/<%= team.team.id %>" class="text-success text-decoration-none">
-                <span itemprop="name">
-                    Ratiba na Matokeo ya Mechi za <%= team.team.name.replace('Kitayosce', 'Tabora United') %>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a itemprop="item" href="/football/fixtures/tanzania/premier-league/<%= team.team.id %>">
+                <span class="league-link-main">
+                    <img class="league-link-logo" src="<%= team.team.logo %>" alt="<%= team.team.name.replace('Kitayosce', 'Tabora United') %>" loading="lazy">
+                    <span class="league-link-copy">
+                        <strong itemprop="name"><%= team.team.name.replace('Kitayosce', 'Tabora United') %></strong>
+                        <span>Fungua ukurasa wa timu hii kuona mechi za nyumbani na ugenini, matokeo ya karibuni na safari yake ya msimu.</span>
+                    </span>
+                </span>
+                <span class="league-link-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
                 </span>
             </a>
             <meta itemprop="position" content="<%= team.rank %>">

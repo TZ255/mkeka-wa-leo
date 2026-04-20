@@ -10,98 +10,129 @@
     <meta property="article:modified_time" content="<%= partials.updatedAt %>">
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
     <%- include('../../../../0-global/favicon.ejs') %>
-    <title>Wafungaji Bora <%= partials.ligi %> <%= partials.season_long %> - Vinara wa Magoli
-        <%= partials.league_name %></title>
+    <title>Wafungaji Bora <%= partials.ligi %> <%= partials.season_long %> - Vinara wa Magoli <%= partials.league_name %></title>
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../../0-global/google.ejs'); %>
     <%- include('../../../../0-global/fonts.ejs'); %>
-
-    <style>
-        p {
-            text-align: justify !important;
-        }
-    </style>
+    <%- include('../../shared/partials/theme.ejs'); %>
 </head>
 
 <body>
     <%- include('../../../../0-global/header.ejs'); %>
     <main>
-        <section class="left">
-            <h1 class="h2">
-                Wafungaji Bora <%= partials.ligi %> <%= partials.season_long %>. Je, Nani Atamaliza Msimu Kinara wa
-                Magoli?
-            </h1>
+        <section class="left league-shell">
+            <% const navLinks = [
+                { href: `/standings/football/${partials.path}`, label: 'Msimamo', icon: 'fa-solid fa-table', active: false },
+                { href: `/football/fixtures/${partials.path}`, label: 'Ratiba na Matokeo', icon: 'fa-regular fa-calendar-days', active: false },
+                { href: `/football/top-scorers/${partials.path}`, label: 'Wafungaji Bora', icon: 'fa-solid fa-futbol', active: true }
+            ]; %>
+            <% if (partials.stats.assist > 0) { navLinks.push({ href: `/football/top-assists/${partials.path}`, label: 'Watoa Assist Bora', icon: 'fa-solid fa-handshake-angle', active: false }); } %>
 
-            <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-secondary" style="font-size: 12px;">
-                <i class="fa-regular fa-clock"></i> Updated on:
-                <abbr class="date published" title="<%= partials.updatedAt %>">
-                    <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi', hour: "2-digit", minute: "2-digit", weekday: "long", year: "numeric", month: "long", day: "numeric",}) %>
-                </abbr>
-            </span>
-            <div class="utangulizi p-2 text-align-justify">
-                <% if (top_scorers?.length > 1) { %>
-                 <p>
-                    Hadi sasa, <strong><%= top_scorers[0].player.name %></strong> wa <%= top_scorers[0].statistics[0].team.name %> na
-                    <strong><%= top_scorers[1].player.name %></strong> wa <%= top_scorers[1].statistics[0].team.name %> wanaongoza kwa
-                    magoli <%= partials.ligi %> msimu huu. <strong><%= top_scorers[0].player.name %></strong> akiwa na magoli <%= top_scorers[0].statistics[0].goals.total %> na <strong><%= top_scorers[1].player.name %></strong> akiwa na magoli <%= top_scorers[1].statistics[0].goals.total %>.
-                </p>
-                <% } %>
+            <%- include('../../shared/partials/hero.ejs', {
+                partials,
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                    timeZone: 'Africa/Nairobi',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
+                hero: {
+                    title: `Wafungaji bora wa ${partials.league_name} ${partials.season_long}`,
+                    copy: `Mbio za kiatu cha dhahabu za ${partials.league_name} zinachambuliwa hapa, ukiwaona washambuliaji wanaoongoza kwa magoli na waliopo karibu kuchukua usukani wa ufungaji.`,
+                    primary_pill: partials.season_long,
+                    secondary_pill: partials.league_name,
+                    stats: [
+                        { value: partials.stats.scorer || 0, label: 'Wachezaji' },
+                        { value: partials.stats.assist || 0, label: 'Watoa assist' },
+                        { value: partials.stats.teams || 0, label: 'Timu' },
+                        { value: partials.stats.fixtures || 0, label: 'Mechi' },
+                    ],
+                }
+            }) %>
+
+            <%- include('../../shared/partials/nav.ejs', { links: navLinks }) %>
+
+            <% if (top_scorers?.length > 1) { %>
+            <div class="league-grid-two">
+                <article class="league-highlight-card">
+                    <h2 class="h5">Kinara wa sasa</h2>
+                    <p class="mb-1"><strong><%= top_scorers[0].player.name %></strong></p>
+                    <p class="mb-0"><%= top_scorers[0].statistics[0].team.name %> anaongoza akiwa na <strong><%= top_scorers[0].statistics[0].goals.total %></strong> magoli.</p>
+                </article>
+                <article class="league-highlight-card">
+                    <h2 class="h5">Anayefukuzia</h2>
+                    <p class="mb-1"><strong><%= top_scorers[1].player.name %></strong></p>
+                    <p class="mb-0"><%= top_scorers[1].statistics[0].team.name %> yupo karibu kileleni akiwa na <strong><%= top_scorers[1].statistics[0].goals.total %></strong> magoli.</p>
+                </article>
             </div>
-            <br>
-            <div>
-                <div class="table-section" itemscope itemtype="https://schema.org/Table">
-                    <meta itemprop="about"
-                        content="Orodha ya Wachezaji Wanaongoza kwa Magoli <%= partials.ligi %> Msimu wa <%= partials.season_long %>">
-                    <table class="table table-striped-columns">
-                        <thead style="font-size: 13px !important;">
-                            <th scope="col" class="text-center">#</th>
-                            <th scope="col" class="fw-bold">Mchezaji</th>
-                            <th scope="col" class="text-start">Timu</th>
-                            <th scope="col" class="text-center">Magoli</th>
-                            <th scope="col" class="text-center">Penati</th>
+            <% } %>
+
+            <div class="table-section" itemscope itemtype="https://schema.org/Table">
+                <div class="league-section-head">
+                    <div class="league-title-stack">
+                        <span class="league-overline">Wafungaji Bora</span>
+                        <h2 class="h2 fs-5 mb-0">Orodha ya Wafungaji Bora wa <%= partials.league_name %></h2>
+                        <p class="league-section-copy">Hapa unaona washambuliaji wanaoongoza kwa mabao, timu wanazotokea na mchango wao kwenye mbio za ufungaji za msimu huu.</p>
+                    </div>
+                    <span class="league-chip"><%= top_scorers.length %> wachezaji</span>
+                </div>
+                <meta itemprop="about" content="Orodha ya Wachezaji Wanaongoza kwa Magoli <%= partials.ligi %> Msimu wa <%= partials.season_long %>">
+                <div class="league-table-wrap">
+                    <table class="league-table league-player-table">
+                        <colgroup>
+                            <col class="rank-col">
+                            <col class="player-col">
+                            <col class="team-col">
+                            <col class="stat-col">
+                            <col class="meta-col">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th class="rank-cell text-center">#</th>
+                                <th class="team-cell">Mchezaji</th>
+                                <th>Timu</th>
+                                <th class="text-center">Magoli</th>
+                                <th class="text-center">Penati</th>
+                            </tr>
                         </thead>
                         <tbody>
                             <% top_scorers.forEach((player, index) => { %>
-                            <tr style="font-size: 12px !important;">
-                                <td class="tdata text-center"><%= index+1 %>.</td>
-                                <td class="tdata"><%= player.player.name %></td>
-                                <td class="tdata"><%= player.statistics[0].team.name %></td>
-                                <td class="tdata text-center"><%= player.statistics[0].goals.total %></td>
-                                <td class="tdata text-center"><%= player?.statistics[0]?.penalty?.scored || '-' %></td>
+                            <tr>
+                                <td class="rank-cell rank-badge-cell">
+                                    <span class="league-rank-wrap">
+                                        <span class="league-rank-marker"></span>
+                                        <span class="league-rank-number"><%= index+1 %></span>
+                                    </span>
+                                </td>
+                                <td class="team-cell">
+                                    <div class="league-player-cell">
+                                        <img src="<%= player.player.photo %>" alt="<%= player.player.name %>" class="league-player-photo" loading="lazy">
+                                        <div>
+                                            <strong><%= player.player.name %></strong>
+                                            <span class="league-player-sub"><%= player.player.age ? `${player.player.age} yrs` : 'Mshambuliaji wa ligi' %></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><%= player.statistics[0].team.name %></td>
+                                <td class="text-center league-highlight"><%= player.statistics[0].goals.total %></td>
+                                <td class="text-center"><%= player?.statistics[0]?.penalty?.scored || '-' %></td>
                             </tr>
                             <% }) %>
                         </tbody>
-                        <caption class="p-2 fst-italic">
-                            <p>Orodha hii inasasishwa mara kwa mara kulingana na mechi za kila wiki.</p>
-                            <p>Ona pia</p>
-                            <ul class="list-group list-group-flush fw-bold">
-                                <% if (partials?.stats?.assist > 0) { %>
-                                <li class="list-group-item"><a href="/football/top-assists/<%= partials.path %>"
-                                        class="text-success text-decoration-none">Orodha ya Watoa Assist Bora
-                                        <%= partials.ligi %> <%= partials.season_short %></a>
-                                </li>
-                                <% } %>
-                                <li class="list-group-item"><a href="/standings/football/<%= partials.path %>"
-                                        class="text-success text-decoration-none">Msimamo <%= partials.ligi %>
-                                        <%= partials.season_short %></a>
-                                </li>
-                                <li class="list-group-item">
-                                    <a href="/football/fixtures/<%= partials.path %>"
-                                        class="text-success text-decoration-none">
-                                        Ratiba na matokeo - <%= partials.ligi %>
-                                        <%= partials.season_short %>
-                                    </a>
-                                </li>
-                            </ul>
-                        </caption>
                     </table>
                 </div>
-                <br>
-                <hr>
-                <br>
-                <%- include('../../../../0-global/somapia.ejs'); %>
+                <div class="league-legend">
+                    <% if (partials?.stats?.assist > 0) { %>
+                    <span><a href="/football/top-assists/<%= partials.path %>">Watoa Assist Bora wa <%= partials.ligi %> <%= partials.season_short %></a></span>
+                    <% } %>
+                    <span><a href="/standings/football/<%= partials.path %>">Msimamo wa <%= partials.ligi %> <%= partials.season_short %></a></span>
+                    <span><a href="/football/fixtures/<%= partials.path %>">Ratiba na matokeo ya <%= partials.ligi %> <%= partials.season_short %></a></span>
+                </div>
             </div>
-            <br><br>
+            <%- include('../../../../0-global/somapia.ejs'); %>
         </section>
     </main>
 

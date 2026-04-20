@@ -1,0 +1,51 @@
+<section class="league-hero">
+    <div class="league-hero-head">
+        <% const heroImage = hero?.image_url || partials?.league_logo; %>
+        <% if (heroImage) { %>
+        <img src="<%= heroImage %>" alt="<%= hero?.image_alt || partials?.league_name || partials?.ligi %>" class="league-hero-badge" loading="lazy">
+        <% } %>
+        <div>
+            <div class="league-eyebrow">
+                <% if (hero?.primary_pill || partials?.season_long) { %>
+                <span class="league-pill light"><%= hero?.primary_pill || partials.season_long %></span>
+                <% } %>
+                <% if (hero?.secondary_pill || partials?.league_name) { %>
+                <span class="league-pill soft"><%= hero?.secondary_pill || partials.league_name %></span>
+                <% } %>
+            </div>
+            <h1 class="league-hero-title"><%= hero.title %></h1>
+        </div>
+    </div>
+
+    <p class="league-hero-copy"><%= hero.copy %></p>
+
+    <div class="league-meta-row">
+        <span class="league-pill soft">
+            <i class="fa-regular fa-clock"></i>
+            Imesasishwa <%= formattedUpdatedAt %>
+        </span>
+        <% if (partials?.current_round) { %>
+        <span class="league-pill soft">
+            <i class="fa-solid fa-layer-group"></i>
+            <%= partials.current_round %>
+        </span>
+        <% } %>
+        <% if (hero?.meta_note) { %>
+        <span class="league-pill soft">
+            <i class="fa-solid fa-circle-info"></i>
+            <%= hero.meta_note %>
+        </span>
+        <% } %>
+    </div>
+
+    <% if (Array.isArray(hero?.stats) && hero.stats.length > 0) { %>
+    <div class="league-stat-row">
+        <% hero.stats.forEach((item) => { %>
+        <div class="league-stat">
+            <strong><%= item.value %></strong>
+            <span><%= item.label %></span>
+        </div>
+        <% }) %>
+    </div>
+    <% } %>
+</section>

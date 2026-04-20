@@ -6,94 +6,87 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Angalia msimamo wa <%= partials.ligi %> - <%= partials.league_name %> <%= partials.season_long %>. Nani kinara, nani mkia.">
+        content="Angalia msimamo wa <%= partials.ligi %> - <%= partials.league_name %> <%= partials.season_long %>. Nani kinara, nani mkiani, na nani yupo kwenye nafasi nzuri ya kufuzu.">
     <%- include('../../../0-global/favicon.ejs') %>
     <meta property="article:modified_time" content="<%= partials.updatedAt %>">
     <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
-    <title>Msimamo wa <%= partials.ligi %>
-        <%= partials.season_long %></title>
+    <title>Msimamo wa <%= partials.ligi %> <%= partials.season_long %></title>
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
-    <style>
-        .tdata {
-            font-size: 12px;
-        }
-
-        .relegation {
-            background-color: #d32f2f !important;
-            color: #ffffff !important;
-        }
-
-        .champions {
-            background-color: #1976d2 !important;
-            color: #ffffff !important;
-        }
-
-        .europa {
-            background-color: #0097a7 !important;
-            /* Teal/cyan */
-            color: #ffffff !important;
-        }
-
-        .conference {
-            background-color: #7b1fa2 !important;
-            /* Purple */
-            color: #ffffff !important;
-        }
-    </style>
+    <%- include('../shared/partials/theme.ejs'); %>
 </head>
 
 <body>
     <%- include('../../../0-global/header.ejs'); %>
     <main>
-        <section class="left text-align-justify">
-            <h1 class="h2">
-                Msimamo wa <%= partials.ligi %> <%= partials.season_long %>
-            </h1>
-            <div class="intro">
-                <span class="meta-info-el meta-info-date d-block p-2 mb-3 text-secondary" style="font-size: 12px;">
-                    <i class="fa-regular fa-clock"></i> Updated on:
-                    <abbr class="date published" title="<%= partials.updatedAt %>">
-                        <%= new Date(partials.updatedAt).toLocaleString('en-US', {timeZone: 'Africa/Nairobi' ,
-                                hour: "2-digit" , minute: "2-digit" , weekday: "long" , year: "numeric" , month: "long"
-                                , day: "numeric" ,}) %>
-                    </abbr>
-                </span>
+        <section class="left league-shell text-align-justify">
+            <% const navLinks = [
+                { href: `/standings/football/${partials.path}`, label: 'Msimamo', icon: 'fa-solid fa-table', active: true },
+                { href: `/football/fixtures/${partials.path}`, label: 'Ratiba na Matokeo', icon: 'fa-regular fa-calendar-days', active: false }
+            ]; %>
+            <% if (partials.stats.scorer > 0) { navLinks.push({ href: `/football/top-scorers/${partials.path}`, label: 'Wafungaji Bora', icon: 'fa-solid fa-futbol', active: false }); } %>
+            <% if (partials.stats.assist > 0) { navLinks.push({ href: `/football/top-assists/${partials.path}`, label: 'Watoa Assist Bora', icon: 'fa-solid fa-handshake-angle', active: false }); } %>
+
+            <%- include('../shared/partials/hero.ejs', {
+                partials,
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                    timeZone: 'Africa/Nairobi',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
+                hero: {
+                    title: `Msimamo wa ${partials.ligi} ${partials.season_long}`,
+                    copy: `Fuatilia kinara wa ${partials.league_name}, mwendo wa timu zilizo juu ya jedwali, na presha ya zile zinazotafuta kujinasua mwishoni mwa msimamo katika msimu wa ${partials.season_long}.`,
+                    primary_pill: partials.season_long,
+                    secondary_pill: partials.league_name,
+                    stats: [
+                        { value: partials.stats.teams || 0, label: 'Timu' },
+                        { value: partials.stats.fixtures || 0, label: 'Mechi' },
+                        { value: partials.stats.rounds || 0, label: 'Hatua' },
+                        { value: partials.stats.scorer || 0, label: 'Wafungaji' },
+                    ],
+                }
+            }) %>
+
+            <%- include('../shared/partials/nav.ejs', { links: navLinks }) %>
+
+            <section class="league-section-card">
+                <div class="league-muted mb-2">Muhtasari wa ligi</div>
                 <%- include('./partials/intro-standing.ejs'); %>
-            </div>
+            </section>
+
             <%- include('./partials/standing.ejs'); %>
-            <br>
-            <div class="vidokezo p-2">
-                <h2 class="h2 fs-6">Vidokezo <%= partials.ligi %>
-                    <%= partials.season_short %>
-                </h2>
-                <ul class="list-group list-group-flush fw-bold">
+
+            <div class="vidokezo">
+                <h2 class="h2 fs-6">Vidokezo vya <%= partials.ligi %> <%= partials.season_short %></h2>
+                <ul class="list-group list-group-flush fw-bold p-2">
                     <li class="list-group-item">
-                        <a href="/football/fixtures/<%= partials.path %>" class="text-success text-decoration-none">
-                            Ratiba na Matokeo - <%= partials.ligi %>
-                            <%= partials.season_short %>
+                        <a href="/football/fixtures/<%= partials.path %>">
+                            Ratiba na matokeo ya msimu mzima - <%= partials.ligi %>
                         </a>
                     </li>
-                    <% if (partials?.stats.scorer > 0) { %>
+                    <% if (partials.stats.scorer > 0) { %>
                     <li class="list-group-item">
-                        <a href="/football/top-scorers/<%= partials.path %>" class="text-success text-decoration-none">
-                            Orodha ya Wafungaji Bora <%= partials.ligi %>
-                            <%= partials.season_short %>
+                        <a href="/football/top-scorers/<%= partials.path %>">
+                            Wafungaji bora - <%= partials.ligi %> <%= partials.season_short %>
                         </a>
                     </li>
                     <% } %>
-                    <% if (partials?.stats.assist > 0) { %>
+                    <% if (partials.stats.assist > 0) { %>
                     <li class="list-group-item">
-                        <a href="/football/top-assists/<%= partials.path %>" class="text-success text-decoration-none">
-                            Orodha ya Watoa Assists Bora <%= partials.ligi %>
-                            <%= partials.season_short %>
+                        <a href="/football/top-assists/<%= partials.path %>">
+                            Watoa assist bora - <%= partials.ligi %> <%= partials.season_short %>
                         </a>
                     </li>
                     <% } %>
                 </ul>
             </div>
-            <br><br>
+
             <% if (typeof standing.standing[0] === 'object' && standing.standing[0] !== null && !Array.isArray(standing.standing[0])) { %>
             <%- include('./partials/teams-ratiba.ejs') %>
             <% } %>
@@ -103,11 +96,8 @@
     </main>
 
     <%- include('../../../0-global/footer.ejs'); %>
-
     <%- include('../../../0-global/modal-leon.ejs'); %>
     <%- include('../../../0-global/script.ejs'); %>
-
-    <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 

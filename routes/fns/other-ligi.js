@@ -37,6 +37,8 @@ const UpdateOtherLeagueData = async (league_id, season) => {
                 let league_id = response?.data?.response[0].league.id
                 let league_name = response?.data?.response[0].league.name
                 let country = response?.data?.response[0].league.country
+                let league_logo = response?.data?.response[0].league.logo
+                let league_flag = response?.data?.response[0].league.flag
                 let league_season = response?.data?.response[0].league.season
                 let ligi = LeagueNameToSwahili(league_id, league_season).ligi
                 let path = LeagueNameToSwahili(league_id, league_season).path
@@ -45,7 +47,7 @@ const UpdateOtherLeagueData = async (league_id, season) => {
                 let standing = response?.data?.response[0].league.standings.length > 1 ? response?.data?.response[0].league.standings : response?.data?.response[0].league.standings[0]
 
                 await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
-                    $set: { standing, path, league_name, league_season, country, ligi, msimu },
+                    $set: { standing, path, league_name, league_season, country, league_logo, league_flag, ligi, msimu },
                 }, { upsert: true })
                 console.log(`${league_name} standing updated`)
             }
@@ -134,7 +136,7 @@ const UpdateOtherCurrentFixture = async (league_id, season) => {
         let league_season = response?.data?.parameters.season
         let fixtures = response?.data?.response
         await OtherLigiKuuModel.findOneAndUpdate({ league_id }, {
-            $set: { current_round_fixtures: fixtures }
+            $set: { current_round_fixtures: fixtures, current_round }
         })
     } catch (error) {
         console.log(error?.message, error)
@@ -527,10 +529,22 @@ const RefineLeagueDatabase = async () => {
         for (const league of leagues) {
             const { league_id, league_season } = league;
             const refinedLeague = LeagueNameToSwahili(league_id, league_season);
+            const sampleLeague = league?.current_round_fixtures?.[0]?.league || league?.season_fixtures?.[0]?.league || {};
+            const current_round = league?.current_round || sampleLeague?.round || league?.current_round_fixtures?.[0]?.league?.round || '';
             if (refinedLeague.ligi && refinedLeague.path && refinedLeague.msimu) {
                 await OtherLigiKuuModel.findOneAndUpdate(
                     { league_id, league_season },
-                    { $set: { msimu: refinedLeague.msimu } }
+                    {
+                        $set: {
+                            ligi: refinedLeague.ligi,
+                            path: refinedLeague.path,
+                            msimu: refinedLeague.msimu,
+                            country: league?.country || sampleLeague?.country || '',
+                            league_logo: league?.league_logo || sampleLeague?.logo || '',
+                            league_flag: league?.league_flag || sampleLeague?.flag || '',
+                            current_round,
+                        }
+                    }
                 );
                 console.log(`Refined ${league_id} - ${league_season}`);
             }
@@ -547,4 +561,3 @@ module.exports = {
     UpdateMatchDayLeagueData,
     RefineLeagueDatabase
 }
-

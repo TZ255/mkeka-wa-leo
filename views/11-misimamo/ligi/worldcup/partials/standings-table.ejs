@@ -1,0 +1,51 @@
+<section class="wc-section">
+    <div class="wc-section-head">
+        <h2 class="h3"><%= title %></h2>
+        <span class="wc-round-chip"><%= teams.length %> timu</span>
+    </div>
+
+    <div class="wc-table-wrap">
+        <table class="wc-table" itemscope itemtype="https://schema.org/Table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Timu</th>
+                    <th class="text-center">MP</th>
+                    <th class="text-center">W</th>
+                    <th class="text-center">D</th>
+                    <th class="text-center">L</th>
+                    <th class="text-center">GD</th>
+                    <th class="text-center">Pts</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% teams.forEach((team) => { 
+                    const description = String(team?.description || '').toLowerCase();
+                    const badgeClass = description.includes('promotion - world cup')
+                        ? 'qualifier'
+                        : description.includes('third-placed')
+                            ? 'third'
+                            : '';
+                %>
+                <tr>
+                    <td class="text-center">
+                        <span class="wc-rank-badge <%= badgeClass %>"><%= team.rank %></span>
+                    </td>
+                    <td>
+                        <div class="wc-team-cell">
+                            <img src="<%= team.team.logo %>" alt="<%= team.team.name %>" loading="lazy">
+                            <span><%= team.team.name %></span>
+                        </div>
+                    </td>
+                    <td class="text-center"><%= team.all.played %></td>
+                    <td class="text-center"><%= team.all.win %></td>
+                    <td class="text-center"><%= team.all.draw %></td>
+                    <td class="text-center"><%= team.all.lose %></td>
+                    <td class="text-center"><%= team.goalsDiff %></td>
+                    <td class="text-center wc-highlight"><%= team.points %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</section>

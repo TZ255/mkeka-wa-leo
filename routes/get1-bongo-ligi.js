@@ -25,6 +25,25 @@ const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
 const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
 
+const getBongoLeagueMedia = (league) => {
+    const sample = league?.current_round_fixtures?.[0]?.league || league?.season_fixtures?.[0]?.league || {};
+    return {
+        logo: league?.league_logo || sample?.logo || null,
+        flag: league?.league_flag || sample?.flag || null,
+        country: league?.country || sample?.country || 'Tanzania',
+    };
+};
+
+const getBongoRoundsCount = (fixtures = []) => {
+    return new Set(fixtures.map((fixture) => fixture?.league?.round).filter(Boolean)).size;
+};
+
+const getBongoUpdatedAt = (league) => {
+    return league?.standing?.[0]?.update
+        || league?.updatedAt
+        || new Date().toISOString();
+};
+
 
 //this have static route because of keywords for tanzania league for ranking
 //Other leagues will have dynamic route like /standings/:id/:season
@@ -35,15 +54,31 @@ router.get('/standings/football/tanzania/premier-league', async (req, res, next)
         if (!standing) return next();
 
         const league_season = standing.league_season
+        const media = getBongoLeagueMedia(standing)
 
         let partials = {
             mwaka: new Date().getFullYear(),
+            path,
+            ligi: 'Ligi Kuu ya NBC Tanzania Bara',
+            league_name: standing.league_name,
+            league_id: standing.league_id,
+            country: media.country,
+            league_logo: media.logo,
+            league_flag: media.flag,
             season: league_season,
             season_long: `${league_season}/${Number(league_season) + 1}`,
             season_short: `${league_season}/${String(Number(league_season) + 1).slice(-2)}`,
             season_vidokezo: `${league_season}-${Number(league_season) + 1}`,
+            canonical_path: `/standings/football/${path}`,
             createdAt: standing.createdAt.toISOString(),
-            updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
+            updatedAt: getBongoUpdatedAt(standing),
+            current_round: standing.current_round || standing.current_round_fixtures?.[0]?.league?.round || '',
+            stats: {
+                teams: standing.standing.length,
+                fixtures: standing.season_fixtures.length,
+                rounds: getBongoRoundsCount(standing.season_fixtures),
+            },
+            section: 'standings',
         }
 
         res.set('Cache-Control', 'public, max-age=600');
@@ -57,10 +92,11 @@ router.get('/standings/football/tanzania/premier-league', async (req, res, next)
 router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) => {
     let path = 'tanzania/premier-league'
     try {
-        const standing = await StandingLigiKuuModel.findOne({ path }).select('-top_scorers -top_assists -current_round_fixtures').cache(600)
+        const standing = await StandingLigiKuuModel.findOne({ path }).select('-top_scorers -top_assists').cache(600)
         if (!standing) return next();
 
         const league_season = standing.league_season
+        const media = getBongoLeagueMedia(standing)
 
         const flatFixtures = await StandingLigiKuuModel.aggregate([
             { $match: { path } },
@@ -142,12 +178,27 @@ router.get('/football/fixtures/tanzania/premier-league', async (req, res, next) 
 
         let partials = {
             mwaka: new Date().getFullYear(),
+            path,
+            ligi: 'Ligi Kuu ya NBC Tanzania Bara',
+            league_name: standing.league_name,
+            league_id: standing.league_id,
+            country: media.country,
+            league_logo: media.logo,
+            league_flag: media.flag,
             season: league_season,
             season_long: `${league_season}/${Number(league_season) + 1}`,
             season_short: `${league_season}/${String(Number(league_season) + 1).slice(-2)}`,
             season_vidokezo: `${league_season}-${Number(league_season) + 1}`,
+            canonical_path: `/football/fixtures/${path}`,
             createdAt: standing.createdAt.toISOString(),
-            updatedAt: standing.standing[0].update  //no toISO because the date is already in iso
+            updatedAt: getBongoUpdatedAt(standing),
+            current_round: standing.current_round || standing.current_round_fixtures?.[0]?.league?.round || '',
+            stats: {
+                teams: standing.standing.length,
+                fixtures: standing.season_fixtures.length,
+                rounds: getBongoRoundsCount(standing.season_fixtures),
+            },
+            section: 'fixtures',
         }
 
         res.set('Cache-Control', 'public, max-age=3600');
@@ -177,7 +228,13 @@ router.get('/football/fixtures/tanzania/premier-league/:teamid', async (req, res
         if (ratiba.length === 0) return next();
 
         let partials = {
-            path: req.path,
+            path,
+            ligi: 'Ligi Kuu ya NBC Tanzania Bara',
+            league_name: league.league_name,
+            league_id: league.league_id,
+            country: getBongoLeagueMedia(league).country,
+            league_logo: getBongoLeagueMedia(league).logo,
+            league_flag: getBongoLeagueMedia(league).flag,
             season_long: `${season}/${Number(season) + 1}`,
             season,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
@@ -186,7 +243,9 @@ router.get('/football/fixtures/tanzania/premier-league/:teamid', async (req, res
             team_id,
             canonical_path: `/football/fixtures/${path}/${team_id}`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.standing[0].update
+            updatedAt: getBongoUpdatedAt(league),
+            current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
+            section: 'team-fixtures',
         }
 
         switch (partials.team_info.team.name) {
@@ -216,17 +275,32 @@ router.get('/football/top-scorers/tanzania/premier-league', async (req, res, nex
         let top_scorers = league.top_scorers
         const season = league.league_season
         const league_id = league.league_id
+        const media = getBongoLeagueMedia(league)
 
         let partials = {
             path,
+            ligi: 'Ligi Kuu ya NBC Tanzania Bara',
+            league_name: league.league_name,
             season,
             season_vidokezo: `${season}-${Number(season) + 1}`,
             season_long: `${season}/${Number(season) + 1}`,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
             league_id,
+            country: media.country,
+            league_logo: media.logo,
+            league_flag: media.flag,
             canonical_path: `/football/top-scorers/tanzania/premier-league`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.update_top_players
+            updatedAt: league.update_top_players,
+            current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
+            stats: {
+                teams: league.standing?.length || 0,
+                fixtures: league.season_fixtures?.length || 0,
+                rounds: getBongoRoundsCount(league.season_fixtures || []),
+                scorer: top_scorers?.length || 0,
+                assist: league.top_assists?.length || 0,
+            },
+            section: 'scorers',
         }
 
         res.set('Cache-Control', 'public, max-age=600');
@@ -247,17 +321,32 @@ router.get('/football/top-assists/tanzania/premier-league', async (req, res, nex
         let top_assists = league.top_assists
         const season = league.league_season
         const league_id = league.league_id
+        const media = getBongoLeagueMedia(league)
 
         let partials = {
             path,
+            ligi: 'Ligi Kuu ya NBC Tanzania Bara',
+            league_name: league.league_name,
             season,
             season_vidokezo: `${season}-${Number(season) + 1}`,
             season_long: `${season}/${Number(season) + 1}`,
             season_short: `${season}/${String(Number(season) + 1).slice(-2)}`,
             league_id,
+            country: media.country,
+            league_logo: media.logo,
+            league_flag: media.flag,
             canonical_path: `/football/top-assists/tanzania/premier-league`,
             createdAt: league.createdAt.toISOString(),
-            updatedAt: league.update_top_players
+            updatedAt: league.update_top_players,
+            current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
+            stats: {
+                teams: league.standing?.length || 0,
+                fixtures: league.season_fixtures?.length || 0,
+                rounds: getBongoRoundsCount(league.season_fixtures || []),
+                scorer: league.top_scorers?.length || 0,
+                assist: top_assists?.length || 0,
+            },
+            section: 'assists',
         }
 
         res.set('Cache-Control', 'public, max-age=3600');
