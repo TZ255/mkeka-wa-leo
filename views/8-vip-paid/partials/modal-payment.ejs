@@ -1,0 +1,26 @@
+<div class="modal fade" id="globalPaymentModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+    data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 29rem;">
+        <div class="modal-content border-0 rounded-4 overflow-hidden"
+            style="background-color: #ffffff; box-shadow: 0 1.5rem 4rem rgba(15, 23, 42, 0.18);">
+            <div class="modal-header px-3 py-3" style="border-bottom: 1px solid #edf1f4;">
+                <h5 id="paymentModalTitle" class="modal-title fw-bold mb-0 text-dark">🇹🇿 Malipo Tanzania</h5>
+                <button type="button" class="btn-close" aria-label="Close" onclick="window.location.reload()"
+                    style="box-shadow: none;"></button>
+            </div>
+            <div id="paymentModalBody" class="modal-body p-0" style="background-color: #ffffff;">
+                <!-- HTMX will inject the payment form here -->
+                <div class="bg-white text-center px-4 py-5">
+                    <div class="spinner-border text-success mx-auto mb-3" role="status"
+                        style="height: 2.5rem; width: 2.5rem;">
+                        <span class="visually-hidden">Inapakia...</span>
+                    </div>
+                    <p class="fw-semibold text-dark mb-1">Tafadhali subiri kidogo</p>
+                    <p class="small text-secondary mb-0">Fomu ya malipo inajiandaa.</p>
+                </div>
+            </div>
+            <div id="paymentModalFooter" class="modal-footer border-0 p-0">
+            </div>
+        </div>
+    </div>
+</div>

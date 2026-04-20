@@ -58,9 +58,12 @@ router.get('/tanzania/bookies/:bookie', async (req, res) => {
 })
 
 //us pages
-router.get(['/contact-us', '/privacy-policy', '/cookie-policy', '/about-us'], async (req, res) => {
+router.get(['/contact-us', '/privacy-policy', '/cookie-policy', '/about-us', '/terms-of-use'], async (req, res) => {
     try {
-        const slug = req.path;
+        const slugMap = {
+            '/terms-of-use': '/terms'
+        };
+        const slug = slugMap[req.path] || req.path;
         const filePath = path.join(__dirname, "..", "blog/us", `${slug}.md`);
         if (!fs.existsSync(filePath)) {
             return res.status(404).send("Post not found");
