@@ -9,6 +9,7 @@ const megaSchema = new Schema({
     odds: { type: Number, default: 1 },
     accuracy: { type: Number, default: 0 },
     isPriority: { type: Boolean, default: false },
+    confidence: { type: String, default: "WEAK" },
     facts: { type: String, default: null },
     time: { type: String },
     date: { type: String },

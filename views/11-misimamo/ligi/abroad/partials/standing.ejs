@@ -7,7 +7,7 @@
         </div>
         <span class="league-chip">Timu <%= partials.stats?.teams || 0 %></span>
     </header>
-    <div class="league-surface-body pb-0">
+    <div class="league-surface-body p-0">
         <% if (Array.isArray(standing.standing) && standing.standing.length > 0) { %>
         <% if (Array.isArray(standing.standing[0])) { %>
         <%- include('./groups-league.ejs') %>

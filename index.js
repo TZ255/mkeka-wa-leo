@@ -19,6 +19,7 @@ const oddsTipsRouter = require('./routes/get-odds-tips')
 const htmxTips = require('./routes/htmx-tips')
 const googleAuthRouter = require('./routes/google-auth')
 const routeAuth = require('./routes/get4-auth')
+const vipSelectionRouter = require('./routes/vip-selection')
 const paymentRouter = require('./routes/clickpesa')
 const postRouter = require('./routes/post')
 const elimit = require('express-rate-limit')
@@ -152,6 +153,7 @@ app.use((req, res, next) => {
 
 app.use(googleAuthRouter)
 app.use(routeAuth)
+app.use(vipSelectionRouter)
 app.use(paymentRouter)
 
 //wrong url, redirect to home

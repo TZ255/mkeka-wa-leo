@@ -10,6 +10,7 @@ const slipSchema = new Schema({
     odds: { type: Number, default: 1 },
     accuracy: { type: Number, default: 0 },
     isPriority: { type: Boolean, default: false },
+    confidence: { type: String, default: "WEAK" },
     time: { type: String },
     date: { type: String },
     bet: { type: String },
