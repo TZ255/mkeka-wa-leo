@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
-    <%- include('./partials/theme.ejs'); %>
+    <%- include('../shared/partials/theme.ejs'); %>
 </head>
 
 <body>
     <%- include('../../../0-global/header.ejs'); %>
     <main>
-        <section class="left wc-page">
+        <section class="left league-shell wc-page text-align-justify">
             <%- include('./partials/hero.ejs', {
                 partials,
                 formattedUpdatedAt,
@@ -47,9 +47,11 @@
             }) %>
             <% }) %>
             <% } else { %>
-            <section class="wc-section">
-                <div class="wc-empty">
+            <section class="league-surface">
+                <div class="league-surface-body">
+                <div class="league-empty">
                     Ratiba ya mechi za Kombe la Dunia itaonekana hapa mara tu hatua inayofuata itakapopangwa wazi.
+                </div>
                 </div>
             </section>
             <% } %>

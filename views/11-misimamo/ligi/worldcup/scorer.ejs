@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
-    <%- include('./partials/theme.ejs'); %>
+    <%- include('../shared/partials/theme.ejs'); %>
 </head>
 
 <body>
     <%- include('../../../0-global/header.ejs'); %>
     <main>
-        <section class="left wc-page">
+        <section class="left league-shell wc-page text-align-justify">
             <%- include('./partials/hero.ejs', {
                 partials,
                 formattedUpdatedAt,
@@ -33,18 +33,20 @@
             <%- include('./partials/nav.ejs', { partials }) %>
 
             <% if (topScorers.length > 1) { %>
-            <section class="wc-section">
-                <div class="wc-grid-two">
-                    <article class="wc-slab">
-                        <h3 class="h5">Kinara wa sasa</h3>
+            <section class="league-surface">
+                <div class="league-surface-body">
+                <div class="league-grid-two">
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title">Kinara wa sasa</h3>
                         <p class="mb-1"><strong><%= topScorers[0].player.name %></strong></p>
                         <p class="mb-0"><%= topScorers[0].statistics[0].team.name %> anabeba usukani akiwa na <strong><%= topScorers[0].statistics[0].goals.total ?? 0 %></strong> magoli.</p>
                     </article>
-                    <article class="wc-slab">
-                        <h3 class="h5">Mpinzani wa karibu</h3>
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title">Mpinzani wa karibu</h3>
                         <p class="mb-1"><strong><%= topScorers[1].player.name %></strong></p>
                         <p class="mb-0"><%= topScorers[1].statistics[0].team.name %> yupo karibu kileleni akiwa na <strong><%= topScorers[1].statistics[0].goals.total ?? 0 %></strong> magoli.</p>
                     </article>
+                </div>
                 </div>
             </section>
             <% } %>
@@ -55,11 +57,13 @@
                 mode: 'scorer'
             }) %>
 
-            <section class="wc-section">
-                <div class="wc-cta-links">
+            <section class="league-surface">
+                <div class="league-surface-body">
+                <div class="league-cta-links">
                     <a href="/football/kombe-la-dunia">Rudi kwenye msimamo wa World Cup</a>
                     <a href="/football/kombe-la-dunia/ratiba">Angalia ratiba ya World Cup</a>
                     <a href="/football/kombe-la-dunia/assist-bora">Angalia top assists</a>
+                </div>
                 </div>
             </section>
 

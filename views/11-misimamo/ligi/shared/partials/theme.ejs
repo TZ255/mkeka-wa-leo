@@ -1,5 +1,6 @@
 <style>
-    .league-shell {
+    .league-shell,
+    .wc-page {
         color: #17212b;
     }
 
@@ -161,6 +162,147 @@
         gap: 1rem;
     }
 
+    .wc-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 1.4rem;
+        border-radius: 22px;
+        margin-bottom: 1.5rem;
+        color: #fff;
+        background:
+            radial-gradient(circle at top right, rgba(32, 201, 151, 0.38), transparent 30%),
+            radial-gradient(circle at left center, rgba(255, 193, 7, 0.22), transparent 28%),
+            linear-gradient(135deg, #0f1720 0%, #123b2c 58%, #1e6b45 100%);
+        box-shadow: 0 24px 44px rgba(15, 23, 32, 0.18);
+    }
+
+    .wc-hero::after {
+        content: '';
+        position: absolute;
+        inset: auto -45px -58px auto;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        filter: blur(2px);
+    }
+
+    .wc-eyebrow,
+    .wc-meta-row,
+    .wc-stat-row,
+    .wc-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .7rem;
+    }
+
+    .wc-eyebrow {
+        align-items: center;
+        margin-bottom: .75rem;
+    }
+
+    .wc-season-pill,
+    .wc-status-pill,
+    .wc-note-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: .35rem;
+        padding: .35rem .8rem;
+        border-radius: 999px;
+        font-size: .8rem;
+        font-weight: 700;
+        backdrop-filter: blur(8px);
+    }
+
+    .wc-season-pill {
+        color: #0f1720;
+        background: rgba(255, 255, 255, 0.9);
+    }
+
+    .wc-status-pill {
+        color: #f6fff9;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .wc-note-pill {
+        color: #10402c;
+        background: #d7f9e7;
+    }
+
+    .wc-hero-title {
+        font-size: clamp(1.9rem, 4vw, 2.7rem);
+        line-height: 1.1;
+        margin: 0 0 .8rem;
+    }
+
+    .wc-hero-copy {
+        max-width: 620px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+    }
+
+    .wc-meta-row {
+        margin-top: 1rem;
+    }
+
+    .wc-stat-row {
+        margin-top: 1.15rem;
+    }
+
+    .wc-stat {
+        min-width: 110px;
+        padding: .9rem 1rem;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .wc-stat strong {
+        display: block;
+        font-size: 1.3rem;
+        line-height: 1;
+        margin-bottom: .25rem;
+    }
+
+    .wc-stat span {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: .85rem;
+    }
+
+    .wc-nav {
+        margin: 1rem 0 1.4rem;
+    }
+
+    .wc-nav a {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        padding: .72rem 1rem;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: .92rem;
+        color: #145c3d;
+        background: #edf8f1;
+        border: 1px solid #d5ecdd;
+        transition: transform .18s ease, background-color .18s ease, color .18s ease;
+    }
+
+    .wc-nav a:hover,
+    .wc-nav a:focus {
+        transform: translateY(-1px);
+        color: #0c3825;
+        background: #dff4e8;
+    }
+
+    .wc-nav a.active {
+        color: #fff;
+        background: linear-gradient(135deg, #145c3d, #1d874a);
+        border-color: transparent;
+    }
+
     .league-shell .table-section,
     .league-shell .rounds-table,
     .league-shell .vidokezo,
@@ -204,6 +346,73 @@
         margin-bottom: .85rem;
     }
 
+    .league-section-title,
+    .league-subsection-title,
+    .league-block-title {
+        margin: 0;
+        color: #11221a;
+        font-weight: 800;
+        letter-spacing: -.02em;
+        line-height: 1.15;
+    }
+
+    .league-section-title {
+        font-size: clamp(1.08rem, 1.5vw, 1.4rem);
+    }
+
+    .league-subsection-title,
+    .league-block-title {
+        font-size: 1rem;
+    }
+
+    .league-surface {
+        margin-bottom: 1.4rem;
+        border-radius: 20px;
+        background: #fff;
+        border: 1px solid rgba(20, 92, 61, 0.08);
+        box-shadow: 0 16px 30px rgba(16, 24, 40, 0.08);
+        overflow: hidden;
+    }
+
+    .league-surface-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: .75rem;
+        padding: 1.05rem 1.15rem .85rem;
+    }
+
+    .league-surface-body {
+        padding: 0 1.15rem 1.15rem;
+    }
+
+    .league-surface-copy {
+        margin: 0;
+        padding: 0 1.15rem 1.15rem;
+        max-width: 760px;
+        color: #61717f;
+        font-size: .92rem;
+    }
+
+    .league-surface--table .league-surface-head {
+        padding-bottom: .55rem;
+    }
+
+    .league-surface--table .league-surface-body {
+        padding: 0;
+    }
+
+    .league-surface--table .league-table-wrap {
+        border-radius: 0;
+        border-bottom: 1px solid #edf1ee;
+    }
+
+    .league-surface--table .league-legend {
+        margin: 0;
+        padding: 1rem 1.15rem 1.15rem;
+    }
+
     .league-shell .table {
         margin-bottom: 0;
         --bs-table-bg: transparent;
@@ -239,11 +448,6 @@
         font-size: .84rem !important;
     }
 
-    .league-shell .h2,
-    .league-shell .h3 {
-        color: #11221a;
-    }
-
     .league-shell .bg-dark.text-light {
         background: linear-gradient(135deg, #102118, #17442d) !important;
         color: #fff !important;
@@ -270,16 +474,25 @@
         color: #0a4d2d !important;
     }
 
+    .league-shell .accordion {
+        display: grid;
+        gap: .8rem;
+    }
+
     .league-shell .accordion-item {
-        border: 1px solid #e5ebe7;
-        border-radius: 14px !important;
+        border: 1px solid #deebe3;
+        border-radius: 18px !important;
         overflow: hidden;
-        margin-bottom: .8rem;
+        margin-bottom: 0;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbf9 100%);
+        box-shadow: 0 14px 26px rgba(16, 24, 40, 0.06);
     }
 
     .league-shell .accordion-button {
-        font-weight: 700;
-        background: #f9fcfa;
+        padding: 1rem 1.1rem;
+        font-weight: 800;
+        color: #11221a;
+        background: transparent;
     }
 
     .league-shell .accordion-button:not(.collapsed) {
@@ -290,6 +503,42 @@
 
     .league-shell .accordion-button:focus {
         box-shadow: none;
+    }
+
+    .league-shell .accordion-button::after {
+        width: 1rem;
+        height: 1rem;
+        background-size: 1rem;
+    }
+
+    .league-shell .accordion-body {
+        padding: 1rem 1.1rem 1.1rem;
+        background: #fff;
+        border-top: 1px solid #e8efeb;
+    }
+
+    .league-shell .accordion-body.p {
+        padding: 1rem 1.1rem 1.1rem !important;
+        margin-bottom: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: #fff !important;
+    }
+
+    .league-shell .accordion-body h4 {
+        margin: .9rem 0 .45rem;
+        color: #11221a;
+        font-size: .95rem;
+        font-weight: 800;
+    }
+
+    .league-shell .accordion-body ul {
+        margin-bottom: 0;
+        padding-left: 1.1rem;
+    }
+
+    .league-shell .accordion-body li + li {
+        margin-top: .35rem;
     }
 
     .league-shell .desc,
@@ -365,6 +614,11 @@
         font-size: .92rem;
     }
 
+    .league-highlight {
+        color: #0c7a45;
+        font-weight: 700;
+    }
+
     .league-chip {
         display: inline-flex;
         align-items: center;
@@ -379,7 +633,7 @@
 
     .league-table-wrap {
         position: relative;
-        overflow: hidden;
+        overflow-x: auto;
         border-radius: 18px;
     }
 
@@ -547,49 +801,62 @@
 
     .league-fixture-list {
         display: grid;
-        gap: .85rem;
+        gap: .6rem;
     }
 
+    .league-fixture-row,
     .league-fixture-card {
         display: grid;
-        grid-template-columns: 98px minmax(0, 1fr) 52px;
+        grid-template-columns: 82px minmax(0, 1fr) 54px;
         gap: .7rem;
         align-items: center;
-        padding: .9rem .95rem;
-        border-radius: 18px;
-        background: #f9fcfa;
+        padding: .9rem 1rem;
+        border-radius: 16px;
+        background: #f8fbf9;
         border: 1px solid #e4efe8;
     }
 
+    .league-fixture-date,
     .league-fixture-time {
         display: grid;
-        gap: .12rem;
+        gap: .16rem;
         font-size: .84rem;
         color: #61717f;
         white-space: nowrap;
     }
 
+    .league-fixture-date strong,
     .league-fixture-time strong {
         color: #102118;
+        font-size: .84rem;
+        line-height: 1;
+    }
+
+    .league-fixture-date-meta,
+    .league-fixture-status {
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
     }
 
     .league-fixture-teams {
         min-width: 0;
         display: grid;
-        gap: .28rem;
+        gap: .38rem;
     }
 
     .league-fixture-team-row {
         display: grid;
-        grid-template-columns: 18px minmax(0, 1fr);
+        grid-template-columns: 20px minmax(0, 1fr);
         align-items: center;
-        gap: .45rem;
+        gap: .55rem;
         min-width: 0;
     }
 
     .league-fixture-team-logo {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         object-fit: contain;
         flex: none;
     }
@@ -602,7 +869,7 @@
         text-overflow: ellipsis;
         color: #23313d;
         font-weight: 500;
-        line-height: 1.15;
+        line-height: 1.2;
     }
 
     .league-fixture-team.is-winner {
@@ -610,64 +877,22 @@
         font-weight: 800;
     }
 
+    .league-fixture-results,
     .league-fixture-score {
+        display: grid;
+        justify-items: end;
+        gap: .38rem;
         text-align: right;
-        font-size: 1rem;
-        font-weight: 700;
         color: #102118;
         white-space: nowrap;
     }
 
-    .league-fixture-status {
-        color: #61717f;
-        font-size: .78rem;
-        font-weight: 700;
-    }
-
-    .league-fixture-venue {
-        display: block;
-        margin-top: .22rem;
-        font-size: .72rem;
-        line-height: 1.2;
-        color: #70808d;
-        white-space: normal;
-    }
-
-    .league-fixture-card-detail {
-        grid-template-areas:
-            'time teams score'
-            'venue venue venue';
-        align-items: start;
-    }
-
-    .league-fixture-card-detail .league-fixture-time {
-        grid-area: time;
-    }
-
-    .league-fixture-card-detail .league-fixture-teams {
-        grid-area: teams;
-        gap: .4rem;
-        padding-top: .05rem;
-    }
-
-    .league-fixture-card-detail .league-fixture-team-row {
-        gap: .58rem;
-        align-items: start;
-    }
-
-    .league-fixture-card-detail .league-fixture-team {
-        line-height: 1.24;
-    }
-
-    .league-fixture-card-detail .league-fixture-score {
-        grid-area: score;
-    }
-
-    .league-fixture-card-detail .league-fixture-venue {
-        grid-area: venue;
-        margin-top: 0;
-        padding-top: .55rem;
-        border-top: 1px solid #e4efe8;
+    .league-fixture-result,
+    .league-fixture-score > span {
+        min-width: 22px;
+        font-size: 1rem;
+        font-weight: 800;
+        line-height: 1.1;
     }
 
     .league-link-list {
@@ -789,6 +1014,16 @@
         color: #fff !important;
     }
 
+    .league-shell .qualifier {
+        background-color: #0f8b4f !important;
+        color: #fff !important;
+    }
+
+    .league-shell .third {
+        background-color: #d88900 !important;
+        color: #fff !important;
+    }
+
     .league-shell .conference {
         background-color: #7b1fa2 !important;
         color: #fff !important;
@@ -839,6 +1074,10 @@
         table-layout: fixed;
     }
 
+    .worldcup-standings-table col.team-col {
+        width: 50%;
+    }
+
     .league-player-table col.player-col {
         width: 38%;
     }
@@ -864,6 +1103,22 @@
             grid-template-columns: 1fr;
         }
 
+        .league-surface-head {
+            padding: .95rem 1rem .72rem;
+        }
+
+        .league-surface-body,
+        .league-surface-copy,
+        .league-surface--table .league-legend {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .league-surface--table .league-surface-body {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
         .league-link-list a {
             grid-template-columns: auto 1fr;
         }
@@ -878,12 +1133,17 @@
             gap: .55rem;
         }
 
+        .league-surface-head {
+            gap: .55rem;
+        }
+
         .league-overline {
             font-size: .68rem;
             letter-spacing: .07em;
         }
 
-        .league-section-copy {
+        .league-section-copy,
+        .league-surface-copy {
             font-size: .82rem;
         }
 
@@ -948,12 +1208,14 @@
             overflow-wrap: anywhere;
         }
 
+        .league-fixture-row,
         .league-fixture-card {
             grid-template-columns: 82px minmax(0, 1fr) 40px;
             gap: .45rem;
             padding: .72rem .68rem;
         }
 
+        .league-fixture-date,
         .league-fixture-time {
             font-size: .66rem;
         }
@@ -976,25 +1238,14 @@
             font-size: .73rem;
         }
 
-        .league-fixture-score {
-            font-size: .84rem;
-        }
-
+        .league-fixture-date-meta,
         .league-fixture-status {
             font-size: .62rem;
         }
 
-        .league-fixture-venue {
-            margin-top: .18rem;
-            font-size: .6rem;
-        }
-
-        .league-fixture-card-detail .league-fixture-team-row {
-            gap: .42rem;
-        }
-
-        .league-fixture-card-detail .league-fixture-venue {
-            padding-top: .42rem;
+        .league-fixture-result,
+        .league-fixture-score > span {
+            font-size: .84rem;
         }
 
         .league-player-table col.rank-col {
@@ -1008,6 +1259,7 @@
             font-size: .68rem;
             line-height: 1.15;
         }
+
 
         .league-link-main {
             gap: .65rem;
@@ -1027,6 +1279,11 @@
 
         .league-link-copy strong {
             font-size: .92rem;
+        }
+
+        .wc-nav a {
+            width: 100%;
+            justify-content: center;
         }
     }
 </style>

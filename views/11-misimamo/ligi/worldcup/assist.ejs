@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
-    <%- include('./partials/theme.ejs'); %>
+    <%- include('../shared/partials/theme.ejs'); %>
 </head>
 
 <body>
     <%- include('../../../0-global/header.ejs'); %>
     <main>
-        <section class="left wc-page">
+        <section class="left league-shell wc-page text-align-justify">
             <%- include('./partials/hero.ejs', {
                 partials,
                 formattedUpdatedAt,
@@ -33,18 +33,20 @@
             <%- include('./partials/nav.ejs', { partials }) %>
 
             <% if (topAssists.length > 1) { %>
-            <section class="wc-section">
-                <div class="wc-grid-two">
-                    <article class="wc-slab">
-                        <h3 class="h5">Kinara wa sasa</h3>
+            <section class="league-surface">
+                <div class="league-surface-body">
+                <div class="league-grid-two">
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title">Kinara wa sasa</h3>
                         <p class="mb-1"><strong><%= topAssists[0].player.name %></strong></p>
                         <p class="mb-0"><%= topAssists[0].statistics[0].team.name %> anaongoza kwa <strong><%= topAssists[0].statistics[0].goals.assists ?? 0 %></strong> assists.</p>
                     </article>
-                    <article class="wc-slab">
-                        <h3 class="h5">Anayemfukuzia</h3>
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title">Anayemfukuzia</h3>
                         <p class="mb-1"><strong><%= topAssists[1].player.name %></strong></p>
                         <p class="mb-0"><%= topAssists[1].statistics[0].team.name %> anafukuzia kileleni akiwa na <strong><%= topAssists[1].statistics[0].goals.assists ?? 0 %></strong> assists.</p>
                     </article>
+                </div>
                 </div>
             </section>
             <% } %>
@@ -55,11 +57,13 @@
                 mode: 'assist'
             }) %>
 
-            <section class="wc-section">
-                <div class="wc-cta-links">
+            <section class="league-surface">
+                <div class="league-surface-body">
+                <div class="league-cta-links">
                     <a href="/football/kombe-la-dunia">Rudi kwenye msimamo wa World Cup</a>
                     <a href="/football/kombe-la-dunia/ratiba">Angalia ratiba ya World Cup</a>
                     <a href="/football/kombe-la-dunia/wafungaji-bora">Angalia top scorers</a>
+                </div>
                 </div>
             </section>
 

@@ -142,7 +142,7 @@ const renderWorldCupPage = async (req, res, next, config) => {
             currentRoundFixtures,
             topScorers,
             topAssists,
-            formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', dateTimeOptions),
+            formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('sw-TZ', dateTimeOptions),
         });
     } catch (error) {
         console.error(`World Cup route error: ${error?.message || 'Unknown error'}`, error);

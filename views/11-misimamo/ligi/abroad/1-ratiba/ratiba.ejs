@@ -29,7 +29,7 @@
 
             <%- include('../../shared/partials/hero.ejs', {
                 partials,
-                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('sw-TZ', {
                     timeZone: 'Africa/Nairobi',
                     hour: '2-digit',
                     minute: '2-digit',
@@ -77,7 +77,7 @@
             </div>
             <div class="table-section" itemscope itemtype="https://schema.org/Table">
                 <div class="league-section-head">
-                    <h2 class="h2 fs-6 mb-0" itemprop="about">Msimamo wa <%= partials.team_info.team.name %> katika <%= partials.ligi %></h2>
+                    <h2 class="league-subsection-title" itemprop="about">Msimamo wa <%= partials.team_info.team.name %> katika <%= partials.ligi %></h2>
                     <span class="league-chip">Nafasi ya <%= partials.team_info.rank %></span>
                 </div>
                 <div class="league-table-wrap">
@@ -124,47 +124,17 @@
                     </table>
                 </div>
             </div>
-            <div class="table-section" itemscope itemtype="https://schema.org/Table">
-                <div class="league-section-head">
-                    <h2 class="h2 fs-6 mb-0" itemprop="about">Mechi za <%= partials.team_info.team.name %> kwa Msimu wa <%= partials.season_long %></h2>
+            <div class="league-surface" itemscope itemtype="https://schema.org/Table">
+                <div class="league-surface-head">
+                    <h2 class="league-subsection-title" itemprop="about">Mechi za <%= partials.team_info.team.name %> kwa Msimu wa <%= partials.season_long %></h2>
                     <span class="league-chip"><%= ratiba.length %> mechi</span>
                 </div>
+                <div class="league-surface-body">
                 <div class="league-fixture-list">
                     <% ratiba.forEach(fixture => { %>
-                    <%
-                        const statusShort = fixture?.fixture?.status?.short;
-                        const homeGoals = fixture?.goals?.home;
-                        const awayGoals = fixture?.goals?.away;
-                        const isCompleted = ['FT', 'AET', 'PEN', 'AWD', 'WO'].includes(statusShort);
-                        const isDraw = homeGoals !== null && awayGoals !== null && homeGoals === awayGoals;
-                        const homeWinner = isCompleted && !isDraw && fixture?.teams?.home?.winner === true;
-                        const awayWinner = isCompleted && !isDraw && fixture?.teams?.away?.winner === true;
-                    %>
-                    <article class="league-fixture-card league-fixture-card-detail">
-                        <div class="league-fixture-time">
-                            <strong class="d-block"><%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %></strong>
-                            <span><%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %></span>
-                        </div>
-                        <div class="league-fixture-teams">
-                            <span class="league-fixture-team-row">
-                                <img class="league-fixture-team-logo" src="<%= fixture.teams.home.logo %>" alt="<%= fixture.teams.home.name %>" loading="lazy">
-                                <span class="league-fixture-team <%= homeWinner ? 'is-winner' : '' %>"><%= fixture.teams.home.name %></span>
-                            </span>
-                            <span class="league-fixture-team-row">
-                                <img class="league-fixture-team-logo" src="<%= fixture.teams.away.logo %>" alt="<%= fixture.teams.away.name %>" loading="lazy">
-                                <span class="league-fixture-team <%= awayWinner ? 'is-winner' : '' %>"><%= fixture.teams.away.name %></span>
-                            </span>
-                        </div>
-                        <div class="league-fixture-score">
-                            <span class="d-block"><%= fixture.goals.home ?? '-' %></span>
-                            <span class="d-block"><%= fixture.goals.away ?? '-' %></span>
-                            <span class="league-fixture-status d-block"><%= fixture.fixture.status.short %></span>
-                        </div>
-                        <% if (fixture.fixture.venue?.name) { %>
-                        <div class="league-fixture-venue"><%= fixture.fixture.venue.name %></div>
-                        <% } %>
-                    </article>
+                    <%- include('../../shared/partials/fixture-row.ejs', { fixture }) %>
                     <% }) %>
+                </div>
                 </div>
             </div>
                 <%- include('./partials/faq.ejs'); %>

@@ -31,7 +31,7 @@
 
             <%- include('../../shared/partials/hero.ejs', {
                 partials,
-                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('sw-TZ', {
                     timeZone: 'Africa/Nairobi',
                     hour: '2-digit',
                     minute: '2-digit',
@@ -75,15 +75,15 @@
                 <%- include(`./partials/intro.ejs`); %>
             </section>
 
-            <div class="table-section" itemscope itemtype="https://schema.org/Table">
-                <div class="league-section-head">
+            <section class="league-surface league-surface--table" itemscope itemtype="https://schema.org/Table">
+                <header class="league-surface-head">
                     <div class="league-title-stack">
                         <span class="league-overline">Wafungaji Bora</span>
-                        <h2 class="h2 fs-5 mb-0" itemprop="about">Orodha ya Wafungaji Bora wa NBC <%= partials.season_short %></h2>
+                        <h2 class="league-section-title" itemprop="about">Orodha ya Wafungaji Bora wa NBC <%= partials.season_short %></h2>
                         <p class="league-section-copy">Hii ndiyo jedwali ya washambuliaji wanaoongoza kwa mabao, pamoja na klabu zao na mchango wao kwenye mbio za kiatu cha dhahabu.</p>
                     </div>
                     <span class="league-chip"><%= top_scorers.length %> wachezaji</span>
-                </div>
+                </header>
                 <div class="league-table-wrap">
                     <table class="league-table league-player-table">
                         <colgroup>
@@ -131,7 +131,7 @@
                     <span><a href="/standings/football/tanzania/premier-league">Msimamo wa Ligi Kuu Tanzania Bara <%= partials.season_short %></a></span>
                     <span><a href="/football/fixtures/tanzania/premier-league">Ratiba na matokeo ya NBC <%= partials.season_short %></a></span>
                 </div>
-            </div>
+            </section>
 
             <%- include('../../../../0-global/somapia.ejs'); %>
         </section>

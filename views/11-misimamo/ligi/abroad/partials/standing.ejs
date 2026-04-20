@@ -1,22 +1,24 @@
-<div class="table-section" itemscope itemtype="https://schema.org/Table">
-    <div class="league-section-head">
+<section class="league-surface">
+    <header class="league-surface-head">
         <div class="league-title-stack">
             <span class="league-overline">Jedwali la Msimamo</span>
-            <h2 class="h2 fs-5 mb-0" itemprop="about">Msimamo wa <%= partials.league_name %> <%= partials.season_long %></h2>
+            <h2 class="league-section-title" itemprop="about">Msimamo wa <%= partials.league_name %> <%= partials.season_long %></h2>
             <p class="league-section-copy">Tazama nafasi za timu, mechi zilizochezwa, rekodi za ushindi na pointi za kila klabu katika <%= partials.ligi %> ya msimu huu.</p>
         </div>
         <span class="league-chip">Timu <%= partials.stats?.teams || 0 %></span>
+    </header>
+    <div class="league-surface-body pb-0">
+        <% if (Array.isArray(standing.standing) && standing.standing.length > 0) { %>
+        <% if (Array.isArray(standing.standing[0])) { %>
+        <%- include('./groups-league.ejs') %>
+        <% } %>
+        <% if (typeof standing.standing[0] === 'object' && standing.standing[0] !== null && !Array.isArray(standing.standing[0])) { %>
+        <%- include('./leagues.ejs') %>
+        <% } %>
+        <% } %>
+        <div id="explanations" class="league-legend"></div>
     </div>
-    <% if (Array.isArray(standing.standing) && standing.standing.length > 0) { %>
-    <% if (Array.isArray(standing.standing[0])) { %>
-    <%- include('./groups-league.ejs') %>
-    <% } %>
-    <% if (typeof standing.standing[0] === 'object' && standing.standing[0] !== null && !Array.isArray(standing.standing[0])) { %>
-    <%- include('./leagues.ejs') %>
-    <% } %>
-    <% } %>
-    <div id="explanations" class="league-legend"></div>
-</div>
+</section>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

@@ -1,13 +1,13 @@
 <% standing.standing.forEach((st, i) => { %>
-<div class="table-section" itemscope itemtype="https://schema.org/Table">
-    <div class="league-section-head">
+<section class="league-surface league-surface--table" itemscope itemtype="https://schema.org/Table">
+    <header class="league-surface-head">
         <div class="league-title-stack">
             <span class="league-overline">Msimamo wa Kundi</span>
-            <h2 class="fs-5 mb-0" itemprop="about">Jedwali la Kundi <%= String(i + 1).replace('1', 'A').replace('2', 'B').replace('3', 'C').replace('4', 'D').replace('5', 'E') %></h2>
+            <h3 class="league-subsection-title" itemprop="about">Jedwali la Kundi <%= String(i + 1).replace('1', 'A').replace('2', 'B').replace('3', 'C').replace('4', 'D').replace('5', 'E') %></h3>
             <p class="league-section-copy">Angalia namna timu za kundi hili zilivyojipanga kupitia pointi, ushindi, droo, vipigo na tofauti ya mabao.</p>
         </div>
         <span class="league-chip"><%= st.length %> timu</span>
-    </div>
+    </header>
     <div class="league-table-wrap">
         <table class="league-table">
             <colgroup>
@@ -53,5 +53,5 @@
             </tbody>
         </table>
     </div>
-</div>
+</section>
 <% }) %>

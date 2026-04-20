@@ -40,7 +40,7 @@
 
             <%- include('../shared/partials/hero.ejs', {
                 partials,
-                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('sw-TZ', {
                     timeZone: 'Africa/Nairobi',
                     hour: '2-digit',
                     minute: '2-digit',
@@ -68,7 +68,7 @@
             <%- include('./partials/fixtures.ejs'); %>
 
             <div class="vidokezo">
-                <h2 class="h2 fs-6">Vidokezo vya NBC <%= partials.season_short %></h2>
+                <h2 class="league-block-title">Vidokezo vya NBC <%= partials.season_short %></h2>
                 <ul class="list-group list-group-flush fw-bold p-2">
                     <li class="list-group-item">
                         <a href="/standings/football/tanzania/premier-league">
@@ -89,7 +89,7 @@
             </div>
 
             <div class="ratiba-timu">
-                <h2 class="h2 fs-6">
+                <h2 class="league-block-title">
                     Ratiba na matokeo kwa kila timu ya ligi kuu bara
                 </h2>
                 <p class="p">

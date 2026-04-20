@@ -1,102 +1,44 @@
 <div class="ratiba-section" itemscope>
-    <div class="league-section-head">
-        <div class="league-title-stack">
-            <span class="league-overline">Ratiba na Matokeo</span>
-            <h2 class="h2 fs-5 mb-0">Ratiba na Matokeo ya <%= partials.league_name %> <%= partials.season_long %></h2>
-            <p class="league-section-copy">Fuata mechi zilizochezwa, mechi zijazo na mwenendo wa kila raundi ya <%= partials.ligi %> katika msimu huu.</p>
-        </div>
-        <span class="league-chip"><%= partials.stats?.fixtures || 0 %> mechi</span>
-    </div>
+    <section class="league-surface">
+        <header class="league-surface-head">
+            <div class="league-title-stack">
+                <span class="league-overline">Ratiba na Matokeo</span>
+                <h2 class="league-section-title">Ratiba na Matokeo ya <%= partials.league_name %> <%= partials.season_long %></h2>
+                <p class="league-section-copy">Fuata mechi zilizochezwa, mechi zijazo na mwenendo wa kila raundi ya <%= partials.ligi %> katika msimu huu.</p>
+            </div>
+            <span class="league-chip"><%= partials.stats?.fixtures || 0 %> mechi</span>
+        </header>
+    </section>
 
     <% if (typeof standing.standing[0] === 'object' && standing.standing[0] !== null && !Array.isArray(standing.standing[0]) && standing.current_round_fixtures?.length > 0) { %>
-    <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
-        <div class="league-section-head">
-            <h3 class="h3 fs-6 mb-0" itemprop="about"><%= standing.current_round_fixtures[0]?.league?.round %></h3>
+    <section class="league-surface" itemscope itemtype="https://schema.org/Table">
+        <header class="league-surface-head">
+            <h3 class="league-subsection-title" itemprop="about"><%= standing.current_round_fixtures[0]?.league?.round %></h3>
             <span class="league-chip"><%= standing.current_round_fixtures.length %> mechi</span>
+        </header>
+        <div class="league-surface-body">
+            <div class="league-fixture-list">
+                <% standing.current_round_fixtures.forEach(fixture => { %>
+                <%- include('../../shared/partials/fixture-row.ejs', { fixture }) %>
+                <% }) %>
+            </div>
         </div>
-        <div class="league-fixture-list">
-            <% standing.current_round_fixtures.forEach(fixture => { %>
-            <% 
-                const statusShort = fixture?.fixture?.status?.short;
-                const homeGoals = fixture?.goals?.home;
-                const awayGoals = fixture?.goals?.away;
-                const isCompleted = ['FT', 'AET', 'PEN', 'AWD', 'WO'].includes(statusShort);
-                const isDraw = homeGoals !== null && awayGoals !== null && homeGoals === awayGoals;
-                const homeWinner = isCompleted && !isDraw && fixture?.teams?.home?.winner === true;
-                const awayWinner = isCompleted && !isDraw && fixture?.teams?.away?.winner === true;
-            %>
-            <article class="league-fixture-card league-fixture-card-detail">
-                <div class="league-fixture-time">
-                    <strong class="d-block"><%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %></strong>
-                    <span><%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %></span>
-                </div>
-                <div class="league-fixture-teams">
-                    <span class="league-fixture-team-row">
-                        <img class="league-fixture-team-logo" src="<%= fixture.teams.home.logo %>" alt="<%= fixture.teams.home.name %>" loading="lazy">
-                        <span class="league-fixture-team <%= homeWinner ? 'is-winner' : '' %>"><%= fixture.teams.home.name %></span>
-                    </span>
-                    <span class="league-fixture-team-row">
-                        <img class="league-fixture-team-logo" src="<%= fixture.teams.away.logo %>" alt="<%= fixture.teams.away.name %>" loading="lazy">
-                        <span class="league-fixture-team <%= awayWinner ? 'is-winner' : '' %>"><%= fixture.teams.away.name %></span>
-                    </span>
-                </div>
-                <div class="league-fixture-score">
-                    <span class="d-block"><%= fixture.goals.home ?? '-' %></span>
-                    <span class="d-block"><%= fixture.goals.away ?? '-' %></span>
-                    <span class="league-fixture-status d-block"><%= fixture.fixture.status.short === 'PST' ? 'PST' : fixture.fixture.status.short %></span>
-                </div>
-                <% if (fixture.fixture.venue?.name) { %>
-                <div class="league-fixture-venue"><%= fixture.fixture.venue.name %></div>
-                <% } %>
-            </article>
-            <% }) %>
-        </div>
-    </div>
+    </section>
     <% } %>
 
     <% agg.forEach(round => { %>
-    <div class="rounds-table" itemscope itemtype="https://schema.org/Table">
-        <div class="league-section-head">
-            <h3 class="h3 fs-6 mb-0" itemprop="about"><%= round.round %></h3>
+    <section class="league-surface" itemscope itemtype="https://schema.org/Table">
+        <header class="league-surface-head">
+            <h3 class="league-subsection-title" itemprop="about"><%= round.round %></h3>
             <span class="league-chip"><%= round.fixtures.length %> mechi</span>
+        </header>
+        <div class="league-surface-body">
+            <div class="league-fixture-list">
+                <% round.fixtures.forEach(fixture => { %>
+                <%- include('../../shared/partials/fixture-row.ejs', { fixture }) %>
+                <% }) %>
+            </div>
         </div>
-        <div class="league-fixture-list">
-            <% round.fixtures.forEach(fixture => { %>
-            <% 
-                const statusShort = fixture?.fixture?.status?.short;
-                const homeGoals = fixture?.goals?.home;
-                const awayGoals = fixture?.goals?.away;
-                const isCompleted = ['FT', 'AET', 'PEN', 'AWD', 'WO'].includes(statusShort);
-                const isDraw = homeGoals !== null && awayGoals !== null && homeGoals === awayGoals;
-                const homeWinner = isCompleted && !isDraw && fixture?.teams?.home?.winner === true;
-                const awayWinner = isCompleted && !isDraw && fixture?.teams?.away?.winner === true;
-            %>
-            <article class="league-fixture-card league-fixture-card-detail">
-                <div class="league-fixture-time">
-                    <strong class="d-block"><%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', {timeZone: 'Africa/Nairobi'}) %></strong>
-                    <span><%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', {timeZone: 'Africa/Nairobi', hour12: false, hour: "2-digit", minute: "2-digit"}) %></span>
-                </div>
-                <div class="league-fixture-teams">
-                    <span class="league-fixture-team-row">
-                        <img class="league-fixture-team-logo" src="<%= fixture.teams.home.logo %>" alt="<%= fixture.teams.home.name %>" loading="lazy">
-                        <span class="league-fixture-team <%= homeWinner ? 'is-winner' : '' %>"><%= fixture.teams.home.name %></span>
-                    </span>
-                    <span class="league-fixture-team-row">
-                        <img class="league-fixture-team-logo" src="<%= fixture.teams.away.logo %>" alt="<%= fixture.teams.away.name %>" loading="lazy">
-                        <span class="league-fixture-team <%= awayWinner ? 'is-winner' : '' %>"><%= fixture.teams.away.name %></span>
-                    </span>
-                </div>
-                <div class="league-fixture-score">
-                    <span class="d-block"><%= fixture.goals.home ?? '-' %></span>
-                    <span class="d-block"><%= fixture.goals.away ?? '-' %></span>
-                    <span class="league-fixture-status d-block"><%= fixture.fixture.status.short === 'PST' ? 'PST' : fixture.fixture.status.short %></span>
-                </div>
-                <% if (fixture.fixture.venue?.name) { %>
-                <div class="league-fixture-venue"><%= fixture.fixture.venue.name %></div>
-                <% } %>
-            </article>
-            <% }) %>
-        </div>
-    </div>
+    </section>
     <% }) %>
 </div>

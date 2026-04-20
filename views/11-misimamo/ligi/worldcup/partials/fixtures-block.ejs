@@ -1,58 +1,24 @@
-<section class="wc-section">
-    <div class="wc-section-head">
-        <h2 class="h3"><%= title %></h2>
+<section class="league-surface">
+    <header class="league-surface-head">
+        <h2 class="league-section-title"><%= title %></h2>
         <% if (subtitle) { %>
-        <span class="wc-round-chip"><%= subtitle %></span>
+        <span class="league-chip"><%= subtitle %></span>
         <% } %>
-    </div>
+    </header>
 
     <% if (!fixtures || fixtures.length === 0) { %>
-    <div class="wc-empty">
+    <div class="league-surface-body">
+    <div class="league-empty">
         Kwa sasa sehemu hii bado haina mechi za kuonyesha. Ratiba na matokeo yatawekwa hapa pindi hatua husika itakapokuwa wazi.
     </div>
+    </div>
     <% } else { %>
-    <div class="wc-fixture-list">
+    <div class="league-surface-body">
+    <div class="league-fixture-list">
         <% fixtures.forEach((fixture) => { %>
-        <%
-            const statusShort = fixture?.fixture?.status?.short;
-            const homeGoals = fixture?.goals?.home;
-            const awayGoals = fixture?.goals?.away;
-            const isCompleted = ['FT', 'AET', 'PEN', 'AWD', 'WO'].includes(statusShort);
-            const isDraw = homeGoals !== null && awayGoals !== null && homeGoals === awayGoals;
-            const homeWinner = isCompleted && !isDraw && fixture?.teams?.home?.winner === true;
-            const awayWinner = isCompleted && !isDraw && fixture?.teams?.away?.winner === true;
-        %>
-        <article class="wc-fixture wc-fixture-detail">
-            <div class="wc-fixture-time">
-                <strong class="d-block">
-                    <%= new Date(fixture.fixture.date).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }) %>
-                </strong>
-                <span>
-                    <%= new Date(fixture.fixture.date).toLocaleTimeString('en-US', { timeZone: 'Africa/Nairobi', hour12: false, hour: '2-digit', minute: '2-digit' }) %>
-                </span>
-            </div>
-
-            <div class="wc-fixture-teams">
-                <span class="wc-fixture-team-row">
-                    <img class="wc-fixture-team-logo" src="<%= fixture.teams.home.logo %>" alt="<%= fixture.teams.home.name %>" loading="lazy">
-                    <span class="wc-fixture-team <%= homeWinner ? 'is-winner' : '' %>"><%= fixture.teams.home.name %></span>
-                </span>
-                <span class="wc-fixture-team-row">
-                    <img class="wc-fixture-team-logo" src="<%= fixture.teams.away.logo %>" alt="<%= fixture.teams.away.name %>" loading="lazy">
-                    <span class="wc-fixture-team <%= awayWinner ? 'is-winner' : '' %>"><%= fixture.teams.away.name %></span>
-                </span>
-            </div>
-
-            <div class="wc-fixture-score">
-                <span class="d-block"><%= fixture.goals.home ?? '-' %></span>
-                <span class="d-block"><%= fixture.goals.away ?? '-' %></span>
-                <span class="wc-muted d-block"><%= fixture.fixture.status.short %></span>
-            </div>
-            <% if (fixture.fixture.venue?.name) { %>
-            <div class="wc-fixture-venue"><%= fixture.fixture.venue.name %></div>
-            <% } %>
-        </article>
+        <%- include('../../shared/partials/fixture-row.ejs', { fixture }) %>
         <% }) %>
+    </div>
     </div>
     <% } %>
 </section>

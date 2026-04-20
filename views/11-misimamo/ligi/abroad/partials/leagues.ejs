@@ -1,45 +1,47 @@
-<div class="league-table-wrap">
-    <table class="league-table">
-        <colgroup>
-            <col style="width: 56px;">
-            <col class="team-col">
-            <col span="6" style="width: 9%;">
-        </colgroup>
-        <thead>
-            <tr>
-                <th class="rank-cell text-center">#</th>
-                <th class="team-cell">Timu</th>
-                <th class="stat-cell text-center">MP</th>
-                <th class="stat-cell text-center">W</th>
-                <th class="stat-cell text-center">D</th>
-                <th class="stat-cell text-center">L</th>
-                <th class="stat-cell text-center">GD</th>
-                <th class="stat-cell text-center">Pts</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% standing.standing.forEach(team=> { %>
-            <tr>
-                <td class="rank-cell text-center">
-                    <span class="league-rank-wrap">
-                        <span class="td_desc league-rank-marker" title="<%= team?.description %>" data-league_id="<%= partials.league_id %>"></span>
-                        <span class="league-rank-number"><%= team.rank %></span>
-                    </span>
-                </td>
-                <td class="team-cell">
-                    <div class="league-team-cell">
-                        <img src="<%= team.team.logo %>" alt="<%= team.team.name %>" loading="lazy">
-                        <span><%= team.team.name %></span>
-                    </div>
-                </td>
-                <td class="stat-cell text-center"><%= team.all.played %></td>
-                <td class="stat-cell text-center"><%= team.all.win %></td>
-                <td class="stat-cell text-center"><%= team.all.draw %></td>
-                <td class="stat-cell text-center"><%= team.all.lose %></td>
-                <td class="stat-cell text-center"><%= team.goalsDiff %></td>
-                <td class="stat-cell text-center league-highlight"><%= team.points %></td>
-            </tr>
-            <% }) %>
-        </tbody>
-    </table>
-</div>
+<section class="league-surface league-surface--table" itemscope itemtype="https://schema.org/Table">
+    <div class="league-table-wrap">
+        <table class="league-table">
+            <colgroup>
+                <col style="width: 56px;">
+                <col class="team-col">
+                <col span="6" style="width: 9%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="rank-cell text-center">#</th>
+                    <th class="team-cell">Timu</th>
+                    <th class="stat-cell text-center">MP</th>
+                    <th class="stat-cell text-center">W</th>
+                    <th class="stat-cell text-center">D</th>
+                    <th class="stat-cell text-center">L</th>
+                    <th class="stat-cell text-center">GD</th>
+                    <th class="stat-cell text-center">Pts</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% standing.standing.forEach(team=> { %>
+                <tr>
+                    <td class="rank-cell text-center">
+                        <span class="league-rank-wrap">
+                            <span class="td_desc league-rank-marker" title="<%= team?.description %>" data-league_id="<%= partials.league_id %>"></span>
+                            <span class="league-rank-number"><%= team.rank %></span>
+                        </span>
+                    </td>
+                    <td class="team-cell">
+                        <div class="league-team-cell">
+                            <img src="<%= team.team.logo %>" alt="<%= team.team.name %>" loading="lazy">
+                            <span><%= team.team.name %></span>
+                        </div>
+                    </td>
+                    <td class="stat-cell text-center"><%= team.all.played %></td>
+                    <td class="stat-cell text-center"><%= team.all.win %></td>
+                    <td class="stat-cell text-center"><%= team.all.draw %></td>
+                    <td class="stat-cell text-center"><%= team.all.lose %></td>
+                    <td class="stat-cell text-center"><%= team.goalsDiff %></td>
+                    <td class="stat-cell text-center league-highlight"><%= team.points %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,65 +1,65 @@
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Leonbet Modal -->
+<div class="modal fade" id="leonModal" tabindex="-1" aria-labelledby="leonModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content" style="max-width: 450px;">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"><b style="font-size: 16px;">LAMBA BUKU 5 BURE! 🔥</b>
-        </h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" style="text-align: justify;">
-        Jisajili na Pakua App Yetu leo tukulambishe buku 5 fasta! 🤑
-        <br><br>
-        <div style="width: 100%; height: fit-content;">
-          <img src="/imgs/mtaji-leonbet.webp" alt="Tsh. 5,000 Bure | Install LeonBet App" style="width: 100%;"
-            onclick="window.open('/leonbet/register')">
+    <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg" style="max-width: 480px; margin: auto;">
+
+      <div style="height: 5px; background: linear-gradient(90deg, #ff8c00, #ffb000, #ff8c00);"></div>
+
+      <div class="modal-header border-0 pb-0 pt-3 px-4">
+        <div>
+          <span class="badge rounded-pill mb-2 text-dark" style="font-size: 0.7rem; letter-spacing: 0.5px; background-color: #ffd24d;">LEONBET OFA</span>
+          <h5 class="modal-title fw-bold lh-sm" id="leonModalLabel" style="font-size: 1rem;">
+            LAMBA BUKU 5 BURE! 🔥
+          </h5>
         </div>
+        <button type="button" class="btn-close btn-close-sm align-self-start" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-          style="padding: 8px 12px; background-color: white; border: 1px solid #808080; color: #808080;">X</button>
-        <button type="button" id="betBtn" class="btn btn-danger py-2 px-5 fw-bold">JISAJILI SASA!</button>
+
+      <div class="modal-body px-4 pt-2 pb-3">
+        <p class="text-body-secondary mb-3" style="font-size: 0.88rem; line-height: 1.6;">
+          Jisajili na <strong class="text-dark">Leonbet</strong> leo upate <strong style="color: #ff8c00;">Tsh. 5,000 bure</strong> kwa kupakua app.
+        </p>
+        <a href="/leonbet/register" target="_blank" class="d-block rounded-3 overflow-hidden" style="cursor: pointer;">
+          <img src="/imgs/mtaji-leonbet.webp"
+            alt="Tsh. 5,000 Bure | Install LeonBet App"
+            class="img-fluid w-100 d-block"
+            style="transition: transform 0.2s; object-fit: cover;"
+            onmouseover="this.style.transform='scale(1.02)'"
+            onmouseout="this.style.transform='scale(1)'">
+        </a>
       </div>
+
+      <div class="modal-footer border-0 pt-0 px-4 pb-3 gap-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3" data-bs-dismiss="modal">Funga</button>
+        <button type="button" id="leonBetBtn" class="btn btn-sm rounded-pill px-4 fw-semibold text-dark"
+          style="background: linear-gradient(135deg, #ff8c00, #ffd24d); border: none;">
+          JISAJILI SASA
+        </button>
+      </div>
+
     </div>
   </div>
 </div>
 
 <script>
-  let modalInstance;
-  let modalShowInterval;
+  document.addEventListener('DOMContentLoaded', function () {
+    const leonModalElement = document.getElementById('leonModal');
+    const leonBetButton = document.getElementById('leonBetBtn');
 
-  // Function to show the modal
-  function showModal() {
-    if (!modalInstance) {
-      modalInstance = new bootstrap.Modal(document.getElementById('exampleModal'));
+    if (!leonModalElement || !leonBetButton) {
+      return;
     }
-    modalInstance.show();
-  }
 
-  // Function to start the interval timer
-  function startModalInterval() {
-    showModal(); // Show immediately first time
-    modalShowInterval = setInterval(showModal, 60000); // Then every 20 seconds
-  }
+    const leonModal = new bootstrap.Modal(leonModalElement);
 
-  // Function to handle modal hide event
-  function handleModalHide() {
-    // Clear existing interval if any
-    if (modalShowInterval) {
-      clearInterval(modalShowInterval);
-    }
-    // Start new interval
-    modalShowInterval = setInterval(showModal, 60000);
-  }
+    leonModalElement.addEventListener('hidden.bs.modal', function () {
+      setTimeout(function () { leonModal.show(); }, 60000);
+    });
 
-  // Add event listener for when modal is hidden
-  document.getElementById('exampleModal').addEventListener('hidden.bs.modal', handleModalHide);
+    leonBetButton.addEventListener('click', function () {
+      window.open('/leonbet/register');
+    });
 
-  // Add event listener to the bet button
-  document.getElementById('betBtn').addEventListener('click', function () {
-    window.open('/leonbet/register');
+    setTimeout(function () { leonModal.show(); }, 15000);
   });
-
-  // Start the initial timer
-  setTimeout(startModalInterval, 15000);
 </script>

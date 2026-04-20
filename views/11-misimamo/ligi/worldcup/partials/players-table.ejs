@@ -1,17 +1,26 @@
-<section class="wc-section">
-    <div class="wc-section-head">
-        <h2 class="h3"><%= title %></h2>
-        <span class="wc-round-chip"><%= players.length %> wachezaji</span>
-    </div>
+<section class="league-surface league-surface--table">
+    <header class="league-surface-head">
+        <h2 class="league-section-title"><%= title %></h2>
+        <span class="league-chip"><%= players.length %> wachezaji</span>
+    </header>
 
     <% if (!players || players.length === 0) { %>
-    <div class="wc-empty">
+    <div class="league-surface-body">
+    <div class="league-empty">
         <p class="mb-1 fw-bold">Orodha ya vinara bado haijachukua sura kamili kwa sasa.</p>
         <p class="mb-0">Mashindano yakishika kasi, hapa ndipo majina ya wanaong'aa zaidi yatakapoanza kujipanga.</p>
     </div>
+    </div>
     <% } else { %>
-    <div class="wc-table-wrap">
-        <table class="wc-table" itemscope itemtype="https://schema.org/Table">
+    <div class="league-table-wrap">
+        <table class="league-table league-player-table" itemscope itemtype="https://schema.org/Table">
+            <colgroup>
+                <col class="rank-col">
+                <col class="player-col">
+                <col class="team-col">
+                <col class="stat-col">
+                <col class="meta-col">
+            </colgroup>
             <thead>
                 <tr>
                     <th>#</th>
@@ -24,14 +33,26 @@
             <tbody>
                 <% players.forEach((player, index) => { %>
                 <tr>
-                    <td class="text-center"><span class="wc-rank-badge"><%= index + 1 %></span></td>
-                    <td><%= player.player.name %></td>
+                    <td class="text-center">
+                        <span class="league-rank-wrap">
+                            <span class="league-rank-marker"></span>
+                            <span class="league-rank-number"><%= index + 1 %></span>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="league-player-cell">
+                            <span class="league-player-photo placeholder"><%= player.player.name.charAt(0) %></span>
+                            <span>
+                                <span><%= player.player.name %></span>
+                            </span>
+                        </span>
+                    </td>
                     <td><%= player.statistics[0].team.name %></td>
                     <% if (mode === 'assist') { %>
-                    <td class="text-center wc-highlight"><%= player.statistics[0].goals.assists ?? 0 %></td>
+                    <td class="text-center league-highlight"><%= player.statistics[0].goals.assists ?? 0 %></td>
                     <td class="text-center"><%= player.statistics[0].games.appearences ?? '-' %></td>
                     <% } else { %>
-                    <td class="text-center wc-highlight"><%= player.statistics[0].goals.total ?? 0 %></td>
+                    <td class="text-center league-highlight"><%= player.statistics[0].goals.total ?? 0 %></td>
                     <td class="text-center"><%= player.statistics[0].penalty?.scored ?? '-' %></td>
                     <% } %>
                 </tr>

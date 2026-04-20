@@ -30,7 +30,7 @@
 
             <%- include('../../shared/partials/hero.ejs', {
                 partials,
-                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('sw-TZ', {
                     timeZone: 'Africa/Nairobi',
                     hour: '2-digit',
                     minute: '2-digit',
@@ -70,15 +70,15 @@
             </div>
             <% } %>
 
-            <div class="table-section" itemscope itemtype="https://schema.org/Table">
-                <div class="league-section-head">
+            <section class="league-surface league-surface--table" itemscope itemtype="https://schema.org/Table">
+                <header class="league-surface-head">
                     <div class="league-title-stack">
                         <span class="league-overline">Wafungaji Bora</span>
-                        <h2 class="h2 fs-5 mb-0">Orodha ya Wafungaji Bora wa <%= partials.league_name %></h2>
+                        <h2 class="league-section-title">Orodha ya Wafungaji Bora wa <%= partials.league_name %></h2>
                         <p class="league-section-copy">Hapa unaona washambuliaji wanaoongoza kwa mabao, timu wanazotokea na mchango wao kwenye mbio za ufungaji za msimu huu.</p>
                     </div>
                     <span class="league-chip"><%= top_scorers.length %> wachezaji</span>
-                </div>
+                </header>
                 <meta itemprop="about" content="Orodha ya Wachezaji Wanaongoza kwa Magoli <%= partials.ligi %> Msimu wa <%= partials.season_long %>">
                 <div class="league-table-wrap">
                     <table class="league-table league-player-table">
@@ -131,7 +131,7 @@
                     <span><a href="/standings/football/<%= partials.path %>">Msimamo wa <%= partials.ligi %> <%= partials.season_short %></a></span>
                     <span><a href="/football/fixtures/<%= partials.path %>">Ratiba na matokeo ya <%= partials.ligi %> <%= partials.season_short %></a></span>
                 </div>
-            </div>
+            </section>
             <%- include('../../../../0-global/somapia.ejs'); %>
         </section>
     </main>

@@ -14,13 +14,13 @@
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
     <%- include('../../../0-global/fonts.ejs'); %>
-    <%- include('./partials/theme.ejs'); %>
+    <%- include('../shared/partials/theme.ejs'); %>
 </head>
 
 <body>
     <%- include('../../../0-global/header.ejs'); %>
     <main>
-        <section class="left wc-page">
+        <section class="left league-shell wc-page text-align-justify">
             <%- include('./partials/hero.ejs', {
                 partials,
                 formattedUpdatedAt,
@@ -32,33 +32,16 @@
 
             <%- include('./partials/nav.ejs', { partials }) %>
 
-            <section class="wc-section">
-                <div class="wc-section-head">
-                    <h2 class="h3">Kombe la Dunia <%= partials.season_long %></h2>
-                    <span class="wc-round-chip"><%= partials.league_name %></span>
-                </div>
-                <article class="wc-slab">
-                    <p>
-                        Kombe la Dunia <%= partials.season_long %> ni jukwaa la mabingwa wa taifa, nyota wakubwa wa soka, na mechi zinazoweza kugeuza simulizi la mashindano ndani ya dakika chache. Ukurasa huu unakuweka karibu na kila kinachoamua mchezo: nani anaongoza kundi, nani yupo kwenye presha ya kufuzu, na ni mechi zipi zinazofuata kutikisa mashabiki.
-                    </p>
-                    <p class="mb-0">
-                        Kama unatafuta msimamo wa Kombe la Dunia leo, ratiba ya Kombe la Dunia <%= partials.season_long %>, matokeo ya mechi zilizopita, au majina ya vinara wa magoli na assists, hapa ndio sehemu sahihi ya kuanzia. Taarifa zimepangwa kwa namna inayokuruhusu kuona mwendo wa mashindano kwa haraka bila kupoteza kinachoendelea kwenye kila kundi na kila hatua ya mtoano.
-                    </p>
-                </article>
-                <div class="wc-legend">
-                    <span><i class="qualifier"></i> Timu zinazofuzu moja kwa moja</span>
-                    <span><i class="third"></i> Nafasi ya timu za tatu bora</span>
-                </div>
-            </section>
-
             <% if (standings.groups.length > 0) { %>
             <% standings.groups.forEach((group) => { %>
             <%- include('./partials/standings-table.ejs', { title: group.label, teams: group.teams }) %>
             <% }) %>
             <% } else { %>
-            <section class="wc-section">
-                <div class="wc-empty">
+            <section class="league-surface">
+                <div class="league-surface-body">
+                <div class="league-empty">
                     Jedwali la makundi litawekwa hapa mara tu msimamo wa mashindano utakapoanza kuonyesha picha kamili ya kila kundi.
+                </div>
                 </div>
             </section>
             <% } %>
@@ -70,42 +53,68 @@
             }) %>
             <% } %>
 
+            <section class="league-surface">
+                <header class="league-surface-head">
+                    <div class="league-title-stack">
+                        <span class="league-overline">Muhtasari wa Mashindano</span>
+                        <h2 class="league-section-title">Kombe la Dunia <%= partials.season_long %></h2>
+                    </div>
+                    <span class="league-chip"><%= partials.league_name %></span>
+                </header>
+                <div class="league-surface-body">
+                    <div class="league-highlight-card">
+                        <p>
+                            Kombe la Dunia <%= partials.season_long %> ni jukwaa la mabingwa wa taifa, nyota wakubwa wa soka, na mechi zinazoweza kugeuza simulizi la mashindano ndani ya dakika chache. Ukurasa huu unakuweka karibu na kila kinachoamua mchezo: nani anaongoza kundi, nani yupo kwenye presha ya kufuzu, na ni mechi zipi zinazofuata kutikisa mashabiki.
+                        </p>
+                        <p class="mb-0">
+                            Kama unatafuta msimamo wa Kombe la Dunia leo, ratiba ya Kombe la Dunia <%= partials.season_long %>, matokeo ya mechi zilizopita, au majina ya vinara wa magoli na assists, hapa ndio sehemu sahihi ya kuanzia. Taarifa zimepangwa kwa namna inayokuruhusu kuona mwendo wa mashindano kwa haraka bila kupoteza kinachoendelea kwenye kila kundi na kila hatua ya mtoano.
+                        </p>
+                    </div>
+                    <div class="league-legend mt-0">
+                        <span><i class="qualifier"></i> Timu zinazofuzu moja kwa moja</span>
+                        <span><i class="third"></i> Nafasi ya timu za tatu bora</span>
+                    </div>
+                </div>
+            </section>
+
             <%- include('./partials/fixtures-block.ejs', {
                 title: partials.current_round ? `Hatua ya sasa: ${partials.current_round}` : 'Mechi zilizo karibu',
                 subtitle: `${currentRoundFixtures.length} mechi`,
                 fixtures: currentRoundFixtures.slice(0, 8)
             }) %>
 
-            <section class="wc-section">
-                <div class="wc-section-head">
-                    <h2 class="h3">Kurasa za ndani za Kombe la Dunia</h2>
-                    <span class="wc-muted">Chagua ukurasa unaokusaidia kufuatilia mashindano</span>
-                </div>
-                <div class="wc-grid-two">
-                    <article class="wc-slab">
-                        <h3 class="h5"><a href="/football/kombe-la-dunia" class="text-decoration-none">Msimamo wa Kombe la Dunia</a></h3>
+            <section class="league-surface">
+                <header class="league-surface-head">
+                    <h2 class="league-section-title">Kurasa za ndani za Kombe la Dunia</h2>
+                    <span class="league-muted">Chagua ukurasa unaokusaidia kufuatilia mashindano</span>
+                </header>
+                <div class="league-surface-body">
+                <div class="league-grid-two">
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title"><a href="/football/kombe-la-dunia" class="text-decoration-none">Msimamo wa Kombe la Dunia</a></h3>
                         <p class="mb-0">
                             Fungua ukurasa huu kuona nani ametawala kundi lake, nani anawinda kufuzu, na nani analazimika kupigania nafasi hadi dakika za mwisho.
                         </p>
                     </article>
-                    <article class="wc-slab">
-                        <h3 class="h5"><a href="/football/kombe-la-dunia/ratiba" class="text-decoration-none">Ratiba na Matokeo</a></h3>
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title"><a href="/football/kombe-la-dunia/ratiba" class="text-decoration-none">Ratiba na Matokeo</a></h3>
                         <p class="mb-0">
                             Hapa unaona mechi zinazofuata, saa ya kuanza, na matokeo ya mechi zilizopita ili usikose hatua yoyote ya mashindano.
                         </p>
                     </article>
-                    <article class="wc-slab">
-                        <h3 class="h5"><a href="/football/kombe-la-dunia/wafungaji-bora" class="text-decoration-none">Wafungaji Bora</a></h3>
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title"><a href="/football/kombe-la-dunia/wafungaji-bora" class="text-decoration-none">Wafungaji Bora</a></h3>
                         <p class="mb-0">
                             Kama macho yako yako kwenye kiatu cha dhahabu, hapa utafuatilia washambuliaji wanaotikisa nyavu na mabadiliko ya kileleni.
                         </p>
                     </article>
-                    <article class="wc-slab">
-                        <h3 class="h5"><a href="/football/kombe-la-dunia/assist-bora" class="text-decoration-none">Watoa Assist Bora</a></h3>
+                    <article class="league-highlight-card">
+                        <h3 class="league-subsection-title"><a href="/football/kombe-la-dunia/assist-bora" class="text-decoration-none">Watoa Assist Bora</a></h3>
                         <p class="mb-0">
                             Ukurasa huu unaangazia wabunifu wa mwisho, wale wanaofungua ngome na kutengeneza pasi zinazoamua magoli.
                         </p>
                     </article>
+                </div>
                 </div>
             </section>
 

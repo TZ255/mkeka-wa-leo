@@ -1,15 +1,20 @@
-<section class="wc-section">
-    <div class="wc-section-head">
-        <h2 class="h3"><%= title %></h2>
-        <span class="wc-round-chip"><%= teams.length %> timu</span>
-    </div>
+<section class="league-surface league-surface--table" itemscope itemtype="https://schema.org/Table">
+    <header class="league-surface-head">
+        <h3 class="league-subsection-title"><%= title %></h3>
+        <span class="league-chip"><%= teams.length %> timu</span>
+    </header>
 
-    <div class="wc-table-wrap">
-        <table class="wc-table" itemscope itemtype="https://schema.org/Table">
+    <div class="league-table-wrap">
+        <table class="league-table worldcup-standings-table" itemscope itemtype="https://schema.org/Table">
+            <colgroup>
+                <col style="width: 56px;">
+                <col class="team-col">
+                <col span="6" style="width: 8%;">
+            </colgroup>
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Timu</th>
+                    <th class="rank-cell text-center">#</th>
+                    <th class="team-cell">Timu</th>
                     <th class="text-center">MP</th>
                     <th class="text-center">W</th>
                     <th class="text-center">D</th>
@@ -20,19 +25,17 @@
             </thead>
             <tbody>
                 <% teams.forEach((team) => { 
-                    const description = String(team?.description || '').toLowerCase();
-                    const badgeClass = description.includes('promotion - world cup')
-                        ? 'qualifier'
-                        : description.includes('third-placed')
-                            ? 'third'
-                            : '';
+                    const badgeClass = team.rank === 1 || team.rank === 2 ? 'qualifier' : '';
                 %>
                 <tr>
-                    <td class="text-center">
-                        <span class="wc-rank-badge <%= badgeClass %>"><%= team.rank %></span>
+                    <td class="rank-cell text-center">
+                        <span class="league-rank-wrap">
+                            <span class="league-rank-marker <%= badgeClass %>"></span>
+                            <span class="league-rank-number"><%= team.rank %></span>
+                        </span>
                     </td>
-                    <td>
-                        <div class="wc-team-cell">
+                    <td class="team-cell">
+                        <div class="league-team-cell">
                             <img src="<%= team.team.logo %>" alt="<%= team.team.name %>" loading="lazy">
                             <span><%= team.team.name %></span>
                         </div>
@@ -42,7 +45,7 @@
                     <td class="text-center"><%= team.all.draw %></td>
                     <td class="text-center"><%= team.all.lose %></td>
                     <td class="text-center"><%= team.goalsDiff %></td>
-                    <td class="text-center wc-highlight"><%= team.points %></td>
+                    <td class="text-center league-highlight"><%= team.points %></td>
                 </tr>
                 <% }) %>
             </tbody>

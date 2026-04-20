@@ -1,0 +1,77 @@
+<%
+    const timezone = typeof fixtureTimezone !== 'undefined' ? fixtureTimezone : 'Africa/Nairobi';
+    const includeSchema = typeof withSchema !== 'undefined' && withSchema === true;
+    const applyRenameKitayosce = typeof renameKitayosce !== 'undefined' && renameKitayosce === true;
+    const statusShort = fixture?.fixture?.status?.short || 'NS';
+    const eventDate = new Date(fixture?.fixture?.date);
+    const dateLabel = eventDate.toLocaleDateString('en-US', {
+        timeZone: timezone,
+        month: 'short',
+        day: 'numeric',
+    }).replace(',', '');
+    const timeLabel = eventDate.toLocaleTimeString('en-US', {
+        timeZone: timezone,
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+    const timeOrStatus = statusShort === 'NS' ? timeLabel : statusShort;
+    const homeGoals = fixture?.goals?.home;
+    const awayGoals = fixture?.goals?.away;
+    const isCompleted = ['FT', 'AET', 'PEN', 'AWD', 'WO'].includes(statusShort);
+    const isDraw = homeGoals != null && awayGoals != null && homeGoals === awayGoals;
+    const homeWinner = isCompleted && !isDraw && fixture?.teams?.home?.winner === true;
+    const awayWinner = isCompleted && !isDraw && fixture?.teams?.away?.winner === true;
+    const baseScore = fixture?.score || {};
+    let resultSource = fixture?.goals || {};
+
+    if (statusShort === 'PEN' && (baseScore?.penalty?.home != null || baseScore?.penalty?.away != null)) {
+        resultSource = baseScore.penalty;
+    } else if (statusShort === 'AET' && (baseScore?.extratime?.home != null || baseScore?.extratime?.away != null)) {
+        resultSource = baseScore.extratime;
+    } else if (baseScore?.fulltime?.home != null || baseScore?.fulltime?.away != null) {
+        resultSource = baseScore.fulltime;
+    }
+
+    const formatTeamName = (name) => applyRenameKitayosce ? String(name || '').replace('Kitayosce', 'Tabora United') : name;
+    const homeTeamName = formatTeamName(fixture?.teams?.home?.name);
+    const awayTeamName = formatTeamName(fixture?.teams?.away?.name);
+    const schemaEndDate = fixture?.fixture?.timestamp
+        ? new Date((fixture.fixture.timestamp + 5 * 60 * 60) * 1000).toISOString().slice(0, 19) + '+03:00'
+        : '';
+%>
+<article class="league-fixture-row"<% if (includeSchema) { %> itemscope itemtype="https://schema.org/SportsEvent"<% } %>>
+    <div class="league-fixture-date">
+        <strong><%= dateLabel %></strong>
+        <span class="league-fixture-date-meta"><%= timeOrStatus %></span>
+        <% if (includeSchema) { %>
+        <meta itemprop="startDate" content="<%= fixture?.fixture?.date %>">
+        <% if (schemaEndDate) { %>
+        <meta itemprop="endDate" content="<%= schemaEndDate %>">
+        <% } %>
+        <meta itemprop="location" content="<%= fixture?.fixture?.venue?.name %>, <%= fixture?.fixture?.venue?.city %>, <%= fixture?.league?.country %>">
+        <% } %>
+    </div>
+
+    <div class="league-fixture-teams">
+        <span class="league-fixture-team-row">
+            <img class="league-fixture-team-logo" src="<%= fixture?.teams?.home?.logo %>" alt="<%= homeTeamName %>" loading="lazy">
+            <span class="league-fixture-team <%= homeWinner ? 'is-winner' : '' %>"><%= homeTeamName %></span>
+        </span>
+        <span class="league-fixture-team-row">
+            <img class="league-fixture-team-logo" src="<%= fixture?.teams?.away?.logo %>" alt="<%= awayTeamName %>" loading="lazy">
+            <span class="league-fixture-team <%= awayWinner ? 'is-winner' : '' %>"><%= awayTeamName %></span>
+        </span>
+        <% if (includeSchema) { %>
+        <meta itemprop="description" content="<%= fixture?.league?.name %> mechi kati ya <%= fixture?.teams?.home?.name %> na <%= fixture?.teams?.away?.name %>.">
+        <meta itemprop="name" content="<%= fixture?.teams?.home?.name %> vs <%= fixture?.teams?.away?.name %>">
+        <meta itemprop="performer" content="<%= fixture?.teams?.home?.name %>">
+        <meta itemprop="performer" content="<%= fixture?.teams?.away?.name %>">
+        <% } %>
+    </div>
+
+    <div class="league-fixture-results" aria-label="Matokeo ya mechi">
+        <span class="league-fixture-result"><%= resultSource?.home ?? '-' %></span>
+        <span class="league-fixture-result"><%= resultSource?.away ?? '-' %></span>
+    </div>
+</article>

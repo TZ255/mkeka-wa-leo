@@ -68,7 +68,7 @@
 
             <%- include('../shared/partials/hero.ejs', {
                 partials,
-                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('en-US', {
+                formattedUpdatedAt: new Date(partials.updatedAt).toLocaleString('sw-TZ', {
                     timeZone: 'Africa/Nairobi',
                     hour: '2-digit',
                     minute: '2-digit',
@@ -93,18 +93,22 @@
 
             <%- include('../shared/partials/nav.ejs', { links: navLinks }) %>
 
-            <section class="league-section-card">
-                <div class="league-muted mb-2">Muhtasari wa ligi</div>
-                <%- include('./partials/intro-standing.ejs'); %>
-                <p class="p mb-0">
-                    Hapa chini unaona jedwali kamili la msimu wa <%= partials.season_short %>, kuanzia timu zilizo juu ya msimamo hadi zile zinazopambana kuepuka presha ya kushuka daraja.
-                </p>
-            </section>
-
             <%- include('./partials/standing.ejs'); %>
 
+            <section class="league-surface">
+                <header class="league-surface-head">
+                    <div>
+                        <div class="league-muted">Muhtasari wa ligi</div>
+                        <h2 class="league-block-title mt-1">Msimu wa NBC <%= partials.season_short %> kwa ufupi</h2>
+                    </div>
+                </header>
+                <div class="league-surface-body">
+                    <%- include('./partials/intro-standing.ejs'); %>
+                </div>
+            </section>
+
             <div class="vidokezo">
-                <h2 class="h2 fs-6">Angalia pia kurasa muhimu za NBC <%= partials.season_short %></h2>
+                <h2 class="league-block-title">Angalia pia kurasa muhimu za NBC <%= partials.season_short %></h2>
                 <ul class="list-group list-group-flush fw-bold p-2">
                     <li class="list-group-item">
                         <a href="/football/fixtures/tanzania/premier-league">
