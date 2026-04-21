@@ -7,7 +7,7 @@
         <h2 class="league-section-title" itemprop="about">Matokeo ya Hivi Karibuni ya Ligi Kuu NBC <%= partials.season_short %></h2>
         <p class="league-section-copy">Haya ni matokeo ya mechi zilizomalizika karibuni zaidi, yakionyesha waliotawala mchezo na mabadiliko ya mwisho wa wiki ya ligi.</p>
       </div>
-      <span class="league-chip"><%= recent_results.length %> mechi</span>
+      <span class="league-chip">mechi <%= recent_results.length %></span>
     </header>
     <div class="league-surface-body">
       <div class="league-fixture-list">
@@ -26,7 +26,7 @@
         <h2 class="league-section-title" itemprop="about">Mechi Zijazo za Ligi Kuu NBC <%= partials.season_short %></h2>
         <p class="league-section-copy">Pata ratiba ya mechi zinazofuata, muda wa kuanza na pambano linalokusubiri kwenye duru inayofuata.</p>
       </div>
-      <span class="league-chip"><%= recent_fixtures.length %> mechi</span>
+      <span class="league-chip">mechi <%= recent_fixtures.length %></span>
     </header>
     <div class="league-surface-body">
       <div class="league-fixture-list">
@@ -58,7 +58,7 @@
       <h3 class="league-subsection-title">
         <%= new Intl.DateTimeFormat('sw-TZ', { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(round.round)) %>
       </h3>
-      <span class="league-chip"><%= round.fixtures.length %> mechi</span>
+      <span class="league-chip">mechi <%= round.fixtures.length %> </span>
     </header>
     <div class="league-surface-body">
       <div class="league-fixture-list">

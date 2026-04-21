@@ -5,7 +5,7 @@
             <h2 class="league-section-title">Ratiba na Matokeo za Timu Zote za <%= partials.ligi %> <%= partials.season_long %></h2>
             <p class="league-section-copy">Chagua timu unayotaka kufuatilia ili kuona ratiba yake yote ya msimu, matokeo ya mechi zilizopita na mechi zinazofuata.</p>
         </div>
-        <span class="league-chip"><%= standing.standing.length %> timu</span>
+        <span class="league-chip">timu <%= standing.standing.length %></span>
     </div>
     <ul itemscope itemtype="https://schema.org/BreadcrumbList" class="league-link-list p-0">
         <% standing.standing.forEach(team=> { %>

@@ -6,7 +6,7 @@
                 <h2 class="league-section-title">Ratiba na Matokeo ya <%= partials.league_name %> <%= partials.season_long %></h2>
                 <p class="league-section-copy">Fuata mechi zilizochezwa, mechi zijazo na mwenendo wa kila raundi ya <%= partials.ligi %> katika msimu huu.</p>
             </div>
-            <span class="league-chip"><%= partials.stats?.fixtures || 0 %> mechi</span>
+            <span class="league-chip">mechi <%= partials.stats?.fixtures || 0 %></span>
         </header>
     </section>
 
@@ -14,7 +14,7 @@
     <section class="league-surface" itemscope itemtype="https://schema.org/Table">
         <header class="league-surface-head">
             <h3 class="league-subsection-title" itemprop="about"><%= standing.current_round_fixtures[0]?.league?.round %></h3>
-            <span class="league-chip"><%= standing.current_round_fixtures.length %> mechi</span>
+            <span class="league-chip">mechi <%= standing.current_round_fixtures.length %></span>
         </header>
         <div class="league-surface-body">
             <div class="league-fixture-list">
@@ -30,7 +30,7 @@
     <section class="league-surface" itemscope itemtype="https://schema.org/Table">
         <header class="league-surface-head">
             <h3 class="league-subsection-title" itemprop="about"><%= round.round %></h3>
-            <span class="league-chip"><%= round.fixtures.length %> mechi</span>
+            <span class="league-chip">mechi <%= round.fixtures.length %></span>
         </header>
         <div class="league-surface-body">
             <div class="league-fixture-list">
