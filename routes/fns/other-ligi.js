@@ -322,7 +322,7 @@ const LeagueNameToSwahili = (league_id, season) => {
             };
         case 40:
             return {
-                ligi: 'Ligi Daraja la Kwanza Uingereza (Championship)',
+                ligi: 'Championship Uingereza',
                 path: 'england/championship',
                 msimu: {
                     long: `${season}/${Number(season) + 1}`,
