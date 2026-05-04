@@ -62,7 +62,7 @@ router.post('/api/pay', async (req, res) => {
         }
 
         const networkBrand = getNetworkBrand(phone);
-        const gateway = selectPaymentGateway(networkBrand);
+        const gateway = selectPaymentGateway(networkBrand, phone);
         const orderRef = generateOrderId();
 
         user.phone = phone;

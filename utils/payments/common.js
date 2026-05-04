@@ -67,7 +67,12 @@ function getRenderableNetwork(networkBrand = 'unknown') {
     return RENDERABLE_NETWORKS.has(normalizedBrand) ? normalizedBrand : 'unknown';
 }
 
-function selectPaymentGateway(networkBrand = 'unknown') {
+function selectPaymentGateway(networkBrand = 'unknown', phone = '') {
+    // if prefix 70 gateway is snippe
+    if (String(phone).startsWith('25570')) {
+        return 'snippe';
+    }
+    
     return SNIPPE_NETWORKS.has(String(networkBrand).toLowerCase()) ? 'snippe' : 'clickpesa';
 }
 
