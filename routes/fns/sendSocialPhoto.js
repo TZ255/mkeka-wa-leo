@@ -86,7 +86,8 @@ async function postMegaToMkekaLeo(dateStr) {
                             inline_keyboard: [[
                                 { text: 'Beti Sasa | 100% Bonus 🤑', url: 'https://bet-link.top/gsb/register' }
                             ]]
-                        }
+                        },
+                        disable_notification: true
                     }
                 );
 
