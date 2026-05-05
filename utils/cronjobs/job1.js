@@ -39,7 +39,7 @@ const BTTSTipsModel = require('../../model/btts-tips');
 const Over05HTTips = require('../../model/over05ht');
 const DCTipsModel = require('../../model/dc-tips');
 const MatchWinnerTips = require('../../model/1x2tips');
-const { DJMwangaFn, AUDIO_CATEGORY_URL } = require('../../bots/charlotte/functions/mwanga');
+const { DJMwangaFn } = require('../../bots/charlotte/functions/mwanga');
 
 module.exports = () => {
   if (process.env.local === 'true') {
@@ -82,9 +82,9 @@ module.exports = () => {
   // ------------------------------------
   // DJ Mwanga audio posts, hourly at :14
   // ------------------------------------
-  cron.schedule('17 * * * *', () => {
+  cron.schedule('14 * * * *', () => {
     runLocked('djmwanga-audio', () =>
-      DJMwangaFn(AUDIO_CATEGORY_URL)
+      DJMwangaFn("https://djmwanga.com/category/audio")
     );
   }, { timezone: TZ });
 
