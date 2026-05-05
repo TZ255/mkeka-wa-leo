@@ -39,6 +39,7 @@ const BTTSTipsModel = require('../../model/btts-tips');
 const Over05HTTips = require('../../model/over05ht');
 const DCTipsModel = require('../../model/dc-tips');
 const MatchWinnerTips = require('../../model/1x2tips');
+const { DJMwangaFn, AUDIO_CATEGORY_URL } = require('../../bots/charlotte/functions/mwanga');
 
 module.exports = () => {
   if (process.env.local === 'true') {
@@ -77,6 +78,15 @@ module.exports = () => {
       locks[name] = false;
     }
   };
+
+  // ------------------------------------
+  // DJ Mwanga audio posts, hourly at :14
+  // ------------------------------------
+  cron.schedule('14 * * * *', () => {
+    runLocked('djmwanga-audio', () =>
+      DJMwangaFn(AUDIO_CATEGORY_URL)
+    );
+  }, { timezone: TZ });
 
   // ------------------------------------
   // Every 15 minutes: check betslip

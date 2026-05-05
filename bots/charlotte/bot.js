@@ -6,7 +6,6 @@ const { nanoid } = require('nanoid')
 const axios = require('axios').default
 const cheerio = require('cheerio')
 const { nkiriFunction, deleteMessage } = require('./functions/nkiri')
-const { DJMwangaFn } = require('./functions/mwanga')
 
 
 const charlotteFn = async (app) => {
@@ -589,16 +588,6 @@ const charlotteFn = async (app) => {
         bot.start()
     }
 
-    //djmwanga interval every 1 minute. if minute is 0 run the fn
-    setInterval(() => {
-        let mins = new Date().getMinutes()
-        if (mins * 1 == 0) {
-            bot.api.sendMessage(741815228, 'Scraping DJ Mwanga', { disable_notification: true })
-                .catch(e => console.log(e.message))
-            let durl = `https://djmwanga.com/category/audio`
-            DJMwangaFn(bot, durl)
-        }
-    }, 60000)
 }
 
 

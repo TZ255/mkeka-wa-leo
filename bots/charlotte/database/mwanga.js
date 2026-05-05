@@ -4,6 +4,20 @@ const Schema = mongoose.Schema
 const mwangaSchema = new Schema({
     audio_title: {
         type: String
+    },
+    post_url: {
+        type: String,
+        index: true,
+        unique: true,
+        sparse: true
+    },
+    audio_url: {
+        type: String
+    },
+    status: {
+        type: String,
+        enum: ['posted', 'failed'],
+        default: 'posted'
     }
 }, { timestamps: true, strict: false })
 
