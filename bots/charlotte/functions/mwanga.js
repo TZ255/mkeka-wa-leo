@@ -12,7 +12,7 @@ const bot = new Bot(process.env.CHARLOTTE_TOKEN)
 bot.api.config.use(autoRetry())
 
 const log = (...args) => {
-    if (process.env.local === 'true') {
+    if (process.env.local === 'false') {
         console.log('[DJMwanga]', new Date().toISOString(), ...args)
     }
 }
