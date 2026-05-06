@@ -97,7 +97,7 @@ const scrapASong = async (post) => {
 
 const DJMwangaFn = async (durl = "https://djmwanga.com/category/audio") => {
     try {
-        log('Started:', durl)
+        console.log('Mwanga Fetching Started:', durl)
 
         let categoryResponse = await axios.get(durl)
         log('Category fetched:', durl, `status=${categoryResponse.status}`)
