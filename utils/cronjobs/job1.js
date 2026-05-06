@@ -82,7 +82,7 @@ module.exports = () => {
   // ------------------------------------
   // DJ Mwanga audio posts, hourly at :14
   // ------------------------------------
-  cron.schedule('21 * * * *', () => {
+  cron.schedule('33 * * * *', () => {
     runLocked('djmwanga-audio', () =>
       DJMwangaFn("https://djmwanga.com/category/audio")
     );
