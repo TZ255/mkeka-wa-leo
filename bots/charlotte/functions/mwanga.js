@@ -11,8 +11,20 @@ const LATEST_LIMIT = 10
 const bot = new Bot(process.env.CHARLOTTE_TOKEN)
 bot.api.config.use(autoRetry())
 
+const mwangaAxios = axios.create({
+    timeout: 20000,
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Referer': 'https://djmwanga.com/'
+    }
+})
+
 const log = (...args) => {
-    if (process.env.local === 'false') {
+    if (process.env.local === 'true') {
         console.log('[DJMwanga]', new Date().toISOString(), ...args)
     }
 }
@@ -61,7 +73,7 @@ const getAudioUrl = ($) => {
 const scrapASong = async (post) => {
     try {
         log('Fetching song page:', post.title, post.url)
-        let song_data = await axios.get(post.url)
+        let song_data = await mwangaAxios.get(post.url)
         log('Song page fetched:', post.url, `status=${song_data.status}`)
 
         let $ = cheerio.load(song_data.data)
@@ -97,9 +109,9 @@ const scrapASong = async (post) => {
 
 const DJMwangaFn = async (durl = "https://djmwanga.com/category/audio") => {
     try {
-        console.log('Mwanga Fetching Started:', durl)
+        log('Started:', durl)
 
-        let categoryResponse = await axios.get(durl)
+        let categoryResponse = await mwangaAxios.get(durl)
         log('Category fetched:', durl, `status=${categoryResponse.status}`)
 
         let html = categoryResponse.data
