@@ -472,7 +472,7 @@ const lauraMainFn = async (app) => {
             return ctx.reply('⚠️ Please provide both a phone number and a message.\nUsage: /sms <phone_number> <message>');
         }
 
-        const phone = input.slice(0, spaceIndex).trim().replace(/[\s\W]/g, '');
+        const phone = input.slice(0, spaceIndex).trim();
         const message = input.slice(spaceIndex + 1).trim();
 
         if (!message) {
