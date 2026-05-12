@@ -9,6 +9,7 @@ const RapidKeysModel = require('../../model/rapid_keys')
 const SocialTipModel = require('../../model/social-tip')
 const { grantSubscription } = require('../../routes/fns/grantVIP')
 const sendEmail = require('../../routes/fns/sendemail')
+const { sendNormalSMS } = require('../../routes/fns/sendSMS')
 
 //Laura Codes Starting Here
 const lauraMainFn = async (app) => {
@@ -425,6 +426,73 @@ const lauraMainFn = async (app) => {
             await ctx.reply(error?.message).catch(e => console.log(e?.message, e))
         }
     })
+
+    bot.command('user', async (ctx) => {
+        const phone = ctx.match?.trim();
+
+        if (!phone) {
+            return ctx.reply('⚠️ Please provide a phone number.\nUsage: /user <phone_number>');
+        }
+
+        try {
+            const user = await mkekaUsersModel.findOne({ phone }).select('email createdAt').lean();
+
+            if (!user) {
+                return ctx.reply(`❌ No user found with phone number: ${phone}`);
+            }
+
+            const registeredDate = new Date(user.createdAt).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+            });
+
+            return ctx.reply(
+                `👤 *User Details*\n\n` +
+                `📧 Email: \`${user.email}\`\n` +
+                `📅 Registered: ${registeredDate}`,
+                { parse_mode: 'Markdown' }
+            );
+        } catch (err) {
+            console.error('[/details error]', err);
+            return ctx.reply('❌ An error occurred while fetching user details.');
+        }
+    });
+
+    bot.command('sms', async (ctx) => {
+        const input = ctx.match?.trim();
+
+        if (!input) {
+            return ctx.reply('⚠️ Usage: /sms <phone_number> <message>');
+        }
+
+        const spaceIndex = input.indexOf(' ');
+
+        if (spaceIndex === -1) {
+            return ctx.reply('⚠️ Please provide both a phone number and a message.\nUsage: /sms <phone_number> <message>');
+        }
+
+        const phone = input.slice(0, spaceIndex).trim();
+        const message = input.slice(spaceIndex + 1).trim();
+
+        if (!message) {
+            return ctx.reply('⚠️ Message cannot be empty.\nUsage: /sms <phone_number> <message>');
+        }
+
+        try {
+            await sendNormalSMS(phone, message);
+
+            return ctx.reply(
+                `✅ *SMS Sent*\n\n` +
+                `📱 To: \`${phone}\`\n` +
+                `💬 Message: ${message}`,
+                { parse_mode: 'Markdown' }
+            );
+        } catch (err) {
+            console.error('[/sms error]', err);
+            return ctx.reply(`❌ Failed to send SMS to ${phone}. Please try again.`);
+        }
+    });
 
     bot.on('channel_post', async ctx => {
         try {
