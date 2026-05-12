@@ -9,7 +9,7 @@ const RapidKeysModel = require('../../model/rapid_keys')
 const SocialTipModel = require('../../model/social-tip')
 const { grantSubscription } = require('../../routes/fns/grantVIP')
 const sendEmail = require('../../routes/fns/sendemail')
-const { sendNormalSMS } = require('../../routes/fns/sendSMS')
+const { sendNormalSMS, sendNEXTSMS } = require('../../routes/fns/sendSMS')
 
 //Laura Codes Starting Here
 const lauraMainFn = async (app) => {
@@ -428,7 +428,7 @@ const lauraMainFn = async (app) => {
     })
 
     bot.command('user', async (ctx) => {
-        const phone = ctx.match?.trim();
+        const phone = ctx.match?.trim().replace(/[\s\W]/g, '');
 
         if (!phone) {
             return ctx.reply('⚠️ Please provide a phone number.\nUsage: /user <phone_number>');
@@ -472,7 +472,7 @@ const lauraMainFn = async (app) => {
             return ctx.reply('⚠️ Please provide both a phone number and a message.\nUsage: /sms <phone_number> <message>');
         }
 
-        const phone = input.slice(0, spaceIndex).trim();
+        const phone = input.slice(0, spaceIndex).trim().replace(/[\s\W]/g, '');
         const message = input.slice(spaceIndex + 1).trim();
 
         if (!message) {
@@ -480,7 +480,7 @@ const lauraMainFn = async (app) => {
         }
 
         try {
-            await sendNormalSMS(phone, message);
+            await sendNEXTSMS(phone, message);
 
             return ctx.reply(
                 `✅ *SMS Sent*\n\n` +
