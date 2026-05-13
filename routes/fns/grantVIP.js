@@ -70,6 +70,11 @@ const updateUserSubscription = async (user, endDate, now, plan, phone) => {
     await user.save();
 };
 
+const getSubscriptionBaseTime = (user, now) => {
+    const currentEndDate = user?.pay_until ? new Date(user.pay_until).getTime() : null;
+    return currentEndDate && currentEndDate > now ? currentEndDate : now;
+};
+
 
 
 // MAIN SUSCRIPTION FUNCTION
@@ -110,10 +115,14 @@ async function grantSubscription(email, param, phone = null) {
 
             const subscriptionType = subscriptionMap[param];
             const now = Date.now();
-            let endDate = now + (1000 * 60 * 60 * 24 * subscriptionType.days);
+            const subscriptionBaseTime = getSubscriptionBaseTime(user, now);
+            let endDate = subscriptionBaseTime + (1000 * 60 * 60 * 24 * subscriptionType.days);
 
             if (param === 'gold2') {
-                endDate = new Date(new Date(Date.now()).setMonth(new Date(Date.now()).getMonth() + 1)).getTime();
+                const subscriptionBaseDate = new Date(subscriptionBaseTime);
+                endDate = new Date(
+                    subscriptionBaseDate.setMonth(subscriptionBaseDate.getMonth() + 1)
+                ).getTime();
             }
 
             // Update user subscription
