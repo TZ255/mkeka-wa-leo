@@ -37,6 +37,7 @@ const OddsFixture = require('../model/odds-fixtures-bets')
 const NeededLeague = require('../model/leagues-for-odds')
 const { autoUpdateResults } = require('../utils/auto-update-results')
 const { UpdateActiveWorldCupData } = require('./fns/worldcup-update')
+const { DJMwangaFn } = require('../bots/charlotte/functions/mwanga')
 
 const getLeagueMedia = (league) => {
     const sample = league?.current_round_fixtures?.[0]?.league || league?.season_fixtures?.[0]?.league || {};
@@ -483,7 +484,8 @@ router.get('/api/testing', async (req, res) => {
     try {
         //await syncOddsForDate('2026-04-01');
         //await GET_TIPS_FOR_MKEKALEO("2026-04-04")
-        await UpdateMatchDayLeagueData()
+        // DJMwangaFn("https://djmwanga.com/category/audio")
+        // await UpdateMatchDayLeagueData()
         res.json({ok: true})
     } catch (error) {
         console.error(error);
