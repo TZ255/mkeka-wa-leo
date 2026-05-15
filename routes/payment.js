@@ -69,6 +69,15 @@ router.post('/api/pay', async (req, res) => {
         await user.save();
 
         try {
+            if (networkBrand === 'vodacom') {
+                res.set('HX-Reswap', 'none');
+                return res.render('zz-fragments/payment-form-error', {
+                layout: false,
+                user: req?.user || '',
+                message: 'Changamoto ya mtandao Vodacom. Tafadhali tumia Tigo, Airtel au Halotel',
+              });
+            }
+            
             if (gateway === 'snippe') {
                 await initializeSnippeGatewayPayment({ user, email, phone, orderRef });
             } else {
