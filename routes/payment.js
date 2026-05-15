@@ -69,11 +69,6 @@ router.post('/api/pay', async (req, res) => {
         await user.save();
 
         try {
-            // disabling voda
-            if (networkBrand === 'vodacom') {
-                throw new Error("Changamoto ya mtandao Vodacom. Tumia mtandao mwingine");
-            }
-
             if (gateway === 'snippe') {
                 await initializeSnippeGatewayPayment({ user, email, phone, orderRef });
             } else {
