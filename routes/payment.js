@@ -69,13 +69,9 @@ router.post('/api/pay', async (req, res) => {
         await user.save();
 
         try {
+            // disabling voda
             if (networkBrand === 'vodacom') {
-                res.set('HX-Reswap', 'none');
-                return res.render('zz-fragments/payment-form-error', {
-                layout: false,
-                user: req?.user || '',
-                message: 'Changamoto ya mtandao Vodacom. Tafadhali tumia Tigo, Airtel au Halotel',
-              });
+                throw new Error("Changamoto ya mtandao Vodacom. Tumia mtandao mwingine");
             }
             
             if (gateway === 'snippe') {
