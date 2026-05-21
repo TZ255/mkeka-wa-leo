@@ -421,8 +421,7 @@ const charlotteFn = async (app) => {
                     }
                 }
             }
-            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.video) {
-                console.log('Received a video from', ctx.channelPost?.author_signature)
+            if (ctx.channelPost.chat.id == imp.ohmyDB && ctx.channelPost.video && ctx.channelPost?.author_signature == "Halo T✨") {
                 let fid = ctx.channelPost.video.file_unique_id
                 let file_id = ctx.channelPost.video.file_id
                 let cap = ctx.channelPost.caption
