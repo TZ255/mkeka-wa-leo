@@ -1,4 +1,4 @@
-const SNIPPE_NETWORKS = new Set(['halotel', 'vodacom']);
+const SNIPPE_NETWORKS = new Set(['smile']);
 const RENDERABLE_NETWORKS = new Set(['halotel', 'tigo', 'airtel', 'vodacom', 'smile']);
 
 const NETWORK_BY_PREFIX = {
@@ -68,11 +68,6 @@ function getRenderableNetwork(networkBrand = 'unknown') {
 }
 
 function selectPaymentGateway(networkBrand = 'unknown', phone = '') {
-    // if prefix 70 gateway is snippe
-    if (String(phone).startsWith('25570')) {
-        return 'snippe';
-    }
-    
     return SNIPPE_NETWORKS.has(String(networkBrand).toLowerCase()) ? 'snippe' : 'clickpesa';
 }
 

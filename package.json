@@ -29,6 +29,7 @@
     "gray-matter": "^4.0.3",
     "imdb-api": "^4.4.1",
     "javascript-time-ago": "^2.5.9",
+    "jsonwebtoken": "^9.0.3",
     "lodash": "^4.17.21",
     "marked": "^16.2.0",
     "moment": "^2.30.1",

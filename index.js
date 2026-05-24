@@ -18,6 +18,8 @@ const blogRouter = require('./routes/blog')
 const oddsTipsRouter = require('./routes/get-odds-tips')
 const htmxTips = require('./routes/htmx-tips')
 const googleAuthRouter = require('./routes/google-auth')
+const mobileAuthRouter = require('./routes/mobile-auth')
+const mobileTipsRouter = require('./routes/mobile-tips')
 const routeAuth = require('./routes/get4-auth')
 const vipSelectionRouter = require('./routes/vip-selection')
 const paymentRouter = require('./routes/payment')
@@ -151,6 +153,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(mobileAuthRouter)
+app.use(mobileTipsRouter)
 app.use(googleAuthRouter)
 app.use(routeAuth)
 app.use(vipSelectionRouter)
