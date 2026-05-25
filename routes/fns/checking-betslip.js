@@ -26,7 +26,6 @@ const checking3MkekaBetslip = async (d) => {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        bet: "Over 2.5",
                         fixture_id: { $nin: vip2.map(c => c.fixture_id) },
                         $or: [
                             { confidence: 'SUPER_STRONG' },
@@ -51,7 +50,20 @@ const checking3MkekaBetslip = async (d) => {
                 { $sample: { size: 2 } }
             ]);
 
-            const combinedDocs = [...copies25, ...copies1x2]
+            const copiesdc12 = await DCTipsModel.aggregate([
+                {
+                    $match: {
+                        date: d,
+                        time: { $gte: '13:00' },
+                        bet: "12",
+                        confidence: "SUPER_STRONG",
+                        fixture_id: { $nin: [...vip2.map(c => c.fixture_id), ...copies25.map(c => c.fixture_id), ...copies1x2.map(c => c.fixture_id) ] }
+                    }
+                },
+                { $sample: { size: 2 } }
+            ]);
+
+            const combinedDocs = [...copies25, ...copies1x2, ...copiesdc12]
 
             // Prepare documents for bulk insertion
             const betslipDocs = combinedDocs.map(c => {
@@ -83,7 +95,6 @@ const checking3MkekaBetslip = async (d) => {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        bet: "Over 2.5",
                         fixture_id: { $nin: vip1.map(c => c.fixture_id) },
                         $or: [
                             { confidence: 'SUPER_STRONG' },
@@ -107,7 +118,20 @@ const checking3MkekaBetslip = async (d) => {
                 { $sample: { size: 2 } }
             ]);
 
-            const combinedDocs = [...copies25, ...copies1x2]
+            const copiesdc12 = await DCTipsModel.aggregate([
+                {
+                    $match: {
+                        date: d,
+                        time: { $gte: '13:00' },
+                        bet: "12",
+                        confidence: "SUPER_STRONG",
+                        fixture_id: { $nin: [...vip1.map(c => c.fixture_id), ...copies25.map(c => c.fixture_id), ...copies1x2.map(c => c.fixture_id) ] }
+                    }
+                },
+                { $sample: { size: 2 } }
+            ]);
+
+            const combinedDocs = [...copies25, ...copies1x2, ...copiesdc12]
 
             // Prepare documents for bulk insertion
             const betslipDocs = combinedDocs.map(c => {
@@ -153,7 +177,7 @@ const checking3MkekaBetslip = async (d) => {
                         match: { $nin: copies_ht05.map(c => c.match) }
                     }
                 },
-                { $sample: { size: 3 } }
+                { $sample: { size: (6 - copies_ht05.length) } }
             ]);
 
             const copies_dc = await DCTipsModel.aggregate([
