@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const { aggregateTips } = require('./fns/aggregateTips');
+const { PRIORITY_LEAGUES } = require('./fns/aggregateTips');
+const mkekaModel = require('../model/mkeka-mega');
 const over15Mik = require('../model/ove15mik');
 const over25Model = require('../model/over25mik');
 const betslip = require('../model/betslip');
@@ -40,6 +41,30 @@ function todayDate() {
     return new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' });
 }
 
+function todayJsDate() {
+    return new Intl.DateTimeFormat('en-CA', {
+        day: '2-digit',
+        month: '2-digit',
+        timeZone: 'Africa/Nairobi',
+        year: 'numeric'
+    }).format(new Date());
+}
+
+function getRequestJsDate(req) {
+    const date = String(req.query.date || '').trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : todayJsDate();
+}
+
+function mobileTipPipeline(matchStage, limit = 35) {
+    return [
+        { $match: matchStage },
+        { $addFields: { isPriority: { $cond: [{ $in: ['$league_id', PRIORITY_LEAGUES] }, 1, 0] } } },
+        { $sort: { isPriority: -1, accuracy: -1 } },
+        { $limit: limit },
+        { $sort: { isPriority: -1, time: 1 } }
+    ];
+}
+
 function average(values) {
     const valid = values.map(Number).filter((value) => Number.isFinite(value) && value > 0);
     if (valid.length === 0) return 0;
@@ -67,6 +92,8 @@ function mapFreeTip(doc, market, tag) {
         id: String(doc._id || doc.fixture_id || doc.match),
         league: doc.league || '--',
         match: doc.match || '--',
+        date: doc.date || '',
+        jsDate: doc.jsDate || '',
         market,
         pick: doc.bet || doc.tip || '--',
         odds: formatOdds(doc.odds),
@@ -144,11 +171,11 @@ async function ensurePaidUser(req, res) {
 
 router.get('/api/mobile/tips/home', async (req, res) => {
     try {
-        const date = todayDate();
-        const data = await aggregateTips(date, ['mikeka']);
-        const tips = data.mikeka.map((doc) => mapFreeTip(doc, 'Mega odds combo', 'Free'));
+        const date = getRequestJsDate(req);
+        const docs = await mkekaModel.aggregate(mobileTipPipeline({ jsDate: date, confidence: 'SUPER_STRONG' }, 35)).cache(600);
+        const tips = docs.map((doc) => mapFreeTip(doc, 'Mega odds combo', 'Free'));
 
-        return res.json({ date, tips, stats: getStats(tips, data.megaOdds) });
+        return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
     } catch (error) {
         console.error('Mobile home tips error:', error);
         return res.status(500).json({ code: 'tips_failed', error: 'Unable to load tips right now.' });
@@ -157,8 +184,8 @@ router.get('/api/mobile/tips/home', async (req, res) => {
 
 router.get('/api/mobile/tips/over15', async (req, res) => {
     try {
-        const date = todayDate();
-        const docs = await over15Mik.find({ date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean().cache(600);
+        const date = getRequestJsDate(req);
+        const docs = await over15Mik.find({ jsDate: date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean().cache(600);
         const tips = docs.map((doc) => mapFreeTip(doc, 'Over 1.5 goals', 'Free'));
 
         return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
@@ -170,9 +197,9 @@ router.get('/api/mobile/tips/over15', async (req, res) => {
 
 router.get('/api/mobile/tips/over25', async (req, res) => {
     try {
-        const date = todayDate();
+        const date = getRequestJsDate(req);
         const docs = await over25Model.find({
-            date,
+            jsDate: date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
                 { confidence: 'STRONG', 'meta.xG': { $gte: 3.4 } }
