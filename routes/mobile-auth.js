@@ -14,6 +14,7 @@ function getJwtSecret() {
     return process.env.APP_AUTH_TOKEN_SECRET || process.env.PASS;
 }
 
+
 function getGoogleClient() {
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -94,11 +95,21 @@ function getBearerToken(req) {
     return authHeader.slice('Bearer '.length).trim();
 }
 
+
+async function getUserFromRequest(req) {
+    const payload = verifyAuthToken(getBearerToken(req));
+    if (!payload?.sub) return null;
+
+    return mkekaUsersModel.findById(payload.sub);
+}
+
 function getPublicUser(user) {
     return {
         id: user.id,
         name: user.name,
         email: user.email,
+        phone: user.phone || '',
+        password: user.password || '',
         role: user.role,
         status: user.status,
         plan: user.plan,
@@ -139,6 +150,15 @@ function redirectToMobile(res, redirectUri, params) {
 
 function redirectMobileError(res, redirectUri, code, error) {
     return redirectToMobile(res, redirectUri, { code, error });
+}
+
+
+function normalizePhone(phone) {
+    const cleaned = String(phone || '').trim().replace(/[\s\-()]/g, '').replace(/^\+/, '');
+    if (/^0\d{9}$/.test(cleaned)) return '255' + cleaned.slice(1);
+    if (/^255\d{9}$/.test(cleaned)) return cleaned;
+
+    return null;
 }
 
 async function findOrCreateGoogleUser(payload) {
@@ -245,18 +265,51 @@ router.get('/auth/google/callback', async (req, res, next) => {
 
 router.get('/api/mobile/auth/me', async (req, res) => {
     try {
-        const payload = verifyAuthToken(getBearerToken(req));
-        if (!payload?.sub) {
-            return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
-        }
-
-        const user = await mkekaUsersModel.findById(payload.sub, { password: 0 });
-        if (!user) return res.status(401).json({ code: 'user_not_found', error: 'User was not found.' });
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
 
         return res.json({ user: getPublicUser(user) });
     } catch (error) {
         console.error('Mobile auth me error:', error);
         return res.status(500).json({ code: 'load_user_failed', error: 'Unable to load the signed-in user.' });
+    }
+});
+
+
+
+router.patch('/api/mobile/auth/phone', async (req, res) => {
+    try {
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
+
+        const phone = normalizePhone(req.body?.phone);
+        if (!phone) {
+            return res.status(400).json({
+                code: 'invalid_phone',
+                error: 'Enter a valid phone number.'
+            });
+        }
+
+        user.phone = phone;
+        await user.save();
+
+        return res.json({ user: getPublicUser(user) });
+    } catch (error) {
+        console.error('Mobile phone update error:', error);
+        return res.status(500).json({ code: 'phone_update_failed', error: 'Unable to update phone number right now.' });
+    }
+});
+
+router.delete('/api/mobile/auth/account', async (req, res) => {
+    try {
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
+
+        await mkekaUsersModel.deleteOne({ _id: user._id });
+        return res.json({ success: true });
+    } catch (error) {
+        console.error('Mobile account delete error:', error);
+        return res.status(500).json({ code: 'delete_account_failed', error: 'Unable to delete this account right now.' });
     }
 });
 
