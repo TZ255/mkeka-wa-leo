@@ -161,6 +161,13 @@ function normalizePhone(phone) {
     return null;
 }
 
+function normalizeName(name) {
+    const cleaned = String(name || '').trim().replace(/\s+/g, ' ');
+    if (cleaned.length < 2 || cleaned.length > 80) return null;
+
+    return cleaned;
+}
+
 async function findOrCreateGoogleUser(payload) {
     const email = String(payload.email || '').trim().toLowerCase();
     if (!email) return null;
@@ -276,6 +283,29 @@ router.get('/api/mobile/auth/me', async (req, res) => {
 });
 
 
+
+router.patch('/api/mobile/auth/name', async (req, res) => {
+    try {
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
+
+        const name = normalizeName(req.body?.name);
+        if (!name) {
+            return res.status(400).json({
+                code: 'invalid_name',
+                error: 'Enter a valid account name.'
+            });
+        }
+
+        user.name = name;
+        await user.save();
+
+        return res.json({ user: getPublicUser(user) });
+    } catch (error) {
+        console.error('Mobile name update error:', error);
+        return res.status(500).json({ code: 'name_update_failed', error: 'Unable to update account name right now.' });
+    }
+});
 
 router.patch('/api/mobile/auth/phone', async (req, res) => {
     try {
