@@ -103,11 +103,21 @@ router.post('/api/mobile/payment/vip', async (req, res) => {
         }
 
         const networkBrand = getNetworkBrand(phone);
+
         const gateway = selectPaymentGateway(networkBrand, phone);
         const orderRef = generateOrderId();
 
         user.phone = phone;
         await user.save();
+
+        // disabling voda
+        if (networkBrand === 'vodacom') {
+            return res.status(400).json({
+                code: 'unsupported_network',
+                error: 'Malipo kwa vodacom yamesitishwa kwa sasa. Tafadhali tumia Tigo, Airtel au Halotel',
+                network: networkBrand
+            });
+        }
 
         try {
             if (gateway === 'snippe') {
@@ -124,7 +134,7 @@ router.post('/api/mobile/payment/vip', async (req, res) => {
 
             return res.status(502).json({
                 code: 'payment_initiation_failed',
-                error: 'Ombi la malipo halijatumwa. Hakikisha namba ni sahihi au jaribu kulipia kwa mtandao mwingine.',
+                error: 'Ombi la malipo halijatumwa. Hakikisha namba ni sahihi au jaribu kulipa kwa mtandao mwingine.',
                 network,
                 gateway
             });
