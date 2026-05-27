@@ -4,6 +4,7 @@
 //Laura Codes Starting Here
 
 const affAnalyticsModel = require('../../model/affiliates-analytics')
+const MobileAppVersionModel = require('../../model/mobile-app-version')
 const mkekaUsersModel = require('../../model/mkeka-users')
 const RapidKeysModel = require('../../model/rapid_keys')
 const SocialTipModel = require('../../model/social-tip')
@@ -88,6 +89,29 @@ const lauraMainFn = async (app) => {
             })
         }
     }
+
+    const getMobileAppVersionConfig = async () => {
+        return MobileAppVersionModel.findOneAndUpdate(
+            { key: 'android' },
+            {
+                $setOnInsert: {
+                    key: 'android',
+                    minimumRequiredVersion: '1.0.0',
+                    latestVersion: '1.0.0',
+                    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.tanzabyte.mkekaleoapp',
+                    updateMessage: 'A new Mkeka Leo app update is required. Update from Play Store to continue.'
+                }
+            },
+            { new: true, upsert: true }
+        )
+    }
+
+    const formatMobileAppVersionConfig = (config) => {
+        return `Android app version settings\n\nMinimum required: ${config.minimumRequiredVersion}\nLatest version: ${config.latestVersion}\nPlay Store URL: ${config.playStoreUrl}\nMessage: ${config.updateMessage}\n\nUsage:\n/app_version\n/app_version set <minimum> <latest> <playStoreUrl> [message]\n/app_version min <version>\n/app_version latest <version>\n/app_version url <playStoreUrl>\n/app_version message <message>`
+    }
+
+    const isVersionValue = (value) => /^\d+(?:\.\d+){0,3}$/.test(String(value || '').trim())
+    const isStoreUri = (value) => /^https?:\/\//i.test(String(value || '').trim()) || /^market:\/\//i.test(String(value || '').trim())
 
     bot.catch((err) => {
         const ctx = err.ctx;
@@ -340,6 +364,72 @@ const lauraMainFn = async (app) => {
         } catch (err) {
             console.log(err, err.message)
             await ctx.reply(err.message)
+        }
+    })
+
+    bot.command('app_version', async ctx => {
+        try {
+            const admins = [imp.shemdoe, imp.rtmalipo]
+            if (!admins.includes(ctx.from?.id)) return await ctx.reply('Not authorized')
+
+            const input = ctx.match?.trim()
+            const config = await getMobileAppVersionConfig()
+            if (!input) return await ctx.reply(formatMobileAppVersionConfig(config))
+
+            const [actionRaw, ...parts] = input.split(/\s+/)
+            const action = actionRaw.toLowerCase()
+
+            if (action === 'set') {
+                const [minimumRequiredVersion, latestVersion, playStoreUrl, ...messageParts] = parts
+                if (!isVersionValue(minimumRequiredVersion) || !isVersionValue(latestVersion) || !isStoreUri(playStoreUrl)) {
+                    return await ctx.reply('Usage: /app_version set <minimum> <latest> <playStoreUrl> [message]')
+                }
+
+                config.minimumRequiredVersion = minimumRequiredVersion
+                config.latestVersion = latestVersion
+                config.playStoreUrl = playStoreUrl
+                if (messageParts.length) config.updateMessage = messageParts.join(' ')
+                await config.save()
+
+                return await ctx.reply(formatMobileAppVersionConfig(config))
+            }
+
+            if (action === 'min') {
+                const version = parts[0]
+                if (!isVersionValue(version)) return await ctx.reply('Usage: /app_version min <version>')
+                config.minimumRequiredVersion = version
+                await config.save()
+                return await ctx.reply(formatMobileAppVersionConfig(config))
+            }
+
+            if (action === 'latest') {
+                const version = parts[0]
+                if (!isVersionValue(version)) return await ctx.reply('Usage: /app_version latest <version>')
+                config.latestVersion = version
+                await config.save()
+                return await ctx.reply(formatMobileAppVersionConfig(config))
+            }
+
+            if (action === 'url') {
+                const playStoreUrl = parts[0]
+                if (!isStoreUri(playStoreUrl)) return await ctx.reply('Usage: /app_version url <playStoreUrl>')
+                config.playStoreUrl = playStoreUrl
+                await config.save()
+                return await ctx.reply(formatMobileAppVersionConfig(config))
+            }
+
+            if (action === 'message') {
+                const updateMessage = parts.join(' ').trim()
+                if (!updateMessage) return await ctx.reply('Usage: /app_version message <message>')
+                config.updateMessage = updateMessage
+                await config.save()
+                return await ctx.reply(formatMobileAppVersionConfig(config))
+            }
+
+            return await ctx.reply(formatMobileAppVersionConfig(config))
+        } catch (error) {
+            console.error('App version command error:', error)
+            await ctx.reply(error?.message || 'Unable to manage app version right now.')
         }
     })
 

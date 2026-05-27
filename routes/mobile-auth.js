@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const MobileAppVersionModel = require('../model/mobile-app-version');
 const mkekaUsersModel = require('../model/mkeka-users');
 const sendEmail = require('./fns/sendemail');
 
@@ -9,6 +10,7 @@ const JWT_EXPIRES_IN = process.env.APP_AUTH_TOKEN_EXPIRES_IN || '7d';
 const MOBILE_OAUTH_STATE_TTL_SECONDS = 10 * 60;
 const MOBILE_OAUTH_STATE_PURPOSE = 'mobile_google_auth';
 const MOBILE_REDIRECT_PROTOCOLS = new Set(['mkekaleoapp:']);
+const DEFAULT_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.tanzabyte.mkekaleoapp';
 
 function getJwtSecret() {
     return process.env.APP_AUTH_TOKEN_SECRET || process.env.PASS;
@@ -88,6 +90,47 @@ function verifyAuthToken(token) {
     }
 }
 
+function parseVersionParts(version) {
+    return String(version || '0.0.0')
+        .trim()
+        .split('.')
+        .map((part) => Number.parseInt(part.replace(/[^\d].*$/, ''), 10) || 0);
+}
+
+function compareVersions(left, right) {
+    const leftParts = parseVersionParts(left);
+    const rightParts = parseVersionParts(right);
+    const length = Math.max(leftParts.length, rightParts.length, 3);
+
+    for (let index = 0; index < length; index += 1) {
+        const leftValue = leftParts[index] || 0;
+        const rightValue = rightParts[index] || 0;
+
+        if (leftValue > rightValue) return 1;
+        if (leftValue < rightValue) return -1;
+    }
+
+    return 0;
+}
+
+async function getMobileAppVersionConfig(platform = 'android') {
+    const key = String(platform || 'android').trim().toLowerCase() || 'android';
+
+    return MobileAppVersionModel.findOneAndUpdate(
+        { key },
+        {
+            $setOnInsert: {
+                key,
+                minimumRequiredVersion: '1.0.0',
+                latestVersion: '1.0.0',
+                playStoreUrl: DEFAULT_PLAY_STORE_URL,
+                updateMessage: 'A new Mkeka Leo app update is required. Update from Play Store to continue.'
+            }
+        },
+        { new: true, upsert: true }
+    );
+}
+
 function getBearerToken(req) {
     const authHeader = req.get('authorization') || '';
     if (!authHeader.startsWith('Bearer ')) return null;
@@ -151,6 +194,29 @@ function redirectToMobile(res, redirectUri, params) {
 function redirectMobileError(res, redirectUri, code, error) {
     return redirectToMobile(res, redirectUri, { code, error });
 }
+
+router.get('/api/mobile/auth/version', async (req, res) => {
+    try {
+        const appVersion = String(req.query.version || '').trim();
+        const platform = String(req.query.platform || 'android').trim().toLowerCase() || 'android';
+        const config = await getMobileAppVersionConfig(platform);
+        const minimumRequiredVersion = config.minimumRequiredVersion || '1.0.0';
+        const forceUpdate = appVersion ? compareVersions(appVersion, minimumRequiredVersion) < 0 : false;
+
+        return res.json({
+            appVersion,
+            forceUpdate,
+            latestVersion: config.latestVersion || minimumRequiredVersion,
+            minimumRequiredVersion,
+            platform: config.key,
+            playStoreUrl: config.playStoreUrl || DEFAULT_PLAY_STORE_URL,
+            updateMessage: config.updateMessage
+        });
+    } catch (error) {
+        console.error('Mobile app version check error:', error);
+        return res.status(500).json({ code: 'version_check_failed', error: 'Unable to check app version right now.' });
+    }
+});
 
 
 function normalizePhone(phone) {

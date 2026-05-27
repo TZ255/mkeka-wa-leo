@@ -55,6 +55,14 @@ function getRequestJsDate(req) {
     return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : todayJsDate();
 }
 
+function shouldFetchFresh(req) {
+    return String(req.query.fresh || '').trim() === '1';
+}
+
+function maybeCache(query, req, seconds = 600) {
+    return shouldFetchFresh(req) ? query : query.cache(seconds);
+}
+
 function mobileTipPipeline(matchStage, limit = 35) {
     return [
         { $match: matchStage },
@@ -172,7 +180,7 @@ async function ensurePaidUser(req, res) {
 router.get('/api/mobile/tips/home', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const docs = await mkekaModel.aggregate(mobileTipPipeline({ jsDate: date, confidence: 'SUPER_STRONG' }, 35)).cache(600);
+        const docs = await maybeCache(mkekaModel.aggregate(mobileTipPipeline({ jsDate: date, confidence: 'SUPER_STRONG' }, 35)), req);
         const tips = docs.map((doc) => mapFreeTip(doc, 'Mega odds combo', 'Free'));
 
         return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
@@ -185,7 +193,7 @@ router.get('/api/mobile/tips/home', async (req, res) => {
 router.get('/api/mobile/tips/over15', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const docs = await over15Mik.find({ jsDate: date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean().cache(600);
+        const docs = await maybeCache(over15Mik.find({ jsDate: date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean(), req);
         const tips = docs.map((doc) => mapFreeTip(doc, 'Over 1.5 goals', 'Free'));
 
         return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
@@ -198,13 +206,13 @@ router.get('/api/mobile/tips/over15', async (req, res) => {
 router.get('/api/mobile/tips/over25', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const docs = await over25Model.find({
+        const docs = await maybeCache(over25Model.find({
             jsDate: date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
                 { confidence: 'STRONG', 'meta.xG': { $gte: 3.4 } }
             ]
-        }).sort('-accuracy').limit(100).lean().cache(600);
+        }).sort('-accuracy').limit(100).lean(), req);
         const tips = docs.map((doc) => mapFreeTip(doc, 'Over 2.5 goals', 'Free'));
 
         return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
@@ -221,10 +229,10 @@ router.get('/api/mobile/tips/vip', async (req, res) => {
 
         const date = todayDate();
         const [slip1, slip2, slip3, codes] = await Promise.all([
-            betslip.find({ date, vip_no: 1, status: { $ne: 'deleted' } }).sort('time').lean().cache(600),
-            betslip.find({ date, vip_no: 2, status: { $ne: 'deleted' } }).sort('time').lean().cache(600),
-            betslip.find({ date, vip_no: 3, status: { $ne: 'deleted' } }).sort('time').lean().cache(600),
-            BookingCodesModel.find({ date }).lean().cache(600)
+            maybeCache(betslip.find({ date, vip_no: 1, status: { $ne: 'deleted' } }).sort('time').lean(), req),
+            maybeCache(betslip.find({ date, vip_no: 2, status: { $ne: 'deleted' } }).sort('time').lean(), req),
+            maybeCache(betslip.find({ date, vip_no: 3, status: { $ne: 'deleted' } }).sort('time').lean(), req),
+            maybeCache(BookingCodesModel.find({ date }).lean(), req)
         ]);
 
         const slips = [
