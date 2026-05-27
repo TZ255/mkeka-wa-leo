@@ -151,6 +151,7 @@ function getPublicUser(user) {
         id: user.id,
         name: user.name,
         email: user.email,
+        avatarUrl: user.avatarUrl || user.picture || user.avatar || '',
         role: user.role,
         status: user.status,
         plan: user.plan,

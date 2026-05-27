@@ -108,6 +108,7 @@ function getPublicUser(user) {
         id: user.id,
         name: user.name,
         email: user.email,
+        avatarUrl: user.avatarUrl || user.picture || user.avatar || '',
         phone: user.phone || '',
         password: user.password || '',
         role: user.role,
@@ -156,20 +157,29 @@ function normalizeName(name) {
     return cleaned;
 }
 
+function getGoogleAvatarUrl(payload) {
+    const picture = String(payload?.picture || '').trim();
+    return /^https?:\/\//i.test(picture) ? picture : '';
+}
+
 async function findOrCreateGoogleUser(payload) {
     const email = String(payload.email || '').trim().toLowerCase();
     if (!email) return null;
 
     const name = payload.name || email.split('@')[0];
+    const avatarUrl = getGoogleAvatarUrl(payload);
     let user = await mkekaUsersModel.findOne({ email });
 
     if (!user) {
         // The website account still expects a password field, so keep generating one until that model changes.
         const password = Math.floor(1000 + Math.random() * 9000).toString();
-        user = await mkekaUsersModel.create({ email, password, name });
+        user = await mkekaUsersModel.create({ email, password, name, avatarUrl });
 
         const html = `<p>Habari ${name}!</p><p>Umejisajili kikamilifu <b>Mkeka wa Leo.</b> Kumbuka kutumia taarifa hizi kulogin kwenye account yako:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul><p>Asante!</p>`;
         sendEmail(email, 'Karibu Mkeka wa Leo - Account yako imesajiliwa kikamilifu', html);
+    } else if (avatarUrl && user.avatarUrl !== avatarUrl) {
+        user.avatarUrl = avatarUrl;
+        await user.save();
     }
 
     return user;

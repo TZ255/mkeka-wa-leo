@@ -103,15 +103,19 @@ router.get('/auth/google/callback', async (req, res, next) => {
 
         const email = String(payload.email).toLowerCase();
         const name = payload?.name || email.split('@')[0];
+        const avatarUrl = /^https?:\/\//i.test(String(payload?.picture || '').trim()) ? String(payload.picture).trim() : '';
 
         let user = await mkekaUsersModel.findOne({ email });
 
         if (!user) {
             const password = Math.floor(1000 + Math.random() * 9000).toString();
-            user = await mkekaUsersModel.create({ email, password, name });
+            user = await mkekaUsersModel.create({ email, password, name, avatarUrl });
 
             const html = `<p>Habari ${name}!</p><p>Umejisajili kikamilifu <b>Mkeka wa Leo.</b> Kumbuka kutumia taarifa hizi kulogin kwenye account yako:</p><ul><li>Email: <b>${email}</b></li><li>Password: <b>${password}</b></li></ul><p>Asante!</p>`;
             sendEmail(email, 'Karibu Mkeka wa Leo - Account yako imesajiliwa kikamilifu', html);
+        } else if (avatarUrl && user.avatarUrl !== avatarUrl) {
+            user.avatarUrl = avatarUrl;
+            await user.save();
         }
 
         // serialize user and create session with passport
