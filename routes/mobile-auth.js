@@ -7,9 +7,6 @@ const sendEmail = require('./fns/sendemail');
 
 const router = express.Router();
 const JWT_EXPIRES_IN = process.env.APP_AUTH_TOKEN_EXPIRES_IN || '7d';
-const MOBILE_OAUTH_STATE_TTL_SECONDS = 10 * 60;
-const MOBILE_OAUTH_STATE_PURPOSE = 'mobile_google_auth';
-const MOBILE_REDIRECT_PROTOCOLS = new Set(['mkekaleoapp:']);
 const DEFAULT_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.tanzabyte.mkekaleoapp';
 
 function getJwtSecret() {
@@ -19,49 +16,9 @@ function getJwtSecret() {
 
 function getGoogleClient() {
     const clientId = process.env.GOOGLE_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    if (!clientId || !clientSecret) return null;
+    if (!clientId) return null;
 
-    const redirectUri = process.env.GOOGLE_REDIRECT_URI;
-    return new OAuth2Client({ clientId, clientSecret, redirectUri });
-}
-
-function createMobileOAuthState(redirectUri, nonce) {
-    const secret = getJwtSecret();
-    if (!secret) return null;
-
-    return jwt.sign(
-        {
-            purpose: MOBILE_OAUTH_STATE_PURPOSE,
-            redirectUri,
-            nonce
-        },
-        secret,
-        { expiresIn: MOBILE_OAUTH_STATE_TTL_SECONDS }
-    );
-}
-
-function verifyMobileOAuthState(state) {
-    const secret = getJwtSecret();
-    if (!secret || !state) return null;
-
-    try {
-        const payload = jwt.verify(String(state), secret);
-        if (payload?.purpose !== MOBILE_OAUTH_STATE_PURPOSE || !payload.redirectUri) return null;
-
-        return payload;
-    } catch (error) {
-        if (error.name !== 'TokenExpiredError') return null;
-
-        try {
-            const expiredPayload = jwt.verify(String(state), secret, { ignoreExpiration: true });
-            if (expiredPayload?.purpose !== MOBILE_OAUTH_STATE_PURPOSE || !expiredPayload.redirectUri) return null;
-
-            return { ...expiredPayload, isExpired: true };
-        } catch (_expiredError) {
-            return null;
-        }
-    }
+    return new OAuth2Client(clientId);
 }
 
 function createAuthToken(user) {
@@ -160,41 +117,6 @@ function getPublicUser(user) {
     };
 }
 
-function getMobileNonce(req) {
-    const nonce = String(req.query.nonce || '').trim();
-    return /^[a-f0-9-]{36}$/i.test(nonce) ? nonce : null;
-}
-
-function getMobileRedirectUri(req) {
-    const redirectUri = String(req.query.redirect_uri || '').trim();
-    if (!redirectUri) return null;
-
-    try {
-        const url = new URL(redirectUri);
-        if (!MOBILE_REDIRECT_PROTOCOLS.has(url.protocol)) return null;
-
-        return url.toString();
-    } catch (error) {
-        return null;
-    }
-}
-
-function redirectToMobile(res, redirectUri, params) {
-    const url = new URL(redirectUri);
-
-    Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-            url.searchParams.set(key, String(value));
-        }
-    });
-
-    return res.redirect(url.toString());
-}
-
-function redirectMobileError(res, redirectUri, code, error) {
-    return redirectToMobile(res, redirectUri, { code, error });
-}
-
 router.get('/api/mobile/auth/version', async (req, res) => {
     try {
         const appVersion = String(req.query.version || '').trim();
@@ -253,86 +175,56 @@ async function findOrCreateGoogleUser(payload) {
     return user;
 }
 
-router.get('/api/mobile/auth/google', (req, res) => {
-    const redirectUri = getMobileRedirectUri(req);
-    if (!redirectUri) {
-        return res.status(400).json({
-            code: 'invalid_redirect_uri',
-            error: 'A valid mobile redirect URI is required.'
-        });
-    }
-
-    const nonce = getMobileNonce(req);
-    if (!nonce) {
-        return res.status(400).json({
-            code: 'invalid_nonce',
-            error: 'A valid mobile auth nonce is required.'
-        });
-    }
-
-    const googleClient = getGoogleClient();
-    if (!googleClient) {
-        return redirectMobileError(res, redirectUri, 'server_not_configured', 'Google login is not configured on the server.');
-    }
-
-    const state = createMobileOAuthState(redirectUri, nonce);
-    if (!state) {
-        return redirectMobileError(res, redirectUri, 'server_not_configured', 'App login is not configured on the server.');
-    }
-
-    const url = googleClient.generateAuthUrl({
-        scope: ['openid', 'email', 'profile'],
-        prompt: 'select_account',
-        state
-    });
-
-    return res.redirect(url);
-});
-
-router.get('/auth/google/callback', async (req, res, next) => {
-    const mobileState = verifyMobileOAuthState(req.query.state);
-    if (!mobileState) return next();
-
-    const redirectUri = mobileState.redirectUri;
-    if (mobileState.isExpired) {
-        return redirectMobileError(res, redirectUri, 'expired_auth_state', 'Google sign-in took too long. Please try again.');
-    }
-
+router.post('/api/mobile/auth/google/native', async (req, res) => {
     try {
-        const { code } = req.query;
-        if (!code) {
-            return redirectMobileError(res, redirectUri, 'missing_google_code', 'Google did not return an auth code.');
+        const idToken = String(req.body?.idToken || '').trim();
+        if (!idToken) {
+            return res.status(400).json({
+                code: 'missing_google_id_token',
+                error: 'Google ID token is required.'
+            });
         }
 
         const googleClient = getGoogleClient();
         if (!googleClient) {
-            return redirectMobileError(res, redirectUri, 'server_not_configured', 'Google login is not configured on the server.');
-        }
-
-        const { tokens } = await googleClient.getToken(code);
-        if (!tokens.id_token) {
-            return redirectMobileError(res, redirectUri, 'missing_id_token', 'Google did not return an ID token.');
+            return res.status(500).json({
+                code: 'server_not_configured',
+                error: 'Google login is not configured on the server.'
+            });
         }
 
         const ticket = await googleClient.verifyIdToken({
-            idToken: tokens.id_token,
+            idToken,
             audience: process.env.GOOGLE_CLIENT_ID
         });
         const payload = ticket.getPayload();
+        if (!payload?.email || payload.email_verified === false) {
+            return res.status(401).json({
+                code: 'invalid_google_account',
+                error: 'Google account email was not verified.'
+            });
+        }
+
         const user = await findOrCreateGoogleUser(payload || {});
         if (!user) {
-            return redirectMobileError(res, redirectUri, 'missing_google_email', 'Google account email was not available.');
+            return res.status(401).json({
+                code: 'missing_google_email',
+                error: 'Google account email was not available.'
+            });
         }
 
         const token = createAuthToken(user);
         if (!token) {
-            return redirectMobileError(res, redirectUri, 'server_not_configured', 'App login is not configured on the server.');
+            return res.status(500).json({
+                code: 'server_not_configured',
+                error: 'App login is not configured on the server.'
+            });
         }
 
-        return redirectToMobile(res, redirectUri, { token, nonce: mobileState.nonce });
+        return res.json({ token, user: getPublicUser(user) });
     } catch (error) {
-        console.error('Mobile Google login error:', error);
-        return redirectMobileError(res, redirectUri, 'google_login_failed', 'Google sign-in failed. Please try again.');
+        console.error('Mobile native Google login error:', error);
+        return res.status(401).json({ code: 'google_login_failed', error: 'Google sign-in failed. Please try again.' });
     }
 });
 
