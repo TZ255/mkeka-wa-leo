@@ -99,6 +99,14 @@ function mapFreeTip(doc, market, tag) {
     return {
         id: String(doc._id || doc.fixture_id || doc.match),
         league: doc.league || '--',
+        logo: {
+            home: doc.logo?.home || '',
+            away: doc.logo?.away || '',
+            league: {
+                logo: doc.logo?.league?.logo || '',
+                flag: doc.logo?.league?.flag || ''
+            }
+        },
         match: doc.match || '--',
         date: doc.date || '',
         jsDate: doc.jsDate || '',
