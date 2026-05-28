@@ -95,6 +95,7 @@ async function grantSubscription(email, param, phone = null) {
         if (param === 'unpaid') {
             user.status = 'unpaid';
             user.plan = '0 plan';
+            user.pay_until = null;
             await user.save();
             return {
                 success: true,
