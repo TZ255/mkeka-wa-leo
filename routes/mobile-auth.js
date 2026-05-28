@@ -157,6 +157,20 @@ function normalizeName(name) {
     return cleaned;
 }
 
+function normalizeExpoPushToken(token) {
+    const cleaned = String(token || '').trim();
+    if (!/^Expo(nent)?PushToken\[[^\]]+\]$/.test(cleaned)) return null;
+
+    return cleaned;
+}
+
+function normalizePushPlatform(platform) {
+    const cleaned = String(platform || '').trim().toLowerCase();
+    if (['android', 'ios', 'web'].includes(cleaned)) return cleaned;
+
+    return '';
+}
+
 function getGoogleAvatarUrl(payload) {
     const picture = String(payload?.picture || '').trim();
     return /^https?:\/\//i.test(picture) ? picture : '';
@@ -295,6 +309,65 @@ router.patch('/api/mobile/auth/phone', async (req, res) => {
     } catch (error) {
         console.error('Mobile phone update error:', error);
         return res.status(500).json({ code: 'phone_update_failed', error: 'Unable to update phone number right now.' });
+    }
+});
+
+router.patch('/api/mobile/auth/push-token', async (req, res) => {
+    try {
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
+
+        const expoPushToken = normalizeExpoPushToken(req.body?.expoPushToken);
+        if (!expoPushToken) {
+            return res.status(400).json({
+                code: 'invalid_push_token',
+                error: 'Valid Expo push token is required.'
+            });
+        }
+
+        const platform = normalizePushPlatform(req.body?.platform);
+        const now = new Date();
+        const existingToken = (user.pushTokens || []).find((entry) => entry.token === expoPushToken);
+
+        if (existingToken) {
+            existingToken.platform = platform || existingToken.platform || '';
+            existingToken.updatedAt = now;
+        } else {
+            user.pushTokens = [
+                ...(user.pushTokens || []),
+                {
+                    token: expoPushToken,
+                    platform,
+                    createdAt: now,
+                    updatedAt: now
+                }
+            ];
+        }
+
+        await user.save();
+
+        return res.json({ success: true, pushTokenCount: user.pushTokens.length });
+    } catch (error) {
+        console.error('Mobile push token save error:', error);
+        return res.status(500).json({ code: 'push_token_save_failed', error: 'Unable to save push notifications right now.' });
+    }
+});
+
+router.delete('/api/mobile/auth/push-token', async (req, res) => {
+    try {
+        const user = await getUserFromRequest(req);
+        if (!user) return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
+
+        const expoPushToken = normalizeExpoPushToken(req.body?.expoPushToken);
+        if (!expoPushToken) return res.json({ success: true, pushTokenCount: user.pushTokens?.length || 0 });
+
+        user.pushTokens = (user.pushTokens || []).filter((entry) => entry.token !== expoPushToken);
+        await user.save();
+
+        return res.json({ success: true, pushTokenCount: user.pushTokens.length });
+    } catch (error) {
+        console.error('Mobile push token delete error:', error);
+        return res.status(500).json({ code: 'push_token_delete_failed', error: 'Unable to remove push notifications right now.' });
     }
 });
 

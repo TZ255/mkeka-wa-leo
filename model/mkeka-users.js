@@ -12,6 +12,12 @@ const UserSchema = new mongoose.Schema(
     status: { type: String, default: 'unpaid' },
     plan: { type: String, default: '0 plan' },
     pay_until: { type: Date, default: null },
+    pushTokens: [{
+      token: { type: String, required: true },
+      platform: { type: String, default: '' },
+      createdAt: { type: Date, default: Date.now },
+      updatedAt: { type: Date, default: Date.now }
+    }],
     resetOTP: { type: String, default: '' },
     otpExpires: { type: Date }
   },

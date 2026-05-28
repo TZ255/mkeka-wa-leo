@@ -35,6 +35,7 @@ const lauraMainFn = async (app) => {
     const kenyaZambiaFn = require('./functions/kenyazambias')
     const messageFunctions = require('./functions/messagefn')
     const { makeKECPA, makeUGCPA } = require('./functions/cpa-convo')
+    const { handleMleoPushChannelPost } = require('./functions/mleo-push')
 
     const imp = {
         replyDb: -1001608248942,
@@ -55,7 +56,8 @@ const lauraMainFn = async (app) => {
         scrapin: -1001858785908,
         muvikaDB: -1001802963728,
         muvikaReps: -1002045676919,
-        mikekaDB: -1001696592315
+        mikekaDB: -1001696592315,
+        mleoPush: -1004276727710
     }
 
     //set webhook
@@ -587,6 +589,8 @@ const lauraMainFn = async (app) => {
     bot.on('channel_post', async ctx => {
         try {
             let chan_id = ctx.channelPost.chat.id
+            if (await handleMleoPushChannelPost(ctx, imp)) return;
+
             if (chan_id == imp.muvikaReps && ctx.channelPost.video) {
                 return await ctx.reply(`<code>reply-${ctx.channelPost.message_id}</code>`, {
                     parse_mode: 'HTML',
