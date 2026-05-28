@@ -18,6 +18,14 @@ const UserSchema = new mongoose.Schema(
       createdAt: { type: Date, default: Date.now },
       updatedAt: { type: Date, default: Date.now }
     }],
+    pushNotifications: {
+      enabled: { type: Boolean, default: false },
+      permissionStatus: { type: String, default: '' },
+      platform: { type: String, default: '' },
+      lastToken: { type: String, default: '' },
+      lastError: { type: String, default: '' },
+      updatedAt: { type: Date, default: null }
+    },
     resetOTP: { type: String, default: '' },
     otpExpires: { type: Date }
   },

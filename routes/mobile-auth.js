@@ -171,6 +171,17 @@ function normalizePushPlatform(platform) {
     return '';
 }
 
+function normalizePermissionStatus(status) {
+    const cleaned = String(status || '').trim().toLowerCase();
+    if (['granted', 'denied', 'undetermined', 'simulator'].includes(cleaned)) return cleaned;
+
+    return '';
+}
+
+function normalizePushTokenError(error) {
+    return String(error || '').trim().slice(0, 500);
+}
+
 function getGoogleAvatarUrl(payload) {
     const picture = String(payload?.picture || '').trim();
     return /^https?:\/\//i.test(picture) ? picture : '';
@@ -317,8 +328,10 @@ router.patch('/api/mobile/auth/push-token', async (req, res) => {
         const user = await getUserFromRequest(req);
         if (!user) return res.status(401).json({ code: 'invalid_token', error: 'Invalid or expired auth token.' });
 
+        const permissionStatus = normalizePermissionStatus(req.body?.permissionStatus);
+        const tokenError = normalizePushTokenError(req.body?.tokenError);
         const expoPushToken = normalizeExpoPushToken(req.body?.expoPushToken);
-        if (!expoPushToken) {
+        if (req.body?.expoPushToken && !expoPushToken) {
             return res.status(400).json({
                 code: 'invalid_push_token',
                 error: 'Valid Expo push token is required.'
@@ -327,26 +340,41 @@ router.patch('/api/mobile/auth/push-token', async (req, res) => {
 
         const platform = normalizePushPlatform(req.body?.platform);
         const now = new Date();
-        const existingToken = (user.pushTokens || []).find((entry) => entry.token === expoPushToken);
+        user.pushNotifications = {
+            enabled: permissionStatus === 'granted',
+            permissionStatus,
+            platform,
+            lastToken: expoPushToken || user.pushNotifications?.lastToken || '',
+            lastError: tokenError,
+            updatedAt: now
+        };
 
-        if (existingToken) {
-            existingToken.platform = platform || existingToken.platform || '';
-            existingToken.updatedAt = now;
-        } else {
-            user.pushTokens = [
-                ...(user.pushTokens || []),
-                {
-                    token: expoPushToken,
-                    platform,
-                    createdAt: now,
-                    updatedAt: now
-                }
-            ];
+        if (expoPushToken) {
+            const existingToken = (user.pushTokens || []).find((entry) => entry.token === expoPushToken);
+
+            if (existingToken) {
+                existingToken.platform = platform || existingToken.platform || '';
+                existingToken.updatedAt = now;
+            } else {
+                user.pushTokens = [
+                    ...(user.pushTokens || []),
+                    {
+                        token: expoPushToken,
+                        platform,
+                        createdAt: now,
+                        updatedAt: now
+                    }
+                ];
+            }
         }
 
         await user.save();
 
-        return res.json({ success: true, pushTokenCount: user.pushTokens.length });
+        return res.json({
+            success: true,
+            pushNotifications: user.pushNotifications,
+            pushTokenCount: user.pushTokens?.length || 0
+        });
     } catch (error) {
         console.error('Mobile push token save error:', error);
         return res.status(500).json({ code: 'push_token_save_failed', error: 'Unable to save push notifications right now.' });
@@ -362,6 +390,14 @@ router.delete('/api/mobile/auth/push-token', async (req, res) => {
         if (!expoPushToken) return res.json({ success: true, pushTokenCount: user.pushTokens?.length || 0 });
 
         user.pushTokens = (user.pushTokens || []).filter((entry) => entry.token !== expoPushToken);
+        user.pushNotifications = {
+            enabled: false,
+            permissionStatus: user.pushNotifications?.permissionStatus || '',
+            platform: user.pushNotifications?.platform || '',
+            lastToken: '',
+            lastError: '',
+            updatedAt: new Date()
+        };
         await user.save();
 
         return res.json({ success: true, pushTokenCount: user.pushTokens.length });
