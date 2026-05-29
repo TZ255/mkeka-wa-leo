@@ -141,14 +141,14 @@ router.post('/api/mobile/payment/vip', async (req, res) => {
 
             console.error(`Mobile VIP payment initiation failed via ${gatewayLabel}:`, providerMessage || error);
 
-            return res.status(502).json({
+            console.log({
                 code: 'payment_initiation_failed',
                 error: providerMessage,
                 network,
                 gateway
             });
 
-            console.log({
+            return res.status(502).json({
                 code: 'payment_initiation_failed',
                 error: providerMessage,
                 network,
