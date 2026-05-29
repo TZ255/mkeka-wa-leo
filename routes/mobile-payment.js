@@ -137,13 +137,13 @@ router.post('/api/mobile/payment/vip', async (req, res) => {
         } catch (error) {
             const network = getRenderableNetwork(networkBrand);
             const gatewayLabel = gateway === 'snippe' ? 'Snippe' : 'ClickPesa';
-            const providerMessage = error?.userMessage || error?.message || '';
+            const providerMessage = error?.message || '';
 
             console.error(`Mobile VIP payment initiation failed via ${gatewayLabel}:`, providerMessage || error);
 
             return res.status(502).json({
                 code: 'payment_initiation_failed',
-                error: 'Ombi la malipo halijatumwa. Hakikisha namba ni sahihi au jaribu kulipa kwa mtandao mwingine.',
+                error: providerMessage,
                 network,
                 gateway
             });

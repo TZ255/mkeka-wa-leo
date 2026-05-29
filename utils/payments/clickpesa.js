@@ -24,20 +24,10 @@ async function initializeClickPesaPayment({ user, email, phone, orderRef }) {
             headers: { 'x-webhook-secret': process.env.PASS },
         });
 
-        if (!response) {
-            throw new Error('PAY error: No response from payment API');
-        }
-
         return response.data;
     } catch (error) {
-        const message =
-            error?.response?.data?.message ||
-            error?.message ||
-            'Payment API returned unsuccessful response';
-
-        const initiationError = new Error(message);
-        initiationError.userMessage = message;
-        throw initiationError;
+        const message = error?.response?.data?.message || "Tumeshindwa anzisha malipo. Tafadhali jaribu tena baadaye."
+        throw new Error(message);
     }
 }
 
