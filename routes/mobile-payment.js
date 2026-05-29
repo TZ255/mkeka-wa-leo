@@ -120,13 +120,13 @@ router.post('/api/mobile/payment/vip', async (req, res) => {
         }
 
         // disable prefix 25570 for now due to cp issues
-        if (phone.startsWith('25570')) {
-            return res.status(400).json({
-                code: 'unsupported_phone',
-                error: 'Malipo kwa namba hii yameshindikana. Tafadhali tumia namba nyingine.',
-                phone
-            });
-        }
+        // if (phone.startsWith('25570')) {
+        //     return res.status(409).json({
+        //         code: 'unsupported_phone',
+        //         error: 'Malipo kwa namba hii yameshindikana. Tafadhali tumia namba nyingine.',
+        //         phone
+        //     });
+        // }
 
         try {
             if (gateway === 'snippe') {
