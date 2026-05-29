@@ -58,7 +58,7 @@ router.get('/tanzania/bookies/:bookie', async (req, res) => {
 })
 
 //us pages
-router.get(['/contact-us', '/privacy-policy', '/app-privacy', '/cookie-policy', '/about-us', '/terms-of-use'], async (req, res) => {
+router.get(['/contact-us', '/privacy-policy', '/app-privacy', '/delete-account', '/cookie-policy', '/about-us', '/terms-of-use'], async (req, res) => {
     try {
         const slugMap = {
             '/terms-of-use': '/terms'
