@@ -147,6 +147,13 @@ router.post('/api/mobile/payment/vip', async (req, res) => {
                 network,
                 gateway
             });
+
+            console.log({
+                code: 'payment_initiation_failed',
+                error: providerMessage,
+                network,
+                gateway
+            });
         }
 
         sendLauraNotification(
