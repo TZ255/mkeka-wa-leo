@@ -1,15 +1,22 @@
 const express = require('express');
 const StandingLigiKuuModel = require('../model/Ligi/bongo');
+const OtherLeagueModel = require('../model/Ligi/other');
+const WorldCupModel = require('../model/Ligi/worldcup');
 
 const router = express.Router();
 const BONGO_PATH = 'tanzania/premier-league';
+const BONGO_DISPLAY_NAME = 'Ligi Kuu Tanzania Bara';
+const WORLD_CUP_PATH = 'world/kombe-la-dunia';
+const WORLD_CUP_DISPLAY_NAME = 'Kombe la Dunia';
 
-function getBongoLeagueMedia(league) {
+function getLeagueMedia(league) {
     const sample = league?.current_round_fixtures?.[0]?.league || league?.season_fixtures?.[0]?.league || {};
+    const leagueId = league?.league_id || sample?.id || '';
+
     return {
-        logo: league?.league_logo || sample?.logo || '',
+        logo: league?.league_logo || sample?.logo || (leagueId ? `https://media.api-sports.io/football/leagues/${leagueId}.png` : ''),
         flag: league?.league_flag || sample?.flag || '',
-        country: league?.country || sample?.country || 'Tanzania',
+        country: league?.country || sample?.country || '',
     };
 }
 
@@ -17,8 +24,18 @@ function getRoundsCount(fixtures = []) {
     return new Set(fixtures.map((fixture) => fixture?.league?.round).filter(Boolean)).size;
 }
 
+function getStandingTeamsCount(standingRows = []) {
+    if (Number.isFinite(Number(standingRows))) return Number(standingRows);
+    if (!Array.isArray(standingRows) || standingRows.length === 0) return 0;
+    if (Array.isArray(standingRows[0])) {
+        return standingRows.reduce((total, group) => total + group.length, 0);
+    }
+
+    return standingRows.length;
+}
+
 function getUpdatedAt(league) {
-    return league?.standing?.[0]?.update || league?.updatedAt || new Date().toISOString();
+    return league?.standing?.[0]?.update || league?.standing?.[0]?.[0]?.update || league?.standings?.[0]?.[0]?.update || league?.sync?.last_success_at || league?.updatedAt || new Date().toISOString();
 }
 
 function getSeasonLabel(season) {
@@ -34,6 +51,26 @@ function shouldFetchFresh(req) {
 
 function maybeCache(query, req, seconds = 600) {
     return shouldFetchFresh(req) ? query : query.cache(seconds);
+}
+
+function getLeaguePath(req) {
+    return `${req.params.nation}/${req.params.league}`.toLowerCase();
+}
+
+function getAvailableSections(league) {
+    const counts = league?._mobileCounts || {};
+    const standingRows = getStandingRows(league);
+
+    return {
+        standings: (counts.teams || getStandingTeamsCount(standingRows)) > 0,
+        fixtures: (counts.fixtures || (league?.season_fixtures || []).length) > 0,
+        topScorers: (counts.scorers || (league?.top_scorers || []).length) > 0,
+        topAssists: (counts.assists || (league?.top_assists || []).length) > 0
+    };
+}
+
+function getStandingRows(league) {
+    return league?.standing || league?.standings || [];
 }
 
 function mapStandingTeam(team) {
@@ -58,16 +95,45 @@ function mapStandingTeam(team) {
     };
 }
 
+function mapStandingGroups(standingRows = []) {
+    if (!Array.isArray(standingRows) || standingRows.length === 0) return [];
+
+    if (Array.isArray(standingRows[0])) {
+        return standingRows.map((group, index) => ({
+            id: `group-${index + 1}`,
+            label: group?.[0]?.group || `Kundi ${String.fromCharCode(65 + index)}`,
+            standings: group.map(mapStandingTeam)
+        }));
+    }
+
+    return [{
+        id: 'table',
+        label: 'Jedwali',
+        standings: standingRows.map(mapStandingTeam)
+    }];
+}
+
+function flattenStandingGroups(groups = []) {
+    return groups.reduce((rows, group) => rows.concat(group.standings || []), []);
+}
+
 function mapPlayer(player, statKey, index) {
     const apiStats = player?.statistics?.[0] || {};
     const value = player?.[statKey] || apiStats?.goals?.[statKey === 'goals' ? 'total' : 'assists'] || 0;
+    const appearances = apiStats?.games?.appearences || apiStats?.games?.appearances || '';
 
     return {
         id: String(player?._id || player?.player?.id || player?.playerName || `${statKey}-${index}`),
         playerName: player?.playerName || player?.player?.name || '--',
         club: player?.club || apiStats?.team?.name || '--',
         country: player?.country || player?.player?.nationality || '',
-        value
+        photo: player?.photo || player?.player?.photo || '',
+        age: player?.age || player?.player?.age || '',
+        value,
+        appearances,
+        goals: player?.goals || apiStats?.goals?.total || 0,
+        assists: player?.assists || apiStats?.goals?.assists || 0,
+        penalties: player?.penalties || apiStats?.penalty?.scored || ''
     };
 }
 
@@ -104,46 +170,217 @@ function mapFixture(fixture) {
     };
 }
 
-router.get('/api/mobile/league/bongo', async (req, res) => {
-    try {
+function mapLeagueSummary(league, options = {}) {
+    const media = getLeagueMedia(league);
+    const displayName = options.displayName || league?.ligi || league?.league_name || BONGO_DISPLAY_NAME;
+    const fixtures = league?.season_fixtures || [];
+    const counts = league?._mobileCounts || {};
+    const standingRows = getStandingRows(league);
+    const availableSections = getAvailableSections(league);
+
+    return {
+        id: league?.league_id || '',
+        path: options.path || league?.path || BONGO_PATH,
+        name: league?.league_name || displayName,
+        displayName,
+        season: league?.league_season || league?.season || '',
+        seasonLabel: league?.msimu?.short || getSeasonLabel(league?.league_season || league?.season),
+        seasonLong: league?.msimu?.long || getSeasonLabel(league?.league_season || league?.season),
+        country: options.country || media.country || 'Tanzania',
+        logo: media.logo,
+        flag: media.flag,
+        currentRound: league?.current_round || league?.current_round_fixtures?.[0]?.league?.round || '',
+        updatedAt: getUpdatedAt(league),
+        availableSections,
+        stats: {
+            teams: counts.teams || getStandingTeamsCount(standingRows),
+            fixtures: counts.fixtures || fixtures.length,
+            rounds: counts.rounds || getRoundsCount(fixtures),
+            scorers: counts.scorers || league?.top_scorers?.length || 0,
+            assists: counts.assists || league?.top_assists?.length || 0
+        }
+    };
+}
+
+function mapLeagueDetails(league, options = {}) {
+    const fixtures = (league?.season_fixtures || [])
+        .map(mapFixture)
+        .sort((first, second) => first.timestamp - second.timestamp);
+    const standingGroups = mapStandingGroups(getStandingRows(league));
+
+    return {
+        league: mapLeagueSummary(league, options),
+        standings: flattenStandingGroups(standingGroups),
+        standingGroups,
+        topScorers: (league?.top_scorers || []).map((player, index) => mapPlayer(player, 'goals', index)),
+        topAssists: (league?.top_assists || []).map((player, index) => mapPlayer(player, 'assists', index)),
+        fixtures
+    };
+}
+
+async function findMobileLeagueByPath(path, req) {
+    if (path === WORLD_CUP_PATH) {
+        const league = await findWorldCupLeague(req);
+        return {
+            league,
+            options: {
+                country: 'World',
+                displayName: WORLD_CUP_DISPLAY_NAME,
+                path: WORLD_CUP_PATH
+            }
+        };
+    }
+
+    if (path === BONGO_PATH) {
         const league = await maybeCache(StandingLigiKuuModel.findOne({ path: BONGO_PATH }), req);
-        if (!league) {
+        return {
+            league,
+            options: {
+                country: 'Tanzania',
+                displayName: BONGO_DISPLAY_NAME,
+                path: BONGO_PATH
+            }
+        };
+    }
+
+    const league = await maybeCache(OtherLeagueModel.findOne({ path, active: { $ne: false } }), req);
+    return {
+        league,
+        options: {
+            path
+        }
+    };
+}
+
+async function findWorldCupLeague(req) {
+    const activeWorldCup = await maybeCache(WorldCupModel.findOne({ active: true }).sort({ season: -1 }), req, 3600);
+    if (activeWorldCup) return activeWorldCup;
+
+    return maybeCache(WorldCupModel.findOne().sort({ season: -1 }), req, 3600);
+}
+
+router.get('/api/mobile/leagues', async (req, res) => {
+    try {
+        const [worldCupLeague, bongoLeague, otherLeagues] = await Promise.all([
+            findWorldCupLeague(req),
+            maybeCache(StandingLigiKuuModel.findOne({ path: BONGO_PATH }), req, 3600),
+            OtherLeagueModel.aggregate([
+                { $match: { active: { $ne: false } } },
+                { $sort: { country: 1, ligi: 1, league_name: 1 } },
+                {
+                    $project: {
+                        league_id: 1,
+                        league_name: 1,
+                        ligi: 1,
+                        path: 1,
+                        country: 1,
+                        league_season: 1,
+                        msimu: 1,
+                        league_logo: 1,
+                        league_flag: 1,
+                        current_round: 1,
+                        updatedAt: 1,
+                        _mobileCounts: {
+                            teams: {
+                                $reduce: {
+                                    input: { $ifNull: ['$standing', []] },
+                                    initialValue: 0,
+                                    in: {
+                                        $add: [
+                                            '$$value',
+                                            { $cond: [{ $isArray: '$$this' }, { $size: '$$this' }, 1] }
+                                        ]
+                                    }
+                                }
+                            },
+                            fixtures: { $size: { $ifNull: ['$season_fixtures', []] } },
+                            scorers: { $size: { $ifNull: ['$top_scorers', []] } },
+                            assists: { $size: { $ifNull: ['$top_assists', []] } },
+                            rounds: {
+                                $size: {
+                                    $setUnion: [
+                                        {
+                                            $map: {
+                                                input: { $ifNull: ['$season_fixtures', []] },
+                                                as: 'fixture',
+                                                in: '$$fixture.league.round'
+                                            }
+                                        },
+                                        []
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            ])
+        ]);
+
+        const leagues = [];
+        if (worldCupLeague) {
+            leagues.push(mapLeagueSummary(worldCupLeague, {
+                country: 'World',
+                displayName: WORLD_CUP_DISPLAY_NAME,
+                path: WORLD_CUP_PATH
+            }));
+        }
+
+        if (bongoLeague) {
+            leagues.push(mapLeagueSummary(bongoLeague, {
+                country: 'Tanzania',
+                displayName: BONGO_DISPLAY_NAME,
+                path: BONGO_PATH
+            }));
+        }
+
+        (otherLeagues || []).forEach((league) => {
+            if (league?.path === BONGO_PATH) return;
+            leagues.push(mapLeagueSummary(league));
+        });
+
+        return res.json({ leagues });
+    } catch (error) {
+        console.error('Mobile leagues list error:', error);
+        return res.status(500).json({
+            code: 'leagues_failed',
+            error: 'Imeshindikana kupata orodha ya ligi kwa sasa.'
+        });
+    }
+});
+
+router.get('/api/mobile/leagues/:nation/:league', async (req, res) => {
+    try {
+        const path = getLeaguePath(req);
+        const result = await findMobileLeagueByPath(path, req);
+
+        if (!result.league) {
             return res.status(404).json({
                 code: 'league_not_found',
                 error: 'Taarifa za ligi hazijapatikana kwa sasa.'
             });
         }
 
-        const media = getBongoLeagueMedia(league);
-        const fixtures = (league.season_fixtures || [])
-            .map(mapFixture)
-            .sort((first, second) => first.timestamp - second.timestamp);
-
-        return res.json({
-            league: {
-                id: league.league_id,
-                name: league.league_name || 'Ligi Kuu Tanzania Bara',
-                displayName: 'Ligi Kuu Tanzania Bara',
-                season: league.league_season || '',
-                seasonLabel: getSeasonLabel(league.league_season),
-                country: media.country,
-                logo: media.logo,
-                flag: media.flag,
-                currentRound: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
-                updatedAt: getUpdatedAt(league),
-                stats: {
-                    teams: league.standing?.length || 0,
-                    fixtures: fixtures.length,
-                    rounds: getRoundsCount(league.season_fixtures || []),
-                    scorers: league.top_scorers?.length || 0,
-                    assists: league.top_assists?.length || 0
-                }
-            },
-            standings: (league.standing || []).map(mapStandingTeam),
-            topScorers: (league.top_scorers || []).map((player, index) => mapPlayer(player, 'goals', index)),
-            topAssists: (league.top_assists || []).map((player, index) => mapPlayer(player, 'assists', index)),
-            fixtures
+        return res.json(mapLeagueDetails(result.league, result.options));
+    } catch (error) {
+        console.error('Mobile league detail error:', error);
+        return res.status(500).json({
+            code: 'league_failed',
+            error: 'Imeshindikana kupata taarifa za ligi kwa sasa.'
         });
+    }
+});
+
+router.get('/api/mobile/league/bongo', async (req, res) => {
+    try {
+        const result = await findMobileLeagueByPath(BONGO_PATH, req);
+        if (!result.league) {
+            return res.status(404).json({
+                code: 'league_not_found',
+                error: 'Taarifa za ligi hazijapatikana kwa sasa.'
+            });
+        }
+
+        return res.json(mapLeagueDetails(result.league, result.options));
     } catch (error) {
         console.error('Mobile bongo league error:', error);
         return res.status(500).json({
