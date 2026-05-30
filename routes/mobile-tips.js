@@ -154,6 +154,20 @@ function multiplyOdds(docs, key = 'odds') {
     }, 1).toFixed(2);
 }
 
+function multiplyOddsCapped(docs, key = 'odds', cap = 10000) {
+    let product = 1;
+
+    for (const doc of docs) {
+        const odds = Number(doc[key]);
+        if (!odds || Number.isNaN(odds)) continue;
+
+        product *= odds;
+        if (product > cap) return cap + '+';
+    }
+
+    return product.toFixed(2);
+}
+
 function formatOdds(value) {
     const odds = Number(value);
     if (!odds || Number.isNaN(odds)) return String(value || '-');
@@ -221,9 +235,11 @@ async function getFreeTipPage(req, model, matchStage, market, legacyLimit) {
     const docs = pageDocs.slice(0, limit);
     const hasMore = pageDocs.length > limit;
     const tips = docs.map((doc) => mapFreeTip(doc, market, 'Free'));
-    const total = await maybeCache(model.countDocuments(matchStage), req);
-    const statsDocs = await maybeCache(model.find(matchStage).sort(sort).limit(legacyLimit).lean(), req);
-    const stats = getStats(statsDocs.map((doc) => mapFreeTip(doc, market, 'Free')), multiplyOdds(statsDocs));
+    const [total, statsDocs] = await Promise.all([
+        maybeCache(model.countDocuments(matchStage), req),
+        maybeCache(model.find(matchStage).sort(sort).lean(), req)
+    ]);
+    const stats = getStats(statsDocs.map((doc) => mapFreeTip(doc, market, 'Free')), multiplyOddsCapped(statsDocs));
     if (stats[0]) stats[0].value = String(total);
 
     return {
