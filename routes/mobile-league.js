@@ -8,6 +8,9 @@ const BONGO_PATH = 'tanzania/premier-league';
 const BONGO_DISPLAY_NAME = 'Ligi Kuu Tanzania Bara';
 const WORLD_CUP_PATH = 'world/kombe-la-dunia';
 const WORLD_CUP_DISPLAY_NAME = 'Kombe la Dunia';
+const LEAGUE_CACHE_SECONDS = 3600;
+const UPCOMING_FIXTURE_LIMIT = 10;
+const RECENT_RESULT_LIMIT = 20;
 
 function getLeagueMedia(league) {
     const sample = league?.current_round_fixtures?.[0]?.league || league?.season_fixtures?.[0]?.league || {};
@@ -49,8 +52,17 @@ function shouldFetchFresh(req) {
     return String(req.query.fresh || '').trim() === '1';
 }
 
-function maybeCache(query, req, seconds = 600) {
+function maybeCache(query, req, seconds = LEAGUE_CACHE_SECONDS) {
     return shouldFetchFresh(req) ? query : query.cache(seconds);
+}
+
+function setLeagueCacheHeaders(req, res) {
+    if (shouldFetchFresh(req)) {
+        res.set('Cache-Control', 'no-store');
+        return;
+    }
+
+    res.set('Cache-Control', `public, max-age=${LEAGUE_CACHE_SECONDS}, s-maxage=${LEAGUE_CACHE_SECONDS}`);
 }
 
 function getLeaguePath(req) {
@@ -170,6 +182,35 @@ function mapFixture(fixture) {
     };
 }
 
+function isFinishedFixture(fixture, now) {
+    const finalStatuses = ['FT', 'AET', 'PEN'];
+    const shortStatus = fixture?.status?.short || '';
+    const hasScore = fixture?.goals?.home !== null && fixture?.goals?.home !== undefined && fixture?.goals?.away !== null && fixture?.goals?.away !== undefined;
+
+    return finalStatuses.includes(shortStatus) || (hasScore && Number(fixture?.timestamp || 0) < now);
+}
+
+function isUpcomingFixture(fixture, now) {
+    return !isFinishedFixture(fixture, now) && Number(fixture?.timestamp || 0) >= now;
+}
+
+function getMobileFixtures(fixtures = []) {
+    const now = Math.floor(Date.now() / 1000);
+    const mappedFixtures = fixtures
+        .map(mapFixture)
+        .filter((fixture) => fixture.timestamp);
+    const upcomingFixtures = mappedFixtures
+        .filter((fixture) => isUpcomingFixture(fixture, now))
+        .sort((first, second) => first.timestamp - second.timestamp)
+        .slice(0, UPCOMING_FIXTURE_LIMIT);
+    const recentResults = mappedFixtures
+        .filter((fixture) => isFinishedFixture(fixture, now))
+        .sort((first, second) => second.timestamp - first.timestamp)
+        .slice(0, RECENT_RESULT_LIMIT);
+
+    return upcomingFixtures.concat(recentResults);
+}
+
 function mapLeagueSummary(league, options = {}) {
     const media = getLeagueMedia(league);
     const displayName = options.displayName || league?.ligi || league?.league_name || BONGO_DISPLAY_NAME;
@@ -203,9 +244,6 @@ function mapLeagueSummary(league, options = {}) {
 }
 
 function mapLeagueDetails(league, options = {}) {
-    const fixtures = (league?.season_fixtures || [])
-        .map(mapFixture)
-        .sort((first, second) => first.timestamp - second.timestamp);
     const standingGroups = mapStandingGroups(getStandingRows(league));
 
     return {
@@ -214,7 +252,7 @@ function mapLeagueDetails(league, options = {}) {
         standingGroups,
         topScorers: (league?.top_scorers || []).map((player, index) => mapPlayer(player, 'goals', index)),
         topAssists: (league?.top_assists || []).map((player, index) => mapPlayer(player, 'assists', index)),
-        fixtures
+        fixtures: getMobileFixtures(league?.season_fixtures || [])
     };
 }
 
@@ -253,20 +291,27 @@ async function findMobileLeagueByPath(path, req) {
 }
 
 async function findWorldCupLeague(req) {
-    const activeWorldCup = await maybeCache(WorldCupModel.findOne({ active: true }).sort({ season: -1 }), req, 3600);
+    const activeWorldCup = await maybeCache(WorldCupModel.findOne({ active: true }).sort({ season: -1 }), req);
     if (activeWorldCup) return activeWorldCup;
 
-    return maybeCache(WorldCupModel.findOne().sort({ season: -1 }), req, 3600);
+    return maybeCache(WorldCupModel.findOne().sort({ season: -1 }), req);
 }
 
 router.get('/api/mobile/leagues', async (req, res) => {
     try {
+        setLeagueCacheHeaders(req, res);
+
         const [worldCupLeague, bongoLeague, otherLeagues] = await Promise.all([
             findWorldCupLeague(req),
-            maybeCache(StandingLigiKuuModel.findOne({ path: BONGO_PATH }), req, 3600),
-            OtherLeagueModel.aggregate([
+            maybeCache(StandingLigiKuuModel.findOne({ path: BONGO_PATH }), req),
+            maybeCache(OtherLeagueModel.aggregate([
                 { $match: { active: { $ne: false } } },
-                { $sort: { country: 1, ligi: 1, league_name: 1 } },
+                {
+                    $addFields: {
+                        _mobileSortLeagueId: { $ifNull: ['$league_id', 999999] }
+                    }
+                },
+                { $sort: { _mobileSortLeagueId: 1, country: 1, ligi: 1, league_name: 1 } },
                 {
                     $project: {
                         league_id: 1,
@@ -313,7 +358,7 @@ router.get('/api/mobile/leagues', async (req, res) => {
                         }
                     }
                 }
-            ])
+            ]), req)
         ]);
 
         const leagues = [];
@@ -350,6 +395,8 @@ router.get('/api/mobile/leagues', async (req, res) => {
 
 router.get('/api/mobile/leagues/:nation/:league', async (req, res) => {
     try {
+        setLeagueCacheHeaders(req, res);
+
         const path = getLeaguePath(req);
         const result = await findMobileLeagueByPath(path, req);
 
@@ -372,6 +419,8 @@ router.get('/api/mobile/leagues/:nation/:league', async (req, res) => {
 
 router.get('/api/mobile/league/bongo', async (req, res) => {
     try {
+        setLeagueCacheHeaders(req, res);
+
         const result = await findMobileLeagueByPath(BONGO_PATH, req);
         if (!result.league) {
             return res.status(404).json({
