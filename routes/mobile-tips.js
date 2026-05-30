@@ -12,8 +12,6 @@ const router = express.Router();
 const PAYMENT_URL = 'https://mkekawaleo.com/mkeka/vip';
 const FREE_TIP_PAGE_LIMIT = 10;
 const FREE_TIP_MAX_LIMIT = 30;
-const HOME_LEGACY_LIMIT = 35;
-const MARKET_LEGACY_LIMIT = 100;
 
 function getJwtSecret() {
     return process.env.APP_AUTH_TOKEN_SECRET || process.env.PASS;
@@ -67,13 +65,7 @@ function maybeCache(query, req, seconds = 600) {
     return shouldFetchFresh(req) ? query : query.cache(seconds);
 }
 
-function isPaginatedRequest(req) {
-    return req.query.limit !== undefined || req.query.cursor !== undefined;
-}
-
-function getPageLimit(req, legacyLimit) {
-    if (!isPaginatedRequest(req)) return legacyLimit;
-
+function getPageLimit(req) {
     const parsedLimit = Number.parseInt(String(req.query.limit || FREE_TIP_PAGE_LIMIT), 10);
     if (!Number.isFinite(parsedLimit)) return FREE_TIP_PAGE_LIMIT;
 
@@ -226,9 +218,9 @@ function getStats(tips, totalOdds) {
     ];
 }
 
-async function getFreeTipPage(req, model, matchStage, market, legacyLimit) {
+async function getFreeTipPage(req, model, matchStage, market) {
     const cursor = decodeTipCursor(req.query.cursor);
-    const limit = getPageLimit(req, legacyLimit);
+    const limit = getPageLimit(req);
     const queryMatch = withCursorFilter(matchStage, cursor);
     const sort = getConfidenceSort();
     const pageDocs = await maybeCache(model.find(queryMatch).sort(sort).limit(limit + 1).lean(), req);
@@ -297,7 +289,7 @@ async function ensurePaidUser(req, res) {
 router.get('/api/mobile/tips/home', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const data = await getFreeTipPage(req, mkekaModel, { jsDate: date, confidence: 'SUPER_STRONG' }, 'Mega odds combo', HOME_LEGACY_LIMIT);
+        const data = await getFreeTipPage(req, mkekaModel, { jsDate: date, confidence: 'SUPER_STRONG' }, 'Mega odds combo');
 
         return res.json({ date, ...data });
     } catch (error) {
@@ -310,7 +302,7 @@ router.get('/api/mobile/tips/home', async (req, res) => {
 router.get('/api/mobile/tips/over15', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const data = await getFreeTipPage(req, over15Mik, { jsDate: date, accuracy: { $gte: 75 } }, 'Over 1.5 goals', MARKET_LEGACY_LIMIT);
+        const data = await getFreeTipPage(req, over15Mik, { jsDate: date, accuracy: { $gte: 75 } }, 'Over 1.5 goals');
 
         return res.json({ date, ...data });
     } catch (error) {
@@ -329,7 +321,7 @@ router.get('/api/mobile/tips/over25', async (req, res) => {
                 { confidence: 'SUPER_STRONG' },
                 { confidence: 'STRONG', 'meta.xG': { $gte: 3.4 } }
             ]
-        }, 'Over 2.5 goals', MARKET_LEGACY_LIMIT);
+        }, 'Over 2.5 goals');
 
         return res.json({ date, ...data });
     } catch (error) {
