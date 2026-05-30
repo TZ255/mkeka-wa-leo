@@ -28,6 +28,8 @@ const slipSchema = new Schema({
 
 // over15: find/aggregate by { date, accuracy }
 slipSchema.index({ date: 1, accuracy: -1 })
+// mobile free tips paginate by app jsDate and confidence order
+slipSchema.index({ jsDate: 1, accuracy: -1, _id: 1 })
 slipSchema.index({ date: 1, confidence: 1, accuracy: -1 })
 
 let MikekaDb = mongoose.connection.useDb('mikeka-ya-uhakika')

@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const { PRIORITY_LEAGUES } = require('./fns/aggregateTips');
+const mongoose = require('mongoose');
 const mkekaModel = require('../model/mkeka-mega');
 const over15Mik = require('../model/ove15mik');
 const over25Model = require('../model/over25mik');
@@ -10,6 +10,10 @@ const mkekaUsersModel = require('../model/mkeka-users');
 
 const router = express.Router();
 const PAYMENT_URL = 'https://mkekawaleo.com/mkeka/vip';
+const FREE_TIP_PAGE_LIMIT = 10;
+const FREE_TIP_MAX_LIMIT = 30;
+const HOME_LEGACY_LIMIT = 35;
+const MARKET_LEGACY_LIMIT = 100;
 
 function getJwtSecret() {
     return process.env.APP_AUTH_TOKEN_SECRET || process.env.PASS;
@@ -63,14 +67,76 @@ function maybeCache(query, req, seconds = 600) {
     return shouldFetchFresh(req) ? query : query.cache(seconds);
 }
 
-function mobileTipPipeline(matchStage, limit = 35) {
-    return [
-        { $match: matchStage },
-        { $addFields: { isPriority: { $cond: [{ $in: ['$league_id', PRIORITY_LEAGUES] }, 1, 0] } } },
-        { $sort: { isPriority: -1, accuracy: -1 } },
-        { $limit: limit },
-        { $sort: { isPriority: -1, time: 1 } }
-    ];
+function isPaginatedRequest(req) {
+    return req.query.limit !== undefined || req.query.cursor !== undefined;
+}
+
+function getPageLimit(req, legacyLimit) {
+    if (!isPaginatedRequest(req)) return legacyLimit;
+
+    const parsedLimit = Number.parseInt(String(req.query.limit || FREE_TIP_PAGE_LIMIT), 10);
+    if (!Number.isFinite(parsedLimit)) return FREE_TIP_PAGE_LIMIT;
+
+    return Math.min(Math.max(parsedLimit, 1), FREE_TIP_MAX_LIMIT);
+}
+
+function encodeTipCursor(doc) {
+    if (!doc) return null;
+
+    const payload = {
+        accuracy: Number(doc.accuracy || 0),
+        id: String(doc._id)
+    };
+
+    return Buffer.from(JSON.stringify(payload)).toString('base64');
+}
+
+function decodeTipCursor(rawCursor) {
+    const cursor = String(rawCursor || '').trim();
+    if (!cursor) return null;
+
+    try {
+        const payload = JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'));
+        const accuracy = Number(payload.accuracy);
+        const id = String(payload.id || '');
+
+        if (!Number.isFinite(accuracy) || !mongoose.Types.ObjectId.isValid(id)) {
+            const error = new Error('Invalid pagination cursor.');
+            error.statusCode = 400;
+            throw error;
+        }
+
+        return {
+            accuracy,
+            id: new mongoose.Types.ObjectId(id)
+        };
+    } catch (error) {
+        if (error.statusCode) throw error;
+
+        const cursorError = new Error('Invalid pagination cursor.');
+        cursorError.statusCode = 400;
+        throw cursorError;
+    }
+}
+
+function withCursorFilter(matchStage, cursor) {
+    if (!cursor) return matchStage;
+
+    return {
+        $and: [
+            matchStage,
+            {
+                $or: [
+                    { accuracy: { $lt: cursor.accuracy } },
+                    { accuracy: cursor.accuracy, _id: { $gt: cursor.id } }
+                ]
+            }
+        ]
+    };
+}
+
+function getConfidenceSort() {
+    return { accuracy: -1, _id: 1 };
 }
 
 function average(values) {
@@ -146,6 +212,32 @@ function getStats(tips, totalOdds) {
     ];
 }
 
+async function getFreeTipPage(req, model, matchStage, market, legacyLimit) {
+    const cursor = decodeTipCursor(req.query.cursor);
+    const limit = getPageLimit(req, legacyLimit);
+    const queryMatch = withCursorFilter(matchStage, cursor);
+    const sort = getConfidenceSort();
+    const pageDocs = await maybeCache(model.find(queryMatch).sort(sort).limit(limit + 1).lean(), req);
+    const docs = pageDocs.slice(0, limit);
+    const hasMore = pageDocs.length > limit;
+    const tips = docs.map((doc) => mapFreeTip(doc, market, 'Free'));
+    const total = await maybeCache(model.countDocuments(matchStage), req);
+    const statsDocs = await maybeCache(model.find(matchStage).sort(sort).limit(legacyLimit).lean(), req);
+    const stats = getStats(statsDocs.map((doc) => mapFreeTip(doc, market, 'Free')), multiplyOdds(statsDocs));
+    if (stats[0]) stats[0].value = String(total);
+
+    return {
+        tips,
+        stats,
+        pagination: {
+            limit,
+            nextCursor: hasMore ? encodeTipCursor(docs[docs.length - 1]) : null,
+            hasMore,
+            total
+        }
+    };
+}
+
 function getPublicUser(user) {
     return {
         id: user.id,
@@ -189,11 +281,11 @@ async function ensurePaidUser(req, res) {
 router.get('/api/mobile/tips/home', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const docs = await maybeCache(mkekaModel.aggregate(mobileTipPipeline({ jsDate: date, confidence: 'SUPER_STRONG' }, 35)), req);
-        const tips = docs.map((doc) => mapFreeTip(doc, 'Mega odds combo', 'Free'));
+        const data = await getFreeTipPage(req, mkekaModel, { jsDate: date, confidence: 'SUPER_STRONG' }, 'Mega odds combo', HOME_LEGACY_LIMIT);
 
-        return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
+        return res.json({ date, ...data });
     } catch (error) {
+        if (error.statusCode) return res.status(error.statusCode).json({ code: 'invalid_cursor', error: error.message });
         console.error('Mobile home tips error:', error);
         return res.status(500).json({ code: 'tips_failed', error: 'Unable to load tips right now.' });
     }
@@ -202,11 +294,11 @@ router.get('/api/mobile/tips/home', async (req, res) => {
 router.get('/api/mobile/tips/over15', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const docs = await maybeCache(over15Mik.find({ jsDate: date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean(), req);
-        const tips = docs.map((doc) => mapFreeTip(doc, 'Over 1.5 goals', 'Free'));
+        const data = await getFreeTipPage(req, over15Mik, { jsDate: date, accuracy: { $gte: 75 } }, 'Over 1.5 goals', MARKET_LEGACY_LIMIT);
 
-        return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
+        return res.json({ date, ...data });
     } catch (error) {
+        if (error.statusCode) return res.status(error.statusCode).json({ code: 'invalid_cursor', error: error.message });
         console.error('Mobile over15 tips error:', error);
         return res.status(500).json({ code: 'tips_failed', error: 'Unable to load Over 1.5 tips right now.' });
     }
@@ -215,17 +307,17 @@ router.get('/api/mobile/tips/over15', async (req, res) => {
 router.get('/api/mobile/tips/over25', async (req, res) => {
     try {
         const date = getRequestJsDate(req);
-        const docs = await maybeCache(over25Model.find({
+        const data = await getFreeTipPage(req, over25Model, {
             jsDate: date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
                 { confidence: 'STRONG', 'meta.xG': { $gte: 3.4 } }
             ]
-        }).sort('-accuracy').limit(100).lean(), req);
-        const tips = docs.map((doc) => mapFreeTip(doc, 'Over 2.5 goals', 'Free'));
+        }, 'Over 2.5 goals', MARKET_LEGACY_LIMIT);
 
-        return res.json({ date, tips, stats: getStats(tips, multiplyOdds(docs)) });
+        return res.json({ date, ...data });
     } catch (error) {
+        if (error.statusCode) return res.status(error.statusCode).json({ code: 'invalid_cursor', error: error.message });
         console.error('Mobile over25 tips error:', error);
         return res.status(500).json({ code: 'tips_failed', error: 'Unable to load Over 2.5 tips right now.' });
     }

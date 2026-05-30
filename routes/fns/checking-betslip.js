@@ -41,26 +41,26 @@ const checking3MkekaBetslip = async (d) => {
                     $match: {
                         date: d,
                         time: { $gte: '14:00' },
-                        odds: { $gte: 1.2 },
+                        odds: { $gte: 1.3 },
                         confidence: "SUPER_STRONG",
                         match: { $nin: copies25.map(c => c.match) },
                         fixture_id: { $nin: vip2.map(c => c.fixture_id) }
                     }
                 },
-                { $sample: { size: 2 } }
+                { $sample: { size: 5 - copies25.length } }
             ]);
 
             const copiesdc12 = await DCTipsModel.aggregate([
                 {
                     $match: {
                         date: d,
-                        time: { $gte: '13:00' },
+                        time: { $gte: '14:00' },
                         bet: "12",
                         confidence: "SUPER_STRONG",
                         fixture_id: { $nin: [...vip2.map(c => c.fixture_id), ...copies25.map(c => c.fixture_id), ...copies1x2.map(c => c.fixture_id) ] }
                     }
                 },
-                { $sample: { size: 2 } }
+                { $sample: { size: 5 - copies25.length - copies1x2.length } }
             ]);
 
             const combinedDocs = [...copies25, ...copies1x2, ...copiesdc12]
@@ -115,7 +115,7 @@ const checking3MkekaBetslip = async (d) => {
                         fixture_id: { $nin: [...vip1.map(c => c.fixture_id), ...copies25.map(c => c.fixture_id) ] }
                     }
                 },
-                { $sample: { size: 2 } }
+                { $sample: { size: 5 - copies25.length } }
             ]);
 
             const copiesdc12 = await DCTipsModel.aggregate([
@@ -128,7 +128,7 @@ const checking3MkekaBetslip = async (d) => {
                         fixture_id: { $nin: [...vip1.map(c => c.fixture_id), ...copies25.map(c => c.fixture_id), ...copies1x2.map(c => c.fixture_id) ] }
                     }
                 },
-                { $sample: { size: 2 } }
+                { $sample: { size: 5 - copies25.length - copies1x2.length } }
             ]);
 
             const combinedDocs = [...copies25, ...copies1x2, ...copiesdc12]

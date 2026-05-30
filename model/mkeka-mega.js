@@ -33,6 +33,8 @@ const megaSchema = new Schema({
 
 // aggregateTips: { date, confidence, accuracy } with sort on accuracy
 megaSchema.index({ date: 1, confidence: 1, accuracy: -1 })
+// mobile free tips paginate by app jsDate and confidence order
+megaSchema.index({ jsDate: 1, confidence: 1, accuracy: -1, _id: 1 })
 // findMikekaByWeekday: { date, status, bet, accuracy }
 megaSchema.index({ date: 1, status: 1, bet: 1, accuracy: -1 })
 // aggregation pipeline uses league_id for $in priority check
