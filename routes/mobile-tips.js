@@ -291,6 +291,7 @@ router.get('/api/mobile/tips/home', async (req, res) => {
         const date = getRequestJsDate(req);
         const data = await getFreeTipPage(req, mkekaModel, { jsDate: date, confidence: 'SUPER_STRONG' }, 'Mega odds combo');
 
+        res.set('Cache-Control', 'public, max-age=600');
         return res.json({ date, ...data });
     } catch (error) {
         if (error.statusCode) return res.status(error.statusCode).json({ code: 'invalid_cursor', error: error.message });
@@ -304,6 +305,7 @@ router.get('/api/mobile/tips/over15', async (req, res) => {
         const date = getRequestJsDate(req);
         const data = await getFreeTipPage(req, over15Mik, { jsDate: date, accuracy: { $gte: 75 } }, 'Over 1.5 goals');
 
+        res.set('Cache-Control', 'public, max-age=600');
         return res.json({ date, ...data });
     } catch (error) {
         if (error.statusCode) return res.status(error.statusCode).json({ code: 'invalid_cursor', error: error.message });
@@ -323,6 +325,8 @@ router.get('/api/mobile/tips/over25', async (req, res) => {
             ]
         }, 'Over 2.5 goals');
 
+        // https cache level
+        res.set('Cache-Control', 'public, max-age=600');
         return res.json({ date, ...data });
     } catch (error) {
         if (error.statusCode) return res.status(error.statusCode).json({ code: 'invalid_cursor', error: error.message });
