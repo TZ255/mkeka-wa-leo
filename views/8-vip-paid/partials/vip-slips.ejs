@@ -1,0 +1,128 @@
+<section class="mvl-page">
+  <div class="mvl-hero">
+    <span class="mvl-hero__eyebrow">
+      <i class="fa-solid fa-crown"></i>
+      VIP Betslips
+    </span>
+    <h1>Mikeka ya VIP</h1>
+    <p>Slips 4 za leo, booking code, odds na makadirio ya ushindi kwa kila mkeka.</p>
+  </div>
+
+  <div class="mvl-summary-grid">
+    <div class="mvl-summary">
+      <span><i class="fa-solid fa-layer-group"></i> Mikeka</span>
+      <strong><%= vipSummary.slipCount %></strong>
+    </div>
+    <div class="mvl-summary">
+      <span><i class="fa-solid fa-chart-simple"></i> Total Odds</span>
+      <strong><%= vipSummary.totalOdds %></strong>
+    </div>
+    <div class="mvl-summary">
+      <span><i class="fa-solid fa-money-bill-wave"></i> Stake Kwa Mkeka</span>
+      <strong><%= vipSummary.stake.toLocaleString('en-US') %></strong>
+    </div>
+    <div class="mvl-summary">
+      <span><i class="fa-solid fa-sack-dollar"></i> Possible Win</span>
+      <strong><%= vipSummary.totalPotentialWin.toLocaleString('en-US') %></strong>
+    </div>
+  </div>
+
+  <div class="mvl-slip-stack">
+    <% vipSlips.forEach((slip, index) => { %>
+      <article class="mvl-slip">
+        <div class="mvl-slip__top">
+          <div class="mvl-slip__head">
+            <div class="mvl-slip__title">
+              <span class="mvl-slip__icon">
+                <i class="fa-solid fa-ticket"></i>
+              </span>
+              <div>
+                <span>Premium Slip</span>
+                <h2>VIP Betslip #<%= index + 1 %></h2>
+              </div>
+            </div>
+            <div class="mvl-slip__odds">
+              <span>Odds</span>
+              <%= slip.totalOdds %>
+            </div>
+          </div>
+
+          <div class="mvl-slip__chips">
+            <span class="mvl-chip"><i class="fa-regular fa-futbol"></i><%= slip.tips.length %> Tips</span>
+            <span class="mvl-chip"><i class="fa-solid fa-bullseye"></i><%= slip.averageAccuracy %>% Avg</span>
+            <span class="mvl-chip"><i class="fa-solid fa-coins"></i><%= slip.potentialWin.toLocaleString('en-US') %></span>
+          </div>
+        </div>
+
+        <% if (slip.tips.length > 0) { %>
+          <div class="mvl-slip__body">
+            <% slip.tips.forEach((mch) => {
+              const status = String(mch.status || 'pending').toLowerCase();
+              const isWon = status === 'won';
+              const isLost = status === 'lose' || status === 'lost';
+              const isPostponed = status === 'postponed';
+              const shouldShowStatus = isWon || isLost || isPostponed;
+              const statusLabel = isWon ? 'Won' : (isLost ? 'Lost' : 'Postponed');
+              const statusIcon = isWon ? 'fa-circle-check' : (isLost ? 'fa-circle-xmark' : 'fa-circle-pause');
+              const resultText = mch.result && mch.result !== '-:-' ? ` · ${mch.result}` : '';
+            %>
+              <div class="mvl-match">
+                <div class="mvl-match__main">
+                  <div class="mvl-match__meta">
+                    <span class="mvl-meta-pill"><i class="fa-regular fa-clock"></i><span><%= mch.time %></span></span>
+                    <span class="mvl-meta-pill"><i class="fa-solid fa-trophy"></i><span><%= mch.league %></span></span>
+                  </div>
+
+                  <div class="mvl-match__teams"><%= String(mch.match || '').replace(' vs ', ' - ') %></div>
+                </div>
+
+                <div>
+                  <div class="mvl-match__actions">
+                    <div class="mvl-pick">
+                      <i class="fa-solid fa-crown"></i>
+                      <span><%= mch.tip %></span>
+                    </div>
+                    <div class="mvl-odd"><%= Number(mch.odd || 0).toFixed(2) %></div>
+                  </div>
+                </div>
+
+                <% if (shouldShowStatus) { %>
+                  <div class="mvl-result-row">
+                    <span class="mvl-status <%= isWon ? 'is-won' : (isLost ? 'is-lost' : 'is-postponed') %>">
+                      <i class="fa-regular <%= statusIcon %>"></i>
+                      <span><%= statusLabel %><%= resultText %></span>
+                    </span>
+                  </div>
+                <% } %>
+
+                <% if (mch?.expl && mch.expl.length > 5) { %>
+                  <p class="mvl-match__expl"><%= mch.expl %></p>
+                <% } %>
+              </div>
+            <% }) %>
+          </div>
+
+          <div class="mvl-slip__footer">
+            <div class="mvl-winbox">
+              <div class="mvl-label"><i class="fa-solid fa-money-bill-trend-up"></i> Stake <%= slip.stake.toLocaleString('en-US') %> TZS | SHINDA</div>
+              <strong><%= slip.potentialWin.toLocaleString('en-US') %> TZS</strong>
+            </div>
+
+            <div class="mvl-booking">
+              <div class="mvl-label"><i class="fa-solid fa-key"></i> Booking Code | <%= slip.booking.label?.replace(" Betting", "") %></div>
+              <div class="mvl-code">
+                <%= slip.booking.code %>
+              </div>
+              <a href="<%= slip.booking.register_link %>" target="_blank" class="mvl-link">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                Fungua <%= slip.booking.label?.replace(" Betting", "") %>
+              </a>
+            </div>
+          </div>
+        <% } else { %>
+          <div class="mvl-empty">Betslip hii bado haijawekwa.</div>
+        <% } %>
+      </article>
+    <% }) %>
+  </div>
+</section>

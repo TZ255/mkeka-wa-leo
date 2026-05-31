@@ -1,11 +1,11 @@
 <div id="lipia_maelezo"></div>
 <%- include('./paywall-card.ejs'); %>
 <br><hr><br>
-<%- include('./extras/locked-betslips.ejs'); %>
+<%- include('../../zz-fragments/vip-locked-betslips.ejs', { vipLockedCtaHref: '#paywall-card' }); %>
 <br><hr><br>
 
 <!-- Matokeo ya nyuma -->
- <%- include('./extras/matokeo-betslip.ejs'); %>
+ <!-- <%- include('./extras/matokeo-betslip.ejs'); %> -->
 
 <!-- Global Payment Modal (shared by HTMX fragments) -->
 <%- include('./modal-payment.ejs'); %>

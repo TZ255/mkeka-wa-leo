@@ -46,7 +46,7 @@
                             </td>
 
                             <!-- Teams column -->
-                            <td class="">
+                            <td class="fixture-copy-cell" data-fixture-id="<%= match.fixture_id %>" title="Double click to copy fixture ID <%= match.fixture_id %>">
                                 <div class="d-flex flex-column">
                                     <div class="<%= match.match.home.winner === true ? 'text-success fw-bold' : '' %> text-truncate"
                                         style="max-width: 200px;" title="<%= match.match.home.name %>">
@@ -98,3 +98,49 @@
         <% } %>
     </div>
 </section>
+
+<script>
+    (() => {
+        const table = document.getElementById('kday');
+        if (!table || table.dataset.fixtureCopyReady === '1') return;
+        table.dataset.fixtureCopyReady = '1';
+
+        const copyFixtureId = async (fixtureId) => {
+            if (!fixtureId) return false;
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(fixtureId);
+                return true;
+            }
+
+            const input = document.createElement('input');
+            input.value = fixtureId;
+            input.setAttribute('readonly', '');
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.select();
+            const copied = document.execCommand('copy');
+            document.body.removeChild(input);
+            return copied;
+        };
+
+        table.addEventListener('dblclick', async (event) => {
+            const cell = event.target.closest('[data-fixture-id]');
+            if (!cell) return;
+
+            const fixtureId = cell.dataset.fixtureId;
+            try {
+                await copyFixtureId(fixtureId);
+                const originalTitle = cell.getAttribute('title') || '';
+                cell.setAttribute('title', `Copied fixture ID ${fixtureId}`);
+                cell.classList.add('table-success');
+                setTimeout(() => {
+                    cell.setAttribute('title', originalTitle);
+                    cell.classList.remove('table-success');
+                }, 1200);
+            } catch (error) {
+                console.error('Unable to copy fixture ID:', error);
+            }
+        });
+    })();
+</script>

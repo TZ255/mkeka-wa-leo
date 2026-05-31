@@ -1,121 +1,39 @@
-<% const toNumber = (value) => Number(value || 1); %>
-<% const totalVipOdds = (toNumber(total_odds?.betslip1) * toNumber(total_odds?.betslip2) * toNumber(2.00)).toFixed(2); %>
+<section class="mvl-end">
+  <div class="mvl-end__panel">
+    <h2 class="mvl-end__title" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>
+      <i class="fa-solid fa-clipboard-check"></i>
+      Muhtasari wa VIP
+    </h2>
 
-<br>
-<div class="alert alert-secondary shadow-sm border-0" style="font-size: 0.9rem;">
-    <h6 class="mb-2">Mchanganuo wa Odds</h6>
-
-    <ul class="list-group list-group-flush mb-3">
-        <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
-            <span>Mkeka #1</span>
-            <strong><%= total_odds?.betslip1 %></strong>
-        </li>
-        <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
-            <span>Mkeka #2</span>
-            <strong><%= total_odds?.betslip2 %></strong>
-        </li>
-        <li class="list-group-item d-flex justify-content-between px-0 py-2 bg-transparent">
-            <span>Bonus Tips (Mechi 2)</span>
-            <strong>2.00</strong>
-        </li>
-    </ul>
-
-    <div class="small text-secondary mb-1">Hesabu ya jumla</div>
-    <div class="fw-semibold">
-        <%= total_odds?.betslip1 %> × <%= total_odds?.betslip2 %> x 2.00
-        = <span class="text-dark"><%= totalVipOdds %></span>
-    </div>
-</div>
-
-<br><br>
-<div class="kesho_count container my-5 p-4 rounded shadow bg-dark text-light"
-    style="max-width: 600px; background-color: rgba(25, 135, 84, 0.08);">
-
-    <div class="text-center mb-3">
-        <i class="fas fa-clock fa-2x text-success mb-2 rotate-icon"></i>
-        <h2 class="fw-bold">Mechi za Kesho</h2>
-        <p class="fs-6">Muda uliobakia kuona mechi za kesho</p>
+    <div class="mvl-end__grid">
+      <div class="mvl-end__item">
+        <span>VIP Slips</span>
+        <strong><%= vipSummary.slipCount %></strong>
+      </div>
+      <div class="mvl-end__item">
+        <span>Total Odds</span>
+        <strong><%= vipSummary.totalOdds %></strong>
+      </div>
+      <div class="mvl-end__item">
+        <span>Total Stake</span>
+        <strong><%= vipSummary.totalStake.toLocaleString('en-US') %></strong>
+      </div>
+      <div class="mvl-end__item">
+        <span>Possible Win</span>
+        <strong><%= vipSummary.totalPotentialWin.toLocaleString('en-US') %></strong>
+      </div>
     </div>
 
-    <div id="counting" class="d-flex justify-content-center gap-3 fs-4 fw-semibold text-center">
-        <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
-            <div id="hours" class="fs-2">--</div>
-            <small class="text-secondary">Hours</small>
-        </div>
-        <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
-            <div id="minutes" class="fs-2">--</div>
-            <small class="text-secondary">Minutes</small>
-        </div>
-        <div class="time-box bg-light text-dark px-3 py-2 rounded shadow-sm">
-            <div id="seconds" class="fs-2">--</div>
-            <small class="text-secondary">Seconds</small>
-        </div>
-    </div>
-</div>
-
-<div class="container" style="margin-top: 100px;">
-    <div class="row justify-content-center">
-        <div class="col-md-12 text-center">
-            <div class="card border-0">
-                <div class="card-body py-5">
-                    <div class="d-flex align-items-center justify-content-center mb-3">
-                        <hr class="flex-grow-1 border-2">
-                        <span class="badge bg-secondary text-white mx-3 py-2 px-3 fs-6">VIP MIKEKA</span>
-                        <hr class="flex-grow-1 border-2">
-                    </div>
-                    <h2 class="display-6 fw-bold text-secondary mb-3">Mwisho</h2>
-                    <p class="text-secondary mb-4" <%- user.role === 'admin' ? 'onclick="adminUpdates()"' : '' %>>Zingatia!
-                        Betting ni Burudani.. <br> Beti kistaarabu. Usibetie kiasi cha pesa ambacho kikipotea
-                        kitakuathiri.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+    <p class="mvl-end__note">Zingatia: Betting ni burudani. Beti kistaarabu na usibetie kiasi ambacho kikipotea kitakuathiri.</p>
+  </div>
+</section>
 
 <script>
-    function adminUpdates() {
-        let adminSection = document.getElementById('adminSection')
-        let prevSection = document.getElementById('prevSection')
-        prevSection.classList.toggle('d-none')
-        adminSection.classList.toggle('d-none')
-    }
-</script>
-
-
-
-<script>
-    const hoursEl = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
-
-    function getTimeLeftToNairobiMidnight() {
-        // Get current time in Nairobi
-        const now = new Date();
-        const nairobiNow = new Date(now.toLocaleString("en-US", { timeZone: "Africa/Nairobi" }));
-
-        const midnight = new Date(nairobiNow);
-        midnight.setHours(24, 0, 0, 0); // Set to next midnight
-
-        const diffMs = midnight - nairobiNow;
-
-        const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
-        const seconds = Math.floor((diffMs / 1000) % 60);
-
-        return { hours, minutes, seconds };
-    }
-
-    setInterval(() => {
-        const { hours, minutes, seconds } = getTimeLeftToNairobiMidnight();
-
-        hoursEl.textContent = String(hours).padStart(2, '0');
-        minutesEl.textContent = String(minutes).padStart(2, '0');
-        secondsEl.textContent = String(seconds).padStart(2, '0');
-
-       if (hours === 0 && minutes === 0 && seconds <= 2) {
-            location.reload();
-        }
-    }, 1000);
+  function adminUpdates() {
+    const adminSection = document.getElementById('adminSection');
+    const prevSection = document.getElementById('prevSection');
+    if (!adminSection || !prevSection) return;
+    prevSection.classList.toggle('d-none');
+    adminSection.classList.toggle('d-none');
+  }
 </script>

@@ -22,6 +22,7 @@ const { sendSocialPhoto, replySocialWin } = require('./fns/sendSocialPhoto');
 const multer = require('multer');
 const yaUhakikaVipModel = require('../model/ya-uhakika/vip-yauhakika');
 const MikekaTipsVIPModel = require('../model/mikekatips-vip')
+const { VIP_NUMBERS, buildVipSlips, buildVipSummary, getProviderMeta } = require('./fns/vip-betslips');
 
 
 router.get('/mkeka/vip', async (req, res) => {
@@ -82,15 +83,18 @@ router.get('/mkeka/vip', async (req, res) => {
                 }
             }
 
-            //find sure3 betslip
-            let betslip1 = await betslip.find({ date: d, vip_no: 1, status: { $ne: 'deleted' } }).sort('time')
-            let betslip2 = await betslip.find({ date: d, vip_no: 2, status: { $ne: 'deleted' } }).sort('time')
-            let betslip3 = await betslip.find({ date: d, vip_no: 3, status: { $ne: 'deleted' } }).sort('time')
+            //find VIP betslips
+            const vipTips = await betslip.find({ date: d, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean()
+            let betslip1 = vipTips.filter((tip) => Number(tip.vip_no) === 1)
+            let betslip2 = vipTips.filter((tip) => Number(tip.vip_no) === 2)
+            let betslip3 = vipTips.filter((tip) => Number(tip.vip_no) === 3)
+            let betslip4 = vipTips.filter((tip) => Number(tip.vip_no) === 4)
 
             const total_odds = {
                 betslip1: betslip1.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
                 betslip2: betslip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
                 betslip3: betslip3.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
+                betslip4: betslip4.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
             }
 
             //fetch won betslips, avoid duplicates
@@ -105,7 +109,11 @@ router.get('/mkeka/vip', async (req, res) => {
                 betslip1: today_codes.find((slip) => slip.slip_no === 1)?.code || '---',
                 betslip2: today_codes.find((slip) => slip.slip_no === 2)?.code || '---',
                 betslip3: today_codes.find((slip) => slip.slip_no === 3)?.code || '---',
+                betslip4: today_codes.find((slip) => slip.slip_no === 4)?.code || '---',
             }
+
+            const vipSlips = buildVipSlips({ tips: vipTips, bookingDocs: today_codes })
+            const vipSummary = buildVipSummary(vipSlips)
 
             //autopilot
             let aff = await affAnalyticsModel.findOne({ pid: 'shemdoe' }).select('autopilot')
@@ -117,157 +125,19 @@ router.get('/mkeka/vip', async (req, res) => {
                 else if (req.query.auto === '0') autopilot = false;
             }
 
-            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, total_odds, booking_codes, user, d, jana, supa_won, supa_won_total_odds, siku, autopilot })
+            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, betslip4, vipSlips, vipSummary, total_odds, booking_codes, user, d, jana, supa_won, supa_won_total_odds, siku, autopilot })
         }
-        res.render('8-vip/vip')
+        const publicDate = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+        const [publicVipTips, publicCodes] = await Promise.all([
+            betslip.find({ date: publicDate, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean(),
+            BookingCodesModel.find({ date: publicDate }).lean()
+        ])
+        const vipShowcaseSlips = buildVipSlips({ tips: publicVipTips, bookingDocs: publicCodes })
+        const vipShowcaseSummary = buildVipSummary(vipShowcaseSlips)
+
+        res.render('8-vip/vip', { vipShowcaseSlips, vipShowcaseSummary })
     } catch (err) {
         console.log(err.message)
-    }
-})
-
-//updating scores of VIP
-router.post('/update/vip/:id', async (req, res) => {
-    try {
-        let id = req.params.id;
-        let result = req.body.scores;
-        let status = req.body.status;
-
-        // Find match in either collection
-        const match = await betslip.findById(id)
-
-        if (!match) {
-            return res.status(404).json({ error: "Match not found" });
-        }
-
-        // Check if status is 'deleted'
-        if (status && status.toLowerCase() === 'deleted') {
-            match.status = 'deleted';
-            await match.save();
-            return res.status(200).json({ ok: "✅ Match Status Deleted" });
-        }
-
-        if (!result.includes('(')) {
-            result = `(${result})`
-        }
-
-        match.status = status
-        match.result = result
-        await match.save()
-
-        res.send(match)
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-//updating VIP match data
-router.post('/update/vip/match-data/:id', async (req, res) => {
-    try {
-        let id = req.params.id;
-        let { time, league, game, tip, odd } = req.body
-
-        // Find match in either collection
-        const match = await betslip.findById(id);
-
-        if (!match) {
-            return res.status(404).json({ error: "Match not found on VIP" });
-        }
-
-        if (String(tip).toLowerCase() === 'deleted') {
-            await match.deleteOne()
-            return res.status(200).json({ ok: "✅ Match Status Deleted" });
-        }
-
-        if (String(tip).toLowerCase().includes('shift-')) {
-            let vip_no = Number(tip.split('-')[1].trim());
-            match.vip_no = vip_no;
-            await match.save()
-            return res.status(200).json({ ok: `✅ Match Status Shifted to VIP ${vip_no}`, match });
-        }
-
-
-        if (String(tip).toLowerCase().startsWith('copy-y @')) {
-            let odd = tip.split('@')[1] ? Number(tip.split('@')[1].trim()) : null;
-
-            // await betslip.create({
-            //     match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd: match.odd, status: 'pending', vip_no: 3, expl: match.expl
-            // })
-
-            await yaUhakikaVipModel.create({
-                match: match.match, league: match.league, time: match.time, date: match.date, tip: match.tip, odd, status: 'pending'
-            })
-
-            return res.status(200).json({ ok: "✅ Match Copied to Sure 3", match });
-        }
-
-        if (match.time !== time) match.time = time;
-        if (match.league !== league) match.league = league;
-        if (match.match !== game) match.match = game;
-        if (match.tip !== tip) match.tip = tip;
-        match.expl = matchExplanation(tip, match.match);
-        if (odd !== undefined && odd !== null && odd !== "") match.odd = odd;
-        await match.save()
-
-        res.send(match)
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-//Posting Betslip VIP #2
-router.post('/posting/betslip-vip2', async (req, res) => {
-    try {
-        if (!req.user || req.user?.role !== 'admin') {
-            return res.send('Not authorized')
-        }
-
-        // Extract form data
-        const { date, time, league, match, tip, odd, vip_no } = req.body;
-
-        // Create new betslip entry if its VIP #1
-        const newBetslip = new betslip({
-            time, date: String(date).split('-').reverse().join('/'), league, match, tip, odd, status: 'pending', vip_no: Number(vip_no), expl: matchExplanation(tip, match)
-        });
-
-        // Save to database
-        const savedBetslip = await newBetslip.save();
-
-        // Return success response with saved data
-        res.status(201).json({
-            message: "Betslip created successfully",
-            betslip: savedBetslip
-        });
-
-    } catch (error) {
-        console.error("Error saving betslip:", error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-//spinning sure 3
-router.post('/spinning/sure3', async (req, res) => {
-    try {
-        if (!req.isAuthenticated()) {
-            res.cookie('error_msg', 'Not authenticated')
-            return res.redirect('/user/login')
-        }
-        let user = req.user
-        if (user.role !== 'admin') {
-            return res.send('Not authorized')
-        }
-        let siku = req.body.siku
-        let vip_no = Number(req.body?.vip_no) || 1
-
-        if (vip_no === 0) return res.send('❌ Invalid VIP Number')
-
-        let date = String(siku).split('-').reverse().join('/')
-
-        await betslip.deleteMany({ date, vip_no })
-        await checking3MkekaBetslip(date).catch(e => console.log(e?.message))
-        res.redirect(`/mkeka/vip?date=${siku}`)
-    } catch (error) {
-        res.status(500).json({ error: error.message });
     }
 })
 
@@ -279,12 +149,13 @@ router.post('/post/vip/code', async (req, res) => {
         }
 
         // Extract form data
-        const { date, code, slip_no } = req.body;
+        const { date, code, slip_no, company } = req.body;
+        const provider = getProviderMeta(company);
 
         // Create new betslip entry
         const newBooking = await BookingCodesModel.findOneAndUpdate(
             { date: String(date).split('-').reverse().join('/'), slip_no },
-            { $set: { code, slip_no: Number(slip_no) } },
+            { $set: { code, slip_no: Number(slip_no), company: provider.company, label: provider.label, register_link: provider.register_link } },
             { upsert: true, new: true }
         );
 
@@ -300,57 +171,6 @@ router.post('/post/vip/code', async (req, res) => {
     } catch (error) {
         console.error("Error saving betslip:", error);
         res.status(500).json({ error: error.message });
-    }
-});
-
-// Social correct score helper
-router.get('/mkeka/vip/social', isAuth, async (req, res) => {
-    if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
-    try {
-        const todayNairobi = new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Nairobi' }).format(new Date());
-        const selectedDate = (req.query?.date || todayNairobi).trim();
-        const matches = await mkekaDB.find({
-            isSocial: true,
-            jsDate: selectedDate
-        }).sort({ jsDate: 1, time: 1 }).lean();
-
-        res.render('8-vip/social', { matches, message: req.query?.msg || '', selectedDate, todayNairobi });
-    } catch (error) {
-        console.error('social route error:', error?.message);
-        res.status(500).send('Hitilafu imetokea');
-    }
-});
-
-router.post('/mkeka/vip/social/:id/result', isAuth, async (req, res) => {
-    if (!req.user || req.user?.role !== 'admin') return res.status(403).send('Access denied');
-    const { id } = req.params;
-    const { result, status } = req.body;
-
-    try {
-        if (!['won', 'lost'].includes((status || '').toLowerCase())) {
-            return res.status(400).send('Chagua status sahihi (won au lost)');
-        }
-
-        const doc = await mkekaDB.findById(id);
-        if (!doc) return res.status(404).send('Social tip haijapatikana');
-
-        const finalResult = (result || '').trim() || doc.result || '';
-        doc.result = finalResult;
-        doc.status = status.toLowerCase();
-        await doc.save();
-
-        if (doc.status === 'won' && doc.telegram_message_id) {
-            try {
-                await replySocialWin(doc.telegram_message_id, finalResult);
-            } catch (err) {
-                return res.status(500).send(`Hitilafu wakati wa kutuma reply ya WON kwenye Telegram: ${err?.message || err}`);
-            }
-        }
-
-        res.status(200).send(`✅ Matokeo ya social tip yamehifadhiwa kikamilifu kama "${doc.status.toUpperCase()}"`);
-    } catch (error) {
-        console.error('social result update error:', error?.message || error);
-        return res.status(500).send(error?.message || 'Hitilafu wakati wa kusave matokeo');
     }
 });
 

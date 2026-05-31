@@ -337,17 +337,19 @@ router.get('/api/mobile/tips/vip', async (req, res) => {
         if (!user) return;
 
         const date = todayDate();
-        const [slip1, slip2, slip3, codes] = await Promise.all([
+        const [slip1, slip2, slip3, slip4, codes] = await Promise.all([
             maybeCache(betslip.find({ date, vip_no: 1, status: { $ne: 'deleted' } }).sort('time').lean(), req),
             maybeCache(betslip.find({ date, vip_no: 2, status: { $ne: 'deleted' } }).sort('time').lean(), req),
             maybeCache(betslip.find({ date, vip_no: 3, status: { $ne: 'deleted' } }).sort('time').lean(), req),
+            maybeCache(betslip.find({ date, vip_no: 4, status: { $ne: 'deleted' } }).sort('time').lean(), req),
             maybeCache(BookingCodesModel.find({ date }).lean(), req)
         ]);
 
         const slips = [
             { id: 'vip-1', title: 'Betslip ya Siku | VIP #1', bookingCode: codes.find((code) => code.slip_no === 1)?.code || '---', totalOdds: multiplyOdds(slip1, 'odd'), tips: slip1.map(mapVipTip) },
             { id: 'vip-2', title: 'Betslip ya Siku | VIP #2', bookingCode: codes.find((code) => code.slip_no === 2)?.code || '---', totalOdds: multiplyOdds(slip2, 'odd'), tips: slip2.map(mapVipTip) },
-            { id: 'vip-3', title: 'Tips za Nyongeza | VIP #3', bookingCode: codes.find((code) => code.slip_no === 3)?.code || '---', totalOdds: multiplyOdds(slip3, 'odd'), tips: slip3.map(mapVipTip) }
+            { id: 'vip-3', title: 'Betslip ya Siku | VIP #3', bookingCode: codes.find((code) => code.slip_no === 3)?.code || '---', totalOdds: multiplyOdds(slip3, 'odd'), tips: slip3.map(mapVipTip) },
+            { id: 'vip-4', title: 'Betslip ya Siku | VIP #4', bookingCode: codes.find((code) => code.slip_no === 4)?.code || '---', totalOdds: multiplyOdds(slip4, 'odd'), tips: slip4.map(mapVipTip) }
         ];
 
         return res.json({ date, user: getPublicUser(user), slips, paymentUrl: PAYMENT_URL });

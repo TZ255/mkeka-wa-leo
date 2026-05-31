@@ -23,6 +23,18 @@ const slipSchema = new Schema({
     odd: {
         type: String,
     },
+    accuracy: {
+        type: Number,
+        default: 0
+    },
+    confidence: {
+        type: String,
+        default: 'UNKNOWN'
+    },
+    source: {
+        type: String,
+        default: null
+    },
     expl: {
         type: String,
     },

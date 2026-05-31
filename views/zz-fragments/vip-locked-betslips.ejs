@@ -1,0 +1,344 @@
+<%
+  const lockedSlips = typeof vipShowcaseSlips !== 'undefined'
+    ? vipShowcaseSlips
+    : (typeof vipSlips !== 'undefined' ? vipSlips : []);
+  const lockedSummary = typeof vipShowcaseSummary !== 'undefined'
+    ? vipShowcaseSummary
+    : (typeof vipSummary !== 'undefined' ? vipSummary : { slipCount: 0, totalOdds: '0.00', stake: 15000, totalStake: 0, totalPotentialWin: 0 });
+  const lockedCtaHref = typeof vipLockedCtaHref !== 'undefined' ? vipLockedCtaHref : '/mkeka/vip';
+%>
+
+<style>
+  .locked-vip-board {
+    background: linear-gradient(180deg, #fffaf0 0%, #ffffff 62%);
+    border: 1px solid #f4d17a;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 16px 34px rgba(120, 78, 12, .14);
+  }
+
+  .locked-vip-board__head {
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, .88), rgba(255, 246, 214, .76)),
+      linear-gradient(135deg, #f8d66d, #fff7d1 46%, #e5a91a);
+    color: #241a05;
+    padding: 18px 16px;
+    border-bottom: 1px solid #e6bd55;
+  }
+
+  .locked-vip-headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .locked-vip-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .locked-vip-title-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #1c1917;
+    color: #facc15;
+    box-shadow: 0 8px 18px rgba(28, 25, 23, .18);
+    flex: 0 0 auto;
+  }
+
+  .locked-vip-title h2 {
+    color: #241a05;
+  }
+
+  .locked-vip-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .locked-vip-icon-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .72);
+    border: 1px solid rgba(120, 78, 12, .18);
+    color: #5f4108;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .locked-vip-board__head .vip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #1c1917;
+    color: #fde68a;
+    border-radius: 999px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .locked-slip-card {
+    border: 1px solid #f0d48a;
+    border-radius: 8px;
+    padding: 14px;
+    height: 100%;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(255, 250, 235, .96)),
+      #ffffff;
+    box-shadow: 0 10px 22px rgba(146, 100, 16, .08);
+  }
+
+  .locked-slip-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .locked-slip-title strong {
+    color: #241a05;
+    font-size: 16px;
+  }
+
+  .locked-slip-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 999px;
+    padding: 5px 9px;
+    background: #fff3c4;
+    color: #854d0e;
+    border: 1px solid #f3cf75;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .locked-slip-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .locked-slip-stat {
+    background: #ffffff;
+    border: 1px solid #f1dfb2;
+    border-radius: 6px;
+    padding: 9px;
+    min-height: 62px;
+  }
+
+  .locked-slip-stat__label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .locked-slip-stat span {
+    color: #7c5a13;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    margin-bottom: 4px;
+  }
+
+  .locked-slip-stat i {
+    color: #ca8a04;
+    font-size: 12px;
+  }
+
+  .locked-slip-stat strong {
+    color: #241a05;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+  }
+
+  .locked-slip-stat.expired strong {
+    color: #b91c1c;
+  }
+
+  .locked-slip-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border: 0;
+    border-radius: 6px;
+    background: #1c1917;
+    color: #fde68a;
+    text-align: center;
+    text-decoration: none;
+    padding: 11px 12px;
+    font-weight: 900;
+    transition: background-color .2s ease, transform .2s ease;
+    cursor: pointer;
+  }
+
+  .locked-slip-btn:hover {
+    background: #3b2f16;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .locked-summary {
+    background: #fff8dc;
+    border: 1px solid #f0d48a;
+  }
+
+  .locked-summary-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #854d0e;
+    background: #fff3c4;
+    border: 1px solid #f3cf75;
+    margin-bottom: 5px;
+  }
+</style>
+
+<section class="locked-vip-board mx-auto">
+  <div class="locked-vip-board__head">
+    <span class="vip-badge"><i class="fa-solid fa-crown"></i> VIP BETSLIPS LOCKED</span>
+    <div class="locked-vip-headline">
+      <div class="locked-vip-title">
+        <span class="locked-vip-title-icon"><i class="fa-solid fa-trophy"></i></span>
+        <div>
+          <h2 class="h4 fw-bold mb-1">Mikeka ya VIP</h2>
+          <p class="mb-0" style="color:#6b4a0b;">Fungua VIP kuona mechi, tips na booking codes kamili.</p>
+        </div>
+      </div>
+      <div class="locked-vip-icons">
+        <span class="locked-vip-icon-pill"><i class="fa-regular fa-futbol"></i> Football</span>
+        <span class="locked-vip-icon-pill"><i class="fa-solid fa-ticket"></i> Betslips</span>
+        <span class="locked-vip-icon-pill"><i class="fa-solid fa-lock"></i> VIP</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-3 p-md-4">
+    <% if (lockedSlips.length > 0 && lockedSlips.some((slip) => slip.tips.length > 0)) { %>
+      <div class="row g-3">
+        <% lockedSlips.forEach((slip) => { %>
+          <% if (slip.tips.length > 0) { %>
+            <div class="col-12 col-md-6">
+              <article class="locked-slip-card">
+                <div class="locked-slip-title">
+                  <strong><i class="fa-solid fa-crown me-1" style="color:#ca8a04;"></i>VIP Betslip #<%= slip.no %></strong>
+                  <span class="locked-slip-chip"><i class="fa-regular fa-futbol"></i><%= slip.tips.length %> Tips</span>
+                </div>
+                <div class="locked-slip-grid">
+                  <div class="locked-slip-stat">
+                    <span class="locked-slip-stat__label"><i class="fa-solid fa-chart-line"></i>Total Odds</span>
+                    <strong><%= slip.totalOdds %></strong>
+                  </div>
+                  <div class="locked-slip-stat locked-slip-countdown <%= slip.countdown.expired ? 'expired' : '' %>"
+                    data-ends-at="<%= slip.countdown.startsAt ? slip.countdown.startsAt.toISOString() : '' %>">
+                    <span class="locked-slip-stat__label"><i class="fa-regular fa-clock"></i>Ends In</span>
+                    <strong data-countdown-label><%= slip.countdown.label %></strong>
+                  </div>
+                  <div class="locked-slip-stat">
+                    <span class="locked-slip-stat__label"><i class="fa-solid fa-ticket"></i>Booking Code</span>
+                    <strong><%= slip.maskedBookingCode %></strong>
+                  </div>
+                  <div class="locked-slip-stat">
+                    <span class="locked-slip-stat__label"><i class="fa-solid fa-coins"></i>Win @ <%= slip.stake.toLocaleString('en-US') %></span>
+                    <strong><%= slip.potentialWin.toLocaleString('en-US') %></strong>
+                  </div>
+                </div>
+                <% if (String(lockedCtaHref).startsWith('#')) { %>
+                  <a class="locked-slip-btn" href="<%= lockedCtaHref %>"><i class="fa-solid fa-unlock-keyhole"></i> FUNGUA MKEKA</a>
+                <% } else { %>
+                  <button class="locked-slip-btn" type="button" onclick="window.location.href='<%= lockedCtaHref %>'"><i class="fa-solid fa-unlock-keyhole"></i> FUNGUA MKEKA</button>
+                <% } %>
+              </article>
+            </div>
+          <% } %>
+        <% }) %>
+      </div>
+
+      <div class="locked-summary rounded-3 mt-3 p-3">
+        <div class="row g-2 text-center">
+          <div class="col-6 col-lg-3">
+            <div class="locked-summary-icon"><i class="fa-solid fa-crown"></i></div>
+            <div class="small text-secondary">Mikeka</div>
+            <div class="fw-bold"><%= lockedSummary.slipCount %></div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="locked-summary-icon"><i class="fa-solid fa-chart-simple"></i></div>
+            <div class="small text-secondary">Total Odds</div>
+            <div class="fw-bold"><%= lockedSummary.totalOdds %></div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="locked-summary-icon"><i class="fa-solid fa-money-bill-wave"></i></div>
+            <div class="small text-secondary">Stake</div>
+            <div class="fw-bold"><%= lockedSummary.totalStake.toLocaleString('en-US') %></div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="locked-summary-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="small text-secondary">Possible Win</div>
+            <div class="fw-bold text-success"><%= lockedSummary.totalPotentialWin.toLocaleString('en-US') %></div>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="alert alert-warning mb-0">Mikeka ya VIP bado haijawekwa kwa siku hii.</div>
+    <% } %>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const countdowns = document.querySelectorAll('.locked-slip-countdown[data-ends-at]');
+    if (!countdowns.length) return;
+
+    const formatRemaining = (diffMs) => {
+      if (diffMs <= 0) return 'Expired';
+
+      const totalSeconds = Math.ceil(diffMs / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      const parts = [];
+      if (days) parts.push(`${days}d`);
+      if (hours || days) parts.push(`${hours}h`);
+      if (minutes || hours || days) parts.push(`${minutes}m`);
+      parts.push(`${seconds}s`);
+      return parts.join(' ');
+    };
+
+    const tick = () => {
+      countdowns.forEach((node) => {
+        const label = node.querySelector('[data-countdown-label]');
+        const endsAt = node.dataset.endsAt;
+        if (!label || !endsAt) return;
+
+        const diff = new Date(endsAt).getTime() - Date.now();
+        label.textContent = formatRemaining(diff);
+        node.classList.toggle('expired', diff <= 0);
+      });
+    };
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>

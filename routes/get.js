@@ -27,6 +27,8 @@ const BTTSTipsModel = require('../model/btts-tips')
 const DCTipsModel = require('../model/dc-tips')
 const OU35Tips = require('../model/over35mik')
 const Over05HTTips = require('../model/over05ht')
+const BookingCodesModel = require('../model/booking_code')
+const { VIP_NUMBERS, buildVipSlips, buildVipSummary } = require('./fns/vip-betslips')
 
 
 
@@ -53,23 +55,17 @@ router.get('/', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        const [tips, [slip, slip2, slip3]] = await Promise.all([
+        const [tips, vipTips, today_codes] = await Promise.all([
             aggregateTips(d),
-            Promise.all([
-                betslip.find({ date: d, vip_no: 1 }).cache(600),
-                betslip.find({ date: d, vip_no: 2 }).cache(600),
-                betslip.find({ date: d, vip_no: 3 }).cache(600)
-            ])
+            betslip.find({ date: d, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean().cache(600),
+            BookingCodesModel.find({ date: d }).lean().cache(600)
         ])
 
         const { mikeka, super_dc, super_over15, megaOdds, supa15_odds, supa_dc_odds } = tips
 
         //multiply all odds of betslip
-        const slipOdds = {
-            slip: slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
-            slip2: slip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
-            slip3: slip3.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
-        }
+        const vipShowcaseSlips = buildVipSlips({ tips: vipTips, bookingDocs: today_codes })
+        const vipShowcaseSummary = buildVipSummary(vipShowcaseSlips)
 
         //tarehes
         let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
@@ -86,8 +82,8 @@ router.get('/', async (req, res) => {
             mikeka,
             super_over15,
             super_dc,
-            slip,
-            slipOdds,
+            vipShowcaseSlips,
+            vipShowcaseSummary,
             trh,
             jumasiku
         })
@@ -194,17 +190,12 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let d_juma = new Date().toLocaleString('sw-TZ', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         let month_date_leo = new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
 
-        //vip tips
-        let slip = await betslip.find({ date: d, vip_no: 1 }).cache(600)
-        let slip2 = await betslip.find({ date: d, vip_no: 2 }).cache(600)
-        let slip3 = await betslip.find({ date: d, vip_no: 3 }).cache(600)
-
-        //multiply all odds of betslip
-        const slipOdds = {
-            slip: slip.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
-            slip2: slip2.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
-            slip3: slip3.reduce((product, doc) => product * doc.odd, 1).toFixed(2),
-        }
+        const [vipTips, today_codes] = await Promise.all([
+            betslip.find({ date: d, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean().cache(600),
+            BookingCodesModel.find({ date: d }).lean().cache(600)
+        ])
+        const vipShowcaseSlips = buildVipSlips({ tips: vipTips, bookingDocs: today_codes })
+        const vipShowcaseSummary = buildVipSummary(vipShowcaseSlips)
 
         //tarehes
         let created = `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
@@ -212,7 +203,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let jumasiku = { leo: d_juma }
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('3-landing/landing', { slip, slip2, slip3, slipOdds, jumasiku, trh })
+        res.render('3-landing/landing', { vipShowcaseSlips, vipShowcaseSummary, jumasiku, trh })
     } catch (err) {
         console.log(err.message)
     }
