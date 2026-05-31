@@ -63,8 +63,8 @@
               const isPostponed = status === 'postponed';
               const shouldShowStatus = isWon || isLost || isPostponed;
               const statusLabel = isWon ? 'Won' : (isLost ? 'Lost' : 'Postponed');
-              const statusIcon = isWon ? 'fa-circle-check' : (isLost ? 'fa-circle-xmark' : 'fa-circle-pause');
-              const resultText = mch.result && mch.result !== '-:-' ? ` · ${mch.result}` : '';
+              const statusIcon = isWon ? 'fa-circle-check text-success' : (isLost ? 'fa-circle-xmark' : 'fa-circle-pause');
+              const resultText = mch.result && mch.result !== '-:-' ? ` ${mch.result}` : '';
             %>
               <div class="mvl-match">
                 <div class="mvl-match__main">
@@ -80,20 +80,17 @@
                   <div class="mvl-match__actions">
                     <div class="mvl-pick">
                       <i class="fa-solid fa-crown"></i>
-                      <span><%= mch.tip %></span>
+                      <span class="mvl-pick__text"><%= mch.tip %></span>
+                      <% if (shouldShowStatus) { %>
+                        <span class="mvl-status <%= isWon ? 'is-won' : (isLost ? 'is-lost' : 'is-postponed') %>">
+                          <i class="fa-regular <%= statusIcon %>"></i>
+                          <span><%= statusLabel %><%= resultText %></span>
+                        </span>
+                      <% } %>
                     </div>
                     <div class="mvl-odd"><%= Number(mch.odd || 0).toFixed(2) %></div>
                   </div>
                 </div>
-
-                <% if (shouldShowStatus) { %>
-                  <div class="mvl-result-row">
-                    <span class="mvl-status <%= isWon ? 'is-won' : (isLost ? 'is-lost' : 'is-postponed') %>">
-                      <i class="fa-regular <%= statusIcon %>"></i>
-                      <span><%= statusLabel %><%= resultText %></span>
-                    </span>
-                  </div>
-                <% } %>
 
                 <% if (mch?.expl && mch.expl.length > 5) { %>
                   <p class="mvl-match__expl"><%= mch.expl %></p>
