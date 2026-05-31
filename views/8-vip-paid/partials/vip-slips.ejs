@@ -73,7 +73,10 @@
                     <span class="mvl-meta-pill"><i class="fa-solid fa-trophy"></i><span><%= mch.league %></span></span>
                   </div>
 
-                  <div class="mvl-match__teams"><%= String(mch.match || '').replace(' vs ', ' - ') %></div>
+                  <div class="mvl-match__teams">
+                    <i class="fa-regular fa-futbol"></i>
+                    <%= String(mch.match || '').replace(' vs ', ' - ') %>
+                  </div>
                 </div>
 
                 <div>
