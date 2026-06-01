@@ -10,7 +10,7 @@ const helenCodes = async (app) => {
     const mkekadb = require('./database/mkeka')
     const vidb = require('./database/db')
     const mkekaMega = require('./database/mkeka-mega')
-    const tg_slips = require('./database/tg_slips')
+    const tg_slips = require('../../model/tg_slips')
     const mongoose = require('mongoose')
 
     const call_sendMikeka_functions = require('./fns/mkeka-1-2-3')

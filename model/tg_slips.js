@@ -9,10 +9,18 @@ const mkekaSchema = new Schema({
         type: String
     },
     brand: {
-        type: 'String'
+        type: String
+    },
+    posted: {
+        type: Boolean,
+        default: false
+    },
+    mkekaleo_mid: {
+        type: Number,
+        default: null
     }
 }, {strict: false, timestamps: true })
 
 //from mkeka-wa-leo db
-let model = mongoose.model('telegram_slips', mkekaSchema)
-module.exports = model
+const TgSlipsModel = mongoose.model('telegram_slips', mkekaSchema)
+module.exports = TgSlipsModel

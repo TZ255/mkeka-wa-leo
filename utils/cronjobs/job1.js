@@ -100,20 +100,9 @@ module.exports = () => {
   }, { timezone: TZ });
 
   // ------------------------------------
-  // 07:01 notify upcoming tips
+  // 09:00 post today's Telegram slips
   // ------------------------------------
-  cron.schedule('1 7 * * *', () => {
-    const today = format(new Date(), 'en-GB');
-
-    runLocked('notify-upcoming', () =>
-      notifyMkekaLeoForUpcomingTips(today, false)
-    );
-  }, { timezone: TZ });
-
-  // ------------------------------------
-  // 08:00–10:59 post mega
-  // ------------------------------------
-  cron.schedule('* 8-13 * * *', () => {
+  cron.schedule('0 9 * * *', () => {
     const today = format(new Date(), 'en-GB');
 
     runLocked('post-mega', () =>

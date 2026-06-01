@@ -1,5 +1,5 @@
 const mkekaMega = require('../database/mkeka-mega')
-const tg_slips = require('../database/tg_slips')
+const tg_slips = require('../../../model/tg_slips')
 
 
 const sendMkeka1 = async (ctx, delay, bot, imp) => {

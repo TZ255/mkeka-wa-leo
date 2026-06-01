@@ -1,4 +1,4 @@
-const tg_slips = require('../database/tg_slips')
+const tg_slips = require('../../../model/tg_slips')
 const mkekaMega = require('../database/mkeka-mega')
 const waombajiModel = require('../database/waombaji')
 
