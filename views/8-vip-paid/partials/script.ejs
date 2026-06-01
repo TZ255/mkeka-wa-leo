@@ -50,3 +50,58 @@
         window.open(`/${brand}/register`)
     }
 </script>
+
+<script>
+    (() => {
+        if (document.documentElement.dataset.mvlBookingCopyReady === '1') return;
+        document.documentElement.dataset.mvlBookingCopyReady = '1';
+
+        const copyText = async (text) => {
+            if (!text) return false;
+
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+                return true;
+            }
+
+            const input = document.createElement('input');
+            input.value = text;
+            input.setAttribute('readonly', '');
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.select();
+            const copied = document.execCommand('copy');
+            document.body.removeChild(input);
+            return copied;
+        };
+
+        document.addEventListener('click', async (event) => {
+            const button = event.target.closest('[data-booking-code]');
+            if (!button) return;
+
+            const code = button.dataset.bookingCode;
+            const label = button.querySelector('.mvl-copy-code__text');
+            const icon = button.querySelector('i');
+            const originalText = label ? label.textContent : '';
+            const originalIcon = icon ? icon.className : '';
+
+            try {
+                const copied = await copyText(code);
+                if (!copied) return;
+
+                button.classList.add('is-copied');
+                if (label) label.textContent = 'Copied';
+                if (icon) icon.className = 'fa-solid fa-check';
+
+                window.setTimeout(() => {
+                    button.classList.remove('is-copied');
+                    if (label) label.textContent = originalText || 'Copy';
+                    if (icon) icon.className = originalIcon || 'fa-regular fa-copy';
+                }, 1300);
+            } catch (error) {
+                console.error('Unable to copy booking code:', error);
+            }
+        });
+    })();
+</script>

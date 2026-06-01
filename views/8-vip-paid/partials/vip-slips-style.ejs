@@ -436,21 +436,38 @@
   .mvl-slip__footer {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 9px;
-    padding: 12px;
+    gap: 8px;
+    padding: 10px;
     border-top: 1px solid #e5c155;
     background: #fffbeb;
   }
 
-  .mvl-booking,
-  .mvl-winbox {
+  .mvl-slip-summary,
+  .mvl-booking {
     min-width: 0;
     border: 1px solid #f3d36b;
     border-radius: 8px;
     background: #ffffff;
-    padding: 11px;
+    box-shadow: 0 6px 14px rgba(146, 64, 14, .06);
   }
 
+  .mvl-slip-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+  }
+
+  .mvl-slip-summary__row {
+    min-width: 0;
+    padding: 9px 10px;
+  }
+
+  .mvl-slip-summary__row + .mvl-slip-summary__row {
+    border-left: 1px solid #fde68a;
+  }
+
+  .mvl-slip-summary__row span,
+  .mvl-booking__head span,
   .mvl-label {
     display: flex;
     align-items: center;
@@ -461,34 +478,110 @@
     text-transform: uppercase;
     letter-spacing: 0;
     font-weight: 900;
-    margin-bottom: 6px;
   }
 
-  .mvl-code {
+  .mvl-slip-summary__row strong {
+    display: block;
+    margin-top: 4px;
     color: #111827;
-    font-size: 17px;
+    font-size: 14px;
     line-height: 1.15;
     font-weight: 900;
     overflow-wrap: anywhere;
   }
 
-  .mvl-code small {
-    display: block;
-    color: #6b7280;
-    font-size: 11px;
-    line-height: 1.2;
-    font-weight: 800;
-    margin-bottom: 3px;
+  .mvl-slip-summary__row--win {
+    background: #ecfdf5;
+  }
+
+  .mvl-slip-summary__row--win span,
+  .mvl-slip-summary__row--win strong {
+    color: #047857;
+  }
+
+  .mvl-booking {
+    padding: 9px;
+  }
+
+  .mvl-booking__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 7px;
+  }
+
+  .mvl-booking__head span {
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .mvl-code-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 4px;
+    border-radius: 8px;
+    background: #111827;
+    padding: 4px;
+  }
+
+  .mvl-code {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 38px;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #111827;
+    padding: 7px 9px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 16px;
+    line-height: 1.15;
+    font-weight: 900;
+    overflow-wrap: anywhere;
+  }
+
+  .mvl-copy-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 38px;
+    border: 0;
+    border-radius: 6px;
+    background: #fbbf24;
+    color: #422006;
+    padding: 0 11px;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 900;
+    cursor: pointer;
+    transition: background-color .18s ease, transform .18s ease;
+  }
+
+  .mvl-copy-code:hover,
+  .mvl-copy-code:focus-visible {
+    background: #f59e0b;
+  }
+
+  .mvl-copy-code:active {
+    transform: translateY(1px);
+  }
+
+  .mvl-copy-code.is-copied {
+    background: #16a34a;
+    color: #ffffff;
   }
 
   .mvl-link {
-    min-height: 44px;
+    min-height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 7px;
     width: 100%;
-    margin-top: 9px;
+    margin-top: 8px;
     border-radius: 8px;
     background: #fbbf24;
     color: #422006;
@@ -501,15 +594,6 @@
   .mvl-link:hover {
     color: #422006;
     background: #f59e0b;
-  }
-
-  .mvl-winbox strong {
-    display: block;
-    color: #047857;
-    font-size: 18px;
-    line-height: 1.15;
-    font-weight: 900;
-    overflow-wrap: anywhere;
   }
 
   .mvl-empty {
@@ -596,7 +680,6 @@
     .mvl-hero,
     .mvl-slip__top,
     .mvl-match,
-    .mvl-slip__footer,
     .mvl-end__panel {
       padding: 16px;
     }
@@ -607,7 +690,8 @@
     }
 
     .mvl-slip__footer {
-      grid-template-columns: minmax(0, 1.25fr) minmax(180px, .75fr);
+      grid-template-columns: minmax(170px, .75fr) minmax(0, 1.25fr);
+      padding: 10px;
     }
 
     .mvl-link {

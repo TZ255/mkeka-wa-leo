@@ -1,53 +1,76 @@
 <div class="mb-5 d-flex justify-content-center">
-    <div class="shadow-sm rounded mx-auto"
-        style="width: 98%; background: #ffffff; border: 1px solid #dee2e6; border-radius: 10px; max-width: 520px;">
-        <div class="d-flex justify-content-between align-items-center px-4 py-3"
-            style="background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
-            <span class="fw-bold" style="font-size: 0.95rem; color: #212529;">
-                <i class="fa-solid fa-id-card me-2 text-success"></i>
-                My Account
-            </span>
-            <a href="/user/logout" class="text-danger"
-                style="font-size: 0.9rem; font-weight: 600; text-decoration: none;">
-                <i class="fa-solid fa-right-from-bracket me-1"></i>
-                Logout
-            </a>
-        </div>
-        <div class="p-0">
-            <div class="d-flex justify-content-between align-items-center px-4 py-3"
-                style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.8rem;">Name</span>
-                <span class="fw-bold text-capitalize"
-                    style="color: #212529; font-size: 0.8rem;"><%= user?.name %></span>
-            </div>
-            <div class="d-flex justify-content-between align-items-center px-4 py-3"
-                style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.8rem;">Email</span>
-                <span class="fw-bold" style="color: #212529; font-size: 0.8rem;"><%= user.email %></span>
-            </div>
-            <div class="d-flex justify-content-between align-items-center px-4 py-3"
-                style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.8rem;">Status</span>
-                <span class="text-capitalize" style="color: #212529; font-size: 0.8rem;">
-                    <span class="badge <%= user?.status?.toLowerCase() === "paid" ? "text-bg-success" : 'text-bg-danger' %>">
-                        <%= String(user.status).replace('unpaid', 'Not Paid') %>
+    <div class="accordion w-100 mx-auto shadow-sm" id="vip-account-info-accordion" style="max-width: 520px; width: 98%;">
+        <div class="accordion-item border-0 rounded-3 overflow-hidden" style="border: 1px solid #dee2e6 !important;">
+            <h2 class="accordion-header" id="vip-account-info-heading">
+                <button class="accordion-button collapsed px-4 py-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#vip-account-info-collapse" aria-expanded="false" aria-controls="vip-account-info-collapse"
+                    style="background: #f8f9fa; box-shadow: none;">
+                    <span class="d-flex align-items-center justify-content-between gap-3 w-100 me-3">
+                        <span class="d-flex align-items-center fw-bold" style="font-size: 0.95rem; color: #212529;">
+                            <i class="fa-solid fa-id-card me-2 text-success"></i>
+                            My Account
+                        </span>
+                        <span class="badge rounded-pill bg-success-subtle text-success-emphasis border border-success-subtle fw-semibold">
+                            Tap to view info
+                        </span>
                     </span>
-                    <span class="plan">(<%= user?.plan %>)</span>
-                </span>
+                </button>
+            </h2>
+            <div id="vip-account-info-collapse" class="accordion-collapse collapse" aria-labelledby="vip-account-info-heading"
+                data-bs-parent="#vip-account-info-accordion">
+                <div class="accordion-body p-0 bg-white">
+                    <div class="d-flex justify-content-between align-items-center gap-3 px-4 py-3"
+                        style="border-bottom: 1px solid #f1f3f5;">
+                        <span style="color: #6c757d; font-size: 0.8rem;">Name</span>
+                        <span class="fw-bold text-capitalize text-end"
+                            style="color: #212529; font-size: 0.8rem;"><%= user?.name %></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center gap-3 px-4 py-3"
+                        style="border-bottom: 1px solid #f1f3f5;">
+                        <span style="color: #6c757d; font-size: 0.8rem;">Email</span>
+                        <span class="fw-bold text-end text-break" style="color: #212529; font-size: 0.8rem;"><%= user.email %></span>
+                    </div>
+                    <% if (user?.phone) { %>
+                    <% const accountPhoneDigits = String(user.phone).replace(/\D/g, ""); %>
+                    <% const accountPhoneDisplay = accountPhoneDigits.length === 12 && accountPhoneDigits.startsWith("255") ? "+" + accountPhoneDigits.slice(0, 3) + " " + accountPhoneDigits.slice(3, 6) + " " + accountPhoneDigits.slice(6, 9) + " " + accountPhoneDigits.slice(9) : user.phone; %>
+                    <div class="d-flex justify-content-between align-items-center gap-3 px-4 py-3"
+                        style="border-bottom: 1px solid #f1f3f5;">
+                        <span style="color: #6c757d; font-size: 0.8rem;">Phone</span>
+                        <span class="fw-bold text-end" style="color: #212529; font-size: 0.8rem;"><%= accountPhoneDisplay %></span>
+                    </div>
+                    <% } %>
+                    <div class="d-flex justify-content-between align-items-center gap-3 px-4 py-3"
+                        style="border-bottom: 1px solid #f1f3f5;">
+                        <span style="color: #6c757d; font-size: 0.8rem;">Status</span>
+                        <span class="text-capitalize text-end" style="color: #212529; font-size: 0.8rem;">
+                            <span class="badge <%= user?.status?.toLowerCase() === "paid" ? "text-bg-success" : 'text-bg-danger' %>">
+                                <%= String(user.status).replace('unpaid', 'Not Paid') %>
+                            </span>
+                            <span class="plan">(<%= user?.plan %>)</span>
+                        </span>
+                    </div>
+                    <% if (user.status === 'paid') { %>
+                    <div class="d-flex justify-content-between align-items-center gap-3 px-4 py-3"
+                        style="border-bottom: 1px solid #f1f3f5;">
+                        <span style="color: #6c757d; font-size: 0.8rem;">Paid On</span>
+                        <span class="fw-bold text-end"
+                            style="color: #212529; font-size: 0.8rem;"><%= new Date(user.payments[0].paidOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center gap-3 px-4 py-3"
+                        style="border-bottom: 1px solid #f1f3f5;">
+                        <span style="color: #6c757d; font-size: 0.8rem;">End On</span>
+                        <span class="fw-bold text-end"
+                            style="color: #212529; font-size: 0.8rem;"><%= new Date(user.payments[0].endedOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
+                    </div>
+                    <% } %>
+                    <div class="px-4 py-3 text-end">
+                        <a href="/user/logout" class="btn btn-outline-danger btn-sm fw-semibold">
+                            <i class="fa-solid fa-right-from-bracket me-1"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
             </div>
-            <% if (user.status === 'paid') { %>
-            <div class="d-flex justify-content-between align-items-center px-4 py-3"
-                style="border-bottom: 1px solid #f1f3f5;">
-                <span style="color: #6c757d; font-size: 0.8rem;">Paid On</span>
-                <span class="fw-bold"
-                    style="color: #212529; font-size: 0.8rem;"><%= new Date(user.payments[0].paidOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
-            </div>
-            <div class="d-flex justify-content-between align-items-center px-4 py-3">
-                <span style="color: #6c757d; font-size: 0.8rem;">End On</span>
-                <span class="fw-bold"
-                    style="color: #212529; font-size: 0.8rem;"><%= new Date(user.payments[0].endedOn).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: "2-digit", minute: "2-digit", timeZone: 'Africa/Nairobi' }) %></span>
-            </div>
-            <% } %>
         </div>
     </div>
 </div>

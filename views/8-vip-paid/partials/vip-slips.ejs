@@ -103,15 +103,28 @@
           </div>
 
           <div class="mvl-slip__footer">
-            <div class="mvl-winbox">
-              <div class="mvl-label"><i class="fa-solid fa-money-bill-trend-up"></i> Stake <%= slip.stake.toLocaleString('en-US') %> TZS | SHINDA</div>
-              <strong><%= slip.potentialWin.toLocaleString('en-US') %> TZS</strong>
+            <div class="mvl-slip-summary" aria-label="Betslip summary">
+              <div class="mvl-slip-summary__row">
+                <span><i class="fa-solid fa-coins"></i> Stake</span>
+                <strong><%= slip.stake.toLocaleString('en-US') %> TZS</strong>
+              </div>
+              <div class="mvl-slip-summary__row mvl-slip-summary__row--win">
+                <span><i class="fa-solid fa-money-bill-trend-up"></i> Possible Win</span>
+                <strong><%= slip.potentialWin.toLocaleString('en-US') %> TZS</strong>
+              </div>
             </div>
 
             <div class="mvl-booking">
-              <div class="mvl-label"><i class="fa-solid fa-key"></i> Booking Code | <%= slip.booking.label?.replace(" Betting", "") %></div>
-              <div class="mvl-code">
-                <%= slip.booking.code %>
+              <div class="mvl-booking__head">
+                <div class="mvl-label"><i class="fa-solid fa-ticket"></i> Booking Code</div>
+                <span><%= slip.booking.label %></span>
+              </div>
+              <div class="mvl-code-row">
+                <code class="mvl-code"><%= slip.booking.code %></code>
+                <button class="mvl-copy-code" type="button" data-booking-code="<%= slip.booking.code %>" aria-label="Copy booking code <%= slip.booking.code %>">
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i>
+                  <span class="mvl-copy-code__text">Copy</span>
+                </button>
               </div>
               <a href="<%= slip.booking.register_link %>" target="_blank" class="mvl-link">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
