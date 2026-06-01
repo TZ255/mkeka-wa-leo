@@ -434,36 +434,27 @@
   }
 
   .mvl-slip__footer {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-    padding: 10px;
-    border-top: 1px solid #e5c155;
-    background: #fffbeb;
-  }
-
-  .mvl-slip-summary,
-  .mvl-booking {
     min-width: 0;
-    border: 1px solid #f3d36b;
-    border-radius: 8px;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #e5c155;
     background: #ffffff;
-    box-shadow: 0 6px 14px rgba(146, 64, 14, .06);
   }
 
   .mvl-slip-summary {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    overflow: hidden;
+    min-width: 0;
+    background: #fffbeb;
   }
 
   .mvl-slip-summary__row {
     min-width: 0;
-    padding: 9px 10px;
+    padding: 10px 11px;
   }
 
   .mvl-slip-summary__row + .mvl-slip-summary__row {
-    border-left: 1px solid #fde68a;
+    border-left: 1px solid #f3d36b;
   }
 
   .mvl-slip-summary__row span,
@@ -490,17 +481,18 @@
     overflow-wrap: anywhere;
   }
 
-  .mvl-slip-summary__row--win {
-    background: #ecfdf5;
-  }
-
+  .mvl-slip-summary__row--win,
   .mvl-slip-summary__row--win span,
   .mvl-slip-summary__row--win strong {
-    color: #047857;
+    background: #fffbeb;
+    color: #111827;
   }
 
   .mvl-booking {
-    padding: 9px;
+    min-width: 0;
+    padding: 9px 10px 10px;
+    border-top: 1px solid #fde68a;
+    background: #ffffff;
   }
 
   .mvl-booking__head {
@@ -520,9 +512,10 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: stretch;
-    gap: 4px;
+    gap: 5px;
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
-    background: #111827;
+    background: #f9fafb;
     padding: 4px;
   }
 
@@ -530,7 +523,7 @@
     display: flex;
     align-items: center;
     min-width: 0;
-    min-height: 38px;
+    min-height: 36px;
     border-radius: 6px;
     background: #ffffff;
     color: #111827;
@@ -687,11 +680,6 @@
     .mvl-summary-grid,
     .mvl-end__grid {
       grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .mvl-slip__footer {
-      grid-template-columns: minmax(170px, .75fr) minmax(0, 1.25fr);
-      padding: 10px;
     }
 
     .mvl-link {
