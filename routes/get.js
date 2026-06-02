@@ -30,6 +30,66 @@ const Over05HTTips = require('../model/over05ht')
 const BookingCodesModel = require('../model/booking_code')
 const { VIP_NUMBERS, buildVipSlips, buildVipSummary } = require('./fns/vip-betslips')
 
+const SWAHILI_WEEKDAYS = ['jumatatu', 'jumanne', 'jumatano', 'alhamisi', 'ijumaa', 'jumamosi', 'jumapili']
+const SWAHILI_WEEKDAY_INDEX = { jumapili: 0, jumatatu: 1, jumanne: 2, jumatano: 3, alhamisi: 4, ijumaa: 5, jumamosi: 6 }
+
+const titleCase = (value = '') => value.charAt(0).toUpperCase() + value.slice(1)
+
+const createdDate = () => `${new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Dar_es_Salaam', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date())}T00:00:00.000+03:00`
+
+const formatDateParts = (dt) => {
+    const dd = String(dt.getUTCDate()).padStart(2, '0')
+    const mm = String(dt.getUTCMonth() + 1).padStart(2, '0')
+    const yyyy = dt.getUTCFullYear()
+    const date = `${dd}/${mm}/${yyyy}`
+    const month_date = new Date(Date.UTC(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDate()))
+        .toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' })
+
+    return { date, month_date }
+}
+
+const weekdayDateCandidates = (weekday) => {
+    const targetIndex = SWAHILI_WEEKDAY_INDEX[weekday]
+    const todayStr = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
+    const [d, m, y] = todayStr.split('/').map(Number)
+    const todayUTC = new Date(Date.UTC(y, m - 1, d))
+    const daysForward = (targetIndex - todayUTC.getUTCDay() + 7) % 7
+    const next = new Date(todayUTC.getTime() + daysForward * 86400000)
+    const previous = new Date(next.getTime() - 7 * 86400000)
+
+    return [next, previous].map(formatDateParts)
+}
+
+const findTipsByWeekday = async ({ model, weekday, buildQuery, sort = '-accuracy', limit = 100 }) => {
+    const candidates = weekdayDateCandidates(weekday)
+
+    for (const candidate of candidates) {
+        let query = model.find(buildQuery(candidate.date)).sort(sort)
+        if (limit) query = query.limit(limit)
+        const mikeka = await query.lean().cache(600)
+
+        if (mikeka.length > 0 || candidate === candidates[candidates.length - 1]) {
+            return { ...candidate, mikeka }
+        }
+    }
+}
+
+const weekdayNav = (basePath, anchor, activeWeekday) => ({
+    days: SWAHILI_WEEKDAYS,
+    basePath,
+    anchor,
+    active: activeWeekday
+})
+
+const attachWeekdaySeo = (SEO, { weekday, routePath, anchor }) => {
+    SEO.siku = titleCase(weekday)
+    SEO.isWeekdayPage = true
+    SEO.canonical = `https://mkekawaleo.com${routePath}/${weekday}`
+    SEO.weekdayNav = weekdayNav(routePath, anchor, weekday)
+}
+
+const validateWeekday = (weekday) => SWAHILI_WEEKDAYS.includes(String(weekday || '').toLowerCase())
+
 
 
 router.get('/', async (req, res) => {
@@ -210,8 +270,13 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
 })
 
 //Over 1.5
-router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
+router.get(['/mkeka/over-15', '/mkeka/over-15/kesho', '/mkeka/over-15/:weekday'], async (req, res, next) => {
     try {
+        const weekdayParam = String(req.params.weekday || '').toLowerCase()
+        const weekday = weekdayParam === 'kesho' ? '' : weekdayParam
+        const hasWeekday = Boolean(weekday)
+        if (hasWeekday && !validateWeekday(weekday)) return next()
+
         const SEO = {
             title: 'Over 1.5 Tips Leo | Mkeka wa Leo wa Magoli Juu ya 1.5',
             description: 'Pata mkeka wa uhakika wa magoli, Over 1.5 (Juu ya 1.5) kwa siku ya leo Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi zote kubwa za leo za kukusaidia kushinda mikeka yako ya magoli.',
@@ -239,7 +304,27 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
             }
         }
 
-        let mikeka = await over15Mik.find({ date: SEO.trh.date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean().cache(600)
+        if (hasWeekday) {
+            attachWeekdaySeo(SEO, { weekday, routePath: '/mkeka/over-15', anchor: 'over15-tips' })
+            SEO.title = `Over 1.5 Tips za ${SEO.siku} | Mkeka wa Magoli Juu ya 1.5`
+            SEO.description = `Pata mkeka wa uhakika wa Over 1.5 kwa siku ya ${SEO.siku} Tanzania. Utabiri wetu wa kitaalamu unahusisha mechi kubwa za ${SEO.siku} za kukusaidia kushinda mikeka yako ya magoli.`
+            SEO.keywords = `Over 1.5 tips ${weekday}, Over 1.5 predictions ${weekday}, mkeka wa ${weekday}, mkeka wa Over 1.5, tanzania betting tips`
+        }
+
+        let mikeka
+        if (hasWeekday) {
+            const weekdayTips = await findTipsByWeekday({
+                model: over15Mik,
+                weekday,
+                buildQuery: (date) => ({ date, accuracy: { $gte: 75 } })
+            })
+
+            mikeka = weekdayTips.mikeka
+            SEO.trh = { date: weekdayTips.date, day: SEO.siku, month_date: weekdayTips.month_date, created: createdDate() }
+        } else {
+            SEO.weekdayNav = weekdayNav('/mkeka/over-15', 'over15-tips', SEO.trh.day.toLowerCase())
+            mikeka = await over15Mik.find({ date: SEO.trh.date, accuracy: { $gte: 75 } }).sort('-accuracy').limit(100).lean().cache(600)
+        }
 
         let total_odds = mikeka.reduce((product, doc) => {
             const odds = Number(doc.odds);
@@ -262,8 +347,13 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho'], async (req, res) => {
 })
 
 // Over 2.5
-router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
+router.get(['/mkeka/over-25', '/mkeka/over-25/kesho', '/mkeka/over-25/:weekday'], async (req, res, next) => {
     try {
+        const weekdayParam = String(req.params.weekday || '').toLowerCase()
+        const weekday = weekdayParam === 'kesho' ? '' : weekdayParam
+        const hasWeekday = Boolean(weekday)
+        if (hasWeekday && !validateWeekday(weekday)) return next()
+
         const SEO = {
             title: 'Over 2.5 Tips Leo | Mkeka wa Leo wa Magoli Juu ya 2.5',
             description: 'Pata mkeka wa uhakika wa magoli, Over 2.5 (Juu ya 2.5) kwa siku ya leo Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi zote kubwa za leo za kukusaidia kushinda mikeka yako ya magoli.',
@@ -291,18 +381,40 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho'], async (req, res) => {
             }
         }
 
+        if (hasWeekday) {
+            attachWeekdaySeo(SEO, { weekday, routePath: '/mkeka/over-25', anchor: 'over25-tips' })
+            SEO.title = `Over 2.5 Tips za ${SEO.siku} | Mkeka wa Magoli Juu ya 2.5`
+            SEO.description = `Pata mkeka wa uhakika wa Over 2.5 kwa siku ya ${SEO.siku} Tanzania. Utabiri wetu wa kitaalamu unahusisha mechi kubwa za ${SEO.siku} za kukusaidia kushinda mikeka yako ya Over 2.5.`
+            SEO.keywords = `Over 2.5 tips ${weekday}, Over 2.5 predictions ${weekday}, mkeka wa ${weekday}, mkeka wa Over 2.5, tanzania betting tips`
+        }
+
         // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.4
-        let mikeka = await over25Model.find({
-            date: SEO.trh.date,
+        const buildOver25Query = (date) => ({
+            date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
                 { confidence: 'STRONG', "meta.xG": { $gte: 3.4 } }
             ]
         })
-            .sort('-accuracy')
-            .limit(100)
-            .lean()
-            .cache(600)
+
+        let mikeka
+        if (hasWeekday) {
+            const weekdayTips = await findTipsByWeekday({
+                model: over25Model,
+                weekday,
+                buildQuery: buildOver25Query
+            })
+
+            mikeka = weekdayTips.mikeka
+            SEO.trh = { date: weekdayTips.date, day: SEO.siku, month_date: weekdayTips.month_date, created: createdDate() }
+        } else {
+            SEO.weekdayNav = weekdayNav('/mkeka/over-25', 'over25-tips', SEO.trh.day.toLowerCase())
+            mikeka = await over25Model.find(buildOver25Query(SEO.trh.date))
+                .sort('-accuracy')
+                .limit(100)
+                .lean()
+                .cache(600)
+        }
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -368,8 +480,13 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
 })
 
 // Over 0.5 1st Half
-router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], async (req, res) => {
+router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho', '/mkeka/over-05-first-half/:weekday'], async (req, res, next) => {
     try {
+        const weekdayParam = String(req.params.weekday || '').toLowerCase()
+        const weekday = weekdayParam === 'kesho' ? '' : weekdayParam
+        const hasWeekday = Boolean(weekday)
+        if (hasWeekday && !validateWeekday(weekday)) return next()
+
         const SEO = {
             title: 'Over 0.5 1st Half Tips - Leo',
             description: 'Pata mikeka ya uhakika ya 1st Half Over 0.5 kwa siku ya leo. Utabiri wetu wa kitaalamu wa under/over magoli kipindi cha kwanza unahusisha ligi maarufu na mechi kubwa ili kukusaidia kushinda mikeka yako ya betting Tanzania.',
@@ -398,8 +515,28 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
             }
         }
 
+        if (hasWeekday) {
+            attachWeekdaySeo(SEO, { weekday, routePath: '/mkeka/over-05-first-half', anchor: 'first-half-tips' })
+            SEO.title = `Over 0.5 1st Half Tips - ${SEO.siku}`
+            SEO.description = `Pata mikeka ya uhakika ya 1st Half Over 0.5 kwa siku ya ${SEO.siku}. Utabiri wetu wa kitaalamu unahusisha mechi kubwa za ${SEO.siku} ili kukusaidia kushinda mikeka yako ya betting Tanzania.`
+            SEO.keywords = `over 0.5 1st half ${weekday}, 1st Half Over 0.5 tips za ${weekday}, ht predictions, mkeka wa ${weekday}, under/over betting tips Tanzania`
+        }
 
-        let mikeka = await Over05HTTips.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
+        let mikeka
+        if (hasWeekday) {
+            const weekdayTips = await findTipsByWeekday({
+                model: Over05HTTips,
+                weekday,
+                buildQuery: (date) => ({ date }),
+                limit: null
+            })
+
+            mikeka = weekdayTips.mikeka
+            SEO.trh = { date: weekdayTips.date, day: SEO.siku, month_date: weekdayTips.month_date, created: createdDate() }
+        } else {
+            SEO.weekdayNav = weekdayNav('/mkeka/over-05-first-half', 'first-half-tips', SEO.trh.day.toLowerCase())
+            mikeka = await Over05HTTips.find({ date: SEO.trh.date }).sort('-accuracy').lean().cache(600)
+        }
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -420,8 +557,13 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho'], asy
 
 
 //Over/Under 3.5
-router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, res) => {
+router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho', '/mkeka/over-under-35/:weekday'], async (req, res, next) => {
     try {
+        const weekdayParam = String(req.params.weekday || '').toLowerCase()
+        const weekday = weekdayParam === 'kesho' ? '' : weekdayParam
+        const hasWeekday = Boolean(weekday)
+        if (hasWeekday && !validateWeekday(weekday)) return next()
+
         const SEO = {
             title: 'Over/Under 3.5 Tips Leo | Mkeka wa Leo wa Magoli Juu ya 3.5',
             description: 'Pata mkeka wa uhakika wa magoli, Over/Under 3.5 (Juu/Chini ya 3.5) kwa siku ya leo Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi zote kubwa za leo za kukusaidia kushinda mikeka yako ya magoli.',
@@ -449,7 +591,28 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho'], async (req, r
             }
         }
 
-        let mikeka = await OU35Tips.find({ date: SEO.trh.date }).sort('-accuracy').limit(50).lean().cache(600)
+        if (hasWeekday) {
+            attachWeekdaySeo(SEO, { weekday, routePath: '/mkeka/over-under-35', anchor: 'over35-tips' })
+            SEO.title = `Over/Under 3.5 Tips za ${SEO.siku} | Mkeka wa Magoli Juu/Chini ya 3.5`
+            SEO.description = `Pata mkeka wa uhakika wa Over/Under 3.5 kwa siku ya ${SEO.siku} Tanzania. Utabiri wetu wa kitaalamu unahusisha mechi kubwa za ${SEO.siku} za kukusaidia kushinda mikeka yako ya Over/Under 3.5.`
+            SEO.keywords = `Over/Under 3.5 tips ${weekday}, Over/Under 3.5 predictions ${weekday}, mkeka wa ${weekday}, mkeka wa Over/Under 3.5, tanzania betting tips`
+        }
+
+        let mikeka
+        if (hasWeekday) {
+            const weekdayTips = await findTipsByWeekday({
+                model: OU35Tips,
+                weekday,
+                buildQuery: (date) => ({ date }),
+                limit: 50
+            })
+
+            mikeka = weekdayTips.mikeka
+            SEO.trh = { date: weekdayTips.date, day: SEO.siku, month_date: weekdayTips.month_date, created: createdDate() }
+        } else {
+            SEO.weekdayNav = weekdayNav('/mkeka/over-under-35', 'over35-tips', SEO.trh.day.toLowerCase())
+            mikeka = await OU35Tips.find({ date: SEO.trh.date }).sort('-accuracy').limit(50).lean().cache(600)
+        }
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -508,8 +671,13 @@ router.get('/mkeka/correct-score', async (req, res) => {
 
 //Double Chance
 //handle the path /mkeka/double-chance and /mkeka/double-chance/kesho, write the seo description, title and keywords for /mkeka/double-chance and if kesho is present, change the title, description and keywords to kesho
-router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, res) => {
+router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho', '/mkeka/double-chance/:weekday'], async (req, res, next) => {
     try {
+        const weekdayParam = String(req.params.weekday || '').toLowerCase()
+        const weekday = weekdayParam === 'kesho' ? '' : weekdayParam
+        const hasWeekday = Boolean(weekday)
+        if (hasWeekday && !validateWeekday(weekday)) return next()
+
         const SEO = {
             title: 'Double Chance Tips (DC) Leo - Mkeka wa Double Chance Leo',
             description: 'Pata mikeka ya uhakika ya Double Chance (DC) kwa siku ya leo. Utabiri wetu wa kitaalamu unahusisha ligi na mechi kuu za kukusaidia kushinda mikeka yako ya Double Chance.',
@@ -537,8 +705,15 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
             }
         }
 
-        let mikeka = await DCTipsModel.find({
-            date: SEO.trh.date,
+        if (hasWeekday) {
+            attachWeekdaySeo(SEO, { weekday, routePath: '/mkeka/double-chance', anchor: 'dc-tips' })
+            SEO.title = `Double Chance Tips (DC) za ${SEO.siku} | Mkeka wa Double Chance`
+            SEO.description = `Pata mikeka ya uhakika ya Double Chance (DC) kwa siku ya ${SEO.siku}. Utabiri wetu wa kitaalamu unahusisha mechi kuu za ${SEO.siku} za kukusaidia kushinda mikeka yako ya Double Chance.`
+            SEO.keywords = `Double Chance tips ${weekday}, Double Chance predictions ${weekday}, mkeka wa ${weekday}, mkeka wa double chance, tanzania betting tips`
+        }
+
+        const buildDcQuery = (date) => ({
+            date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
                 {
@@ -546,7 +721,22 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
                     accuracy: { $gte: 70 },
                 }
             ]
-        }).sort('-accuracy').limit(100).lean().cache(600)
+        })
+
+        let mikeka
+        if (hasWeekday) {
+            const weekdayTips = await findTipsByWeekday({
+                model: DCTipsModel,
+                weekday,
+                buildQuery: buildDcQuery
+            })
+
+            mikeka = weekdayTips.mikeka
+            SEO.trh = { date: weekdayTips.date, day: SEO.siku, month_date: weekdayTips.month_date, created: createdDate() }
+        } else {
+            SEO.weekdayNav = weekdayNav('/mkeka/double-chance', 'dc-tips', SEO.trh.day.toLowerCase())
+            mikeka = await DCTipsModel.find(buildDcQuery(SEO.trh.date)).sort('-accuracy').limit(100).lean().cache(600)
+        }
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)
@@ -566,8 +756,13 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho'], async (req, r
 })
 
 // Both teams to score
-router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], async (req, res) => {
+router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho', '/mkeka/both-teams-to-score/:weekday'], async (req, res, next) => {
     try {
+        const weekdayParam = String(req.params.weekday || '').toLowerCase()
+        const weekday = weekdayParam === 'kesho' ? '' : weekdayParam
+        const hasWeekday = Boolean(weekday)
+        if (hasWeekday && !validateWeekday(weekday)) return next()
+
         const SEO = {
             title: 'Mkeka wa GG Leo - Both Teams to Score Tips',
             description: 'Pata mikeka ya uhakika ya GG (Both Teams to Score) kwa leo. Utabiri wetu wa kitaalamu wa GG unahusisha ligi maarufu na mechi kubwa ili kukusaidia kushinda mikeka yako ya betting Tanzania.',
@@ -596,9 +791,16 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
             }
         }
 
+        if (hasWeekday) {
+            attachWeekdaySeo(SEO, { weekday, routePath: '/mkeka/both-teams-to-score', anchor: 'gg-tips' })
+            SEO.title = `Mkeka wa GG ${SEO.siku} | Both Teams to Score Tips`
+            SEO.description = `Pata mikeka ya uhakika ya GG (Both Teams to Score) kwa siku ya ${SEO.siku}. Utabiri wetu wa kitaalamu wa GG unajumuisha ligi na mechi kubwa za ${SEO.siku} kwa ushindi wa uhakika.`
+            SEO.keywords = `GG ${weekday}, Both Teams to Score tips ${weekday}, BTTS ${weekday}, mkeka wa GG ${weekday}, betting tips Tanzania, mkeka wa ${weekday}`
+        }
+
         // filter mikeka with confidence SUPER_STRONG or STRONG with xG >= 3.0 and bttsYesP >= 54
-        let mikeka = await BTTSTipsModel.find({
-            date: SEO.trh.date,
+        const buildBttsQuery = (date) => ({
+            date,
             $or: [
                 { confidence: 'SUPER_STRONG' },
                 {
@@ -606,7 +808,22 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho'], a
                     accuracy: { $gte: 65 },
                 }
             ]
-        }).sort('-accuracy').limit(100).lean().cache(600)
+        })
+
+        let mikeka
+        if (hasWeekday) {
+            const weekdayTips = await findTipsByWeekday({
+                model: BTTSTipsModel,
+                weekday,
+                buildQuery: buildBttsQuery
+            })
+
+            mikeka = weekdayTips.mikeka
+            SEO.trh = { date: weekdayTips.date, day: SEO.siku, month_date: weekdayTips.month_date, created: createdDate() }
+        } else {
+            SEO.weekdayNav = weekdayNav('/mkeka/both-teams-to-score', 'gg-tips', SEO.trh.day.toLowerCase())
+            mikeka = await BTTSTipsModel.find(buildBttsQuery(SEO.trh.date)).sort('-accuracy').limit(100).lean().cache(600)
+        }
 
         //multiply all odds
         let total_odds = mikeka.reduce((product, doc) => product * doc.odds, 1).toFixed(2)

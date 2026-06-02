@@ -39,7 +39,7 @@
     <main>
         <section class="left">
             <h1 class="h2" style="font-size: 16px;">
-                Mkeka wa Over 2.5 <%= SEO.siku %> - <%= SEO.trh.day %>, <%= SEO.trh.month_date %>
+                Mkeka wa Over 2.5<%= SEO.isWeekdayPage ? '' : ` ${SEO.siku}` %> - <%= SEO.trh.day %>, <%= SEO.trh.month_date %>
             </h1>
             <div class="introduction p">
                 <p>
@@ -48,7 +48,7 @@
                 </p>
 
                 <p>
-                    Kwa siku ya <%= SEO.siku.toLowerCase() %> <strong><%= SEO.trh.day %>, <%= SEO.trh.date %></strong> tumekuletea mkusanyiko wa tabiri za <strong>Over 2.5</strong> tukiwa na jumla ya mechi
+                    Kwa siku ya <%= SEO.siku.toLowerCase() %><%= SEO.isWeekdayPage ? ' tarehe' : '' %> <strong><%= SEO.isWeekdayPage ? SEO.trh.date : `${SEO.trh.day}, ${SEO.trh.date}` %></strong> tumekuletea mkusanyiko wa tabiri za <strong>Over 2.5</strong> tukiwa na jumla ya mechi
                     <strong><%= mikeka.length %></strong> zenye uwezekano mkubwa wa
                     matokeo ya <strong>Over</strong> au <strong>Under 2.5</strong>.
                     Kila utabiri umechambuliwa kwa umakini kwa kutumia takwimu, historia ya timu,
@@ -61,6 +61,7 @@
             <hr class="my-3 text-light">
 
             <%- include('./partials/mega.ejs'); %>
+            <%- include('../0-global/weekday-nav.ejs'); %>
             <hr class="my-5 text-light">
 
             <%- include('../0-global/vip.ejs'); %>

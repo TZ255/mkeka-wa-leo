@@ -1,0 +1,20 @@
+<% const nav = SEO?.weekdayNav; %>
+<% if (nav?.days?.length) { %>
+<nav class="card border-0 shadow-sm overflow-hidden my-4" style="background:#0f1420; border-radius:16px; border:1px solid rgba(255,255,255,.08);">
+  <div class="d-flex flex-wrap justify-content-center gap-2 p-3">
+    <% nav.days.forEach(day => {
+      const label = day.charAt(0).toUpperCase() + day.slice(1);
+      const isActive = day === nav.active;
+      const href = `${nav.basePath}/${day}${nav.anchor ? `#${nav.anchor}` : ''}`;
+    %>
+    <a href="<%= href %>"
+       class="btn btn-sm rounded-pill fw-semibold px-3 <%= isActive ? 'text-dark' : 'text-light' %>"
+       style="<%= isActive
+         ? 'background:linear-gradient(180deg,#2bd576,#14b862); box-shadow:0 4px 12px rgba(20,184,98,.35);'
+         : 'background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);' %>">
+      <%= label %>
+    </a>
+    <% }) %>
+  </div>
+</nav>
+<% } %>

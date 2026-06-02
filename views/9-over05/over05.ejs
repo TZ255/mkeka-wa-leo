@@ -52,11 +52,12 @@
         0:1, 0:2, 3:1, 3:2, n.k.
       </p>
       <p class="p">
-        Kwa siku ya <%= SEO.siku.toLowerCase() %>, <%= SEO.trh.day %> <%= SEO.trh.date %> tumekuletea jumla ya tabiri <strong><%= mikeka.length %></strong> za Over 0.5 magoli kipindi cha kwanza, zikiwa zimechambuliwa kwa umakini na kwa kutumia data na takwimu sahihi.
+        Kwa siku ya <%= SEO.siku.toLowerCase() %>, <%= SEO.isWeekdayPage ? SEO.trh.date : `${SEO.trh.day} ${SEO.trh.date}` %> tumekuletea jumla ya tabiri <strong><%= mikeka.length %></strong> za Over 0.5 magoli kipindi cha kwanza, zikiwa zimechambuliwa kwa umakini na kwa kutumia data na takwimu sahihi.
       </p>
 
       <%- include('../0-global/banner.ejs'); %>
       <%- include('./partials/over05-tables.ejs'); %>
+      <%- include('../0-global/weekday-nav.ejs'); %>
       <%- include('../0-global/banner2.ejs'); %><br>
       <%- include('../0-global/vip.ejs'); %>
       <hr class="my-5 text-light">
