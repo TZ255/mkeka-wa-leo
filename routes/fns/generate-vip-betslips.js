@@ -147,7 +147,8 @@ const generateVipBetslipDocs = async ({ models, selectedDate, dbDate }) => {
             $match: {
                 jsDate: selectedDate,
                 confidence: 'SUPER_STRONG',
-                status: { $ne: 'vip' }
+                status: { $ne: 'vip' },
+                time: { $gte: '13:00' }
             }
         },
         { $sample: { size: VIP_NUMBERS.length * VIP_TIPS_PER_SLIP } },
