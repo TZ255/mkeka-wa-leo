@@ -23,19 +23,51 @@ router.get('/blog', async (req, res) => {
     }
 });
 
+const blogPostPath = (slug) => path.join(__dirname, "..", "blog/posts", `${slug}.md`);
+
+const renderBlogPost = async ({ req, res, slug, canonicalPath }) => {
+    const filePath = blogPostPath(slug);
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).send("Post not found");
+    }
+
+    const { meta, html, toc } = await parseMarkdown(filePath);
+    const postCanonicalPath = canonicalPath || meta.canonicalPath || "/blog/" + meta.slug;
+    const postMeta = { ...meta, canonicalPath: postCanonicalPath };
+
+    res.set('Cache-Control', 'public, max-age=3600');
+    res.render("4-blog/post", pageLocals({
+        page: { id: "blog-post", section: "blog", title: meta.title, canonicalPath: postCanonicalPath },
+        seo: {
+            ...meta,
+            canonicalPath: postCanonicalPath,
+            type: "article",
+            image: meta.coverImage || assetUrl("/imgs/blog/makala-default.webp"),
+            datePublished: meta.date_created,
+            dateModified: meta.date_modified,
+            includeSiteSchema: false
+        },
+        data: { meta: postMeta, body: html, toc }
+    }));
+};
+
+router.get([
+    "/article/mbinu-za-kushinda-betting",
+    "/article/kampuni-bora-za-kubet-tanzania"
+], async (req, res) => {
+    try {
+        const slug = req.path.split('/').pop().toLocaleLowerCase();
+        await renderBlogPost({ req, res, slug, canonicalPath: req.path });
+    } catch (err) {
+        console.error(err.message, err);
+        res.status(500).send("Server error");
+    }
+});
+
 router.get("/blog/:slug", async (req, res) => {
     try {
         const slug = req.params.slug.toLocaleLowerCase();
-        const filePath = path.join(__dirname, "..", "blog/posts", `${slug}.md`);
-        if (!fs.existsSync(filePath)) {
-            return res.status(404).send("Post not found");
-        }
-        const { meta, html, toc } = await parseMarkdown(filePath);
-        res.render("4-blog/post", pageLocals({
-            page: { id: "blog-post", section: "blog", title: meta.title, canonicalPath: "/blog/" + meta.slug },
-            seo: { ...meta, canonicalPath: "/blog/" + meta.slug, type: "article", image: meta.coverImage || assetUrl("/imgs/blog/makala-default.webp"), includeSiteSchema: false },
-            data: { meta, body: html, toc }
-        }));
+        await renderBlogPost({ req, res, slug });
     } catch (err) {
         console.error(err.message, err);
         res.status(500).send("Server error");

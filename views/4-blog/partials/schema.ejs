@@ -1,12 +1,20 @@
 <!-- JSON-LD: Article -->
+<%
+const schemaCanonicalPath = meta.canonicalPath || (typeof seo !== 'undefined' && seo.canonicalPath) || (typeof page !== 'undefined' && page.canonicalPath);
+if (!schemaCanonicalPath) {
+  throw new Error('Article schema canonicalPath is required');
+}
+const schemaCanonicalUrl = `https://mkekawaleo.com${schemaCanonicalPath}`;
+%>
 <script type="application/ld+json">
 <%- JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": `https://mkekawaleo.com/blog/${meta.slug}`
+    "@id": schemaCanonicalUrl
   },
+  "url": schemaCanonicalUrl,
   "headline": meta.title,
   "description": meta.description,
   "image": meta.coverImage || 'https://mkekawaleo.com/favicon/android-chrome-512x512.png',

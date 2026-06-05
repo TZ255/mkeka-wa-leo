@@ -4,6 +4,19 @@ const matter = require("gray-matter");
 
 
 let markedModule;
+
+const applyPlaceholders = (value, placeholders) => {
+  if (typeof value !== "string") return value;
+  return Object.entries(placeholders).reduce(
+    (output, [key, replacement]) => output.replace(new RegExp(`<%= ${key} %>`, "g"), replacement),
+    value
+  );
+};
+
+const applyMetaPlaceholders = (meta, placeholders) => Object.fromEntries(
+  Object.entries(meta).map(([key, value]) => [key, applyPlaceholders(value, placeholders)])
+);
+
 async function parseMarkdown(filePath) {
   if (!markedModule) {
     markedModule = await import("marked");
@@ -17,13 +30,8 @@ async function parseMarkdown(filePath) {
 
   // Inject dynamic placeholders
   const placeholders = { year: new Date().getFullYear() };
-  for (const key in meta) {
-    if (typeof meta[key] === "string") {
-      meta[key] = meta[key].replace(/<%= year %>/g, placeholders.year);
-    }
-  }
-  content = content
-    .replace(/<%= year %>/g, placeholders.year)
+  meta = applyMetaPlaceholders(meta, placeholders);
+  content = applyPlaceholders(content, placeholders);
 
   // Table of Contents array
   const toc = [];
@@ -69,9 +77,13 @@ async function loadPostsMeta() {
       .map(async (file) => {
         const raw = await fs.promises.readFile(path.join(postsFolder, file), "utf8");
         const { data } = matter(raw);
+        const placeholders = { year: new Date().getFullYear() };
+        const meta = applyMetaPlaceholders(data, placeholders);
+        const slug = file.replace(/\.md$/, "");
         return {
-          ...data,
-          slug: file.replace(/\.md$/, "")
+          ...meta,
+          slug,
+          url: meta.canonicalPath || `/blog/${slug}`
         };
       })
   );

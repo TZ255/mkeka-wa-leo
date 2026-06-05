@@ -916,40 +916,6 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
     }
 })
 
-//articles
-router.get('/article/:path', async (req, res) => {
-    try {
-        let path = req.params.path
-        let dt = {
-            mwaka: new Date().getFullYear()
-        }
-
-        switch (path) {
-            case 'mbinu-za-kushinda-betting':
-                res.set('Cache-Control', 'public, max-age=600');
-                res.render('4-articles/mbinu/mbinu', {
-                    page: { id: 'article-mbinu', section: 'articles', title: 'Mbinu za Kushinda Mikeka / Betting', canonicalPath: '/article/mbinu-za-kushinda-betting' },
-                    seo: { title: 'Mbinu za Kushinda Mikeka / Betting', description: 'Jifunze mbinu bora za kushinda mikeka na betting kwa kutumia takwimu, nidhamu ya mtaji na uchambuzi wa mechi.', canonicalPath: '/article/mbinu-za-kushinda-betting', type: 'article' }
-                });
-                break;
-
-            case 'kampuni-bora-za-kubet-tanzania':
-                res.set('Cache-Control', 'public, max-age=600');
-                res.render('4-articles/kampuni/kampuni', {
-                    page: { id: 'article-kampuni', section: 'articles', title: 'Kampuni 5 Bora za Betting Tanzania Kwa Mwaka ' + dt.mwaka, canonicalPath: '/article/kampuni-bora-za-kubet-tanzania' },
-                    seo: { title: 'Kampuni 5 Bora za Betting Tanzania Kwa Mwaka ' + dt.mwaka, description: 'Angalia kampuni bora za betting Tanzania, ofa, usajili, malipo, na maelezo muhimu kwa mchezaji wa Tanzania.', canonicalPath: '/article/kampuni-bora-za-kubet-tanzania', type: 'article' },
-                    dt
-                })
-                break;
-
-            default:
-                res.redirect('/');
-        }
-    } catch (err) {
-        console.log(err.message)
-    }
-})
-
 router.get('/download/movie/:movid', async (req, res) => {
     try {
         let movid = req.params.movid
