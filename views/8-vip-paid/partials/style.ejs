@@ -607,232 +607,394 @@
     /* Scoped styles for VIP Paywall Component */
     .vip-paywall-component {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        padding: 20px 0;
+        padding: 18px 0 8px;
     }
 
     .vip-paywall-component .article-gate {
         position: relative;
-        border-radius: 20px;
-        background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 0, 0.1);
         width: 98%;
-        max-width: 600px;
+        max-width: 620px;
         margin: 0 auto;
-        padding-bottom: 40px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #2b2d42;
+        box-shadow: 0 18px 44px rgba(15, 23, 42, 0.22);
+        border: 1px solid rgba(15, 23, 42, 0.1);
     }
 
     .vip-paywall-component .gate-article-content {
         position: relative;
-        height: 460px;
+        min-height: 640px;
         overflow: hidden;
-        border-radius: 20px;
-    }
-
-    .vip-paywall-component .betslipCont {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-        border-radius: 16px;
-        margin: 10px auto;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    }
-
-    .vip-paywall-component .cap {
-        background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
-        padding: 16px 20px;
-        border-radius: 16px 16px 0 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .vip-paywall-component .cap h2 {
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: #121212;
-        margin: 0;
-    }
-
-    .vip-paywall-component .slip-siku {
-        font-size: 0.85rem;
-        color: #121212;
-        opacity: 0.8;
-        margin-left: 0.5rem;
+        background: #f8fafc;
     }
 
     .vip-paywall-component .gate-article-content::after {
         content: '';
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.75);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        inset: 0;
         z-index: 5;
+        background: linear-gradient(180deg, rgba(248, 250, 252, 0.18) 0%, rgba(248, 250, 252, 0.78) 32%, rgba(15, 23, 42, 0.72) 100%);
+        backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+    }
+
+    .vip-paywall-component .vip-preview-slip {
+        width: 92%;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+    }
+
+    .vip-paywall-component .vip-preview-slip .cap {
+        background: #2b2d42;
+        padding: 15px 16px;
+    }
+
+    .vip-paywall-component .vip-preview-slip .cap h2 {
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 900;
+        line-height: 1.25;
+    }
+
+    .vip-paywall-component .vip-preview-slip .slip-siku {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: #fef3c7;
+        font-size: 0.76rem;
+        font-weight: 700;
+        vertical-align: middle;
+    }
+
+    .vip-paywall-component .vip-preview-list {
+        padding: 8px 0;
+    }
+
+    .vip-paywall-component .vip-preview-row {
+        display: grid;
+        grid-template-columns: 28px 1fr auto;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 16px;
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    .vip-paywall-component .vip-preview-index {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fee2e2;
+        color: #991b1b;
+        font-size: 0.72rem;
+        font-weight: 900;
+    }
+
+    .vip-paywall-component .vip-preview-row b {
+        display: block;
+        color: #111827;
+        font-size: 0.86rem;
+        line-height: 1.2;
+    }
+
+    .vip-paywall-component .vip-preview-row span:not(.vip-preview-index) {
+        display: block;
+        color: #64748b;
+        font-size: 0.74rem;
+        margin-top: 3px;
+    }
+
+    .vip-paywall-component .vip-preview-row strong {
+        color: #0f766e;
+        font-size: 1rem;
+        font-weight: 900;
+    }
+
+    .vip-paywall-component .vip-preview-total {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: #f8fafc;
+    }
+
+    .vip-paywall-component .vip-preview-total span {
+        color: #475569;
+        font-weight: 800;
+        font-size: 0.84rem;
+    }
+
+    .vip-paywall-component .vip-preview-total b {
+        color: #dc2626;
+        font-size: 1.1rem;
+        font-weight: 900;
     }
 
     .vip-paywall-component .gate-article-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: -40px;
+        inset: 0;
         z-index: 10;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 60%, transparent 100%);
         display: flex;
-        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 18px;
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.04) 0%, rgba(15, 23, 42, 0.7) 100%);
+    }
+
+    .vip-paywall-component .paywall-card {
+        width: 100%;
+        max-width: 430px;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 18px 42px rgba(15, 23, 42, 0.28);
+        padding: 16px;
+        color: #0f172a;
+    }
+
+    .vip-paywall-component .paywall-card__top {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 12px;
+        align-items: start;
+        margin-bottom: 14px;
+    }
+
+    .vip-paywall-component .paywall-card__icon {
+        display: inline-flex;
         align-items: center;
-        justify-content: flex-end;
-        padding: 0 20px 50px 20px;
-        text-align: center;
-        border-radius: 20px;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: #fef3c7;
+        color: #92400e;
+        border: 1px solid #fde68a;
+        font-size: 1.12rem;
     }
 
     .vip-paywall-component .premium-badge {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #ffd700, #ffb700);
-        color: #121212;
-        padding: 8px 16px;
-        border-radius: 50px;
-        font-size: 0.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-        animation: vip-glow 2s ease-in-out infinite;
-        z-index: 15;
-    }
-
-    @keyframes vip-glow {
-
-        0%,
-        100% {
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-        }
-
-        50% {
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.7);
-        }
-    }
-
-    .vip-paywall-component .lock-icon-container {
-        margin-bottom: 15px;
-    }
-
-    .vip-paywall-component .lock-icon {
-        font-size: 3rem;
-        background: linear-gradient(135deg, #fb6c6c, #ff0000);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        filter: drop-shadow(0 0 20px #e3646480);
-        animation: vip-pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes vip-pulse {
-
-        0%,
-        100% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.08);
-        }
+        display: inline-flex;
+        align-items: center;
+        min-height: 22px;
+        margin-bottom: 5px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: #fee2e2;
+        color: #991b1b;
+        font-size: 0.7rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: 0;
     }
 
     .vip-paywall-component .gate-title {
-        font-size: 1.5rem;
+        color: #0f172a;
+        font-size: 1.42rem;
         font-weight: 900;
-        color: #ffffff;
-        margin: 0 0 8px 0;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-        line-height: 1.2;
+        margin: 0 0 5px;
+        line-height: 1.12;
+        letter-spacing: 0;
     }
 
     .vip-paywall-component .gate-subtitle {
-        color: #9ca3af;
-        font-size: 0.85rem;
-        margin: 0 0 15px 0;
-        line-height: 1.5;
+        color: #475569;
+        font-size: 0.84rem;
+        line-height: 1.45;
+        margin: 0;
     }
 
-    .vip-paywall-component .gate-subtitle strong {
-        background: linear-gradient(135deg, #ffd700, #ffb700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-weight: 800;
+    .vip-paywall-component .vip-plan-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+        width: 100%;
+        margin: 0 0 14px;
+        padding: 4px;
+        border-radius: 8px;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+    }
+
+    .vip-paywall-component .vip-plan-tabs .nav-item,
+    .vip-paywall-component .vip-plan-tabs .nav-link {
+        width: 100%;
+    }
+
+    .vip-paywall-component .vip-plan-tabs .nav-link {
+        min-height: 44px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        color: #475569;
+        background: transparent;
+        font-size: 0.86rem;
+        font-weight: 900;
+        line-height: 1.05;
+        padding: 7px 4px;
+        cursor: pointer;
+        transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+        letter-spacing: 0;
+    }
+
+    .vip-paywall-component .vip-plan-tabs .nav-link span,
+    .vip-paywall-component .vip-plan-tabs .nav-link small {
+        display: block;
+    }
+
+    .vip-paywall-component .vip-plan-tabs .nav-link small {
+        margin-top: 3px;
+        color: #b45309;
+        font-size: 0.64rem;
+        font-weight: 900;
+        letter-spacing: 0;
+    }
+
+    .vip-paywall-component .vip-plan-tabs .nav-link:hover,
+    .vip-paywall-component .vip-plan-tabs .nav-link:focus-visible {
+        background: #ffffff;
+        color: #0f172a;
+        border-color: #cbd5e1;
+        outline: none;
+    }
+
+    .vip-paywall-component .vip-plan-tabs .nav-link.active {
+        background: #dc2626;
+        color: #ffffff;
+        border-color: #dc2626;
+        box-shadow: 0 7px 16px rgba(220, 38, 38, 0.24);
+    }
+
+    .vip-paywall-component .vip-plan-tabs .nav-link.active small {
+        color: #fef3c7;
+    }
+
+    .vip-paywall-component .vip-plan-content {
+        width: 100%;
+    }
+
+    .vip-paywall-component .vip-plan-head {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: start;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .vip-paywall-component .vip-plan-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 22px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: #ecfdf3;
+        color: #047857;
+        border: 1px solid #bbf7d0;
+        font-size: 0.68rem;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: 0;
+    }
+
+    .vip-paywall-component .vip-plan-head h4 {
+        color: #111827;
+        font-size: 1.05rem;
+        font-weight: 900;
+        margin: 7px 0 0;
+        line-height: 1.1;
     }
 
     .vip-paywall-component .price-container {
-        background: rgba(255, 215, 0, 0.1);
-        border: 2px solid rgba(255, 215, 0, 0.3);
-        border-radius: 16px;
-        padding: 12px 24px;
-        margin: 0 0 15px 0;
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-        width: auto;
+        text-align: right;
+        min-width: 132px;
     }
 
-    .vip-paywall-component .price-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-        animation: vip-shimmer 3s infinite;
-    }
-
-    @keyframes vip-shimmer {
-        0% {
-            left: -100%;
-        }
-
-        100% {
-            left: 100%;
-        }
+    .vip-paywall-component .price-currency {
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 800;
+        margin-right: 3px;
     }
 
     .vip-paywall-component .price-main {
-        font-size: 1.8rem;
+        color: #dc2626;
+        font-size: 1.72rem;
         font-weight: 900;
-        background: linear-gradient(135deg, #ffd700, #ffb700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
         line-height: 1;
     }
 
     .vip-paywall-component .price-period {
-        color: #9ca3af;
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-left: 6px;
+        display: block;
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 800;
+        margin-top: 2px;
+    }
+
+    .vip-paywall-component .vip-plan-proof {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin: 12px 0 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #f8fafc;
+    }
+
+    .vip-paywall-component .vip-plan-proof div {
+        padding: 10px 12px;
+    }
+
+    .vip-paywall-component .vip-plan-proof div + div {
+        border-left: 1px solid #e2e8f0;
+    }
+
+    .vip-paywall-component .vip-plan-proof span {
+        display: block;
+        color: #64748b;
+        font-size: 0.7rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 5px;
+    }
+
+    .vip-paywall-component .vip-plan-proof strong {
+        display: block;
+        color: #0f172a;
+        font-size: 0.98rem;
+        font-weight: 900;
+        line-height: 1.1;
+    }
+
+    .vip-paywall-component .vip-plan-note {
+        margin: 0 0 11px;
+        color: #475569;
+        font-size: 0.78rem;
+        line-height: 1.42;
     }
 
     .vip-paywall-component .features-list {
         list-style: none;
-        margin: 0 auto 20px auto;
+        margin: 0 0 14px;
         padding: 0;
-        text-align: left;
-        width: 100%;
-        max-width: 320px;
     }
 
     .vip-paywall-component .features-list li {
-        color: #e5e7eb;
-        font-size: 0.8rem;
-        margin-bottom: 8px;
         display: flex;
         align-items: flex-start;
-        line-height: 1.4;
+        gap: 9px;
+        color: #334155;
+        font-size: 0.82rem;
+        line-height: 1.38;
+        margin-bottom: 8px;
     }
 
     .vip-paywall-component .features-list li:last-child {
@@ -840,96 +1002,147 @@
     }
 
     .vip-paywall-component .features-list i {
+        flex: 0 0 auto;
+        color: #059669;
         font-size: 0.9rem;
-        margin-right: 10px;
-        color: #10b981;
-        flex-shrink: 0;
         margin-top: 2px;
     }
 
-    .vip-paywall-component .gate-subscribe-btn {
-        background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%);
-        border: none;
-        padding: 14px 40px;
-        border-radius: 50px;
-        color: #121212;
+    .vip-paywall-component .features-list strong {
+        color: #111827;
         font-weight: 900;
+    }
+
+    .vip-paywall-component .gate-subscribe-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        min-height: 48px;
+        border: 1px solid #b91c1c;
+        border-radius: 8px;
+        background: #dc2626;
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(220, 38, 38, 0.22);
         font-size: 0.95rem;
-        letter-spacing: 0.5px;
-        box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
-        transition: all 0.3s ease;
-        width: 100%;
+        font-weight: 900;
+        line-height: 1;
         cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        text-transform: uppercase;
-        margin: 0;
+        transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+        letter-spacing: 0;
     }
 
-    .vip-paywall-component .gate-subscribe-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transition: left 0.5s;
-    }
-
-    .vip-paywall-component .gate-subscribe-btn:hover::before {
-        left: 100%;
-    }
-
-    .vip-paywall-component .gate-subscribe-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 28px rgba(255, 215, 0, 0.7);
-    }
-
-    .vip-paywall-component .gate-subscribe-btn:active {
-        transform: translateY(0);
+    .vip-paywall-component .gate-subscribe-btn:hover,
+    .vip-paywall-component .gate-subscribe-btn:focus-visible {
+        background: #b91c1c;
+        border-color: #991b1b;
+        box-shadow: 0 12px 24px rgba(185, 28, 28, 0.26);
+        outline: none;
     }
 
     .vip-paywall-component .gate-subscribe-btn i {
-        margin-right: 8px;
-        font-size: 1rem;
+        font-size: 0.98rem;
     }
 
     .vip-paywall-component .trust-badge {
-        margin-top: 12px;
-        color: #6b7280;
-        font-size: 0.7rem;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        gap: 6px;
+        gap: 7px;
+        margin-top: 11px;
+        color: #475569;
+        font-size: 0.72rem;
+        line-height: 1.35;
+        text-align: center;
     }
 
     .vip-paywall-component .trust-badge i {
-        color: #10b981;
-        font-size: 0.85rem;
+        color: #059669;
+        font-size: 0.9rem;
+        margin-top: 1px;
     }
 
     @media (max-width: 480px) {
-        .vip-paywall-component .gate-title {
-            font-size: 1.3rem;
+        .vip-paywall-component {
+            padding-top: 10px;
         }
 
-        .vip-paywall-component .price-main {
-            font-size: 1.6rem;
+        .vip-paywall-component .article-gate {
+            width: 100%;
         }
 
-        .vip-paywall-component .gate-subscribe-btn {
-            padding: 12px 30px;
-            font-size: 0.9rem;
-        }
-
-        .vip-paywall-component .features-list li {
-            font-size: 0.75rem;
+        .vip-paywall-component .gate-article-content {
+            min-height: 665px;
         }
 
         .vip-paywall-component .gate-article-overlay {
-            padding: 0 15px 40px 15px;
+            padding: 12px;
+        }
+
+        .vip-paywall-component .paywall-card {
+            padding: 13px;
+        }
+
+        .vip-paywall-component .paywall-card__top {
+            grid-template-columns: 36px 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .vip-paywall-component .paywall-card__icon {
+            width: 36px;
+            height: 36px;
+            font-size: 1rem;
+        }
+
+        .vip-paywall-component .gate-title {
+            font-size: 1.22rem;
+        }
+
+        .vip-paywall-component .gate-subtitle,
+        .vip-paywall-component .features-list li {
+            font-size: 0.76rem;
+        }
+
+        .vip-paywall-component .vip-plan-head {
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .vip-paywall-component .price-container {
+            text-align: left;
+            min-width: 0;
+        }
+
+        .vip-paywall-component .price-period {
+            display: inline;
+            margin-left: 5px;
+        }
+
+        .vip-paywall-component .price-main {
+            font-size: 1.5rem;
+        }
+
+        .vip-paywall-component .vip-plan-tabs .nav-link {
+            font-size: 0.8rem;
+            min-height: 42px;
+        }
+
+        .vip-paywall-component .gate-subscribe-btn {
+            min-height: 46px;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .vip-paywall-component *,
+        .vip-paywall-component *::before,
+        .vip-paywall-component *::after {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
         }
     }
 </style>
@@ -998,5 +1211,3 @@
         z-index: 2;
     }
 </style>
-
-

@@ -1,8 +1,63 @@
 <!-- VIP Paywall Card Component - Self-contained with scoped styles -->
+<%
+    const vipPaywallPlans = [
+        {
+            key: 'day',
+            tab: 'Siku',
+            label: 'Siku 1',
+            price: 5999,
+            period: 'kwa siku',
+            badge: 'Majaribio',
+            metric: 'Mikeka 4',
+            value: 'Masaa 24',
+            note: 'Inafaa kama unataka kujaribu mikeka yetu.',
+            features: [
+                '<strong>Mikeka 4 ya VIP</strong> ya leo au kesho',
+                '<strong>Jumla ya Odds 10+</strong> kwa siku',
+                '<strong>Msaada wa haraka</strong> kupitia WhatsApp'
+            ]
+        },
+        {
+            key: 'week',
+            tab: 'Wiki',
+            label: 'Siku 7',
+            price: 12500,
+            period: 'kwa wiki',
+            badge: 'Popular',
+            active: true,
+            metric: 'Odds 70+',
+            value: 'Siku 7',
+            note: 'Chaguo linalopendelewa na wengi.',
+            features: [
+                '<strong>Mikeka 4 ya VIP</strong> kila siku',
+                '<strong>Jumla ya Odds 70+</strong> ndani ya wiki',
+                '<strong>Lipia mara moja.</strong> Pata mikeka kwa siku 7',
+                '<strong>Msaada wa haraka</strong> kupitia WhatsApp'
+            ]
+        },
+        {
+            key: 'month',
+            tab: 'Mwezi',
+            label: 'Mwezi 1',
+            price: 35000,
+            period: 'kwa mwezi',
+            badge: 'Thamani zaidi',
+            metric: 'Odds 300+',
+            value: 'Siku 30',
+            note: 'Kifurushi bora kwa mwekezaji wa mara kwa mara.',
+            features: [
+                '<strong>Mikeka 4 ya VIP</strong> kila siku',
+                '<strong>Lipia mara moja.</strong> Pata mikeka kwa siku 30',
+                '<strong>Jumla ya Odds 300+</strong> kwa mwezi',
+                '<strong>Msaada wa haraka</strong> kupitia WhatsApp'
+            ]
+        }
+    ];
+%>
 <div class="vip-paywall-component" id="paywall-card">
     <div class="article-gate" id="article-gate">
         <div class="gate-article-content">
-            <div class="betslipCont mb-3 mt-5">
+            <div class="betslipCont vip-preview-slip mb-3 mt-4">
                 <div class="cap d-flex justify-content-between align-items-center px-3">
                     <h2 class="m-0">
                         VIP MIKEKA - Gold Plan
@@ -16,75 +71,126 @@
                         </span>
                     </h2>
                 </div>
-                <div style="height: 300px;"></div>
+                <div class="vip-preview-list" aria-hidden="true">
+                    <div class="vip-preview-row">
+                        <span class="vip-preview-index">1</span>
+                        <div>
+                            <b>VIP Match Selection</b>
+                            <span>Prediction imefungwa</span>
+                        </div>
+                        <strong>2.10</strong>
+                    </div>
+                    <div class="vip-preview-row">
+                        <span class="vip-preview-index">2</span>
+                        <div>
+                            <b>VIP Match Selection</b>
+                            <span>Prediction imefungwa</span>
+                        </div>
+                        <strong>1.85</strong>
+                    </div>
+                    <div class="vip-preview-row">
+                        <span class="vip-preview-index">3</span>
+                        <div>
+                            <b>VIP Match Selection</b>
+                            <span>Prediction imefungwa</span>
+                        </div>
+                        <strong>2.35</strong>
+                    </div>
+                    <div class="vip-preview-total">
+                        <span>Total Odds</span>
+                        <b>70+</b>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="gate-article-overlay">
-            <div class="premium-badge">
-                <i class="fa-solid fa-crown"></i> VIP Gold
-            </div>
+            <section class="paywall-card" aria-labelledby="vipPaywallTitle">
+                <div class="paywall-card__top">
+                    <div class="paywall-card__icon">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <span class="premium-badge">VIP Gold</span>
+                        <h3 class="gate-title" id="vipPaywallTitle">Fungua Mikeka ya VIP</h3>
+                        <p class="gate-subtitle">Mikeka minne yenye uchambuzi, odds kubwa na ufunguzi wa haraka baada ya malipo.</p>
+                    </div>
+                </div>
 
-            <div class="lock-icon-container">
-                <i class="fa-solid fa-circle-exclamation lock-icon"></i>
-            </div>
+                <ul class="nav nav-pills vip-plan-tabs" id="vipPaywallPlans" role="tablist">
+                    <% vipPaywallPlans.forEach((plan) => { %>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link <%= plan.active ? 'active' : '' %>" id="vip-plan-<%= plan.key %>-tab"
+                            data-bs-toggle="pill" data-bs-target="#vip-plan-<%= plan.key %>" type="button" role="tab"
+                            aria-controls="vip-plan-<%= plan.key %>" aria-selected="<%= plan.active ? 'true' : 'false' %>">
+                            <span><%= plan.tab %></span>
+                            <% if (plan.active) { %>
+                            <small>Pendwa</small>
+                            <% } %>
+                        </button>
+                    </li>
+                    <% }) %>
+                </ul>
 
-            <h3 class="gate-title">Huwezi Ona Mikeka ya VIP</h3>
-            <p class="gate-subtitle">
-                Bonyeza <strong>LIPIA SASA</strong> kufanya malipo yako <br> na uweze kupata mikeka yetu ya VIP wiki nzima
-            </p>
+                <div class="tab-content vip-plan-content">
+                    <% vipPaywallPlans.forEach((plan) => { %>
+                    <div class="tab-pane fade <%= plan.active ? 'show active' : '' %>" id="vip-plan-<%= plan.key %>"
+                        role="tabpanel" aria-labelledby="vip-plan-<%= plan.key %>-tab" tabindex="0">
+                        <div class="vip-plan-head">
+                            <div>
+                                <span class="vip-plan-badge"><%= plan.badge %></span>
+                                <h4><%= plan.label %></h4>
+                            </div>
+                            <div class="price-container">
+                                <span class="price-currency">Tsh</span>
+                                <span class="price-main"><%= plan.price.toLocaleString('en-US') %></span>
+                                <span class="price-period"><%= plan.period %></span>
+                            </div>
+                        </div>
 
-            <div class="price-container">
-                <span class="price-main">Tsh 12,500</span>
-                <span class="price-period">/ wiki</span>
-            </div>
+                        <div class="vip-plan-proof">
+                            <div>
+                                <span>Unapata</span>
+                                <strong><%= plan.metric %></strong>
+                            </div>
+                            <div>
+                                <span>Muda</span>
+                                <strong><%= plan.value %></strong>
+                            </div>
+                        </div>
 
-            <ul class="features-list">
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Mikeka Minne ya VIP</strong> kila siku</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Yenye nafasi ya juu</strong> ya ushindi</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Jumla ya Odds 70+</strong> kwa wiki</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Malipo Mara Moja.</strong> Mikeka wiki nzima</span>
-                </li>
-                <li>
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span><strong>Msaada wa haraka</strong> 24/7</span>
-                </li>
-            </ul>
+                        <p class="vip-plan-note"><%= plan.note %></p>
 
-            <% if (autopilot === true) { %>
-            <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
-                hx-get="/api/pay-form" hx-target="#paymentModalBody" hx-swap="innerHTML">
-                <i class="fa-solid fa-credit-card"></i> LIPIA SASA
-            </button>
-            <% } %>
-            <% if (autopilot === false) { %>
-            <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#MNO_Modal">
-                <i class="fa-solid fa-credit-card"></i> LIPIA SASA
-            </button>
-            <% } %>
+                        <ul class="features-list">
+                            <% plan.features.forEach((feature) => { %>
+                            <li>
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span><%- feature %></span>
+                            </li>
+                            <% }) %>
+                        </ul>
 
-            <div class="trust-badge">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>Malipo salama na ya haraka</span>
-            </div>
+                        <button class="gate-subscribe-btn" data-bs-toggle="modal" data-bs-target="#globalPaymentModal"
+                            hx-get="/api/pay-form?plan=<%= plan.key %>" hx-target="#paymentModalBody" hx-swap="innerHTML">
+                            <i class="fa-solid fa-credit-card"></i>
+                            <span>Lipia <%= plan.label %></span>
+                        </button>
+                    </div>
+                    <% }) %>
+                </div>
+
+                <div class="trust-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Malipo salama kupitia simu.</span>
+                </div>
+            </section>
         </div>
     </div>
 </div>
 <br>
 <div class="alert alert-light shadow-sm border-secondary mx-auto my-5 small rounded-3" role="alert"
     style="width: 98%; max-width: 600px;">
-    <p><i class="fa-solid fa-circle-info"></i> <b>Baada ya malipo, mikeka yote minne hapo chini itafunguliwa</b> na utaipata hapa kila siku kwa wiki nzima</p>
+    <p><i class="fa-solid fa-circle-info"></i> <b>Baada ya malipo, mikeka yote minne hapo chini itafunguliwa</b> na utaipata kwa muda wa mpango uliochagua</p>
 
     <p class="mb-1">Changamoto yoyote ya malipo? Wasiliana nasi:</p>
     <ul class="list-unstyled ms-2">

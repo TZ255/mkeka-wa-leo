@@ -21,25 +21,25 @@ const SUBSCRIPTION_TYPES = {
     AUTO_GOLD: {
         days: 7,
         plan: 'Gold Plan',
-        amount: 11500,
+        amount: 12500,
         name: 'Siku 7'
     },
     SNIPPE_GOLD: {
         days: 7,
         plan: 'Gold Plan',
-        amount: 12400,
+        amount: 12500,
         name: 'Siku 7'
     },
     GOLD2: {
         days: 30,
         plan: 'Gold Plan',
-        amount: 25000,
+        amount: 35000,
         name: 'Mwezi 1'
     },
     one: {
         days: 1,
         plan: 'Gold Plan',
-        amount: 0,
+        amount: 5999,
         name: 'Siku 1'
     }
 };

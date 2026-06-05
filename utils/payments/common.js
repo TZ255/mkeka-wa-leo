@@ -1,5 +1,42 @@
 const SNIPPE_NETWORKS = new Set(['smile']);
 const RENDERABLE_NETWORKS = new Set(['halotel', 'tigo', 'airtel', 'vodacom', 'smile']);
+const DEFAULT_VIP_PAYMENT_PLAN = 'week';
+
+const VIP_PAYMENT_PLANS = {
+    day: {
+        key: 'day',
+        label: 'Siku 1',
+        period: 'siku',
+        displayAmount: 5999,
+        clickpesaAmount: 5419,
+        snippeAmount: 5999,
+        grantKey: 'one',
+    },
+    week: {
+        key: 'week',
+        label: 'Siku 7',
+        period: 'wiki',
+        displayAmount: 12500,
+        clickpesaAmount: 11580,
+        snippeAmount: 12500,
+        grantKey: 'auto_gold',
+    },
+    month: {
+        key: 'month',
+        label: 'Mwezi 1',
+        period: 'mwezi',
+        displayAmount: 35000,
+        clickpesaAmount: 33850,
+        snippeAmount: 35000,
+        grantKey: 'gold2',
+    },
+};
+
+const VIP_PAYMENT_PLAN_OPTIONS = [
+    VIP_PAYMENT_PLANS.day,
+    VIP_PAYMENT_PLANS.week,
+    VIP_PAYMENT_PLANS.month,
+];
 
 const NETWORK_BY_PREFIX = {
     '60': 'unknown',
@@ -71,10 +108,30 @@ function selectPaymentGateway(networkBrand = 'unknown', phone = '') {
     return SNIPPE_NETWORKS.has(String(networkBrand).toLowerCase()) ? 'snippe' : 'clickpesa';
 }
 
+function isValidVipPaymentPlan(planKey) {
+    return Object.prototype.hasOwnProperty.call(VIP_PAYMENT_PLANS, String(planKey || '').toLowerCase());
+}
+
+function getVipPaymentPlan(planKey = DEFAULT_VIP_PAYMENT_PLAN) {
+    const normalizedPlan = String(planKey || DEFAULT_VIP_PAYMENT_PLAN).toLowerCase();
+    return VIP_PAYMENT_PLANS[normalizedPlan] || VIP_PAYMENT_PLANS[DEFAULT_VIP_PAYMENT_PLAN];
+}
+
+function getVipPaymentAmount(plan, gateway = 'clickpesa') {
+    const paymentPlan = getVipPaymentPlan(plan?.key || plan);
+    return gateway === 'snippe' ? paymentPlan.snippeAmount : paymentPlan.clickpesaAmount;
+}
+
 module.exports = {
+    DEFAULT_VIP_PAYMENT_PLAN,
+    VIP_PAYMENT_PLAN_OPTIONS,
+    VIP_PAYMENT_PLANS,
     generateOrderId,
     getNetworkBrand,
     getRenderableNetwork,
+    getVipPaymentAmount,
+    getVipPaymentPlan,
+    isValidVipPaymentPlan,
     normalizeName,
     normalizePhone,
     selectPaymentGateway,

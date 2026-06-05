@@ -1,17 +1,14 @@
 const { initializeSnippePayment } = require('../../routes/fns/snippe-api');
 const { normalizeName } = require('./common');
 
-const PRICE = {
-    gold: 12500,
-};
 const SNIPPE_WEBHOOK_URL = 'https://baruakazi.co.tz/payment/webhook/snippe/waleo';
 
-async function initializeSnippeGatewayPayment({ user, email, phone, orderRef }) {
+async function initializeSnippeGatewayPayment({ user, email, phone, orderRef, amount = 12500, planKey = 'week' }) {
     const { firstName, lastName } = normalizeName(user?.name || null);
     const payload = {
         payment_type: 'mobile',
         details: {
-            amount: email === 'janjatzblog@gmail.com' ? 1000 : PRICE.gold,
+            amount: email === 'janjatzblog@gmail.com' ? 1000 : amount,
             currency: 'TZS',
         },
         phone_number: phone,
@@ -23,6 +20,7 @@ async function initializeSnippeGatewayPayment({ user, email, phone, orderRef }) 
         webhook_url: SNIPPE_WEBHOOK_URL,
         metadata: {
             order_id: orderRef,
+            plan: planKey,
         },
     };
 

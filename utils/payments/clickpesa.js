@@ -1,22 +1,22 @@
 const axios = require('axios');
 
-const PRICE = {
-    gold: 11580,
-};
 const CLICKPESA_URL = 'https://baruakazi.co.tz/payment/process/waleo';
 
-async function initializeClickPesaPayment({ user, email, phone, orderRef }) {
+async function initializeClickPesaPayment({ user, email, phone, orderRef, amount = 11580, planKey = 'week' }) {
     const timestampString = Date.now().toString(36);
+    const isTestUser = email === 'janjatzblog@gmail.com' || user?.role === 'admin';
     const payload = {
         SECRET: process.env.PASS,
         orderRef,
+        plan: planKey,
         user: {
             userId: user._id,
             email: user?.email || `${timestampString}@baruakazi.co.tz`,
             name: user?.name || user?.email?.split('@')[0] || `Mteja ${timestampString}`,
+            role: user?.role,
         },
         phoneNumber: phone,
-        amount: (email === 'janjatzblog@gmail.com' || user?.role === 'admin') ? 1000 : PRICE.gold,
+        amount: isTestUser ? 1000 : amount,
     };
 
     try {

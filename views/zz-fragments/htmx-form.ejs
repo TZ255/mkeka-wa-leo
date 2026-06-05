@@ -1,5 +1,14 @@
 <!-- Wrapper where HTMX swaps fragments -->
 <!-- This form should be inside the modal -->
+<%
+    const selectedPaymentPlan = paymentPlan || {
+        key: 'week',
+        label: 'Siku 7',
+        displayAmount: 12500,
+        period: 'wiki'
+    };
+    const selectedPaymentAmount = Number(selectedPaymentPlan.displayAmount || 0).toLocaleString('en-US');
+%>
 <div id="payment-area">
     <div class="payment-card bg-white overflow-hidden" style="max-width: 100%; margin: 0 auto;">
         <div class="payment-header border-bottom px-4 pt-4 pb-3"
@@ -27,6 +36,19 @@
         <div class="payment-body p-4">
             <form id="vip-payment-form" hx-post="/api/pay" hx-target="#payment-area" hx-swap="innerHTML"
                 hx-disabled-elt="input, button" hx-indicator=".htmx-indicator" class="needs-validation" novalidate>
+                <input type="hidden" name="plan" value="<%= selectedPaymentPlan.key %>">
+
+                <div class="d-flex align-items-center justify-content-between gap-3 rounded-4 border px-3 py-3 mb-3"
+                    style="background-color: #f8f9fa; border-color: #edf1f4 !important;">
+                    <div class="text-start">
+                        <div class="small text-secondary fw-semibold">Kifurushi ulichochagua</div>
+                        <div class="fw-bold text-dark"><%= selectedPaymentPlan.label %></div>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold text-success">Tsh <%= selectedPaymentAmount %></div>
+                        <div class="small text-secondary">/<%= selectedPaymentPlan.period %></div>
+                    </div>
+                </div>
 
                 <!-- Phone: +255 prefix + 9 digits not starting with 0 -->
                 <div class="mb-3">

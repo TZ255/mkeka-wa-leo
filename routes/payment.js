@@ -6,6 +6,9 @@ const {
     generateOrderId,
     getNetworkBrand,
     getRenderableNetwork,
+    getVipPaymentAmount,
+    getVipPaymentPlan,
+    isValidVipPaymentPlan,
     normalizePhone,
     selectPaymentGateway,
 } = require('../utils/payments/common');
@@ -14,7 +17,13 @@ const { initializeSnippeGatewayPayment } = require('../utils/payments/snippe');
 
 router.get('/api/pay-form', async (req, res) => {
     try {
-        return res.render('zz-fragments/htmx-form', { layout: false, user: req?.user || '' });
+        const paymentPlan = getVipPaymentPlan(req.query?.plan);
+
+        return res.render('zz-fragments/htmx-form', {
+            layout: false,
+            user: req?.user || '',
+            paymentPlan,
+        });
     } catch (error) {
         console.error('[pay-form]', error);
         return res.render('zz-fragments/payment-error', {
@@ -24,6 +33,25 @@ router.get('/api/pay-form', async (req, res) => {
         });
     }
 });
+
+function getRequestedPaymentPlan(req) {
+    const requestedPlan = req.body?.plan || req.query?.plan;
+    return getVipPaymentPlan(requestedPlan);
+}
+
+function getWebhookPaymentPlan(planKey, gateway, orderId, email) {
+    if (isValidVipPaymentPlan(planKey)) {
+        return getVipPaymentPlan(planKey);
+    }
+
+    sendLauraNotification(
+        -1003744778123,
+        `⚠️ WALEO ${gateway} webhook missing or invalid plan. Defaulting to week.\nOrder: ${orderId}\nEmail: ${email || 'unknown'}\nPlan: ${planKey || 'missing'}`,
+        true
+    );
+
+    return getVipPaymentPlan('week');
+}
 
 router.post('/api/pay', async (req, res) => {
     console.log('PAY request body:', req.body);
@@ -39,7 +67,7 @@ router.post('/api/pay', async (req, res) => {
 
         const email = (req.user?.email || req.session?.user?.email || '').trim();
         const phone = normalizePhone(req.body.phone9);
-        const plan = 'gold';
+        const paymentPlan = getRequestedPaymentPlan(req);
 
         console.log('Received the post req:', { ...req.body, email });
 
@@ -63,6 +91,7 @@ router.post('/api/pay', async (req, res) => {
 
         const networkBrand = getNetworkBrand(phone);
         const gateway = selectPaymentGateway(networkBrand, phone);
+        const gatewayAmount = getVipPaymentAmount(paymentPlan, gateway);
         const orderRef = generateOrderId();
 
         user.phone = phone;
@@ -75,9 +104,23 @@ router.post('/api/pay', async (req, res) => {
             }
             
             if (gateway === 'snippe') {
-                await initializeSnippeGatewayPayment({ user, email, phone, orderRef });
+                await initializeSnippeGatewayPayment({
+                    user,
+                    email,
+                    phone,
+                    orderRef,
+                    amount: gatewayAmount,
+                    planKey: paymentPlan.key,
+                });
             } else {
-                await initializeClickPesaPayment({ user, email, phone, orderRef });
+                await initializeClickPesaPayment({
+                    user,
+                    email,
+                    phone,
+                    orderRef,
+                    amount: gatewayAmount,
+                    planKey: paymentPlan.key,
+                });
             }
         } catch (error) {
             const network = getRenderableNetwork(networkBrand);
@@ -94,13 +137,14 @@ router.post('/api/pay', async (req, res) => {
 
         sendLauraNotification(
             741815228,
-            `💰 WALEO payment initiated for ${plan} plan via ${gateway}\nEmail: ${email}\nPhone: ${phone}\nNetwork: ${networkBrand}`
+            `💰 WALEO payment initiated for ${paymentPlan.key} plan via ${gateway}\nEmail: ${email}\nPhone: ${phone}\nNetwork: ${networkBrand}\nDisplay: ${paymentPlan.displayAmount}\nGateway amount: ${gatewayAmount}`
         );
 
         return res.render('zz-fragments/payment-initiated', {
             layout: false,
             orderId: orderRef,
             phone,
+            paymentPlan,
         });
     } catch (error) {
         console.error('PAY error:', error?.message || error);
@@ -166,7 +210,7 @@ router.post('/api/payment-webhook', async (req, res) => {
     console.log('CLICKPESA WEBHOOK received:', req.body);
 
     try {
-        const { order_id, payment_status, email, phone } = req.body || {};
+        const { order_id, payment_status, email, phone, plan } = req.body || {};
         const secret = req.headers['x-webhook-secret'];
 
         if (!order_id || secret !== process.env.PASS) {
@@ -175,7 +219,8 @@ router.post('/api/payment-webhook', async (req, res) => {
 
         if (payment_status === 'COMPLETED') {
             try {
-                const sub = await grantSubscription(email, 'auto_gold', phone);
+                const paymentPlan = getWebhookPaymentPlan(plan, 'ClickPesa', order_id, email);
+                const sub = await grantSubscription(email, paymentPlan.grantKey, phone);
 
                 if (!sub || !sub?.success || !sub?.grant_success) {
                     throw new Error(`Failed to grant subscription: ${sub?.message || 'Unknown error'}`);
@@ -184,7 +229,7 @@ router.post('/api/payment-webhook', async (req, res) => {
                 console.log('grantSubscription clickpesa webhook error:', error?.message);
                 sendLauraNotification(
                     -1003744778123,
-                    `❌ Failed to confirm a paid sub for ${email} phone ${phone} - gold plan. Please confirm manually`
+                    `❌ Failed to confirm a paid sub for ${email} phone ${phone} - ${plan || 'week'} plan. Please confirm manually`
                 );
             }
         }
@@ -199,6 +244,12 @@ router.post('/api/payment-webhook', async (req, res) => {
 
 router.post('/webhook/snippe', async (req, res) => {
     console.log('SNIPPE WEBHOOK received:', req.body);
+
+    const secret = req.headers['x-webhook-secret'];
+    if (secret !== process.env.PASS) {
+        return res.status(400).json({ success: false, message: 'Invalid request' });
+    }
+
     res.status(200).json({ success: true, message: 'Webhook received' });
 
     try {
@@ -208,7 +259,7 @@ router.post('/webhook/snippe', async (req, res) => {
             data: {
                 status,
                 customer: { email, phone } = {},
-                metadata: { order_id } = {},
+                metadata: { order_id, plan } = {},
             } = {},
         } = req.body || {};
 
@@ -232,7 +283,8 @@ router.post('/webhook/snippe', async (req, res) => {
             const userPhone = String(phone).replace('+', '');
 
             try {
-                const sub = await grantSubscription(userEmail, 'snippe_gold', userPhone);
+                const paymentPlan = getWebhookPaymentPlan(plan, 'Snippe', order_id, userEmail);
+                const sub = await grantSubscription(userEmail, paymentPlan.grantKey, userPhone);
 
                 if (!sub || !sub?.success || !sub?.grant_success) {
                     throw new Error(`Failed to grant subscription: ${sub?.message || 'Unknown error'}`);
@@ -241,7 +293,7 @@ router.post('/webhook/snippe', async (req, res) => {
                 console.log('grantSubscription snippe webhook error:', error?.message);
                 sendLauraNotification(
                     -1003744778123,
-                    `❌ Failed to confirm a paid sub for ${userEmail} phone ${userPhone} - gold plan. Please confirm manually`
+                    `❌ Failed to confirm a paid sub for ${userEmail} phone ${userPhone} - ${plan || 'week'} plan. Please confirm manually`
                 );
             }
         }
