@@ -1,0 +1,71 @@
+<%
+const siteBaseUrl = 'https://mkekawaleo.com';
+const defaultTitle = 'Mkeka wa Leo';
+const defaultDescription = 'Betting tips za mpira wa miguu Tanzania, mikeka ya leo, matokeo, ratiba, misimamo na uchambuzi wa michezo.';
+const defaultImage = `${siteBaseUrl}/imgs/logos/og.webp`;
+const sourceSeo = typeof seo !== 'undefined' ? seo : {};
+const sourceSEO = typeof SEO !== 'undefined' ? SEO : {};
+const sourceMeta = typeof meta !== 'undefined' ? meta : {};
+const sourcePage = typeof page !== 'undefined' ? page : {};
+const resolvedSeo = Object.assign({}, sourcePage.seo || {}, sourceMeta, sourceSEO, sourceSeo);
+const rawCanonical = resolvedSeo.canonicalPath || sourcePage.canonicalPath;
+if (!rawCanonical) {
+    throw new Error('SEO canonicalPath is required');
+}
+if (!String(rawCanonical).startsWith('/')) {
+    throw new Error('SEO canonicalPath must start with /');
+}
+const seoCanonical = `${siteBaseUrl}${rawCanonical}`;
+const seoTitle = resolvedSeo.title || defaultTitle;
+const seoDescription = resolvedSeo.description || defaultDescription;
+const seoKeywords = resolvedSeo.keywords || '';
+const seoRobots = resolvedSeo.robots || 'index, follow';
+const seoType = resolvedSeo.type || (resolvedSeo.date_created || resolvedSeo.datePublished ? 'article' : 'website');
+const seoImage = resolvedSeo.image || resolvedSeo.coverImage || defaultImage;
+const seoAuthor = resolvedSeo.author || '';
+const seoDatePublished = resolvedSeo.datePublished || resolvedSeo.date_created || '';
+const seoDateModified = resolvedSeo.dateModified || resolvedSeo.date_modified || seoDatePublished;
+const seoLocale = resolvedSeo.locale || 'sw_TZ';
+const seoTwitterTitle = resolvedSeo.twitterTitle || seoTitle;
+const includeSiteSchema = resolvedSeo.includeSiteSchema !== false;
+%>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-language" content="sw-TZ">
+<%- include('../fonts.ejs'); %>
+<meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
+<title><%= seoTitle %></title>
+<meta name="description" content="<%= seoDescription %>">
+<% if (seoKeywords) { %>
+<meta name="keywords" content="<%= seoKeywords %>">
+<% } %>
+<meta name="robots" content="<%= seoRobots %>">
+<link rel="canonical" href="<%= seoCanonical %>">
+<% if (seoAuthor) { %>
+<meta name="author" content="<%= seoAuthor %>">
+<% } %>
+<% if (seoDatePublished) { %>
+<meta property="article:published_time" content="<%= seoDatePublished %>">
+<% } %>
+<% if (seoDateModified) { %>
+<meta property="article:modified_time" content="<%= seoDateModified %>">
+<% } %>
+<meta property="og:type" content="<%= seoType %>">
+<meta property="og:locale" content="<%= seoLocale %>">
+<meta property="og:title" content="<%= seoTitle %>">
+<meta property="og:description" content="<%= seoDescription %>">
+<meta property="og:url" content="<%= seoCanonical %>">
+<meta property="og:site_name" content="Mkeka wa Leo">
+<meta property="og:image" content="<%= seoImage %>">
+<meta property="og:image:secure_url" content="<%= seoImage %>">
+<meta property="og:image:alt" content="<%= resolvedSeo.imageAlt || seoTitle %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="<%= seoCanonical %>">
+<meta name="twitter:title" content="<%= seoTwitterTitle %>">
+<meta name="twitter:description" content="<%= seoDescription %>">
+<meta name="twitter:image" content="<%= seoImage %>">
+<%- include('../favicon.ejs'); %>
+<% if (includeSiteSchema) { %>
+<%- include('./jsonld.ejs', { seoTitle, seoDescription, seoCanonical, seoImage, seoType, seoAuthor, seoDatePublished, seoDateModified }); %>
+<% } %>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('../0-global/fonts.ejs'); %>
-    <%- include('../0-global/favicon.ejs'); %>
-    <title><%= title %></title>
+    <% const oddsSeoMap = {
+        best: { canonicalPath: "/odds-tips/best-picks", description: "Best Picks za leo kutoka Mkeka wa Leo, zikiwa na odds, accuracy na mechi zilizochambuliwa kwa betting tips za Tanzania." },
+        over25: { canonicalPath: "/odds-tips/over-2-5", description: "Over/Under 2.5 tips za leo kutoka Mkeka wa Leo, zikiwa na odds, accuracy na mechi zilizochambuliwa." },
+        btts: { canonicalPath: "/odds-tips/btts", description: "BTTS tips za leo kutoka Mkeka wa Leo, zikiwa na odds, accuracy na mechi zilizochambuliwa." }
+    }; %>
+    <%- include("../0-global/seo/head.ejs", { seo: { title, ...(oddsSeoMap[active] || oddsSeoMap.best) } }); %>
     <style>
         body { background: #0f1117; color: #e1e1e1; font-family: 'Segoe UI', sans-serif; }
         .container { max-width: 900px; }

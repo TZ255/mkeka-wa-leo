@@ -23,6 +23,7 @@ const multer = require('multer');
 const yaUhakikaVipModel = require('../model/ya-uhakika/vip-yauhakika');
 const MikekaTipsVIPModel = require('../model/mikekatips-vip')
 const { VIP_NUMBERS, buildVipSlips, buildVipSummary, getProviderMeta } = require('./fns/vip-betslips');
+const { pageLocals } = require('./fns/seo');
 
 
 router.get('/mkeka/vip', async (req, res) => {
@@ -125,7 +126,11 @@ router.get('/mkeka/vip', async (req, res) => {
                 else if (req.query.auto === '0') autopilot = false;
             }
 
-            return res.render(`8-vip-paid/landing`, { betslip1, betslip2, betslip3, betslip4, vipSlips, vipSummary, total_odds, booking_codes, user, d, jana, supa_won, supa_won_total_odds, siku, autopilot })
+            return res.render('8-vip-paid/landing', pageLocals({
+                page: { id: 'vip-paid', section: 'vip', title: 'VIP Slips za Leo | Mkeka wa Leo', canonicalPath: '/mkeka/vip' },
+                seo: { title: 'VIP Slips za Leo | Mkeka wa Leo', description: 'VIP Slips za Leo - mikeka ya VIP yenye betslips nne, odds kubwa na uchambuzi wa mechi kwa wanachama wa Mkeka wa Leo.', canonicalPath: '/mkeka/vip' },
+                data: { betslip1, betslip2, betslip3, betslip4, vipSlips, vipSummary, total_odds, booking_codes, user, d, jana, supa_won, supa_won_total_odds, siku, autopilot }
+            }))
         }
         const publicDate = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         const [publicVipTips, publicCodes] = await Promise.all([
@@ -135,7 +140,11 @@ router.get('/mkeka/vip', async (req, res) => {
         const vipShowcaseSlips = buildVipSlips({ tips: publicVipTips, bookingDocs: publicCodes })
         const vipShowcaseSummary = buildVipSummary(vipShowcaseSlips)
 
-        res.render('8-vip/vip', { vipShowcaseSlips, vipShowcaseSummary })
+        res.render('8-vip/vip', pageLocals({
+            page: { id: 'vip-public', section: 'vip', title: 'VIP TiPS na Sure Odds | Mkeka wa Leo', canonicalPath: '/mkeka/vip' },
+            seo: { title: 'VIP TiPS na Sure Odds | Mkeka wa Leo', description: 'Tanzania Betting Tips - Pata mikeka ya VIP na Fixed Mathces kila siku. Betslip ya siku na Sure Odds za mikeka ya uhakika', canonicalPath: '/mkeka/vip' },
+            data: { vipShowcaseSlips, vipShowcaseSummary }
+        }))
     } catch (err) {
         console.log(err.message)
     }

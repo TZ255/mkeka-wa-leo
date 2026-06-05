@@ -2,36 +2,10 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('../0-global/fonts.ejs'); %>
-    <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
-    <meta name="description" content="<%= SEO.description %>">
-    <meta name="keywords" content="<%= SEO.keywords %>">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<%= SEO.canonical %>">
-    <meta property="og:title" content="<%= SEO.title %>">
-    <meta property="og:description" content="<%= SEO.description %>">
-    <meta property="og:image" content="https://mkekawaleo.com/imgs/mikeka/over15.webp">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="<%= SEO.canonical %>">
-    <meta name="twitter:title" content="<%= SEO.title %>">
-    <meta name="twitter:description" content="<%= SEO.description %>">
-    <meta name="twitter:image" content="https://mkekawaleo.com/imgs/mikeka/over15.webp">
-
-    <title>
-        <%= SEO.title %>
-    </title>
-    <link rel="canonical" href="<%= SEO.canonical %>">
+    <%- include("../0-global/seo/head.ejs"); %>
     <link rel="stylesheet" href="/css/v7-mega.css">
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/favicon.ejs'); %>
 </head>
 
 <body>

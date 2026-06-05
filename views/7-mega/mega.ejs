@@ -2,33 +2,11 @@
 <html lang="sw">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<%= SEO.description %>">
-  <link rel="canonical" href="<%= SEO.canonical %>">
-
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="<%= SEO.canonical %>">
-  <meta property="og:title" content="<%= SEO.title %>">
-  <meta property="og:description" content="<%= SEO.description %>">
-  <meta property="og:image" content="https://mkekawaleo.com/imgs/mikeka/mega.webp">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="<%= SEO.canonical %>">
-  <meta name="twitter:title" content="<%= SEO.title %>">
-  <meta name="twitter:description" content="<%= SEO.description %>">
-  <meta name="twitter:image" content="https://mkekawaleo.com/imgs/mikeka/mega.webp">
-
-  <title><%= SEO.title %></title>
+  <%- include("../0-global/seo/head.ejs"); %>
   <%- include('./partials/style.ejs'); %>
   <link rel="stylesheet" href="/css/v1-global.css">
   <link rel="stylesheet" href="/css/v7-mega.css">
   <%- include('../0-global/google.ejs'); %>
-  <%- include('../0-global/fonts.ejs'); %>
-  <%- include('../0-global/favicon.ejs') %>
 </head>
 
 <body>

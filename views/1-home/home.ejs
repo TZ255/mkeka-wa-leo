@@ -5,38 +5,11 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('../0-global/fonts.ejs'); %>
-    <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
-    <meta name="description" content="<%= description %>">
-    <title><%= title %></title>
-    <link rel="canonical" href="https://mkekawaleo.com/">
+    <%- include("../0-global/seo/head.ejs"); %>
 
     <!-- Styles -->
     <link rel="stylesheet" href="/css/v7-mega.css">
     <link rel="stylesheet" href="/css/v1-global.css">
-
-    <!-- Open Graph / Facebook / WhatsApp -->
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="sw_TZ">
-    <meta property="og:title" content="<%= title %>">
-    <meta property="og:description" content="<%= description %>">
-    <meta property="og:url" content="https://mkekawaleo.com/">
-    <meta property="og:site_name" content="Mkeka wa Leo">
-    <meta property="og:image" content="https://mkekawaleo.com/imgs/logos/og.webp">
-    <meta property="og:image:secure_url" content="https://mkekawaleo.com/imgs/logos/og.webp">
-    <meta property="og:image:type" content="image/webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Mkeka wa Leo - Betting Tips Tanzania">
-
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Mkeka wa Leo - Betting Tips Bora Tanzania">
-    <meta name="twitter:description" content="<%= description %>">
-    <meta name="twitter:image" content="https://mkekawaleo.com/imgs/logos/og.webp">
 
     <!-- htmx -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
@@ -44,7 +17,6 @@
         crossorigin="anonymous"></script>
 
     <!-- partials -->
-    <%- include('../0-global/favicon.ejs') %>
     <%- include('./partials/style.ejs'); %>
     <%- include('./partials/schema.ejs'); %>
     <%- include('../0-global/sure3-styles.ejs'); %>

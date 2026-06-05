@@ -2,41 +2,7 @@
 <html lang="sw">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title><%= meta.title %></title>
-    <meta name="description" content="<%= meta.description %>">
-    <meta name="keywords" content="<%= meta.keywords %>">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://mkekawaleo.com/tanzania/bookies/<%= meta.slug %>">
-
-    <!-- Locale hints -->
-    <meta property="og:locale" content="sw_TZ">
-    <meta http-equiv="content-language" content="sw-TZ">
-
-    <!-- dates -->
-    <meta property="article:published_time" content="<%= meta.date_created %>">
-    <meta property="article:modified_time" content="<%= meta.date_modified %>">
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="<%= meta.title %>">
-    <meta property="og:description" content="<%= meta.description %>">
-    <meta property="og:url" content="https://mkekawaleo.com/tanzania/bookies/<%= meta.slug %>">
-    <meta property="og:site_name" content="Mkeka wa Leo | Blog">
-    <% if (meta.coverImage) { %>
-    <meta property="og:image" content="<%= meta.coverImage %>">
-    <% } %>
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<%= meta.title %>">
-    <meta name="twitter:description" content="<%= meta.description %>">
-    <% if (meta.coverImage) { %>
-    <meta name="twitter:image" content="<%= meta.coverImage %>">
-    <% } %>
+    <%- include("../0-global/seo/head.ejs"); %>
 
     <!-- schema -->
     <%- include('./partials/schema.ejs'); %>
@@ -45,8 +11,6 @@
     <%- include('../0-global/blog-post-style.ejs'); %>
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/fonts.ejs'); %>
-    <%- include('../0-global/favicon.ejs') %>
 </head>
 
 <body>

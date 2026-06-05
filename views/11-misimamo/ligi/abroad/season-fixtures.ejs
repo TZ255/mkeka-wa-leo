@@ -2,18 +2,9 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Ratiba na matokeo ya <%= partials.ligi %> - <%= partials.league_name %> <%= partials.season_long %>. Angalia mechi zote za msimu mzima kwa hatua zake na tarehe zake.">
-    <%- include('../../../0-global/favicon.ejs') %>
-    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
-    <link rel="canonical" href="https://mkekawaleo.com<%= partials.canonical_path %>">
-    <title>Ratiba na Matokeo ya <%= partials.ligi %> <%= partials.season_long %></title>
+    <%- include('../shared/partials/seo-head.ejs'); %>
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
-    <%- include('../../../0-global/fonts.ejs'); %>
     <%- include('../shared/partials/theme.ejs'); %>
 </head>
 

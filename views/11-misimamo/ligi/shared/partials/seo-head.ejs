@@ -1,0 +1,48 @@
+<%
+const section = partials.section;
+const leagueTitle = partials.ligi || partials.league_name;
+const seasonTitle = partials.season_long || partials.season_short;
+const teamName = partials.team_info ? partials.team_info.team.name : '';
+const canonicalPath = partials.canonicalPath;
+const dateModified = partials.updatedAt || (partials.team_info ? partials.team_info.update : '');
+const seoImage = (partials.team_info && partials.team_info.team.logo) || partials.league_logo || partials.league_flag;
+
+const seoBySection = {
+    standings: {
+        title: `Msimamo wa ${leagueTitle} ${seasonTitle}`,
+        description: `Angalia msimamo wa ${leagueTitle} ${seasonTitle}, timu zinazoongoza, pointi, magoli, mechi zilizochezwa na mabadiliko ya ligi.`,
+        keywords: `msimamo wa ${leagueTitle}, ${leagueTitle} ${seasonTitle}, standings football`,
+    },
+    fixtures: {
+        title: `Ratiba na Matokeo ya ${leagueTitle} ${seasonTitle}`,
+        description: `Angalia ratiba na matokeo ya ${leagueTitle} ${seasonTitle}, mechi zijazo, matokeo yaliyopita na mwendo wa msimu mzima.`,
+        keywords: `ratiba ya ${leagueTitle}, matokeo ya ${leagueTitle}, fixtures football`,
+    },
+    'team-fixtures': {
+        title: `Ratiba na Matokeo ya Mechi za ${teamName} ${seasonTitle}`,
+        description: `Angalia ratiba ya mechi za ${teamName} pamoja na matokeo, msimamo, pointi na mwendo wa timu kwenye ${leagueTitle} ${seasonTitle}.`,
+        keywords: `ratiba ya ${teamName}, matokeo ya ${teamName}, ${teamName} fixtures`,
+        imageAlt: teamName,
+    },
+    scorers: {
+        title: `Wafungaji Bora ${leagueTitle} ${seasonTitle}`,
+        description: `Angalia orodha ya wafungaji bora wa ${leagueTitle} ${seasonTitle}, vinara wa magoli na takwimu za washambuliaji wanaoongoza.`,
+        keywords: `wafungaji bora ${leagueTitle}, top scorers ${leagueTitle}, vinara wa magoli`,
+    },
+    assists: {
+        title: `Watoa Assist Bora ${leagueTitle} ${seasonTitle}`,
+        description: `Angalia orodha ya watoa assist bora wa ${leagueTitle} ${seasonTitle}, vinara wa pasi za mwisho na takwimu za ubunifu wa magoli.`,
+        keywords: `watoa assist bora ${leagueTitle}, top assists ${leagueTitle}, vinara wa assist`,
+    },
+};
+
+const leagueSeo = Object.assign({
+    canonicalPath,
+    type: 'article',
+    image: seoImage,
+    imageAlt: `${leagueTitle} ${seasonTitle}`,
+    datePublished: partials.createdAt,
+    dateModified,
+}, seoBySection[section], partials.seo || {});
+%>
+<%- include('../../../../0-global/seo/head.ejs', { seo: leagueSeo }); %>

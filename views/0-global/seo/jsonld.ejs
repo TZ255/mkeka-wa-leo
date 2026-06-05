@@ -1,0 +1,77 @@
+<%
+const siteBaseUrl = 'https://mkekawaleo.com';
+const siteName = 'Mkeka wa Leo';
+const siteDescription = 'Betting tips za mpira wa miguu Tanzania, mikeka ya leo, matokeo, ratiba, misimamo na uchambuzi wa michezo.';
+const normalizedCanonical = seoCanonical || siteBaseUrl;
+const graph = [
+    {
+        '@type': 'Organization',
+        '@id': `${siteBaseUrl}/#organization`,
+        name: siteName,
+        url: siteBaseUrl,
+        logo: `${siteBaseUrl}/imgs/logos/main.webp`,
+        image: `${siteBaseUrl}/imgs/logos/og.webp`,
+        sameAs: [
+            'https://t.me/mkeka_wa_leo',
+            'https://whatsapp.com/channel/0029Varb8MsFcow7AHYTL42h'
+        ],
+        contactPoint: [
+            {
+                '@type': 'ContactPoint',
+                contactType: 'customer support',
+                email: 'admin@mkekawaleo.com',
+                areaServed: 'TZ',
+                availableLanguage: ['sw', 'en']
+            }
+        ]
+    },
+    {
+        '@type': 'WebSite',
+        '@id': `${siteBaseUrl}/#website`,
+        url: siteBaseUrl,
+        name: siteName,
+        description: siteDescription,
+        inLanguage: 'sw-TZ',
+        publisher: { '@id': `${siteBaseUrl}/#organization` }
+    },
+    {
+        '@type': 'WebPage',
+        '@id': `${normalizedCanonical}#webpage`,
+        url: normalizedCanonical,
+        name: seoTitle || siteName,
+        description: seoDescription || siteDescription,
+        isPartOf: { '@id': `${siteBaseUrl}/#website` },
+        about: { '@id': `${siteBaseUrl}/#organization` },
+        inLanguage: 'sw-TZ',
+        primaryImageOfPage: seoImage ? { '@type': 'ImageObject', url: seoImage } : undefined
+    }
+];
+
+if (seoType === 'article') {
+    graph.push({
+        '@type': 'Article',
+        '@id': `${normalizedCanonical}#article`,
+        headline: seoTitle,
+        description: seoDescription,
+        image: seoImage ? [seoImage] : undefined,
+        datePublished: seoDatePublished,
+        dateModified: seoDateModified || seoDatePublished,
+        author: {
+            '@type': 'Person',
+            name: seoAuthor || 'Mr. Paul P.K'
+        },
+        publisher: { '@id': `${siteBaseUrl}/#organization` },
+        mainEntityOfPage: { '@id': `${normalizedCanonical}#webpage` },
+        inLanguage: 'sw-TZ'
+    });
+}
+
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': graph.map((item) => {
+        Object.keys(item).forEach((key) => item[key] === undefined && delete item[key]);
+        return item;
+    })
+};
+%>
+<script type="application/ld+json"><%- JSON.stringify(jsonLd) %></script>

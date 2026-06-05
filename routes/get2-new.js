@@ -25,6 +25,7 @@ const { on } = require('form-data')
 const { sendNormalSMS } = require('./fns/sendSMS')
 const { GLOBAL_VARS } = require('./fns/global-var')
 const { getAllEligiblePredictions } = require('./fns/FootAPIPredictions')
+const { pageLocals, assetUrl } = require('./fns/seo')
 const { getLessUsedAPIKey } = require('./fns/RAPIDAPI')
 const { nkiriFunction } = require('../bots/charlotte/functions/nkiri')
 const mkekaDB = require('../model/mkeka-mega')
@@ -76,7 +77,11 @@ router.get('/standings', async (req, res) => {
     try {
         let leagues_others = await OtherStandingLigiKuuModel.find().sort('country').select('-season_fixtures -current_round_fixtures -top_scorers -top_assists -standing').cache(3600);
         res.set('Cache-Control', 'public, max-age=3600');
-        res.render('11-misimamo/standings', { jumasiku, leagues_others })
+        res.render('11-misimamo/standings', pageLocals({
+            page: { id: 'standings-index', section: 'standings', title: 'Misimamo ya Ligi Kuu Mbalimbali Duniani ' + jumasiku.mwaka, canonicalPath: '/standings' },
+            seo: { title: 'Misimamo ya Ligi Kuu Mbalimbali Duniani ' + jumasiku.mwaka, description: 'Angalia misimamo ya ligi kuu mbalimbali Duniani. Msimamo wa ligi kuu Tanzania, Uingereza, Ujerumani, Uhispania, Italia n.k', canonicalPath: '/standings' },
+            data: { jumasiku, leagues_others }
+        }))
     } catch (error) {
         console.log(error?.message)
         res.status(500).send('Kumetokea changamoto. Tafadhali jaribu tena baadae.')
@@ -120,7 +125,7 @@ router.get('/standings/football/:nation/:league', async (req, res, next) => {
                 scorer: standing.top_scorers.length,
                 assist: standing.top_assists.length
             },
-            canonical_path: `/standings/football/${standing.path}`,
+            canonicalPath: `/standings/football/${standing.path}`,
             section: 'standings',
         };
 
@@ -198,7 +203,7 @@ router.get('/football/fixtures/:nation/:ligi_name', async (req, res, next) => {
                 scorer: standing.top_scorers.length,
                 assist: standing.top_assists.length
             },
-            canonical_path: `/football/fixtures/${standing.path}`,
+            canonicalPath: `/football/fixtures/${standing.path}`,
             section: 'fixtures',
         };
 
@@ -255,7 +260,7 @@ router.get('/football/fixtures/:nation/:ligi_name/:teamid', async (req, res, nex
             league_logo: media.logo,
             league_flag: media.flag,
             country: media.country,
-            canonical_path: `/football/fixtures/${league.path}/${team_id}`,
+            canonicalPath: `/football/fixtures/${league.path}/${team_id}`,
             createdAt: league.createdAt.toISOString(),
             updatedAt: team_info.update,
             current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
@@ -299,7 +304,7 @@ router.get('/football/top-scorers/:nation/:ligi_name', async (req, res, next) =>
             league_flag: media.flag,
             country: media.country,
             current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
-            canonical_path: `/football/top-scorers/${league.path}`,
+            canonicalPath: `/football/top-scorers/${league.path}`,
             ligi: league.ligi,
             league_name: league.league_name,
             stats: {
@@ -349,7 +354,7 @@ router.get('/football/top-assists/:nation/:ligi_name', async (req, res, next) =>
             current_round: league.current_round || league.current_round_fixtures?.[0]?.league?.round || '',
             ligi: league.ligi,
             league_name: league.league_name,
-            canonical_path: `/football/top-assists/${league.path}`,
+            canonicalPath: `/football/top-assists/${league.path}`,
             stats: {
                 teams: getStandingTeamsCount(league.standing),
                 fixtures: league.season_fixtures.length,
@@ -411,10 +416,32 @@ router.get('/mechi/:siku', async (req, res) => {
                 kesho: moment.tz('Africa/Nairobi').startOf('day').format()
             }
         }
+
+        const fixtureSeo = {
+            jana: {
+                title: 'Matokeo ya Mechi za Jana',
+                description: 'Angalia matokeo ya mechi zote kwa siku ya jana. Matokeo ya ligi kuu ya NBC, matokeo ya ligi kuu ya Uingereza, Ujerumani, Uhispania, n.k',
+                canonicalPath: '/mechi/jana',
+            },
+            leo: {
+                title: 'Ratiba na Matokeo ya Mechi za Leo',
+                description: 'Angalia ratiba na matokeo ya mechi zote za leo. Ratiba na matokeo ya ligi kuu ya NBC, ratiba na matokeo ya ligi kuu ya Uingereza, Ujerumani, Uhispania, n.k',
+                canonicalPath: '/mechi/leo',
+            },
+            kesho: {
+                title: 'Ratiba ya Mechi za Kesho',
+                description: 'Angalia ratiba ya mechi za kesho. Ratiba ya ligi kuu ya NBC, ratiba ya ligi kuu ya Uingereza, Ujerumani, Uhispania, n.k',
+                canonicalPath: '/mechi/kesho',
+            },
+        }[siku]
         //set last modified headers
         res.set('Last-Modified', new Date(partials.update[siku]).toUTCString())
         res.set('Cache-Control', 'public, max-age=3600');
-        res.render(`14-fixtures/${siku}`, { allMatches, trh, jumasiku, day, partials })
+        res.render('14-fixtures/' + siku, pageLocals({
+            page: { id: 'fixtures-' + siku, section: 'fixtures', title: fixtureSeo.title, canonicalPath: fixtureSeo.canonicalPath, updatedAt: partials.update[siku] },
+            seo: { ...fixtureSeo, dateModified: partials.update[siku] },
+            data: { allMatches, trh, jumasiku, day, partials }
+        }))
     } catch (error) {
         console.error(error.message)
         sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)

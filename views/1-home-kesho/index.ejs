@@ -2,28 +2,16 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <%- include('../0-global/fonts.ejs'); %>
-    <meta name="google-site-verification" content="bEyk3C5a5dMvt5kOo3RiLqwWiHoUjbslRYXKu-johrc" />
-    <meta name="description"
-        content="Utabiri wa mechi na mikeka ya kesho ukiwa na tips za 1X2, Over/Under 2.5, BTTS, Correct Score na nyingine. Pata ushauri wa kubeti kwa mafanikio na uongeze nafasi zako za ushindi!">
-    <meta name="keywords"
-        content="Mikeka ya kesho, utabiri wa mechi, tips za 1X2, Over/Under 2.5, Both Teams to Score, Correct Score, ushauri wa kubeti, betting tips Tanzania, utabiri wa soka">
+    <%- include("../0-global/seo/head.ejs"); %>
 
     <!-- htmx -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js"
         integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ"
         crossorigin="anonymous"></script>
-
-    <title>Mkeka wa Kesho - <%= jumasiku.kesho %>, <%= trh.kesho %></title>
-    <link rel="canonical" href="https://mkekawaKesho.com/mkeka/kesho">
     <link rel="stylesheet" href="/css/v7-mega.css">
     <%- include('./partials/style.ejs'); %>
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../0-global/google.ejs'); %>
-    <%- include('../0-global/favicon.ejs') %>
 </head>
 
 <body>

@@ -2,19 +2,9 @@
 <html lang="sw">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Ratiba ya ligi kuu ya NBC Tanzania Bara <%= partials.season_long %>. Angalia ratiba ya msimu mzima wa ligi kuu ya NBC Tanzania bara, matokeo ya ligi kuu bara jana na leo">
-    <%- include('../../../0-global/favicon.ejs') %>
-    <meta property="article:published_time" content="<%= partials.createdAt %>">
-    <meta property="article:modified_time" content="<%= partials.updatedAt %>">
-    <link rel="canonical" href="https://mkekawaleo.com/football/fixtures/tanzania/premier-league">
-    <title>Ratiba na Matokeo ya Ligi Kuu ya NBC Tanzania Bara <%= partials.season_short %></title>
+    <%- include('../shared/partials/seo-head.ejs'); %>
     <link rel="stylesheet" href="/css/v1-global.css">
     <%- include('../../../0-global/google.ejs'); %>
-    <%- include('../../../0-global/fonts.ejs'); %>
     <%- include('../shared/partials/theme.ejs'); %>
     <style>
         .tdata {

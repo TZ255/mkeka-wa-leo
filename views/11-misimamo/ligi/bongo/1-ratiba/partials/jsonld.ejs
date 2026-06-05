@@ -4,7 +4,7 @@
   "@type": "ItemList",
   "name": "Ratiba ya <%= partials.team_info.team.name %> - Ligi Kuu Bara Tanzania",
   "description": "Angalia ratiba kamili ya mechi za <%= partials.team_info.team.name %> kwenye Ligi Kuu Bara Tanzania msimu wa <%= partials.season_long %>. Pata tarehe, wapinzani na viwanja vya mechi zote za <%= partials.team_info.team.name %>.",
-  "url": "https://mkekawaleo.com<%= partials.canonical_path %>",
+  "url": "https://mkekawaleo.com<%= partials.canonicalPath %>",
   "numberOfItems": <%= ratiba.length %>,
   "itemListElement": [
     <% ratiba.forEach(function(fx, index) { %>
@@ -44,7 +44,7 @@
         "url": "https://mkekawaleo.com/standings/football/tanzania/premier-league"
       },
       "image": "<%= fx.league.logo %>",
-      "sameAs": "https://mkekawaleo.com<%= partials.canonical_path %>"
+      "sameAs": "https://mkekawaleo.com<%= partials.canonicalPath %>"
     }<% if (index + 1 !== ratiba.length) { %>,<% } %>
     <% }) %>
   ]

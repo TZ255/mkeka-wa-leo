@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Tips Test — <%= date %></title>
+    <%- include("./0-global/seo/head.ejs", { seo: { title: "Smart Tips Test - " + date, description: "Mkeka wa Leo smart tips test output.", canonicalPath: "/api/test-smart-tips", robots: "noindex, nofollow", includeSiteSchema: false } }); %>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e1e1e1; padding: 16px; }

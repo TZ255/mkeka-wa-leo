@@ -101,7 +101,7 @@ const buildPartials = (worldcup, canonicalPath, section) => {
         ligi: worldcup.ligi || 'Kombe la Dunia',
         league_name: worldcup.league_name || 'World Cup',
         country: worldcup.country || 'World',
-        canonical_path: canonicalPath,
+        canonicalPath: canonicalPath,
         createdAt: worldcup?.createdAt?.toISOString?.() || new Date().toISOString(),
         updatedAt: new Date(updatedAt).toISOString(),
         active: Boolean(worldcup.active),

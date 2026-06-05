@@ -29,6 +29,7 @@ const OU35Tips = require('../model/over35mik')
 const Over05HTTips = require('../model/over05ht')
 const BookingCodesModel = require('../model/booking_code')
 const { VIP_NUMBERS, buildVipSlips, buildVipSummary } = require('./fns/vip-betslips')
+const { pageLocals, assetUrl } = require('./fns/seo')
 
 const SWAHILI_WEEKDAYS = ['jumatatu', 'jumanne', 'jumatano', 'alhamisi', 'ijumaa', 'jumamosi', 'jumapili']
 const SWAHILI_WEEKDAY_INDEX = { jumapili: 0, jumatatu: 1, jumanne: 2, jumatano: 3, alhamisi: 4, ijumaa: 5, jumamosi: 6 }
@@ -84,7 +85,7 @@ const weekdayNav = (basePath, anchor, activeWeekday) => ({
 const attachWeekdaySeo = (SEO, { weekday, routePath, anchor }) => {
     SEO.siku = titleCase(weekday)
     SEO.isWeekdayPage = true
-    SEO.canonical = `https://mkekawaleo.com${routePath}/${weekday}`
+    SEO.canonicalPath = `${routePath}/${weekday}`
     SEO.weekdayNav = weekdayNav(routePath, anchor, weekday)
 }
 
@@ -136,6 +137,15 @@ router.get('/', async (req, res) => {
         res.set('Cache-Control', 'public, max-age=600');
 
         res.render('1-home/home', {
+            page: { id: 'home', section: 'mikeka', title: 'Mkeka wa Leo | Pata Tips za Mikeka ya Leo', canonicalPath: '/' },
+            seo: {
+                title: 'Mkeka wa Leo | Pata Tips za Mikeka ya Leo',
+                description: 'Tanzania Betting Tips | Tovuti namba 1 kwa mikeka ya uhakika, betting tips sahihi, odds kubwa, na mikeka ya bure ya ushindi kila siku kutoka Ligi Kuu ya NBC Tanzania Bara na ligi kubwa za Ulaya.',
+                canonicalPath: '/',
+                image: assetUrl('/imgs/logos/og.webp'),
+                twitterTitle: 'Mkeka wa Leo - Betting Tips Bora Tanzania',
+                includeSiteSchema: false,
+            },
             megaOdds,
             supa15_odds,
             supa_dc_odds,
@@ -177,6 +187,13 @@ router.get('/mkeka/kesho', async (req, res) => {
 
         res.set('Cache-Control', 'public, max-age=600');
         res.render('1-home-kesho/index', {
+            page: { id: 'home-kesho', section: 'mikeka', title: 'Mkeka wa Kesho - ' + jumasiku.kesho + ', ' + trh.kesho, canonicalPath: '/mkeka/kesho' },
+            seo: {
+                title: 'Mkeka wa Kesho - ' + jumasiku.kesho + ', ' + trh.kesho,
+                description: 'Utabiri wa mechi na mikeka ya kesho ukiwa na tips za 1X2, Over/Under 2.5, BTTS, Correct Score na nyingine. Pata ushauri wa kubeti kwa mafanikio na uongeze nafasi zako za ushindi!',
+                keywords: 'Mikeka ya kesho, utabiri wa mechi, tips za 1X2, Over/Under 2.5, Both Teams to Score, Correct Score, ushauri wa kubeti, betting tips Tanzania, utabiri wa soka',
+                canonicalPath: '/mkeka/kesho',
+            },
             megaOdds,
             mikeka,
             super_over15,
@@ -200,7 +217,15 @@ router.get('/mkeka/kesho', async (req, res) => {
 
 router.get('/mkeka', (req, res) => {
     res.set('Cache-Control', 'public, max-age=600');
-    res.render('1-mikeka-sub/mikeka')
+    res.render('1-mikeka-sub/mikeka', pageLocals({
+        page: { id: 'mikeka-index', section: 'mikeka', title: 'Mikeka ya Bure Leo', canonicalPath: '/mkeka' },
+        seo: {
+            title: "Mikeka ya Bure Leo (Today's Free Football Tips)",
+            description: 'Hii hapa mikeka ya leo na mikeka ya bure ya kila siku jumatatu, jumanne, jumatano, alhamisi na mkeka wa jumamosi na jumapili',
+            keywords: 'Mkeka wa jumamosi, mkeka wa jumapili, mikeka ya bure, mkeka wa betpawa',
+            image: assetUrl('/imgs/mikeka/mega.webp')
+        }
+    }))
 })
 
 router.get('/:comp/register', async (req, res) => {
@@ -263,7 +288,11 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let jumasiku = { leo: d_juma }
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('3-landing/landing', { vipShowcaseSlips, vipShowcaseSummary, jumasiku, trh })
+        res.render('3-landing/landing', {
+            page: { id: 'betslip-ya-leo', section: 'mikeka', title: 'Betslip ya Siku', canonicalPath: '/mkeka/betslip-ya-leo' },
+            seo: { title: 'Betslip ya Siku', description: "Tanzania Betting Tips | Betslip ya Siku | Hizi hapa Odds 3 za uhakika leo (Today's Sure 3 Odds)", canonicalPath: '/mkeka/betslip-ya-leo' },
+            vipShowcaseSlips, vipShowcaseSummary, jumasiku, trh
+        })
     } catch (err) {
         console.log(err.message)
     }
@@ -282,7 +311,7 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho', '/mkeka/over-15/:weekday']
             description: 'Pata mkeka wa uhakika wa magoli, Over 1.5 (Juu ya 1.5) kwa siku ya leo Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi zote kubwa za leo za kukusaidia kushinda mikeka yako ya magoli.',
             keywords: 'Over 1.5 tips, Over 1.5 predictions, mkeka wa leo, mkeka wa Over 1.5, tanzania betting tips',
             siku: 'Leo',
-            canonical: 'https://mkekawaleo.com/mkeka/over-15',
+            canonicalPath: '/mkeka/over-15',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -295,7 +324,7 @@ router.get(['/mkeka/over-15', '/mkeka/over-15/kesho', '/mkeka/over-15/:weekday']
             SEO.description = 'Pata mikeka ya kesho ya uhakika ya Over 1.5 (Juu ya 1.5) Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi kubwa zote za kesho za kukusaidia kushinda mikeka yako ya Over 1.5.'
             SEO.keywords = 'Over 1.5 tips, Over 1.5 predictions, mkeka wa kesho, mkeka wa Over 1.5, tanzania betting tips, tips za kesho'
             SEO.siku = 'Kesho'
-            SEO.canonical = 'https://mkekawaleo.com/mkeka/over-15/kesho'
+            SEO.canonicalPath = '/mkeka/over-15/kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -359,7 +388,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho', '/mkeka/over-25/:weekday']
             description: 'Pata mkeka wa uhakika wa magoli, Over 2.5 (Juu ya 2.5) kwa siku ya leo Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi zote kubwa za leo za kukusaidia kushinda mikeka yako ya magoli.',
             keywords: 'Over 2.5 tips, Over 2.5 predictions, mkeka wa leo, mkeka wa Over 2.5, tanzania betting tips',
             siku: 'Leo',
-            canonical: 'https://mkekawaleo.com/mkeka/over-25',
+            canonicalPath: '/mkeka/over-25',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -372,7 +401,7 @@ router.get(['/mkeka/over-25', '/mkeka/over-25/kesho', '/mkeka/over-25/:weekday']
             SEO.description = 'Pata mikeka ya kesho ya uhakika ya Over 2.5 (Juu ya 2.5) Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi kubwa zote za kesho za kukusaidia kushinda mikeka yako ya Over 2.5.'
             SEO.keywords = 'Over 2.5 tips, Over 2.5 predictions, mkeka wa kesho, mkeka wa Over 2.5, tanzania betting tips, tips za kesho'
             SEO.siku = 'Kesho'
-            SEO.canonical = 'https://mkekawaleo.com/mkeka/over-25/kesho'
+            SEO.canonicalPath = '/mkeka/over-25/kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -441,7 +470,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             keywords: 'Mega Odds Tanzania, Mega Odds Acca, Accumulator Tips, Mikeka ya Leo, Mikeka Tanzania, Betting Tips Tanzania, Mikeka ya Uhakika, Mega Odds za Leo, Mikeka Bure, Acca Tips Tanzania',
             siku: 'Leo',
             siku_eng: 'Today',
-            canonical: 'https://mkekawaleo.com/mkeka/mega-odds-leo',
+            canonicalPath: '/mkeka/mega-odds-leo',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -455,7 +484,7 @@ router.get(['/mkeka/mega-odds-leo', '/mkeka/mega-odds-kesho'], async (req, res) 
             SEO.keywords = 'Mega Odds Tanzania, Mkeka wa Mega Odds Acca, Accumulator Tips, Mikeka ya Kesho, Mikeka Tanzania, Betting Tips Tanzania, Mikeka ya Uhakika, Mega Odds za Kesho, Mikeka Bure, Acca Tips Tanzania'
             SEO.siku = 'Kesho',
                 SEO.siku_eng = 'Tomorrow',
-                SEO.canonical = 'https://mkekawaleo.com/mkeka/mega-odds-kesho'
+                SEO.canonicalPath = '/mkeka/mega-odds-kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -492,7 +521,7 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho', '/mk
             description: 'Pata mikeka ya uhakika ya 1st Half Over 0.5 kwa siku ya leo. Utabiri wetu wa kitaalamu wa under/over magoli kipindi cha kwanza unahusisha ligi maarufu na mechi kubwa ili kukusaidia kushinda mikeka yako ya betting Tanzania.',
             keywords: 'over 0.5 1st half, 1st Half Over 0.5 tips, ht predictions, mkeka wa magoli kipindi cha kwanza, under/over betting tips Tanzania, mkeka wa leo',
             siku: 'Leo',
-            canonical: 'https://mkekawaleo.com/mkeka/over-05-first-half',
+            canonicalPath: '/mkeka/over-05-first-half',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -505,7 +534,7 @@ router.get(['/mkeka/over-05-first-half', '/mkeka/over-05-first-half/kesho', '/mk
             SEO.title = 'Over 0.5 1st Half Tips - Kesho'
             SEO.description = 'Pata mikeka ya kesho ya uhakika ya 1st Half Over 0.5. Utabiri wetu wa kitaalamu wa under/over magoli kipindi cha kwanza unahusisha ligi maarufu na mechi kubwa ili kukusaidia kushinda mikeka yako ya betting Tanzania kirahisi.'
             SEO.keywords = 'over 0.5 1st half kesho, 1st Half Over 0.5 tips za kesho, ht predictions, mkeka wa magoli kipindi cha kwanza, under/over betting tips Tanzania, mkeka wa leo',
-                SEO.canonical = 'https://mkekawaleo.com/mkeka/over-05-first-half/kesho',
+                SEO.canonicalPath = '/mkeka/over-05-first-half/kesho',
                 SEO.siku = 'Kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
@@ -569,7 +598,7 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho', '/mkeka/over-u
             description: 'Pata mkeka wa uhakika wa magoli, Over/Under 3.5 (Juu/Chini ya 3.5) kwa siku ya leo Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi zote kubwa za leo za kukusaidia kushinda mikeka yako ya magoli.',
             keywords: 'Over/Under 3.5 tips, Over/Under 3.5 predictions, mkeka wa leo, mkeka wa Over/Under 3.5, tanzania betting tips',
             siku: 'Leo',
-            canonical: 'https://mkekawaleo.com/mkeka/over-under-35',
+            canonicalPath: '/mkeka/over-under-35',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -582,7 +611,7 @@ router.get(['/mkeka/over-under-35', '/mkeka/over-under-35/kesho', '/mkeka/over-u
             SEO.description = 'Pata mikeka ya kesho ya uhakika ya Over/Under 3.5 (Juu/Chini ya 3.5) Tanzania. Utabiri wetu wa kitaalamu unahusisha ligi na mechi kubwa zote za kesho za kukusaidia kushinda mikeka yako ya Over/Under 3.5.'
             SEO.keywords = 'Over/Under 3.5 tips, Over/Under 3.5 predictions, mkeka wa kesho, mkeka wa Over/Under 3.5, tanzania betting tips, tips za kesho'
             SEO.siku = 'Kesho'
-            SEO.canonical = 'https://mkekawaleo.com/mkeka/over-under-35/kesho'
+            SEO.canonicalPath = '/mkeka/over-under-35/kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -661,7 +690,11 @@ router.get('/mkeka/correct-score', async (req, res) => {
         let jumasiku = { juzi: WeekDayFn(_s_juma), jana: WeekDayFn(_d_juma), leo: WeekDayFn(d_juma), kesho: WeekDayFn(k_juma) }
 
         res.set('Cache-Control', 'public, max-age=600');
-        res.render('13-cscore/cscore', { cscoreLeo, scoreJana, scoreJuzi, cscoreKesho, trh, jumasiku })
+        res.render('13-cscore/cscore', {
+            page: { id: 'correct-score', section: 'mikeka', title: 'Mkeka wa Leo | Correct Score Tips', canonicalPath: '/mkeka/correct-score' },
+            seo: { title: 'Mkeka wa Leo | Correct Score Tips', description: 'Correct Score Tips za Leo | Tanzania Betting Tips - Pata mikeka ya correct score kila siku bure. Mikeka ya uhakika ya correct score leo, kesho, ijumaa, jumamosi na jumapili', canonicalPath: '/mkeka/correct-score' },
+            cscoreLeo, scoreJana, scoreJuzi, cscoreKesho, trh, jumasiku
+        })
     } catch (error) {
         console.error(error.message)
         sendNotification(741815228, `${error.message}: on mkekawaleo.com/mkeka/correct-score`)
@@ -683,7 +716,7 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho', '/mkeka/double
             description: 'Pata mikeka ya uhakika ya Double Chance (DC) kwa siku ya leo. Utabiri wetu wa kitaalamu unahusisha ligi na mechi kuu za kukusaidia kushinda mikeka yako ya Double Chance.',
             keywords: 'Double Chance tips, Double Chance predictions, mkeka wa leo, mkeka wa double chance, tanzania betting tips',
             siku: 'Leo',
-            canonical: 'https://mkekawaleo.com/mkeka/double-chance',
+            canonicalPath: '/mkeka/double-chance',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -696,7 +729,7 @@ router.get(['/mkeka/double-chance', '/mkeka/double-chance/kesho', '/mkeka/double
             SEO.description = 'Pata mikeka ya kesho ya uhakika ya Double Chance (DC). Utabiri wetu wa kitaalamu unahusisha ligi na mechi kuu zote za kesho za kukusaidia kushinda mikeka yako ya Double Chance.'
             SEO.keywords = 'Double Chance tips, Double Chance predictions, mkeka wa kesho, mkeka wa double chance, tanzania betting tips'
             SEO.siku = 'Kesho'
-            SEO.canonical = 'https://mkekawaleo.com/mkeka/double-chance/kesho'
+            SEO.canonicalPath = '/mkeka/double-chance/kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -768,7 +801,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho', '/
             description: 'Pata mikeka ya uhakika ya GG (Both Teams to Score) kwa leo. Utabiri wetu wa kitaalamu wa GG unahusisha ligi maarufu na mechi kubwa ili kukusaidia kushinda mikeka yako ya betting Tanzania.',
             keywords: 'GG tips, Both Teams to Score tips, BTTS predictions, mkeka wa GG leo, GG betting tips Tanzania, mkeka wa leo',
             siku: 'Leo',
-            canonical: 'https://mkekawaleo.com/mkeka/both-teams-to-score',
+            canonicalPath: '/mkeka/both-teams-to-score',
             trh: {
                 date: new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date().toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -782,7 +815,7 @@ router.get(['/mkeka/both-teams-to-score', '/mkeka/both-teams-to-score/kesho', '/
             SEO.description = 'Pata mikeka ya kesho ya uhakika ya GG (Both Teams to Score). Utabiri wetu wa kitaalamu wa GG unajumuisha ligi na mechi kubwa zitakazochezwa kesho kwa ushindi wa uhakika.'
             SEO.keywords = 'GG kesho, Both Teams to Score tips kesho, BTTS kesho, mkeka wa GG kesho, betting tips Tanzania, mkeka wa kesho'
             SEO.siku = 'Kesho'
-            SEO.canonical = 'https://mkekawaleo.com/mkeka/both-teams-to-score/kesho'
+            SEO.canonicalPath = '/mkeka/both-teams-to-score/kesho'
             SEO.trh = {
                 date: new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' }),
                 day: WeekDayFn(new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })),
@@ -866,7 +899,11 @@ router.get('/mkeka/:weekday', async (req, res, next) => {
             let trh = { siku: weekday }
 
             res.set('Cache-Control', 'public, max-age=600');
-            res.render('12-mikeka-week/weekday', { mikeka, megaOdds, partials, trh });
+            res.render('12-mikeka-week/weekday', {
+                page: { id: 'mkeka-weekday', section: 'mikeka', title: 'Mkeka wa ' + partials.siku + ' | ' + partials.trh.mega, canonicalPath: partials.canonicalPath },
+                seo: { title: 'Mkeka wa ' + partials.siku + ' | ' + partials.trh.mega, description: 'Mikeka ya bure na mega odds za ' + partials.siku + '. Shinda beti zako kwa tabiri zote za mechi za siku ya ' + partials.siku + ' na mikeka yetu inayojumuisha 1X2, Over 1.5, Over 2.5 na Both Teams to Score', canonicalPath: partials.canonicalPath, image: assetUrl('/imgs/mikeka/mega.webp') },
+                mikeka, megaOdds, partials, trh
+            });
         }
     } catch (err) {
         console.error(err.message)
@@ -890,12 +927,19 @@ router.get('/article/:path', async (req, res) => {
         switch (path) {
             case 'mbinu-za-kushinda-betting':
                 res.set('Cache-Control', 'public, max-age=600');
-                res.render('4-articles/mbinu/mbinu');
+                res.render('4-articles/mbinu/mbinu', {
+                    page: { id: 'article-mbinu', section: 'articles', title: 'Mbinu za Kushinda Mikeka / Betting', canonicalPath: '/article/mbinu-za-kushinda-betting' },
+                    seo: { title: 'Mbinu za Kushinda Mikeka / Betting', description: 'Jifunze mbinu bora za kushinda mikeka na betting kwa kutumia takwimu, nidhamu ya mtaji na uchambuzi wa mechi.', canonicalPath: '/article/mbinu-za-kushinda-betting', type: 'article' }
+                });
                 break;
 
             case 'kampuni-bora-za-kubet-tanzania':
                 res.set('Cache-Control', 'public, max-age=600');
-                res.render('4-articles/kampuni/kampuni', { dt })
+                res.render('4-articles/kampuni/kampuni', {
+                    page: { id: 'article-kampuni', section: 'articles', title: 'Kampuni 5 Bora za Betting Tanzania Kwa Mwaka ' + dt.mwaka, canonicalPath: '/article/kampuni-bora-za-kubet-tanzania' },
+                    seo: { title: 'Kampuni 5 Bora za Betting Tanzania Kwa Mwaka ' + dt.mwaka, description: 'Angalia kampuni bora za betting Tanzania, ofa, usajili, malipo, na maelezo muhimu kwa mchezaji wa Tanzania.', canonicalPath: '/article/kampuni-bora-za-kubet-tanzania', type: 'article' },
+                    dt
+                })
                 break;
 
             default:
