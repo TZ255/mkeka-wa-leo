@@ -136,11 +136,11 @@ async function grantSubscription(email, param, phone = null) {
             sendEmail(user_email, 'Malipo yako yamethibitishwa 🎉', messages.html)
                 .catch(e => console.log(e?.message, e));
 
-            // send Laura notification
-            sendLauraNotification(-1003744778123, `✅ WALEO payment confirmed \nEmail: ${email} \nPhone: ${phone || 'Manual Confirmed'}`, false)
-
             //send SMS
             if (phone) sendNEXTSMS(phone, messages.sms);
+
+            // send Laura notification
+            sendLauraNotification(-1003744778123, `✅ WALEO payment confirmed \nEmail: ${email} \nPhone: ${phone || 'Manual Confirmed'} \nPlan: ${subscriptionType.name} (${subscriptionType.amount})`, false);
 
             // Update analytics if user is not admin
             const adminEmails = ['georgehmariki@gmail.com', 'janjatzblog@gmail.com', 'shmdgrg@gmail.com'];
