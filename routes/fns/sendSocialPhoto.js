@@ -59,6 +59,12 @@ async function postMegaToMkekaLeo(dateStr = formatDate()) {
                     }
                 );
 
+                // post a separator sticker
+                if (posted < slips.length - 1) {
+                    await bot.api.copyMessage(mkekawaleo, mikekaDB_channel, 11268, { disable_notification: true })
+                        .catch(() => { });
+                }
+
                 posted++;
             } catch (err) {
                 await bot.api.sendMessage(
