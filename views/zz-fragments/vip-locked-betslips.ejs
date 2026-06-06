@@ -6,6 +6,11 @@
     ? vipShowcaseSummary
     : (typeof vipSummary !== 'undefined' ? vipSummary : { slipCount: 0, totalOdds: '0.00', stake: 15000, totalStake: 0, totalPotentialWin: 0 });
   const lockedCtaHref = typeof vipLockedCtaHref !== 'undefined' ? vipLockedCtaHref : '/mkeka/vip';
+  const lockedResultDaysSource = typeof vipResultDays !== 'undefined' ? vipResultDays : [];
+  const lockedResultDays = Array.isArray(lockedResultDaysSource)
+    ? lockedResultDaysSource
+    : [];
+  const lockedResultGroups = lockedResultDays.length > 0 ? [lockedResultDays, lockedResultDays] : [];
 %>
 
 <style>
@@ -57,24 +62,137 @@
     color: #241a05;
   }
 
-  .locked-vip-icons {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+  .locked-vip-results {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid rgba(30, 41, 59, .14);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, .94), rgba(248, 250, 252, .82)),
+      #ffffff;
+    padding: 7px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 0 10px 20px rgba(15, 23, 42, .08);
+    mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
   }
 
-  .locked-vip-icon-pill {
+  .locked-vip-results__track {
+    display: flex;
+    width: max-content;
+    animation: lockedVipResultsScroll 30s linear infinite;
+  }
+
+  .locked-vip-results__group {
+    display: flex;
+    gap: 7px;
+    padding-right: 7px;
+  }
+
+  .locked-vip-result-card {
+    position: relative;
+    width: 86px;
+    min-height: 82px;
+    flex: 0 0 auto;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(15, 23, 42, .08);
+    padding: 10px 6px 8px;
+    text-align: center;
+    background: #ffffff;
+    color: #111827;
+    box-shadow: 0 8px 16px rgba(15, 23, 42, .10);
+    overflow: hidden;
+  }
+
+  .locked-vip-result-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: var(--vip-result-accent);
+  }
+
+  .locked-vip-result-card::after {
+    content: "";
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--vip-result-accent);
+    box-shadow: 0 0 0 3px var(--vip-result-soft);
+  }
+
+  .locked-vip-result-card.is-won {
+    --vip-result-accent: #16a34a;
+    --vip-result-soft: rgba(22, 163, 74, .13);
+    background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+    border-color: #bbf7d0;
+    color: #064e3b;
+  }
+
+  .locked-vip-result-card.is-lost {
+    --vip-result-accent: #dc2626;
+    --vip-result-soft: rgba(220, 38, 38, .13);
+    background: linear-gradient(180deg, #ffffff 0%, #fff1f2 100%);
+    border-color: #fecdd3;
+    color: #7f1d1d;
+  }
+
+  .locked-vip-result-card.is-pending {
+    --vip-result-accent: #64748b;
+    --vip-result-soft: rgba(100, 116, 139, .14);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border-color: #cbd5e1;
+    color: #334155;
+  }
+
+  .locked-vip-result-card i {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .72);
-    border: 1px solid rgba(120, 78, 12, .18);
-    color: #5f4108;
-    padding: 7px 10px;
-    font-size: 12px;
+    justify-content: center;
+    background: var(--vip-result-soft);
+    color: var(--vip-result-accent);
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .locked-vip-result-card__date {
+    color: #111827;
+    font-size: 13px;
     font-weight: 900;
+    line-height: 1.05;
+  }
+
+  .locked-vip-result-card__weekday,
+  .locked-vip-result-card__status {
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .locked-vip-result-card__status {
+    color: var(--vip-result-accent);
+    letter-spacing: .02em;
+  }
+
+  @keyframes lockedVipResultsScroll {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
   }
 
   .locked-vip-board__head .vip-badge {
@@ -212,6 +330,20 @@
     border: 1px solid #f3cf75;
     margin-bottom: 5px;
   }
+
+  @media (max-width: 575.98px) {
+    .locked-vip-result-card {
+      width: clamp(62px, calc((100vw - 80px) / 4), 72px);
+      min-height: 78px;
+      padding: 9px 4px 7px;
+    }
+
+    .locked-vip-result-card i {
+      width: 24px;
+      height: 24px;
+      font-size: 13px;
+    }
+  }
 </style>
 
 <section class="locked-vip-board mx-auto">
@@ -225,11 +357,30 @@
           <p class="mb-0" style="color:#6b4a0b;">Fungua VIP kuona mechi, tips na booking codes kamili.</p>
         </div>
       </div>
-      <div class="locked-vip-icons">
-        <span class="locked-vip-icon-pill"><i class="fa-regular fa-futbol"></i> Football</span>
-        <span class="locked-vip-icon-pill"><i class="fa-solid fa-ticket"></i> Betslips</span>
-        <span class="locked-vip-icon-pill"><i class="fa-solid fa-lock"></i> VIP</span>
-      </div>
+      <% if (lockedResultGroups.length > 0) { %>
+        <div class="locked-vip-results" aria-label="VIP betslip results for the last <%= lockedResultDays.length %> days">
+          <div class="locked-vip-results__track">
+            <% lockedResultGroups.forEach((group, groupIndex) => { %>
+              <div class="locked-vip-results__group" <%- groupIndex > 0 ? 'aria-hidden="true"' : '' %>>
+                <% group.forEach((day) => { %>
+                  <%
+                    const dayStatus = ['won', 'lost'].includes(day.status) ? day.status : 'pending';
+                    const statusLabel = dayStatus === 'won' ? 'Won' : (dayStatus === 'lost' ? 'Lost' : 'Pending');
+                    const statusIcon = dayStatus === 'won' ? 'fa-circle-check' : (dayStatus === 'lost' ? 'fa-circle-xmark' : 'fa-clock');
+                    const ariaText = `${day.weekday} ${day.label}: ${statusLabel}. ${day.winCount || 0} winning VIP betslips.`;
+                  %>
+                  <div class="locked-vip-result-card is-<%= dayStatus %>" aria-label="<%= ariaText %>">
+                    <i class="fa-solid <%= statusIcon %>"></i>
+                    <span class="locked-vip-result-card__weekday"><%= day.weekday %></span>
+                    <span class="locked-vip-result-card__date"><%= day.label %></span>
+                    <span class="locked-vip-result-card__status"><%= statusLabel %></span>
+                  </div>
+                <% }) %>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      <% } %>
     </div>
   </div>
 

@@ -85,7 +85,10 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //find VIP betslips
-            const vipTips = await betslip.find({ date: d, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean()
+            const [vipTips, vipResultDays] = await Promise.all([
+                betslip.find({ date: d, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean(),
+                BetslipModel.findVipResultDays({ days: 10 })
+            ])
             let betslip1 = vipTips.filter((tip) => Number(tip.vip_no) === 1)
             let betslip2 = vipTips.filter((tip) => Number(tip.vip_no) === 2)
             let betslip3 = vipTips.filter((tip) => Number(tip.vip_no) === 3)
@@ -129,13 +132,14 @@ router.get('/mkeka/vip', async (req, res) => {
             return res.render('8-vip-paid/landing', pageLocals({
                 page: { id: 'vip-paid', section: 'vip', title: 'VIP Slips za Leo | Mkeka wa Leo', canonicalPath: '/mkeka/vip' },
                 seo: { title: 'VIP Slips za Leo | Mkeka wa Leo', description: 'VIP Slips za Leo - mikeka ya VIP yenye betslips nne, odds kubwa na uchambuzi wa mechi kwa wanachama wa Mkeka wa Leo.', canonicalPath: '/mkeka/vip' },
-                data: { betslip1, betslip2, betslip3, betslip4, vipSlips, vipSummary, total_odds, booking_codes, user, d, jana, supa_won, supa_won_total_odds, siku, autopilot }
+                data: { betslip1, betslip2, betslip3, betslip4, vipSlips, vipSummary, vipResultDays, total_odds, booking_codes, user, d, jana, supa_won, supa_won_total_odds, siku, autopilot }
             }))
         }
         const publicDate = new Date().toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
-        const [publicVipTips, publicCodes] = await Promise.all([
+        const [publicVipTips, publicCodes, vipResultDays] = await Promise.all([
             betslip.find({ date: publicDate, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean(),
-            BookingCodesModel.find({ date: publicDate }).lean()
+            BookingCodesModel.find({ date: publicDate }).lean(),
+            BetslipModel.findVipResultDays({ days: 10 })
         ])
         const vipShowcaseSlips = buildVipSlips({ tips: publicVipTips, bookingDocs: publicCodes })
         const vipShowcaseSummary = buildVipSummary(vipShowcaseSlips)
@@ -143,7 +147,7 @@ router.get('/mkeka/vip', async (req, res) => {
         res.render('8-vip/vip', pageLocals({
             page: { id: 'vip-public', section: 'vip', title: 'VIP TiPS na Sure Odds | Mkeka wa Leo', canonicalPath: '/mkeka/vip' },
             seo: { title: 'VIP TiPS na Sure Odds | Mkeka wa Leo', description: 'Tanzania Betting Tips - Pata mikeka ya VIP na Fixed Mathces kila siku. Betslip ya siku na Sure Odds za mikeka ya uhakika', canonicalPath: '/mkeka/vip' },
-            data: { vipShowcaseSlips, vipShowcaseSummary }
+            data: { vipShowcaseSlips, vipShowcaseSummary, vipResultDays }
         }))
     } catch (err) {
         console.log(err.message)

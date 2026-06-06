@@ -116,10 +116,11 @@ router.get('/', async (req, res) => {
         let kesho = new_d.toLocaleDateString('en-GB', { timeZone: 'Africa/Nairobi' })
         let k_juma = new_d.toLocaleString('en-GB', { timeZone: 'Africa/Nairobi', weekday: 'long' })
 
-        const [tips, vipTips, today_codes] = await Promise.all([
+        const [tips, vipTips, today_codes, vipResultDays] = await Promise.all([
             aggregateTips(d),
             betslip.find({ date: d, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean().cache(600),
-            BookingCodesModel.find({ date: d }).lean().cache(600)
+            BookingCodesModel.find({ date: d }).lean().cache(600),
+            betslip.findVipResultDays({ days: 10 })
         ])
 
         const { mikeka, super_dc, super_over15, megaOdds, supa15_odds, supa_dc_odds } = tips
@@ -154,6 +155,7 @@ router.get('/', async (req, res) => {
             super_dc,
             vipShowcaseSlips,
             vipShowcaseSummary,
+            vipResultDays,
             trh,
             jumasiku
         })
@@ -275,9 +277,10 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         let d_juma = new Date().toLocaleString('sw-TZ', { timeZone: 'Africa/Nairobi', weekday: 'long' })
         let month_date_leo = new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'Africa/Nairobi' })
 
-        const [vipTips, today_codes] = await Promise.all([
+        const [vipTips, today_codes, vipResultDays] = await Promise.all([
             betslip.find({ date: d, vip_no: { $in: VIP_NUMBERS }, status: { $ne: 'deleted' } }).sort({ vip_no: 1, time: 1 }).lean().cache(600),
-            BookingCodesModel.find({ date: d }).lean().cache(600)
+            BookingCodesModel.find({ date: d }).lean().cache(600),
+            betslip.findVipResultDays({ days: 10 })
         ])
         const vipShowcaseSlips = buildVipSlips({ tips: vipTips, bookingDocs: today_codes })
         const vipShowcaseSummary = buildVipSummary(vipShowcaseSlips)
@@ -291,7 +294,7 @@ router.get('/mkeka/betslip-ya-leo', async (req, res) => {
         res.render('3-landing/landing', {
             page: { id: 'betslip-ya-leo', section: 'mikeka', title: 'Betslip ya Siku', canonicalPath: '/mkeka/betslip-ya-leo' },
             seo: { title: 'Betslip ya Siku', description: "Tanzania Betting Tips | Betslip ya Siku | Hizi hapa Odds 3 za uhakika leo (Today's Sure 3 Odds)", canonicalPath: '/mkeka/betslip-ya-leo' },
-            vipShowcaseSlips, vipShowcaseSummary, jumasiku, trh
+            vipShowcaseSlips, vipShowcaseSummary, vipResultDays, jumasiku, trh
         })
     } catch (err) {
         console.log(err.message)
