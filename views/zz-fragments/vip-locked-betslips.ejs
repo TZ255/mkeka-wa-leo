@@ -96,7 +96,7 @@
     grid-template-columns: 24px minmax(0, 1fr) auto;
     grid-template-areas:
       "icon date date"
-      "icon weekday status";
+      "icon status status";
     align-items: center;
     column-gap: 6px;
     row-gap: 1px;
@@ -167,18 +167,12 @@
     white-space: nowrap;
   }
 
-  .locked-vip-result-card__weekday,
   .locked-vip-result-card__status {
     font-size: 9px;
     font-weight: 800;
     line-height: 1.05;
     text-transform: uppercase;
     white-space: nowrap;
-  }
-
-  .locked-vip-result-card__weekday {
-    grid-area: weekday;
-    color: #64748b;
   }
 
   .locked-vip-result-card__status {
@@ -355,10 +349,6 @@
       font-size: 11px;
     }
 
-    .locked-vip-result-card__weekday {
-      display: none;
-    }
-
     .locked-vip-result-card__status {
       font-size: 8px;
     }
@@ -390,7 +380,6 @@
                   %>
                   <div class="locked-vip-result-card is-<%= dayStatus %>" aria-label="<%= ariaText %>">
                     <i class="fa-solid <%= statusIcon %>"></i>
-                    <span class="locked-vip-result-card__weekday"><%= day.weekday %></span>
                     <span class="locked-vip-result-card__date"><%= day.label %></span>
                     <span class="locked-vip-result-card__status"><%= statusLabel %></span>
                   </div>
