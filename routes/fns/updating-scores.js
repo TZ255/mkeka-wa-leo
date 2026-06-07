@@ -47,6 +47,14 @@ const updatingScores = (tip, home, away, ft_total, ht_total, ht_home, ht_away, m
         case 'HT Under 2.5':
             return ht_total < 3 ? 'won' : 'lose';
 
+        // ##### HALFTIME DOUBLE CHANCE CHECKING #####
+        case 'HT 1X': case '1st Half Double Chance: 1X':
+            return ht_home >= ht_away ? 'won' : 'lose';
+        case 'HT X2': case '1st Half Double Chance: X2':
+            return ht_away >= ht_home ? 'won' : 'lose';
+        case 'HT 12': case '1st Half Double Chance: 12':
+            return ht_home !== ht_away ? 'won' : 'lose';
+
         // ##### COMBO: RESULT & OVER 1.5 #####
         case '1 & Over 1.5':
             return (home > away && ft_total > 1) ? 'won' : 'lose';

@@ -72,9 +72,10 @@ async function autoUpdateResults(dateStr) {
         try {
             if (!doc.fixture_id) continue;
 
+            // status include FT, AET, PEN
             const fixture = await fixturesModel.findOne({
                 fixture_id: String(doc.fixture_id),
-                status: 'FT'
+                status: { $in: ['FT', 'AET', 'PEN'] }
             });
             if (!fixture?.matokeo) continue;
 
@@ -117,7 +118,7 @@ async function autoUpdateResults(dateStr) {
 
             const fixture = await fixturesModel.findOne({
                 fixture_id: String(doc.fixture_id),
-                status: 'FT'
+                status: { $in: ['FT', 'AET', 'PEN'] }
             });
             if (!fixture?.matokeo) continue;
 
@@ -150,7 +151,7 @@ async function autoUpdateResults(dateStr) {
 
             const fixture = await fixturesModel.findOne({
                 fixture_id: String(doc.fixture_id),
-                status: 'FT'
+                status: { $in: ['FT', 'AET', 'PEN'] }
             });
             if (!fixture?.matokeo) continue;
 
@@ -183,7 +184,7 @@ async function autoUpdateResults(dateStr) {
 
             const fixture = await fixturesModel.findOne({
                 fixture_id: String(doc.fixture_id),
-                status: 'FT'
+                status: { $in: ['FT', 'AET', 'PEN'] }
             });
             if (!fixture?.matokeo) continue;
 
@@ -216,7 +217,7 @@ async function autoUpdateResults(dateStr) {
 
             const fixture = await fixturesModel.findOne({
                 fixture_id: String(doc.fixture_id),
-                status: 'FT'
+                status: { $in: ['FT', 'AET', 'PEN'] }
             });
             if (!fixture?.matokeo) continue;
 
