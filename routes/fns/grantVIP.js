@@ -138,6 +138,7 @@ async function grantSubscription(email, param, phone = null) {
 
             //send SMS
             if (phone) sendNEXTSMS(phone, messages.sms);
+            if (!phone && user?.phone?.length >= 10) sendNEXTSMS(user.phone, messages.sms);
 
             // send Laura notification
             sendLauraNotification(-1003744778123, `✅ WALEO payment confirmed \nEmail: ${email} \nPhone: ${phone || 'Manual Confirmed'} \nPlan: ${subscriptionType.name} (${subscriptionType.amount})`, false);
