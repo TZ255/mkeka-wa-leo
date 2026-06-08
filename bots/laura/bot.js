@@ -116,6 +116,7 @@ const lauraMainFn = async (app) => {
     const isVersionValue = (value) => /^\d+(?:\.\d+){0,3}$/.test(String(value || '').trim())
     const isStoreUri = (value) => /^https?:\/\//i.test(String(value || '').trim()) || /^market:\/\//i.test(String(value || '').trim())
     const isClickPesaStatementDate = (value) => /^(\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/.test(String(value || '').trim())
+    const getNairobiDateString = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Africa/Nairobi' })
     const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
         '&': '&amp;',
         '<': '&lt;',
@@ -142,6 +143,12 @@ const lauraMainFn = async (app) => {
             }
 
             throw new Error('Usage: /clickpesa_statement [startDate] [endDate]\nExample: /cp_statement 2026-06-01 2026-06-08')
+        }
+
+        if (!result.startDate && !result.endDate) {
+            const today = getNairobiDateString()
+            result.startDate = today
+            result.endDate = today
         }
 
         return result
@@ -430,7 +437,7 @@ const lauraMainFn = async (app) => {
 
     bot.command('admin', async ctx => {
         try {
-            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from rtcopyDB (39) to the new channel.\n\n<code>/kenyas <msgid></code> broadcast kenya zambias from rtcopyDB\n\n<code>/editha_ke, /editha_ug <msgid></code> broadcast editha from rtcopyDB\n\n<code>/dramastore <msgid></code> broadcast dramastore from rtcopyDB\n\n<code>/cp_statement [startDate] [endDate]</code> fetch ClickPesa account statement in TZS.\n\n<code>/delete_social</code> reply to a social tip message in mikekaDB to delete it from DB and channel.`
+            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from rtcopyDB (39) to the new channel.\n\n<code>/kenyas [msgid]</code> broadcast kenya zambias from rtcopyDB\n\n<code>/editha_ke, /editha_ug [msgid]</code> broadcast editha from rtcopyDB\n\n<code>/dramastore [msgid]</code> broadcast dramastore from rtcopyDB\n\n<code>/cp_statement [startDate] [endDate]</code> fetch ClickPesa account statement in TZS.\n\n<code>/delete_social</code> reply to a social tip message in mikekaDB to delete it from DB and channel.`
 
             await ctx.reply(commands, { parse_mode: 'HTML' })
         } catch (err) {
