@@ -40,9 +40,7 @@ const mwangaAxios = axios.create({
 })
 
 const log = (...args) => {
-    if (process.env.local === 'true') {
-        console.log('[DJMwanga]', new Date().toISOString(), ...args)
-    }
+    console.log('[DJMwanga]', new Date().toISOString(), ...args)
 }
 
 const normalizeUrl = (url, baseUrl = 'https://djmwanga.com/') => {
