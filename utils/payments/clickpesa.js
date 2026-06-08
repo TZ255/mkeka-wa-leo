@@ -74,15 +74,15 @@ async function generateClickPesaToken() {
     }
 }
 
-async function getClickPesaAccountStatement({ startDate, endDate } = {}) {
+async function getClickPesaAccountStatement({ startDate, endDate, token } = {}) {
     const params = { currency: 'TZS' };
     if (startDate) params.startDate = startDate;
     if (endDate) params.endDate = endDate;
 
     try {
-        const token = await generateClickPesaToken();
+        const authToken = token || await generateClickPesaToken();
         const response = await axios.get(`${CLICKPESA_API_BASE_URL}/account/statement`, {
-            headers: { Authorization: token },
+            headers: { Authorization: authToken },
             params,
         });
 
@@ -92,8 +92,22 @@ async function getClickPesaAccountStatement({ startDate, endDate } = {}) {
     }
 }
 
+async function getClickPesaAccountBalance({ token } = {}) {
+    try {
+        const authToken = token || await generateClickPesaToken();
+        const response = await axios.get(`${CLICKPESA_API_BASE_URL}/account/balance`, {
+            headers: { Authorization: authToken },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw new Error(getClickPesaErrorMessage(error, 'Unable to fetch ClickPesa account balance'));
+    }
+}
+
 module.exports = {
     initializeClickPesaPayment,
     generateClickPesaToken,
+    getClickPesaAccountBalance,
     getClickPesaAccountStatement,
 };
