@@ -81,9 +81,9 @@ module.exports = () => {
   };
 
   // ------------------------------------
-  // Expired VIP subscriptions, hourly
+  // Expired VIP subscriptions, hourly every 2nd minute
   // ------------------------------------
-  cron.schedule('0 * * * *', () => {
+  cron.schedule('2 * * * *', () => {
     runLocked('expire-vip-subscriptions', async () => {
       const now = new Date();
 
