@@ -113,6 +113,24 @@ const lauraMainFn = async (app) => {
         return `Android app version settings\n\nMinimum required: ${config.minimumRequiredVersion}\nLatest version: ${config.latestVersion}\nPlay Store URL: ${config.playStoreUrl}\nMessage: ${config.updateMessage}\n\nUsage:\n/app_version\n/app_version set <minimum> <latest> <playStoreUrl> [message]\n/app_version min <version>\n/app_version latest <version>\n/app_version url <playStoreUrl>\n/app_version message <message>`
     }
 
+    const getNairobiTodayRange = () => {
+        const parts = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Africa/Nairobi',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        }).formatToParts(new Date()).reduce((acc, part) => {
+            if (part.type !== 'literal') acc[part.type] = part.value
+            return acc
+        }, {})
+        const today = `${parts.year}-${parts.month}-${parts.day}`
+        const start = new Date(`${today}T00:00:00.000+03:00`)
+        const end = new Date(start.getTime() + (24 * 60 * 60 * 1000))
+        return { today, start, end }
+    }
+
+    const formatNumber = (value) => Number(value || 0).toLocaleString('en-US')
+
     const isVersionValue = (value) => /^\d+(?:\.\d+){0,3}$/.test(String(value || '').trim())
     const isStoreUri = (value) => /^https?:\/\//i.test(String(value || '').trim()) || /^market:\/\//i.test(String(value || '').trim())
 
@@ -361,12 +379,47 @@ const lauraMainFn = async (app) => {
 
     bot.command('admin', async ctx => {
         try {
-            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from rtcopyDB (39) to the new channel.\n\n<code>/kenyas [msgid]</code> broadcast kenya zambias from rtcopyDB\n\n<code>/editha_ke, /editha_ug [msgid]</code> broadcast editha from rtcopyDB\n\n<code>/dramastore [msgid]</code> broadcast dramastore from rtcopyDB\n\n<code>/cp_statement [startDate] [endDate]</code> fetch ClickPesa account statement in TZS for Africa/Nairobi dates.\n\n<code>/delete_social</code> reply to a social tip message in mikekaDB to delete it from DB and channel.`
+            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from rtcopyDB (39) to the new channel.\n\n<code>/kenyas [msgid]</code> broadcast kenya zambias from rtcopyDB\n\n<code>/editha_ke, /editha_ug [msgid]</code> broadcast editha from rtcopyDB\n\n<code>/dramastore [msgid]</code> broadcast dramastore from rtcopyDB\n\n<code>/user_summary</code> show Mkeka Leo user account and payment summary.\n\n<code>/cp_statement [startDate] [endDate]</code> fetch ClickPesa account statement in TZS for Africa/Nairobi dates.\n\n<code>/delete_social</code> reply to a social tip message in mikekaDB to delete it from DB and channel.`
 
             await ctx.reply(commands, { parse_mode: 'HTML' })
         } catch (err) {
             console.log(err, err.message)
             await ctx.reply(err.message)
+        }
+    })
+
+    bot.command(['user_summary', 'users_summary', 'summary'], async ctx => {
+        try {
+            if (![imp.shemdoe, imp.rtmalipo].includes(ctx.from?.id)) return await ctx.reply('Not authorized')
+
+            const { today, start, end } = getNairobiTodayRange()
+            const [
+                totalUsers,
+                registeredToday,
+                activePaidUsers,
+                usersWithPaymentHistory,
+                unpaidNeverPaidUsers
+            ] = await Promise.all([
+                mkekaUsersModel.countDocuments({}),
+                mkekaUsersModel.countDocuments({ createdAt: { $gte: start, $lt: end } }),
+                mkekaUsersModel.countDocuments({ status: 'paid' }),
+                mkekaUsersModel.countDocuments({ 'payments.0': { $exists: true } }),
+                mkekaUsersModel.countDocuments({ status: 'unpaid', 'payments.0': { $exists: false } })
+            ])
+
+            const message =
+                `<b>Mkeka Leo User Summary</b>\n` +
+                `<i>Today uses Africa/Nairobi: ${today}</i>\n\n` +
+                `All registered users: <b>${formatNumber(totalUsers)}</b>\n` +
+                `New registrations today: <b>${formatNumber(registeredToday)}</b>\n` +
+                `Active paid users: <b>${formatNumber(activePaidUsers)}</b>\n` +
+                `Users with payment history: <b>${formatNumber(usersWithPaymentHistory)}</b>\n` +
+                `Unpaid users with no payment history: <b>${formatNumber(unpaidNeverPaidUsers)}</b>`
+
+            await ctx.reply(message, { parse_mode: 'HTML' })
+        } catch (error) {
+            console.error('User summary command error:', error)
+            await ctx.reply(error?.message || 'Unable to fetch user summary right now.')
         }
     })
 
