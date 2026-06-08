@@ -174,8 +174,7 @@ const lauraMainFn = async (app) => {
         text += `<b>Summary</b>\n`
         text += `Opening: ${formatClickPesaAmount(details.openingBalance)}\n`
         text += `Closing: ${formatClickPesaAmount(details.closingBalance)}\n`
-        text += `Credits: ${formatClickPesaAmount(details.totalCredits)}\n`
-        text += `Debits: ${formatClickPesaAmount(details.totalDebits)}\n`
+        text += `Difference: ${formatClickPesaAmount(details.closingBalance - details.openingBalance)}\n`
         text += `Transactions: ${transactions.length}\n`
 
         if (!shownTransactions.length) return `${text}\nNo transactions found.`
