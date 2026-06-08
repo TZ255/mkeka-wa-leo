@@ -407,6 +407,9 @@ const lauraMainFn = async (app) => {
                 mkekaUsersModel.countDocuments({ 'payments.0': { $exists: true } }),
                 mkekaUsersModel.countDocuments({ status: 'unpaid', 'payments.0': { $exists: false } })
             ])
+            const paymentConversionRate = totalUsers > 0
+                ? ((usersWithPaymentHistory / totalUsers) * 100).toFixed(2)
+                : '0.00'
 
             const message =
                 `<b>Mkeka Leo User Summary</b>\n` +
@@ -415,6 +418,7 @@ const lauraMainFn = async (app) => {
                 `New registrations today: <b>${formatNumber(registeredToday)}</b>\n` +
                 `Active paid users: <b>${formatNumber(activePaidUsers)}</b>\n` +
                 `Users with payment history: <b>${formatNumber(usersWithPaymentHistory)}</b>\n` +
+                `Payment conversion rate: <b>${paymentConversionRate}%</b>\n` +
                 `Unpaid users with no payment history: <b>${formatNumber(unpaidNeverPaidUsers)}</b>`
 
             await ctx.reply(message, { parse_mode: 'HTML' })
