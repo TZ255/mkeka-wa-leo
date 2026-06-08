@@ -36,6 +36,7 @@ const lauraMainFn = async (app) => {
     const messageFunctions = require('./functions/messagefn')
     const { makeKECPA, makeUGCPA } = require('./functions/cpa-convo')
     const { handleMleoPushChannelPost } = require('./functions/mleo-push')
+    const { getClickPesaAccountStatement } = require('../../utils/payments/clickpesa')
 
     const imp = {
         replyDb: -1001608248942,
@@ -114,6 +115,75 @@ const lauraMainFn = async (app) => {
 
     const isVersionValue = (value) => /^\d+(?:\.\d+){0,3}$/.test(String(value || '').trim())
     const isStoreUri = (value) => /^https?:\/\//i.test(String(value || '').trim()) || /^market:\/\//i.test(String(value || '').trim())
+    const isClickPesaStatementDate = (value) => /^(\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/.test(String(value || '').trim())
+    const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    }[char]))
+
+    const parseClickPesaStatementCommand = (input) => {
+        const result = {}
+        const tokens = String(input || '').trim().split(/\s+/).filter(Boolean)
+
+        for (const token of tokens) {
+            const value = token.trim()
+
+            if (isClickPesaStatementDate(value) && !result.startDate) {
+                result.startDate = value
+                continue
+            }
+
+            if (isClickPesaStatementDate(value) && !result.endDate) {
+                result.endDate = value
+                continue
+            }
+
+            throw new Error('Usage: /clickpesa_statement [startDate] [endDate]\nExample: /cp_statement 2026-06-01 2026-06-08')
+        }
+
+        return result
+    }
+
+    const formatClickPesaAmount = (amount) => {
+        const value = Number(amount)
+        if (!Number.isFinite(value)) return `${escapeHtml(amount)} TZS`
+        return `${value.toLocaleString('en-US', { maximumFractionDigits: 2 })} TZS`
+    }
+
+    const formatClickPesaAccountStatement = (statement, filters) => {
+        const details = statement?.accountDetails || {}
+        const transactions = Array.isArray(statement?.transactions) ? statement.transactions : []
+        const shownTransactions = transactions.slice(0, 12)
+        const dateRange = filters.startDate || filters.endDate
+            ? `${filters.startDate || 'start'} to ${filters.endDate || 'now'}`
+            : 'All dates'
+
+        let text = `<b>ClickPesa Account Statement</b>\n`
+        text += `Currency: <code>TZS</code>\n`
+        text += `Period: <code>${escapeHtml(dateRange)}</code>\n\n`
+        text += `<b>Summary</b>\n`
+        text += `Opening: ${formatClickPesaAmount(details.openingBalance)}\n`
+        text += `Closing: ${formatClickPesaAmount(details.closingBalance)}\n`
+        text += `Credits: ${formatClickPesaAmount(details.totalCredits)}\n`
+        text += `Debits: ${formatClickPesaAmount(details.totalDebits)}\n`
+        text += `Transactions: ${transactions.length}\n`
+
+        if (!shownTransactions.length) return `${text}\nNo transactions found.`
+
+        text += `\n<b>Transactions${transactions.length > shownTransactions.length ? ` - showing ${shownTransactions.length}` : ''}</b>\n`
+        text += shownTransactions.map((tx, index) => {
+            const date = escapeHtml(tx.date || '-')
+            const description = escapeHtml(tx.description || '-')
+            const reference = escapeHtml(tx.orderReference || tx.id || '-')
+
+            return `${index + 1}. <code>${date}</code>\n${description}\nAmount: ${formatClickPesaAmount(tx.amount)}\nBalance: ${formatClickPesaAmount(tx.balance)}\nRef: <code>${reference}</code>`
+        }).join('\n\n')
+
+        return text
+    }
 
     bot.catch((err) => {
         const ctx = err.ctx;
@@ -360,7 +430,7 @@ const lauraMainFn = async (app) => {
 
     bot.command('admin', async ctx => {
         try {
-            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from rtcopyDB (39) to the new channel.\n\n<code>/kenyas <msgid></code> broadcast kenya zambias from rtcopyDB\n\n<code>/editha_ke, /editha_ug <msgid></code> broadcast editha from rtcopyDB\n\n<code>/dramastore <msgid></code> broadcast dramastore from rtcopyDB\n\n<code>/delete_social</code> reply to a social tip message in mikekaDB to delete it from DB and channel.`
+            let commands = `1. [add telenovela]\nSend this message to the channel to copy drama cont from matangazo db (38)\n\n2. [brazil-telenovelas]\nUse this startPayload to add user to brazil database and give him a link to the telenovelas main channel.\n\n3. [add brazil song]\nCopy content of Brazil songs from rtcopyDB (39) to the new channel.\n\n<code>/kenyas <msgid></code> broadcast kenya zambias from rtcopyDB\n\n<code>/editha_ke, /editha_ug <msgid></code> broadcast editha from rtcopyDB\n\n<code>/dramastore <msgid></code> broadcast dramastore from rtcopyDB\n\n<code>/cp_statement [startDate] [endDate]</code> fetch ClickPesa account statement in TZS.\n\n<code>/delete_social</code> reply to a social tip message in mikekaDB to delete it from DB and channel.`
 
             await ctx.reply(commands, { parse_mode: 'HTML' })
         } catch (err) {
@@ -485,6 +555,20 @@ const lauraMainFn = async (app) => {
             await ctx.reply(`Tokea tumeanza Feb 12, 2025 tumetengeneza jumla ya Tsh. ${rev.vip_revenue.toLocaleString('en-US')} kwenye subscription za VIP`)
         } catch (error) {
             await ctx.reply(error?.message)
+        }
+    })
+
+    bot.command(['clickpesa_statement', 'cp_statement'], async ctx => {
+        try {
+            if (![imp.shemdoe, imp.rtmalipo].includes(ctx.from?.id)) return await ctx.reply('Not authorized')
+
+            const filters = parseClickPesaStatementCommand(ctx.match)
+            const statement = await getClickPesaAccountStatement(filters)
+            const text = formatClickPesaAccountStatement(statement, filters)
+
+            await ctx.reply(text, { parse_mode: 'HTML' })
+        } catch (error) {
+            await ctx.reply(error?.message || 'Unable to fetch ClickPesa account statement')
         }
     })
 
