@@ -50,6 +50,14 @@ const { KenyaSafeBots } = require('./bots/zambias/bot-safe');
 
 const app = express()
 
+app.get('/health', (req, res) => {
+    res.set('Cache-Control', 'no-store')
+    res.status(200).json({
+        status: 'ok',
+        uptime: process.uptime()
+    })
+})
+
 // database connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('✔ Connected to Mkeka Database'))
