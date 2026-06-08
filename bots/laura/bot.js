@@ -164,6 +164,12 @@ const lauraMainFn = async (app) => {
         const details = statement?.accountDetails || {}
         const transactions = Array.isArray(statement?.transactions) ? statement.transactions : []
         const shownTransactions = transactions.slice(0, 12)
+        const paymentAmount = transactions.reduce((total, tx) => {
+            if (String(tx?.type || '').trim().toLowerCase() !== 'payment') return total
+            const amount = Number(tx?.amount)
+            if (!Number.isFinite(amount)) return total
+            return total + amount
+        }, 0)
         const dateRange = filters.startDate || filters.endDate
             ? `${filters.startDate || 'start'} to ${filters.endDate || 'now'}`
             : 'All dates'
@@ -174,7 +180,7 @@ const lauraMainFn = async (app) => {
         text += `<b>Summary</b>\n`
         text += `Opening: ${formatClickPesaAmount(details.openingBalance)}\n`
         text += `Closing: ${formatClickPesaAmount(details.closingBalance)}\n`
-        text += `Difference: ${formatClickPesaAmount(details.closingBalance - details.openingBalance)}\n`
+        text += `Payments: ${formatClickPesaAmount(paymentAmount)}\n`
         text += `Transactions: ${transactions.length}\n`
 
         if (!shownTransactions.length) return `${text}\nNo transactions found.`
