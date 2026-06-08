@@ -393,6 +393,7 @@ const lauraMainFn = async (app) => {
             if (![imp.shemdoe, imp.rtmalipo].includes(ctx.from?.id)) return await ctx.reply('Not authorized')
 
             const { today, start, end } = getNairobiTodayRange()
+            const now = new Date()
             const [
                 totalUsers,
                 registeredToday,
@@ -402,7 +403,7 @@ const lauraMainFn = async (app) => {
             ] = await Promise.all([
                 mkekaUsersModel.countDocuments({}),
                 mkekaUsersModel.countDocuments({ createdAt: { $gte: start, $lt: end } }),
-                mkekaUsersModel.countDocuments({ status: 'paid' }),
+                mkekaUsersModel.countDocuments({ status: 'paid', pay_until: { $gt: now } }),
                 mkekaUsersModel.countDocuments({ 'payments.0': { $exists: true } }),
                 mkekaUsersModel.countDocuments({ status: 'unpaid', 'payments.0': { $exists: false } })
             ])

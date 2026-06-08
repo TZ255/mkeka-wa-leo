@@ -11,6 +11,7 @@ const { postMegaToMkekaLeo } = require('../../routes/fns/sendSocialPhoto');
 
 const affAnalyticsModel = require('../../model/affiliates-analytics');
 const RapidKeysModel = require('../../model/rapid_keys');
+const mkekaUsersModel = require('../../model/mkeka-users');
 
 const {
   UpdateOtherLeagueMatchDay,
@@ -78,6 +79,34 @@ module.exports = () => {
       locks[name] = false;
     }
   };
+
+  // ------------------------------------
+  // Expired VIP subscriptions, hourly
+  // ------------------------------------
+  cron.schedule('0 * * * *', () => {
+    runLocked('expire-vip-subscriptions', async () => {
+      const now = new Date();
+
+      const result = await mkekaUsersModel.updateMany(
+        {
+          status: 'paid',
+          pay_until: { $lte: now }
+        },
+        {
+          $set: {
+            status: 'unpaid',
+            plan: '0 plan',
+            pay_until: null
+          }
+        }
+      );
+
+      const expiredCount = result.modifiedCount || result.nModified || 0;
+      if (expiredCount > 0) {
+        console.log(`[expire-vip-subscriptions]: marked ${expiredCount} users as unpaid`);
+      }
+    });
+  }, { timezone: TZ });
 
   // ------------------------------------
   // DJ Mwanga audio posts, hourly at :14

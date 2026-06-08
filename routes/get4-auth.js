@@ -37,9 +37,10 @@ router.get('/mkeka/vip', async (req, res) => {
             }
 
             //check if her time expired
-            if (user && user.status === 'paid' && Date.now() > user.pay_until) {
+            if (user && user.status === 'paid' && user.pay_until && Date.now() > new Date(user.pay_until).getTime()) {
                 user.status = 'unpaid'
                 user.plan = '0 plan'
+                user.pay_until = null
                 await user.save()
                 return res.redirect('/mkeka/vip')
             }
