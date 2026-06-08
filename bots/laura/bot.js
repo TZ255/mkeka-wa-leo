@@ -565,9 +565,11 @@ const lauraMainFn = async (app) => {
         }
     })
 
-    bot.command(['clickpesa_statement', 'cp_statement'], async ctx => {
+    bot.command(['clickpesa_statement', 'cp_statement', 'statement'], async ctx => {
         try {
-            if (![imp.shemdoe, imp.rtmalipo].includes(ctx.from?.id)) return await ctx.reply('Not authorized')
+            if (![imp.shemdoe, imp.rtmalipo].includes(ctx.from?.id)) return await ctx.reply('Not authorized');
+
+            await ctx.replyWithChatAction('typing')
 
             const filters = parseClickPesaStatementCommand(ctx.match)
             const statement = await getClickPesaAccountStatement(filters)
