@@ -376,7 +376,7 @@ const helenCodes = async (app) => {
 
         try {
             if (ctx.channelPost.text) {
-                if (txt.toLowerCase().includes('add me')) {
+                if (txt?.toLowerCase().includes('add me')) {
                     let ch_id = ctx.channelPost.sender_chat.id
                     let ch_title = ctx.channelPost.sender_chat.title
 
@@ -407,13 +407,13 @@ const helenCodes = async (app) => {
                 let rp_msg = ctx.channelPost.reply_to_message.text
                 let rp_cap = ctx.channelPost.reply_to_message?.caption
 
-                if (txt.toLowerCase() == 'post gal') {
+                if (txt?.toLowerCase() == 'post gal') {
                     await mkekadb.create({ mid: rp_id, brand: 'gal' })
                     await ctx.reply('Mkeka uko live Gal Sport')
-                } else if (txt.toLowerCase() == 'post 10bet') {
+                } else if (txt?.toLowerCase() == 'post 10bet') {
                     await mkekadb.create({ mid: rp_id, brand: '10bet' })
                     await ctx.reply('Mkeka uko live 10bet')
-                } else if (txt.toLowerCase() == 'broad me') {
+                } else if (txt?.toLowerCase() == 'broad me') {
                     let boturl = `t.me/dayoncebot?start=ngono_bongo`
                     let appendText = `Jiunge na magroup yetu ya utamu bongo\n<a href="${boturl}">❕👉 @xxx_bongo\n❕👉 @xxx_bongo</a>`
 
@@ -432,7 +432,7 @@ const helenCodes = async (app) => {
                             reply_markup: inline_keyboard
                         })
                     }
-                } else if (txt.toLowerCase() == 'copy me') {
+                } else if (txt?.toLowerCase() == 'copy me') {
                     let boturl = `t.me/dayoncebot?start=ngono_bongo`
                     let all_chans = await my_channels_db.find()
                     for (let ch of all_chans) {
