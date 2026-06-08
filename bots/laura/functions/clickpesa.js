@@ -114,9 +114,10 @@ const formatClickPesaTransactionDate = (value) => {
 };
 
 const getClickPesaBalanceValue = (balanceData) => {
-    const entry = Array.isArray(balanceData)
-        ? balanceData.find((item) => item?.currency === 'TZS') || balanceData[0]
-        : balanceData;
+    const balances = Array.isArray(balanceData?.balances) ? balanceData.balances : balanceData;
+    const entry = Array.isArray(balances)
+        ? balances.find((item) => item?.currency === 'TZS') || balances[0]
+        : balances;
 
     return entry?.balance;
 };
