@@ -7,7 +7,7 @@ const mwangaModel = require('../database/mwanga')
 
 const ADMIN_CHAT_ID = 741815228
 const MWANGA_CHANNEL_ID = -1001239649906
-const LATEST_LIMIT = 10
+const LATEST_LIMIT = 30
 
 const bot = new Bot(process.env.CHARLOTTE_TOKEN)
 bot.api.config.use(autoRetry())
@@ -150,7 +150,7 @@ const DJMwangaFn = async (durl = "https://djmwanga.com/category/audio") => {
         log('Latest posts found:', posts.length)
         posts.forEach((post, i) => log(`Post ${i + 1}:`, post.title, post.url))
 
-        for (let post of posts) {
+        for (let post of [...posts].reverse()) {
             log('Checking DB:', post.title, post.url)
             let existing = await mwangaModel.findOne({
                 $or: [
