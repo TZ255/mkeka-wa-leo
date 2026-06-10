@@ -52,7 +52,7 @@ const updatingScores = (tip, home, away, ft_total, ht_total, ht_home, ht_away, m
             return ht_home >= ht_away ? 'won' : 'lose';
         case 'HT X2': case '1st Half Double Chance: X2':
             return ht_away >= ht_home ? 'won' : 'lose';
-        case 'HT 12': case '1st Half Double Chance: 12':
+        case 'HT 12': case 'HT DC: 12': case '1st Half Double Chance: 12':
             return ht_home !== ht_away ? 'won' : 'lose';
 
         // ##### COMBO: RESULT & OVER 1.5 #####
@@ -112,6 +112,16 @@ const updatingScores = (tip, home, away, ft_total, ht_total, ht_home, ht_away, m
             return (ht_home > ht_away && home > away) ? 'won' : 'lose';
         case '2/2': case 'Away/Away':
             return (ht_away > ht_home && away > home) ? 'won' : 'lose';
+
+        // ##### MULTIGOALS
+        case 'Home Multigoals: 1 - 2':
+            return (home >= 1 && home <= 2) ? 'won' : 'lose';
+        case 'Away Multigoals: 1 - 2':
+            return (away >= 1 && away <= 2) ? 'won' : 'lose';
+        case 'Home Multigoals: 1 - 3':
+            return (home >= 1 && home <= 3) ? 'won' : 'lose';
+        case 'Away Multigoals: 1 - 3':
+            return (away >= 1 && away <= 3) ? 'won' : 'lose';
 
         default:
             if (tip.endsWith(' Win') && matchStr) {
