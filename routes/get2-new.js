@@ -513,6 +513,7 @@ router.get('/api/testing', async (req, res) => {
         //await GET_TIPS_FOR_MKEKALEO("2026-04-04")
         // DJMwangaFn("https://djmwanga.com/category/audio")
         // await UpdateMatchDayLeagueData()
+        autoUpdateResults('11/06/2026');
         res.json({ok: true})
     } catch (error) {
         console.error(error);
