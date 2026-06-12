@@ -109,7 +109,7 @@ module.exports = () => {
   }, { timezone: TZ });
 
   // ------------------------------------
-  // DJ Mwanga audio post, daily at 12:43 and 16:43
+  // DJ Mwanga audio posts, daily at 12:43 and 16:43
   // ------------------------------------
   cron.schedule('43 12,16 * * *', () => {
     runLocked('djmwanga-audio', () =>
