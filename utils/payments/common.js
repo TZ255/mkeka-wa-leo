@@ -1,4 +1,4 @@
-const SNIPPE_NETWORKS = new Set(['smile', 'halotel']);
+const SNIPPE_NETWORKS = new Set(['smile']);
 const RENDERABLE_NETWORKS = new Set(['halotel', 'tigo', 'airtel', 'vodacom', 'smile']);
 const DEFAULT_VIP_PAYMENT_PLAN = 'week';
 
