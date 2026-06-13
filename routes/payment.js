@@ -106,7 +106,19 @@ router.post('/api/pay', async (req, res) => {
                 return res.render('zz-fragments/payment-form-error', {
                     layout: false,
                     user: req?.user || '',
-                    message: 'Changamoto ya mtandao Vodacom. Tafadhali tumia Tigo, Airtel au Halotel',
+                    message: 'Changamoto ya mtandao Vodacom. Tafadhali tumia Tigo au Airtel',
+                });
+            }
+
+            // disabling halotel
+            if (networkBrand === 'halotel') {
+                //throw new Error("Changamoto ya mtandao Vodacom. Tumia mtandao mwingine");
+
+                res.set('HX-Reswap', 'none');
+                return res.render('zz-fragments/payment-form-error', {
+                    layout: false,
+                    user: req?.user || '',
+                    message: 'Changamoto ya mtandao Halotel. Tafadhali tumia Tigo au Airtel',
                 });
             }
 
