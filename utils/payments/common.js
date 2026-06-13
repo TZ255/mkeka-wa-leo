@@ -82,7 +82,7 @@ function normalizeName(name) {
 }
 
 function generateOrderId() {
-    return `WALEO${Date.now().toString(36)}`;
+    return `WALEO${Date.now().toString(36)}`.toUpperCase();
 }
 
 function getNetworkBrand(phone = '') {
